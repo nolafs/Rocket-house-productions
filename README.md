@@ -1,6 +1,13 @@
 # Rocket House Productions
 
-Netlify status: [![Netlify Status](https://api.netlify.com/api/v1/badges/7b3b3b3b-1b1b-4b1b-8b1b-1b1b1b1b1b1b/deploy-status)](https://app.netlify.com/sites/rocket-house-productions/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/3c9beacc-135f-4570-bc1c-d3b705ba7a67/deploy-status)](https://app.netlify.com/sites/kids-guitar-dojo/deploys)
+![License](https://img.shields.io/github/license/nolafs/Rocket-house-productions)
+![GitHub last commit](https://img.shields.io/github/last-commit/nolafs/Rocket-house-productions)
+![GitHub issues](https://img.shields.io/github/issues/nolafs/Rocket-house-productions)
+![GitHub stars](https://img.shields.io/github/stars/nolafs/Rocket-house-productions)
+![GitHub forks](https://img.shields.io/github/forks/nolafs/Rocket-house-productions)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/nolafs/Rocket-house-productions)
+![Nx](https://img.shields.io/badge/Nx-Workspace-blue)
 
 Mono-repo for Rocket House Productions. First application is a Kids Guitar Dojo and Admin Dashboard.
 
