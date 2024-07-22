@@ -1,4 +1,8 @@
-# RocketHouseProductions
+# Rocket House Productions
+
+Netlify status: [![Netlify Status](https://api.netlify.com/api/v1/badges/7b3b3b3b-1b1b-4b1b-8b1b-1b1b1b1b1b1b/deploy-status)](https://app.netlify.com/sites/rocket-house-productions/deploys)
+
+Mono-repo for Rocket House Productions. First application is a Kids Guitar Dojo and Admin Dashboard.
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 

@@ -1,0 +1,9 @@
+{
+  "name": "kids-guitar-dojo-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/kids-guitar-dojo-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["kids-guitar-dojo"],
+  "// targets": "to see all targets run: nx show project kids-guitar-dojo-e2e --web",
+  "targets": {}
+}
