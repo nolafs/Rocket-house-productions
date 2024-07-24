@@ -19,8 +19,14 @@
     "types": [
       "jest",
       "node"
-    ]
+    ],
+    "paths": {
+      "@assets/*": [
+        "apps/kids-guitar-dojo/src/assets/*"
+      ]
+    }
   },
+
   "include": [
     "**/*.ts",
     "**/*.tsx",
@@ -29,6 +35,7 @@
     "../../apps/kids-guitar-dojo/.next/types/**/*.ts",
     "../../dist/apps/kids-guitar-dojo/.next/types/**/*.ts",
     "next-env.d.ts",
+    "postcss.config.js",
     ".next/types/**/*.ts"
   ],
   "exclude": [
