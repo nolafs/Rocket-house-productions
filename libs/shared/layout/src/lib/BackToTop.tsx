@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
-const BackToTop = () => {
+export const BackToTop = () => {
   const [showScroll, setShowScroll] = useState(false);
 
   useEffect(() => {

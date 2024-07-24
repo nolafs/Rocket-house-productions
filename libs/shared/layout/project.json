@@ -1,7 +1,7 @@
 {
   "name": "layout",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "lib/shared/layout/src",
+  "sourceRoot": "libs/shared/layout/src",
   "projectType": "library",
   "tags": [],
   "// targets": "to see all targets run: nx show project layout --web",

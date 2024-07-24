@@ -261,6 +261,9 @@ module.exports = {
               "perspective(120px) rotateX(-180deg) rotateY(-179.9deg)",
           },
         },
+        container: {
+          padding: '15px',
+        },
       },
       animation: {
         headerSlideDown: "headerSlideDown .95s ease forwards",
@@ -278,40 +281,7 @@ module.exports = {
       },
     },
   },
-  corePlugins: {
-    container: false,
-  },
   plugins: [
-    function addVariantFunc({addVariant}) {
-      addVariant("child", "& > *");
-      addVariant("nextIcon", "& > i");
-      addVariant("child-hover", "& > *:hover");
-      addVariant("second", "&:nth-child(2)");
-      addVariant("third", "&:nth-child(3)");
-    },
-    require("@tailwindcss/typography"),
-    function addComponentsFunc({addComponents}) {
-      addComponents({
-        ".container": {
-          maxWidth: "100%",
-          marginInline: "auto",
-          paddingInline: "15px",
-          position: "relative",
-          zIndex: 20,
-          "@screen sm": {
-            maxWidth: "576px",
-          },
-          "@screen md": {
-            maxWidth: "768px",
-          },
-          "@screen lg": {
-            maxWidth: "992px",
-          },
-          "@screen xl": {
-            maxWidth: "1230px",
-          },
-        },
-      });
-    },
+    require("@tailwindcss/typography")
   ],
 };

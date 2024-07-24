@@ -1,8 +1,11 @@
-import './global.css';
-import {Suspense} from 'react';
+import '../styles/navbar.scss';
+import './global.scss';
 
-import {BackToTop} from '@rocket-house-productions/layout';
+import {Suspense} from 'react';
+import {BackToTop, Navbar} from '@rocket-house-productions/layout';
 import {GoogleAnalytics} from '@rocket-house-productions/util';
+import logo from '@assets/logo.png';
+
 
 export const metadata = {
   title: 'Welcome to kids-guitar-dojo',
@@ -16,7 +19,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}
+      <body>
+      {/* Menu header */}
+
+      <Navbar items={[]} logo={logo} />
+
+
+
+      {children}
 
       {/* BackToTop */}
       <BackToTop/>
