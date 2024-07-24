@@ -1,4 +1,8 @@
 import './global.css';
+import {Suspense} from 'react';
+
+import {BackToTop} from '@rocket-house-productions/layout';
+import {GoogleAnalytics} from '@rocket-house-productions/util';
 
 export const metadata = {
   title: 'Welcome to kids-guitar-dojo',
@@ -12,7 +16,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>{children}
+
+      {/* BackToTop */}
+      <BackToTop/>
+      <Suspense>
+        <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''}/>
+      </Suspense>
+      </body>
     </html>
   );
 }
