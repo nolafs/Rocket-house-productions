@@ -185,6 +185,17 @@ interface BlogPostDocumentData {
   main: prismic.RichTextField;
 
   /**
+   * test field in *Blog Post*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_post.test
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  test: prismic.KeyTextField;
+
+  /**
    * Slice Zone field in *Blog Post*
    *
    * - **Field Type**: Slice Zone
@@ -227,7 +238,7 @@ interface BlogPostDocumentData {
   meta_image: prismic.ImageField<never>;
 
   /**
-   * `slices1` field in *Blog Post*
+   * Slice Zone field in *Blog Post*
    *
    * - **Field Type**: Slice Zone
    * - **Placeholder**: *None*

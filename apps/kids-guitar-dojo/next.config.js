@@ -10,7 +10,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
-  ...(process.env.ENVIRONMENT_NAME !== 'local' && { headers }),
+  //...(process.env.ENVIRONMENT_NAME !== 'local' && { headers }),
   images: {
     formats: ['image/webp'],
     minimumCacheTTL: 60,
