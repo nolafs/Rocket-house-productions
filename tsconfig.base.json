@@ -15,17 +15,16 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@/*": ["apps/kids-guitar-dojo/src/*"],
       "@assets/*": ["apps/kids-guitar-dojo/src/assets/*"],
       "@components/*": ["apps/kids-guitar-dojo/src/components/*"],
       "@layouts/*": ["apps/kids-guitar-dojo/src/layouts/*"],
+      "@rocket-house-productions/hooks": ["libs/shared/hooks/src/index.ts"],
+      "@rocket-house-productions/hooks/server": ["libs/shared/hooks/src/server.ts"],
       "@rocket-house-productions/layout": ["libs/shared/layout/src/index.ts"],
-      "@rocket-house-productions/layout/server": [
-        "libs/shared/layout/src/server.ts"
-      ],
+      "@rocket-house-productions/layout/server": ["libs/shared/layout/src/server.ts"],
       "@rocket-house-productions/util": ["libs/shared/util/src/index.ts"],
-      "@rocket-house-productions/util/server": [
-        "libs/shared/util/src/server.ts"
-      ]
+      "@rocket-house-productions/util/server": ["libs/shared/util/src/server.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

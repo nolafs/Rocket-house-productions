@@ -1,4 +1,4 @@
-const {composePlugins, withNx} = require('@nx/next');
+const { composePlugins, withNx } = require('@nx/next');
 const headers = require('./config/headers');
 const pluginsExtends = require('./config/plugins');
 /**
@@ -10,7 +10,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
-  ...(process.env.ENVIRONMENT_NAME !== 'local' && {headers}),
+  ...(process.env.ENVIRONMENT_NAME !== 'local' && { headers }),
   images: {
     formats: ['image/webp'],
     minimumCacheTTL: 60,
@@ -24,7 +24,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'ui-avatars.com',
         port: '',
-      }
+      },
     ],
   },
 };

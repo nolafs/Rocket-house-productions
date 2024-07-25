@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    --color-primary: #2c67dc;
+    --color-secondary: #c2ff7a;
+    --color-accent: #89ff00;
+    --color-neutral: #c9d8f6;
+    --color-base: #ffffff;
+  }
+}

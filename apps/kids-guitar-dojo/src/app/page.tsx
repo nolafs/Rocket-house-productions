@@ -5,8 +5,9 @@ export default function Index() {
    * Note: The corresponding styles are in the ./index.tailwind file.
    */
   return (
-    <div className={'h-screen'}>
-      Welcome to Kids Guitar Dojo!
+    <div className={'container mx-auto'}>
+      <div className={'h-screen'}>header</div>
+      <div className={'h-screen'}>body</div>
     </div>
   );
 }

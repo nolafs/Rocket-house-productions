@@ -6,14 +6,14 @@
     &::after {
       @apply top-1/2;
       @apply absolute;
-      content: "\ea29";
+      content: '\ea29';
       @apply leading-none;
       @apply -right-[18px];
       @apply -translate-y-2/4;
       font: {
         family: boxicons;
         weight: normal;
-      };
+      }
     }
   }
 
@@ -85,17 +85,16 @@
 @keyframes fadeInDown {
   0% {
     opacity: 0;
-    transform: translate3d(0, -100%, 0)
+    transform: translate3d(0, -100%, 0);
   }
   to {
     opacity: 1;
-    transform: translateZ(0)
+    transform: translateZ(0);
   }
 }
 
 /* Max width 767px */
 @media only screen and (max-width: 767px) {
-
   .navbar-area {
     .navbar {
       @apply block;
@@ -111,7 +110,7 @@
         overflow: {
           y: scroll;
           x: hidden;
-        };
+        }
         @apply border;
         @apply border-[#eeeeee];
 
@@ -166,7 +165,7 @@
           .burger-menu {
             i {
               &::before {
-                content: "\ec8d";
+                content: '\ec8d';
               }
             }
           }
@@ -178,12 +177,10 @@
       }
     }
   }
-
 }
 
 /* Min width 768px to Max width 991px */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-
   .navbar-area {
     .navbar {
       @apply block;
@@ -199,7 +196,7 @@
         overflow: {
           y: scroll;
           x: hidden;
-        };
+        }
         @apply border;
         @apply border-[#eeeeee];
 
@@ -254,7 +251,7 @@
           .burger-menu {
             i {
               &::before {
-                content: "\ec8d";
+                content: '\ec8d';
               }
             }
           }
@@ -270,7 +267,6 @@
 
 /* Min width 992px to Max width 1199px */
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-
   .navbar-area {
     .navbar {
       @apply block;
@@ -286,7 +282,7 @@
         overflow: {
           y: scroll;
           x: hidden;
-        };
+        }
         @apply border;
         @apply border-[#eeeeee];
 
@@ -341,7 +337,7 @@
           .burger-menu {
             i {
               &::before {
-                content: "\ec8d";
+                content: '\ec8d';
               }
             }
           }
@@ -353,12 +349,10 @@
       }
     }
   }
-
 }
 
 /* Min width 1200px to Max width 1399px */
 @media only screen and (min-width: 1200px) and (max-width: 1399px) {
-
   .navbar-area {
     .other-options {
       a {
@@ -367,9 +361,8 @@
           left: 25px;
           right: 25px;
           bottom: 11px;
-        };
+        }
       }
     }
   }
-
 }

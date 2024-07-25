@@ -40,8 +40,11 @@ interface AuthorDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type AuthorDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithUID<Simplify<AuthorDocumentData>, 'author', Lang>;
+export type AuthorDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+  Simplify<AuthorDocumentData>,
+  'author',
+  Lang
+>;
 
 type BlogPostDocumentDataSlicesSlice = never;
 
@@ -156,12 +159,11 @@ interface BlogPostDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type BlogPostDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithUID<
-    Simplify<BlogPostDocumentData>,
-    'blog_post',
-    Lang
-  >;
+export type BlogPostDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+  Simplify<BlogPostDocumentData>,
+  'blog_post',
+  Lang
+>;
 
 /**
  * Item in *Navigation → Links*
@@ -170,12 +172,12 @@ export interface NavigationDocumentDataLinksItem {
   /**
    * Label field in *Navigation → Links*
    *
-   * - **Field Type**: Text
+   * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
    * - **API ID Path**: navigation.links[].label
-   * - **Documentation**: https://prismic.io/docs/field#key-text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
-  label: prismic.KeyTextField;
+  label: prismic.RichTextField;
 
   /**
    * Link field in *Navigation → Links*
@@ -213,24 +215,48 @@ interface NavigationDocumentData {
  *
  * @typeParam Lang - Language API ID of the document.
  */
-export type NavigationDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithoutUID<
-    Simplify<NavigationDocumentData>,
-    'navigation',
-    Lang
-  >;
+export type NavigationDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<
+  Simplify<NavigationDocumentData>,
+  'navigation',
+  Lang
+>;
 
-export type AllDocumentTypes =
-  | AuthorDocument
-  | BlogPostDocument
-  | NavigationDocument;
+/**
+ * Content for Settings documents
+ */
+interface SettingsDocumentData {
+  /**
+   * Logo field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.logo
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  logo: prismic.ImageField<never>;
+}
+
+/**
+ * Settings document from Prismic
+ *
+ * - **API ID**: `settings`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<
+  Simplify<SettingsDocumentData>,
+  'settings',
+  Lang
+>;
+
+export type AllDocumentTypes = AuthorDocument | BlogPostDocument | NavigationDocument | SettingsDocument;
 
 declare module '@prismicio/client' {
   interface CreateClient {
-    (
-      repositoryNameOrEndpoint: string,
-      options?: prismic.ClientConfig,
-    ): prismic.Client<AllDocumentTypes>;
+    (repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
   }
 
   namespace Content {
@@ -243,6 +269,8 @@ declare module '@prismicio/client' {
       NavigationDocument,
       NavigationDocumentData,
       NavigationDocumentDataLinksItem,
+      SettingsDocument,
+      SettingsDocumentData,
       AllDocumentTypes,
     };
   }

@@ -1,41 +1,38 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+'use client';
+import cn from 'classnames';
+import { useScrollTop } from '@rocket-house-productions/hooks';
+import { ArrowUp } from 'iconsax-react';
 
 export const BackToTop = () => {
-  const [showScroll, setShowScroll] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener("scroll", checkScrollTop);
-    return function cleanup() {
-      window.removeEventListener("scroll", checkScrollTop);
-    };
-  });
-
-  const checkScrollTop = () => {
-    if (!showScroll && window.pageYOffset > 100) {
-      setShowScroll(true);
-    } else if (showScroll && window.pageYOffset <= 100) {
-      setShowScroll(false);
-    }
-  };
-
-  const scrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const { stick, onClickHandler } = useScrollTop();
 
   return (
-    <>
-      <div
-        onClick={scrollTop}
-        style={{
-          display: showScroll ? "block" : "none",
-        }}
-        className="bg-black text-white fixed right-[30px] bottom-[0] cursor-pointer w-[30px] h-[30px] rounded-t-full text-center leading-[35px] text-[20px] hover:bg-[#EF4335]"
+    <button
+      aria-label="Scroll to top"
+      type="button"
+      className={cn(
+        stick ? '-translate-y-0 opacity-100' : 'translate-y-[100px] opacity-0',
+        'right-7.5 bottom-15 shadow-3xl w-15 h-15 text-h3 bg-primary group fixed z-50 inline-flex items-center justify-center overflow-hidden rounded-full p-0 text-center text-white shadow-black/30 transition duration-500',
+      )}
+      onClick={onClickHandler}
+    >
+      <i
+        className={cn(
+          'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white transition duration-300',
+          'group-hover:-translate-y-20',
+        )}
       >
-        <i className="bx bxs-up-arrow-alt"></i>
-      </div>
-    </>
+        <ArrowUp size="32" color="#FFFFFF" />
+      </i>
+      <i
+        className={cn(
+          'absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-20 text-white transition duration-300',
+          'group-hover:-translate-y-1/2',
+        )}
+      >
+        <ArrowUp size="32" color="#FFFFFF" />
+      </i>
+    </button>
   );
 };
 

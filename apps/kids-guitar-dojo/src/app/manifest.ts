@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -21,32 +21,32 @@ export default function manifest(): MetadataRoute.Manifest {
         type: 'image/x-icon',
       },
       {
-        "src": "/android-chrome-114x114.png",
-        "sizes": "114x114",
-        "type": "image/png"
+        src: '/android-chrome-114x114.png',
+        sizes: '114x114',
+        type: 'image/png',
       },
       {
-        "src": "/android-chrome-192x192.png",
-        "sizes": "192x192",
-        "type": "image/png"
+        src: '/android-chrome-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
       },
       {
-        "src": "/android-chrome-512x512.png",
-        "sizes": "512x512",
-        "type": "image/png"
+        src: '/android-chrome-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
       },
       {
-        "src": "maskable_icon_x192.png",
-        "sizes": "196x196",
-        "type": "image/png",
-        "purpose": "maskable"
+        src: 'maskable_icon_x192.png',
+        sizes: '196x196',
+        type: 'image/png',
+        purpose: 'maskable',
       },
       {
-        "src": "maskable_icon_x512.png",
-        "sizes": "512x512",
-        "type": "image/png",
-        "purpose": "maskable"
-      }
+        src: 'maskable_icon_x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
     ],
-  }
+  };
 }

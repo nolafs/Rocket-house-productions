@@ -1,35 +1,30 @@
 'use client';
-import { usePathname, useSearchParams } from 'next/navigation'
-import Script from 'next/script'
-import { useEffect } from "react";
+import { usePathname, useSearchParams } from 'next/navigation';
+import Script from 'next/script';
+import { useEffect } from 'react';
 
-import { pageview } from "./gtagHelper"
+import { pageview } from './gtagHelper';
 
 export function GoogleAnalytics({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_ID: string }) {
-
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-
-    const url = pathname + searchParams.toString()
+    const url = pathname + searchParams.toString();
 
     pageview(GA_MEASUREMENT_ID, url);
-
   }, [pathname, searchParams, GA_MEASUREMENT_ID]);
-
 
   return (
     <>
+      <Script defer strategy="lazyOnload" src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
 
-      <Script defer strategy="lazyOnload"
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
-
-
-
-      <Script id='google-analytics' strategy="lazyOnload" defer
-              dangerouslySetInnerHTML={{
-                __html: `
+      <Script
+        id="google-analytics"
+        strategy="lazyOnload"
+        defer
+        dangerouslySetInnerHTML={{
+          __html: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
@@ -42,10 +37,10 @@ export function GoogleAnalytics({ GA_MEASUREMENT_ID }: { GA_MEASUREMENT_ID: stri
                     page_path: window.location.pathname,
                 });
                 `,
-              }}
+        }}
       />
     </>
-  )
+  );
 }
 
 export default GoogleAnalytics;

@@ -1,6 +1,6 @@
 import process from 'process';
 
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -10,5 +10,5 @@ export default function robots(): MetadataRoute.Robots {
       disallow: '/private/',
     },
     sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}sitemap.xml`,
-  }
+  };
 }

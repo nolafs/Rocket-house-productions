@@ -1,6 +1,5 @@
 const { join } = require('path');
 
-
 const safelist = [
   /html/,
   /body/,
