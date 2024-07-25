@@ -75,8 +75,6 @@ export const SocialLink = ({ item, className, icons, iconsClass }: SocialLinkPro
     window.location = appUrl;
   };
 
-  console.log('links', item)
-
   if (icons) {
     return (
       <button

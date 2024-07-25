@@ -14,15 +14,12 @@ export const repositoryName = process.env.NEXT_PUBLIC_PRISMIC_ENVIRONMENT || con
  */
 // TODO: Update the routes array to match your project's route structure.
 const routes: prismic.ClientConfig['routes'] = [
-  // Examples:
-  // {
-  // 	type: "homepage",
-  // 	path: "/",
-  // },
-  // {
-  // 	type: "page",
-  // 	path: "/:uid",
-  // },
+  {type: "page", path: "/", uid: "home"},
+  {type: "page", path: "/:uid"},
+  {type: "blog_post", path: "/blog/:uid"},
+  {type: "settings", path: "/"},
+  {type: "navigation", path: "/"},
+  {type: "legal", path: "/legal/:uid"},
 ];
 
 /**

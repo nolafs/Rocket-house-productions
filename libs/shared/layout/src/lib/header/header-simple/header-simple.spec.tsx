@@ -1,11 +1,10 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
-import Page from '@/app/(public)/page';
+import HeaderSimple from './header-simple';
 
-describe('Page', () => {
+describe('HeaderSimple', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Page />);
+    const { baseElement } = render(<HeaderSimple />);
     expect(baseElement).toBeTruthy();
   });
 });

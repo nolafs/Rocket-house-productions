@@ -1,15 +1,14 @@
 {
   "format": "page",
-  "id": "blog_post",
-  "label": "Blog Post",
+  "id": "legal",
+  "label": "Legal",
   "repeatable": true,
   "status": true,
   "json": {
     "Main": {
       "uid": {
         "config": {
-          "label": "UID",
-          "placeholder": ""
+          "label": "UID"
         },
         "type": "UID"
       },
@@ -20,30 +19,14 @@
           "placeholder": ""
         }
       },
-      "publishing_date": {
+      "last_update": {
         "type": "Date",
         "config": {
-          "label": "Publishing Date",
+          "label": "Last Update",
           "placeholder": ""
         }
       },
-      "feature_image": {
-        "type": "Image",
-        "config": {
-          "label": "Feature Image",
-          "constraint": {},
-          "thumbnails": []
-        }
-      },
-      "author": {
-        "type": "Link",
-        "config": {
-          "label": "Author",
-          "select": "document",
-          "customtypes": ["author"]
-        }
-      },
-      "main": {
+      "body": {
         "type": "StructuredText",
         "config": {
           "label": "Body",
@@ -85,10 +68,6 @@
           "thumbnails": []
         },
         "type": "Image"
-      },
-      "slices1": {
-        "type": "Slices",
-        "fieldset": "Slice Zone"
       }
     }
   }

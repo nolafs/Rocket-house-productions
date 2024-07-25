@@ -14,7 +14,7 @@ export interface FooterProps {
   secondaryNavigation?: NavigationProps;
   social?: SocialLinkItemType[] | undefined;
   logo: any;
-  copyright?: string;
+  copyright: string | undefined| null;
 }
 
 

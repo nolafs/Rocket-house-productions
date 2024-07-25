@@ -2,3 +2,5 @@
 export {link, NavigationProps} from './lib/navigation.type';
 export {SocialLinkItemType} from './lib/socialLinkItem.type';
 export {LinkPrismicType} from './lib/link.prismic.type';
+export {BlogType} from './lib/bog.type';
+export {BlogPostType} from './lib/bog.type';

@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import Footer from './footer';
+import Breadcrumb from './Breadcrumb';
 
-describe('Footer', () => {
+describe('Breadcrumb', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Footer />);
+    const { baseElement } = render(<Breadcrumb />);
     expect(baseElement).toBeTruthy();
   });
 });

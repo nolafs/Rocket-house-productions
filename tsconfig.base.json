@@ -19,6 +19,8 @@
       "@assets/*": ["apps/kids-guitar-dojo/src/assets/*"],
       "@components/*": ["apps/kids-guitar-dojo/src/components/*"],
       "@layouts/*": ["apps/kids-guitar-dojo/src/layouts/*"],
+      "@rocket-house-productions/features": ["libs/shared/features/src/index.ts"],
+      "@rocket-house-productions/features/server": ["libs/shared/features/src/server.ts"],
       "@rocket-house-productions/hooks": ["libs/shared/hooks/src/index.ts"],
       "@rocket-house-productions/hooks/server": ["libs/shared/hooks/src/server.ts"],
       "@rocket-house-productions/layout": ["libs/shared/layout/src/index.ts"],

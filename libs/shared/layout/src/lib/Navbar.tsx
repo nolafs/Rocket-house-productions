@@ -25,7 +25,7 @@ export function Navbar({navigation, logo }: HeaderProps) {
     const elementId = document.getElementById('navbar');
 
     document.addEventListener('scroll', () => {
-      if (window.scrollY > 170) {
+      if (window.scrollY > 5) {
         elementId?.classList.add('isSticky');
       } else {
         elementId?.classList.remove('isSticky');
@@ -34,7 +34,7 @@ export function Navbar({navigation, logo }: HeaderProps) {
 
     return () => {
       document.removeEventListener('scroll', () => {
-        if (window.scrollY > 170) {
+        if (window.scrollY > 5) {
           elementId?.classList.add('isSticky');
         } else {
           elementId?.classList.remove('isSticky');

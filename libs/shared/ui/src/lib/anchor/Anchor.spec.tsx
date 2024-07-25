@@ -1,11 +1,10 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 
-import Page from '@/app/(public)/page';
+import Anchor from './Anchor';
 
-describe('Page', () => {
+describe('Anchor', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Page />);
+    const { baseElement } = render(<Anchor />);
     expect(baseElement).toBeTruthy();
   });
 });

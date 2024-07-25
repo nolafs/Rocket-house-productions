@@ -27,7 +27,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const navigation = await client.getSingle('navigation');
   const settings = await client.getSingle('settings');
 
-  console.log(settings.data);
 
   return (
     <html lang="en" className={`${raleway.variable} font-sans`}>
