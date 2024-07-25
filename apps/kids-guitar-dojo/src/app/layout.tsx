@@ -2,7 +2,7 @@ import '../styles/navbar.scss';
 import './global.scss';
 import { Raleway } from 'next/font/google';
 import { Suspense } from 'react';
-import { BackToTop, Navbar } from '@rocket-house-productions/layout';
+import {BackToTop, Footer, Navbar} from '@rocket-house-productions/layout';
 import { GoogleAnalytics } from '@rocket-house-productions/util';
 
 // eslint-disable-next-line @nx/enforce-module-boundaries
@@ -25,8 +25,9 @@ export const metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const client = createClient();
   const navigation = await client.getSingle('navigation');
+  const settings = await client.getSingle('settings');
 
-  console.log(navigation.data);
+  console.log(settings.data);
 
   return (
     <html lang="en" className={`${raleway.variable} font-sans`}>
@@ -35,10 +36,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NextTopLoader color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
 
         {/* Menu header */}
-        <Navbar items={navigation.data.links} logo={logo} />
+        <Navbar navigation={{items: navigation.data.links}} logo={logo} />
 
         {children}
 
+        {/* Footer */}
+        <Footer navigation={{items: navigation.data.links}}
+                logo={logo}
+                secondaryNavigation={{items: settings.data.secondary_navigation}}
+                social={settings.data.social_media}
+                copyright={settings.data.copyright_line}
+        />
         {/* BackToTop */}
         <BackToTop />
         <Suspense>

@@ -7,18 +7,14 @@ import Image from 'next/image';
 import { asText } from '@prismicio/client';
 import { PrismicText } from '@prismicio/react';
 import { PrismicNextLink, PrismicPreview } from '@prismicio/next';
+import {NavigationProps} from '@rocket-house-productions/types';
 
-type link = {
-  label: any;
-  link: any;
-};
-
-interface NavbarProps {
-  items: link[];
-  logo?: any;
+interface HeaderProps {
+  navigation: NavigationProps;
+  logo: any;
 }
 
-export function Navbar({ items, logo }: NavbarProps) {
+export function Navbar({navigation, logo }: HeaderProps) {
   const [isActive, setActive] = useState<boolean>(false);
   const currentRoute = usePathname();
 
@@ -77,8 +73,8 @@ export function Navbar({ items, logo }: NavbarProps) {
 
             <div className="navbar-collapse flex grow basis-auto self-center">
               <ul className="navbar-nav mx-auto flex-row self-center xl:flex">
-                {items &&
-                  items.map(item => (
+                {navigation &&
+                  navigation.items.map(item => (
                     <li
                       key={asText(item.label)}
                       className="group relative py-[10px] first:ml-0 last:mr-0 lg:py-[15px] xl:mx-[10px] xl:py-[35px] 2xl:mx-[18px] 2xl:py-[41.5px]"
