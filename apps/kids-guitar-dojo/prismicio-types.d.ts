@@ -339,7 +339,7 @@ export type ContactDocument<Lang extends string = string> = prismic.PrismicDocum
   Lang
 >;
 
-type HomeDocumentDataSlicesSlice = never;
+type HomeDocumentDataSlicesSlice = ContentImageSliceSlice;
 
 /**
  * Content for Home documents
