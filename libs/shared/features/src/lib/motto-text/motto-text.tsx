@@ -5,9 +5,9 @@ import {RichTextField} from '@prismicio/client';
 import {PrismicRichText} from '@prismicio/react';
 
 type TProps = {
-  text?: RichTextField | null | undefined;
+  text?: any | RichTextField | null | undefined;
   path?: string | null | undefined;
-  pathText?: string | null | undefined;
+  pathText?: any | null | undefined;
   className?: string;
   size?: "md" | "lg";
 };
