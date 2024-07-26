@@ -94,13 +94,17 @@
 			},
 			"alignment": {
 				"__TYPE__": "FieldContent",
-				"value": "Left",
-				"type": "Select"
+				"type": "Select",
+				"value": "Right"
 			},
 			"type": {
 				"__TYPE__": "FieldContent",
 				"type": "Select",
 				"value": "Section"
+			},
+			"has_decoration": {
+				"__TYPE__": "BooleanContent",
+				"value": true
 			}
 		},
 		"items": []

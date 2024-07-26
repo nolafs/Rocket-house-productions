@@ -825,10 +825,11 @@ export interface ContentImageSliceSliceDefaultPrimary {
    *
    * - **Field Type**: Select
    * - **Placeholder**: *None*
+   * - **Default Value**: Right
    * - **API ID Path**: content_image_slice.default.primary.alignment
    * - **Documentation**: https://prismic.io/docs/field#select
    */
-  alignment: prismic.SelectField<'Left' | 'Right'>;
+  alignment: prismic.SelectField<'Right' | 'Left', 'filled'>;
 
   /**
    * Type field in *ContentImageSlice → Default → Primary*
@@ -839,6 +840,17 @@ export interface ContentImageSliceSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/field#select
    */
   type: prismic.SelectField<'Default' | 'Section' | 'Article'>;
+
+  /**
+   * Has Decoration field in *ContentImageSlice → Default → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: true
+   * - **API ID Path**: content_image_slice.default.primary.has_decoration
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  has_decoration: prismic.BooleanField;
 }
 
 /**

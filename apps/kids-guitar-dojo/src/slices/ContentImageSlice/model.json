@@ -59,9 +59,10 @@
             "label": "Alignment",
             "placeholder": "",
             "options": [
-              "Left",
-              "Right"
-            ]
+              "Right",
+              "Left"
+            ],
+            "default_value": "Right"
           }
         },
         "type": {
@@ -74,6 +75,15 @@
               "Section",
               "Article"
             ]
+          }
+        },
+        "has_decoration": {
+          "type": "Boolean",
+          "config": {
+            "label": "Has Decoration",
+            "placeholder_false": "false",
+            "placeholder_true": "true",
+            "default_value": true
           }
         }
       },
