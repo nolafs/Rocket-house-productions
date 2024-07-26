@@ -35,7 +35,7 @@ export default async function Page({ params }: { params: Params }) {
     .catch(() => notFound());
 
   return (
-    <main className={'h-screen'}>
+    <main>
       <h1>{asText(page.data.title)}</h1>
       <SliceZone slices={page.data.slices} components={components} />
     </main>
