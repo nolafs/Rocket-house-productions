@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import HeaderSimple from './header-simple';
+import SectionTitle from './section-title';
 
-describe('HeaderSimple', () => {
+describe('SectionTitle', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<HeaderSimple />);
+    const { baseElement } = render(<SectionTitle />);
     expect(baseElement).toBeTruthy();
   });
 });

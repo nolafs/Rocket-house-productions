@@ -2,12 +2,20 @@ const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
 const presetTheme = require('../../tailwind.preset.js');
 
+console.log([...createGlobPatternsForDependencies(__dirname)]);
+
+const content = [...createGlobPatternsForDependencies(__dirname)];
+const index = content.findIndex((item) => item.includes('apps/kids-guitar-dojo'));
+content[index] = content[index].replace('apps/kids-guitar-dojo/', 'apps/kids-guitar-dojo/(!node_modules)');
+
+console.log(content);
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [presetTheme],
   content: [
     join(__dirname, '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'),
-    ...createGlobPatternsForDependencies(__dirname),
+    ...content
   ],
   theme: {
     extend: {

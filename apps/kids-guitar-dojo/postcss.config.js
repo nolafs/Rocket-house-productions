@@ -1,35 +1,4 @@
 const { join } = require('path');
-
-const safelist = [
-  /html/,
-  /body/,
-  /^-tw-/,
-  /^tw-/,
-  /^maxSm:/,
-  /^maxXl:/,
-  /^maxLg:/,
-  /^smToMd:/,
-  /^sm:/,
-  /^md:/,
-  /^lg:/,
-  /^xl:/,
-  /^2xl:/,
-  /^3xl:/,
-  /^child:/,
-  /^hover:/,
-  /^focus:/,
-  /^group/,
-  /^group-hover:tw-/,
-  /^last:/,
-  /^first:/,
-  /^even:/,
-  /^before:/,
-  /^after:/,
-  /^nextIcon^/,
-  /^modal-/,
-  /^swiper/,
-  /^react-tabs/,
-];
 // Note: If you use library-specific PostCSS/Tailwind configuration then you should remove the `postcssConfig` build
 // option from your application's configuration (i.e. project.json)
 //

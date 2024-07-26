@@ -4,8 +4,5 @@
   "semi": true,
   "arrowParens": "avoid",
   "trailingComma": "all",
-  "jsxBracketSameLine": true,
-  "plugins": [
-    "prettier-plugin-tailwindcss"
-  ]
+  "jsxBracketSameLine": true
 }

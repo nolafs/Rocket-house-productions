@@ -10,4 +10,14 @@
     --color-neutral: #c9d8f6;
     --color-base: #ffffff;
   }
+
+  .rich-text-prose > p:first-of-type {
+    margin-top: 0 !important;
+  }
+
+  .title {
+    p > * {
+      @apply font-extrabold text-primary;
+    }
+  }
 }

@@ -2,4 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-export const components = {};
+export const components = {
+  content_image_slice: dynamic(() => import('./ContentImageSlice')),
+  rich_text_slice: dynamic(() => import('./RichTextSlice')),
+};

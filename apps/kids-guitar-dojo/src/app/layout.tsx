@@ -10,6 +10,7 @@ import logo from '@assets/logo.png';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { createClient } from '@/prismicio';
 import NextTopLoader from 'nextjs-toploader';
+import {UIProvider} from '@rocket-house-productions/hooks';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -31,26 +32,30 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${raleway.variable} font-sans`}>
       <body>
-        {/* Loadingbar */}
-        <NextTopLoader color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
+      <UIProvider>
+          {/* Loadingbar */}
+          <NextTopLoader color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
 
-        {/* Menu header */}
-        <Navbar navigation={{items: navigation.data.links}} logo={logo} />
+          {/* Menu header */}
+          <Navbar navigation={{items: navigation.data.links}} logo={logo} />
 
-        {children}
+          {children}
 
-        {/* Footer */}
-        <Footer navigation={{items: navigation.data.links}}
-                logo={logo}
-                secondaryNavigation={{items: settings.data.secondary_navigation}}
-                social={settings.data.social_media}
-                copyright={settings.data.copyright_line}
-        />
-        {/* BackToTop */}
-        <BackToTop />
-        <Suspense>
-          <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
+          {/* Footer */}
+          <Footer navigation={{items: navigation.data.links}}
+                  logo={logo}
+                  secondaryNavigation={{items: settings.data.secondary_navigation}}
+                  social={settings.data.social_media}
+                  copyright={settings.data.copyright_line}
+          />
+          {/* BackToTop */}
+          <Suspense>
+            <BackToTop />
+          </Suspense>
+          <Suspense>
+            <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
         </Suspense>
+      </UIProvider>
       </body>
     </html>
   );

@@ -2,3 +2,4 @@
 
 export * from './lib/gtagHelper';
 export * from './lib/googleAnalytics';
+export * from './lib/variants';

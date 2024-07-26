@@ -46,7 +46,7 @@ export type AuthorDocument<Lang extends string = string> = prismic.PrismicDocume
   Lang
 >;
 
-type BlogDocumentDataSlicesSlice = never;
+type BlogDocumentDataSlicesSlice = RichTextSliceSlice;
 
 /**
  * Content for Blog documents
@@ -766,6 +766,230 @@ export type AllDocumentTypes =
   | PageDocument
   | SettingsDocument;
 
+/**
+ * Primary content in *ContentImageSlice → Default → Primary*
+ */
+export interface ContentImageSliceSliceDefaultPrimary {
+  /**
+   * Subheading field in *ContentImageSlice → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.default.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subheading: prismic.KeyTextField;
+
+  /**
+   * Heading field in *ContentImageSlice → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Body field in *ContentImageSlice → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.default.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Image field in *ContentImageSlice → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.default.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Optional Image field in *ContentImageSlice → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.default.primary.optional_image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  optional_image: prismic.ImageField<never>;
+
+  /**
+   * Alignment field in *ContentImageSlice → Default → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.default.primary.alignment
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  alignment: prismic.SelectField<'Left' | 'Right'>;
+
+  /**
+   * Type field in *ContentImageSlice → Default → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.default.primary.type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<'Default' | 'Section' | 'Article'>;
+}
+
+/**
+ * Default variation for ContentImageSlice Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ContentImageSliceSliceDefault = prismic.SharedSliceVariation<
+  'default',
+  Simplify<ContentImageSliceSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *ContentImageSlice*
+ */
+type ContentImageSliceSliceVariation = ContentImageSliceSliceDefault;
+
+/**
+ * ContentImageSlice Shared Slice
+ *
+ * - **API ID**: `content_image_slice`
+ * - **Description**: ContentImageSlice
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ContentImageSliceSlice = prismic.SharedSlice<'content_image_slice', ContentImageSliceSliceVariation>;
+
+/**
+ * Primary content in *RichTextSlice → Default → Primary*
+ */
+export interface RichTextSliceSliceDefaultPrimary {
+  /**
+   * Text field in *RichTextSlice → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_text_slice.default.primary.text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  text: prismic.RichTextField;
+}
+
+/**
+ * Default variation for RichTextSlice Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type RichTextSliceSliceDefault = prismic.SharedSliceVariation<
+  'default',
+  Simplify<RichTextSliceSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Primary content in *RichTextSlice → Two columns → Primary*
+ */
+export interface RichTextSliceSliceTwoColumnsPrimary {
+  /**
+   * text field in *RichTextSlice → Two columns → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_text_slice.twoColumns.primary.text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  text: prismic.RichTextField;
+}
+
+/**
+ * Two columns variation for RichTextSlice Slice
+ *
+ * - **API ID**: `twoColumns`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type RichTextSliceSliceTwoColumns = prismic.SharedSliceVariation<
+  'twoColumns',
+  Simplify<RichTextSliceSliceTwoColumnsPrimary>,
+  never
+>;
+
+/**
+ * Primary content in *RichTextSlice → Two columns with header → Primary*
+ */
+export interface RichTextSliceSliceTwoColumnsWithHeaderPrimary {
+  /**
+   * Heading field in *RichTextSlice → Two columns with header → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_text_slice.twoColumnsWithHeader.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * text field in *RichTextSlice → Two columns with header → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_text_slice.twoColumnsWithHeader.primary.text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  text: prismic.RichTextField;
+
+  /**
+   * Header Alignment field in *RichTextSlice → Two columns with header → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: Left
+   * - **API ID Path**: rich_text_slice.twoColumnsWithHeader.primary.header_alignment
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  header_alignment: prismic.SelectField<'Left' | 'Center' | 'Right', 'filled'>;
+}
+
+/**
+ * Two columns with header variation for RichTextSlice Slice
+ *
+ * - **API ID**: `twoColumnsWithHeader`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type RichTextSliceSliceTwoColumnsWithHeader = prismic.SharedSliceVariation<
+  'twoColumnsWithHeader',
+  Simplify<RichTextSliceSliceTwoColumnsWithHeaderPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *RichTextSlice*
+ */
+type RichTextSliceSliceVariation =
+  | RichTextSliceSliceDefault
+  | RichTextSliceSliceTwoColumns
+  | RichTextSliceSliceTwoColumnsWithHeader;
+
+/**
+ * RichTextSlice Shared Slice
+ *
+ * - **API ID**: `rich_text_slice`
+ * - **Description**: RichTextSlice
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type RichTextSliceSlice = prismic.SharedSlice<'rich_text_slice', RichTextSliceSliceVariation>;
+
 declare module '@prismicio/client' {
   interface CreateClient {
     (repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
@@ -802,6 +1026,18 @@ declare module '@prismicio/client' {
       SettingsDocumentDataSecondaryNavigationItem,
       SettingsDocumentDataSocialMediaItem,
       AllDocumentTypes,
+      ContentImageSliceSlice,
+      ContentImageSliceSliceDefaultPrimary,
+      ContentImageSliceSliceVariation,
+      ContentImageSliceSliceDefault,
+      RichTextSliceSlice,
+      RichTextSliceSliceDefaultPrimary,
+      RichTextSliceSliceTwoColumnsPrimary,
+      RichTextSliceSliceTwoColumnsWithHeaderPrimary,
+      RichTextSliceSliceVariation,
+      RichTextSliceSliceDefault,
+      RichTextSliceSliceTwoColumns,
+      RichTextSliceSliceTwoColumnsWithHeader,
     };
   }
 }

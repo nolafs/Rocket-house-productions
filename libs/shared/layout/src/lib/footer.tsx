@@ -45,7 +45,7 @@ export function Footer(
                     <li key={asText(item.label)}>
                       <PrismicNextLink
                         field={item.link}
-                        className="hover:text-primary text-base font-medium text-black text-gray-400 transition-all"
+                        className="hover:text-primary text-base font-medium  text-gray-400 transition-all"
                       >
                         <PrismicText field={item.label}/>
                       </PrismicNextLink>
@@ -99,7 +99,7 @@ export function Footer(
                 <li key={asText(item.label)}>
                   <PrismicNextLink
                     field={item.link}
-                    className="hover:text-primary text-base font-medium text-black text-gray-500 transition-all"
+                    className="hover:text-primary text-base font-medium  text-gray-500 transition-all"
                   >
                     <PrismicText field={item.label}/>
                   </PrismicNextLink>
