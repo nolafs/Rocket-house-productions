@@ -59,7 +59,7 @@ export function ContentBlockImage(
           <MottoText className="mt-4" size="md" {...motto} />
         )}
       </motion.div>
-      <div className={cn("relative", alignment === 'Right' && "order-2 lg:order-2", alignment === 'Left' && "order-1 lg:order-1")}>
+      <div className={cn("relative", alignment === 'Right' && "order-1 lg:order-2", alignment === 'Left' && "order-1 lg:order-1")}>
         {images?.[0] && (
           <motion.div
             className="relative z-10"

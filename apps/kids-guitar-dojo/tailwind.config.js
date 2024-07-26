@@ -101,8 +101,8 @@ module.exports = {
       },
       fontSize: {
         sm: '0.75rem',
-        md: '0.875rem',
-        base: '0.938rem',
+        md: '0.975rem',
+        base: '1.125rem',
         h1: '2.5rem',
         h2: '2.125rem',
         h3: '1.5rem',
@@ -245,4 +245,5 @@ module.exports = {
     },
   },
   plugins: [require('@tailwindcss/typography')],
+
 };
