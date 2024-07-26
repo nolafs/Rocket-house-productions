@@ -1002,6 +1002,58 @@ type RichTextSliceSliceVariation =
  */
 export type RichTextSliceSlice = prismic.SharedSlice<'rich_text_slice', RichTextSliceSliceVariation>;
 
+/**
+ * Primary content in *SectionHeaders → Default → Primary*
+ */
+export interface SectionHeadersSliceDefaultPrimary {
+  /**
+   * Heading field in *SectionHeaders → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Subheading field in *SectionHeaders → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.default.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subheading: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for SectionHeaders Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SectionHeadersSliceDefault = prismic.SharedSliceVariation<
+  'default',
+  Simplify<SectionHeadersSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *SectionHeaders*
+ */
+type SectionHeadersSliceVariation = SectionHeadersSliceDefault;
+
+/**
+ * SectionHeaders Shared Slice
+ *
+ * - **API ID**: `section_headers`
+ * - **Description**: SectionHeaders
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SectionHeadersSlice = prismic.SharedSlice<'section_headers', SectionHeadersSliceVariation>;
+
 declare module '@prismicio/client' {
   interface CreateClient {
     (repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
@@ -1050,6 +1102,10 @@ declare module '@prismicio/client' {
       RichTextSliceSliceDefault,
       RichTextSliceSliceTwoColumns,
       RichTextSliceSliceTwoColumnsWithHeader,
+      SectionHeadersSlice,
+      SectionHeadersSliceDefaultPrimary,
+      SectionHeadersSliceVariation,
+      SectionHeadersSliceDefault,
     };
   }
 }
