@@ -556,7 +556,7 @@ export type NavigationDocument<Lang extends string = string> = prismic.PrismicDo
   Lang
 >;
 
-type PageDocumentDataSlicesSlice = RichTextSliceSlice | ContentImageSliceSlice;
+type PageDocumentDataSlicesSlice = SectionHeadersSlice | RichTextSliceSlice | ContentImageSliceSlice;
 
 /**
  * Content for Page documents

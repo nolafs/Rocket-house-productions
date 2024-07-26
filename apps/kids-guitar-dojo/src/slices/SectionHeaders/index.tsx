@@ -19,7 +19,7 @@ const SectionHeaders = ({ slice }: SectionHeadersProps): JSX.Element => {
   }
 
   return (
-    <Bounded as={'header'} className="max-w-8xl mx-auto">
+    <Bounded as={'header'} yPadding={'sm'} className="max-w-8xl mx-auto">
       {section_title && (
         <SectionTitle
           {...section_title}
