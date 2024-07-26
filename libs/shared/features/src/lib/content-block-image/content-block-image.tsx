@@ -42,7 +42,7 @@ export function ContentBlockImage(
   return (
     <div className="container grid lg:grid-cols-2 items-center gap-[50px] lg:gap-7.5">
       <motion.div
-        className={cn("lg:max-w-[420px]", alignment === 'Right' && "order-2 lg:order-1", alignment === 'Left' && "order-1 lg:order-2")}
+        className={cn("lg:max-w-[420px]", alignment === 'Right' && "order-2 lg:order-1", alignment === 'Left' && "order-1 lg:order-2 justify-self-end")}
         initial="offscreen"
         whileInView="onscreen"
         viewport={{once: true, amount: 0.1}}
