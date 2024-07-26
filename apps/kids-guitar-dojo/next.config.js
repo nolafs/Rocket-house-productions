@@ -1,6 +1,7 @@
 const { composePlugins, withNx } = require('@nx/next');
 const headers = require('./config/headers');
 const pluginsExtends = require('./config/plugins');
+const path = require("path");
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
@@ -9,6 +10,10 @@ const nextConfig = {
     // Set this to true if you would like to use SVGR
     // See: https://github.com/gregberge/svgr
     svgr: true,
+  },
+  output: "standalone",
+  experimental: {
+    outputFileTracingRoot: path.join(__dirname, "../../"),
   },
   //...(process.env.ENVIRONMENT_NAME !== 'local' && { headers }),
   images: {
