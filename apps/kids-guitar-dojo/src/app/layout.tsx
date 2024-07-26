@@ -2,13 +2,15 @@ import '../styles/navbar.scss';
 import './global.scss';
 import { Raleway } from 'next/font/google';
 import { Suspense } from 'react';
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import {BackToTop, Footer, Navbar} from '@rocket-house-productions/layout';
 import { GoogleAnalytics } from '@rocket-house-productions/util';
 
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import logo from '@assets/logo.png';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import { createClient } from '@/prismicio';
+import { createClient, repositoryName } from '@/prismicio';
+import {PrismicPreview} from "@prismicio/next";
 import NextTopLoader from 'nextjs-toploader';
 import {UIProvider} from '@rocket-house-productions/hooks';
 
@@ -33,7 +35,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="en" className={`${raleway.variable} font-sans`}>
       <body>
       <UIProvider>
-          {/* Loadingbar */}
+          {/* Loading-bar */}
           <NextTopLoader color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
 
           {/* Menu header */}
@@ -52,10 +54,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Suspense>
             <BackToTop />
           </Suspense>
+          {/* Analytics */}
           <Suspense>
             <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
         </Suspense>
       </UIProvider>
+      {/* Preview */}
+      <PrismicPreview repositoryName={repositoryName}/>
       </body>
     </html>
   );
