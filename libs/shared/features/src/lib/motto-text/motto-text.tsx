@@ -25,17 +25,7 @@ const MottoText = forwardRef<HTMLParagraphElement, TProps>(
       ref={ref}
     >
       <PrismicRichText field={text} /> {" "}
-      <Anchor
-        path={path}
-        className={cn(
-          "font-bold leading-none relative py-[3px] text-primary",
-          "before:absolute before:content-[''] before:w-full before:scale-x-100 before:origin-right before:bg-gray-350 before:transition-transform before:duration-600 before:delay-300 before:ease-in-expo before:bottom-0 before:left-0 before:h-px",
-          "after:absolute after:content-[''] after:w-full after:scale-x-0 after:origin-left after:bg-primary after:transition-transform after:duration-600 after:delay-75 after:ease-in-expo after:bottom-0 after:left-0 after:h-px",
-          "hover:before:scale-x-0 hover:after:scale-x-100 hover:after:delay-300 hover:before:delay-75"
-        )}
-      >
-        {pathText} <i className="fas fa-arrow-right"/>
-      </Anchor>
+      {/* Link block here */}
     </p>
   )
 );
