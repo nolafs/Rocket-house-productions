@@ -25,8 +25,8 @@ type TProps = {
   children: ReactNode;
 };
 
-export const UIProvider: FunctionComponent<TProps> = ({children}) => {
-  const [mousePosition, setMousePosition] = useState({x: 0, y: 0});
+export const UIProvider: FunctionComponent<TProps> = ({ children }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const onMouseMove = useCallback((e: MouseEvent) => {
     setMousePosition({
@@ -40,7 +40,7 @@ export const UIProvider: FunctionComponent<TProps> = ({children}) => {
       x: (mousePosition.x / 15) * -1,
       y: (mousePosition.y / 15) * -1,
     }),
-    [mousePosition]
+    [mousePosition],
   );
 
   const trans2 = useMemo(
@@ -48,7 +48,7 @@ export const UIProvider: FunctionComponent<TProps> = ({children}) => {
       x: mousePosition.x / 15,
       y: mousePosition.y / 15,
     }),
-    [mousePosition]
+    [mousePosition],
   );
 
   useEffect(() => {
@@ -63,7 +63,7 @@ export const UIProvider: FunctionComponent<TProps> = ({children}) => {
       trans1,
       trans2,
     }),
-    [trans1, trans2]
+    [trans1, trans2],
   );
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;

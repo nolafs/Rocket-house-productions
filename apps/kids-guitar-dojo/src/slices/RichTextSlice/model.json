@@ -73,11 +73,7 @@
           "config": {
             "label": "Header Alignment",
             "placeholder": "",
-            "options": [
-              "Left",
-              "Center",
-              "Right"
-            ],
+            "options": ["Left", "Center", "Right"],
             "default_value": "Left"
           }
         }

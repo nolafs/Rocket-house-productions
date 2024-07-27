@@ -2,9 +2,8 @@
 import SocialIcons from './social-icons';
 import cn from 'classnames';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import {LinkPrismicType, SocialLinkItemType} from '@rocket-house-productions/types';
-import {Button} from '@rocket-house-productions/ui';
-
+import { LinkPrismicType, SocialLinkItemType } from '@rocket-house-productions/types';
+import { Button } from '@rocket-house-productions/ui';
 
 interface SocialLinkProps {
   item: SocialLinkItemType;
@@ -14,10 +13,8 @@ interface SocialLinkProps {
 }
 
 export const SocialLink = ({ item, className, icons, iconsClass }: SocialLinkProps) => {
-
   const openSocialMediaLink = (link: LinkPrismicType) => {
-
-    if(!link?.url){
+    if (!link?.url) {
       return;
     }
 
@@ -28,15 +25,9 @@ export const SocialLink = ({ item, className, icons, iconsClass }: SocialLinkPro
       // Detect the platform based on the URL
       if (link.url.includes('twitter.com')) {
         if (/iPad|iPhone|iPod/.test(userAgent)) {
-          appUrl = link.url.replace(
-            'https://twitter.com',
-            'twitter://user?screen_name'
-          );
+          appUrl = link.url.replace('https://twitter.com', 'twitter://user?screen_name');
         } else if (/android/i.test(userAgent)) {
-          appUrl = link.url.replace(
-            'https://twitter.com',
-            'twitter://user?screen_name'
-          );
+          appUrl = link.url.replace('https://twitter.com', 'twitter://user?screen_name');
         }
       } else if (link.url.includes('facebook.com')) {
         // Extract page id or username from the URL for Facebook as needed
@@ -58,15 +49,9 @@ export const SocialLink = ({ item, className, icons, iconsClass }: SocialLinkPro
          */
       } else if (link.url.includes('instagram.com')) {
         if (/iPad|iPhone|iPod/.test(userAgent)) {
-          appUrl = link.url.replace(
-            'https://www.instagram.com',
-            'instagram://user?username'
-          );
+          appUrl = link.url.replace('https://www.instagram.com', 'instagram://user?username');
         } else if (/android/i.test(userAgent)) {
-          appUrl = link.url.replace(
-            'https://www.instagram.com',
-            'instagram://user?username'
-          );
+          appUrl = link.url.replace('https://www.instagram.com', 'instagram://user?username');
         }
       }
     }
@@ -78,7 +63,7 @@ export const SocialLink = ({ item, className, icons, iconsClass }: SocialLinkPro
   if (icons) {
     return (
       <button
-        className={cn(className, 'w-5 h-5 text-gray-400 hover:text-primary')}
+        className={cn(className, 'hover:text-primary h-5 w-5 text-gray-400')}
         onClick={() => openSocialMediaLink(item?.url)}
         rel="noopener noreferrer"
       >
@@ -86,7 +71,8 @@ export const SocialLink = ({ item, className, icons, iconsClass }: SocialLinkPro
       </button>
     );
   } else {
-    return (<Button
+    return (
+      <Button
         onClick={() => openSocialMediaLink(item?.url)}
         hasIcon={false}
         size={'lg'}

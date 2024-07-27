@@ -1,6 +1,5 @@
-import {Anchor} from '@rocket-house-productions/ui';
+import { Anchor } from '@rocket-house-productions/ui';
 import cn from 'classnames';
-
 
 type TProps = {
   className?: string;
@@ -13,53 +12,36 @@ type TProps = {
   title?: string;
 };
 
-export function Breadcrumb(
-  {
-    className,
-    pages,
-    currentPage,
-    showTitle,
-    title,
-  }: TProps
-) {
-
+export function Breadcrumb({ className, pages, currentPage, showTitle, title }: TProps) {
   return (
     <div
       className={cn(
-        "page-title-area relative",
-        showTitle &&
-        "pt-15 pb-5 md:pt-10 md:pb-5 lg:pt-[100px] lg:pb-10",
-        !showTitle && "pb-10 md:pb-5 lg:pb-10",
-        className
+        'page-title-area relative',
+        showTitle && 'pt-15 pb-5 md:pb-5 md:pt-10 lg:pb-10 lg:pt-[100px]',
+        !showTitle && 'pb-10 md:pb-5 lg:pb-10',
+        className,
       )}
     >
       {showTitle && (
         <div className="container mx-auto">
-          <h1 className="title capitalize mt-5 mb-0 text-3xl md:text-4xl lg:text-5xl text-center">
+          <h1 className="title mb-0 mt-5 text-center text-3xl capitalize md:text-4xl lg:text-5xl">
             {title || currentPage}
           </h1>
         </div>
       )}
-      {!showTitle && (
-        <h1 className="sr-only">{title || currentPage}</h1>
-      )}
+      {!showTitle && <h1 className="sr-only">{title || currentPage}</h1>}
 
-      <div
-        className={cn(
-          "page-breadcrumb top-0 left-0 w-full",
-          showTitle && "absolute"
-        )}
-      >
+      <div className={cn('page-breadcrumb left-0 top-0 w-full', showTitle && 'absolute')}>
         <nav className="container mx-auto" aria-label="breadcrumbs">
           <ul className="breadcrumb flex flex-wrap py-3">
-            {pages.map(({path, label}) => (
+            {pages.map(({ path, label }) => (
               <li
                 key={label}
-                className="text-md text-bold first:before:hidden before:content-['/'] before:mx-3.8 before:color-body"
+                className="text-md text-bold before:mx-3.8 before:color-body before:content-['/'] first:before:hidden"
               >
                 <Anchor
                   path={path}
-                  className="text-primary capitalize relative before:absolute before:content-[''] before:-bottom-1.5 before:right-0 before:w-0 before:h-px before:transition-all before:bg-heading hover:text-heading hover:before:left-0 hover:before:w-full"
+                  className="text-primary before:bg-heading hover:text-heading relative capitalize before:absolute before:-bottom-1.5 before:right-0 before:h-px before:w-0 before:transition-all before:content-[''] hover:before:left-0 hover:before:w-full"
                 >
                   {label}
                 </Anchor>
@@ -67,7 +49,7 @@ export function Breadcrumb(
             ))}
 
             <li
-              className="text-md capitalize text-heading first:before:hidden before:content-['/'] before:mx-3.8 before:color-body"
+              className="text-md text-heading before:mx-3.8 before:color-body capitalize before:content-['/'] first:before:hidden"
               aria-current="page"
             >
               {currentPage}
@@ -77,7 +59,6 @@ export function Breadcrumb(
       </div>
     </div>
   );
-
 }
 
 export default Breadcrumb;

@@ -14,38 +14,28 @@ export function Label({ children, size, hasIcon, isDisabled }: LabelProps) {
   return (
     <div
       className={cn(
-        'flex item-center space-x-2 group',
+        'item-center group flex space-x-2',
         isDisabled ? 'text-secondary cursor-not-allowed' : 'text-primary',
         size === 'sm' && 'text-normal md:text-lg',
         size === 'md' && 'text-xl md:text-2xl lg:text-[26px]',
         size === 'lg' && 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
-        styles['container']
+        styles['container'],
       )}
     >
       <div className={'flex flex-col'}>
         <span>{children}</span>
         <div
           className={cn(
-            'max-w-full h-[2px] md:mt-1',
+            'h-[2px] max-w-full md:mt-1',
             isDisabled ? 'bg-secondary' : styles.decorLine,
-            size === 'lg' && 'lg:mt-1 h-3',
-            size === 'lg' && styles.large
+            size === 'lg' && 'h-3 lg:mt-1',
+            size === 'lg' && styles.large,
           )}
         ></div>
       </div>
       {hasIcon && (
-        <div
-          className={cn(
-            'w-8 h-8 md:w-9 md:h-9',
-            size === 'lg' && 'lg:w-12 lg:h-12'
-          )}
-        >
-          <svg
-            width="36"
-            height="36"
-            viewBox="0 0 36 36"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+        <div className={cn('h-8 w-8 md:h-9 md:w-9', size === 'lg' && 'lg:h-12 lg:w-12')}>
+          <svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
             <g fill={!isDisabled ? '#fff' : '#acacac'} fillRule="nonzero">
               <path d="M18 0c9.941 0 18 8.059 18 18s-8.059 18-18 18S0 27.941 0 18 8.059 0 18 0zm0 3C9.716 3 3 9.716 3 18c0 8.284 6.716 15 15 15 8.284 0 15-6.716 15-15 0-8.284-6.716-15-15-15z" />
               <g className={styles['icon']}>

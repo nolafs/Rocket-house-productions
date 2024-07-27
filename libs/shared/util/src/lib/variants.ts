@@ -1,4 +1,4 @@
-import {Variants} from "framer-motion";
+import { Variants } from 'framer-motion';
 
 export const scrollUpVariants: Variants = {
   offscreen: {
@@ -9,7 +9,7 @@ export const scrollUpVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       duration: 1,
     },
   },
@@ -24,7 +24,7 @@ export const scrollLeftVariants: Variants = {
     opacity: 1,
     x: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       duration: 1,
     },
   },
@@ -39,7 +39,7 @@ export const scrollRightVariants: Variants = {
     opacity: 1,
     x: 0,
     transition: {
-      type: "spring",
+      type: 'spring',
       duration: 1,
     },
   },
@@ -47,69 +47,69 @@ export const scrollRightVariants: Variants = {
 
 export const fadeIn: Variants = {
   hidden: {
-    y: "-100vh",
+    y: '-100vh',
     opacity: 0,
   },
   visible: {
-    y: "0",
+    y: '0',
     opacity: 1,
     transition: {
       duration: 0.8,
-      type: "tween",
+      type: 'tween',
     },
   },
   exit: {
-    y: "-100vh",
+    y: '-100vh',
     opacity: 0,
     transition: {
       duration: 0.4,
-      type: "tween",
+      type: 'tween',
     },
   },
 };
 
 export const fadeInUp: Variants = {
   hidden: {
-    y: "100%",
+    y: '100%',
     opacity: 0,
   },
   visible: {
-    y: "0",
+    y: '0',
     opacity: 1,
     transition: {
       duration: 0.5,
-      type: "tween",
+      type: 'tween',
     },
   },
   exit: {
-    y: "100%",
+    y: '100%',
     opacity: 0,
     transition: {
       duration: 0.5,
-      type: "tween",
+      type: 'tween',
     },
   },
 };
 
 export const fadeInLeft: Variants = {
   hidden: {
-    x: "100%",
+    x: '100%',
     opacity: 0,
   },
   visible: {
-    x: "0",
+    x: '0',
     opacity: 1,
     transition: {
       duration: 0.5,
-      type: "tween",
+      type: 'tween',
     },
   },
   exit: {
-    x: "100%",
+    x: '100%',
     opacity: 0,
     transition: {
       duration: 0.5,
-      type: "tween",
+      type: 'tween',
     },
   },
 };
@@ -123,14 +123,14 @@ export const fadeIn02: Variants = {
     opacity: 1,
     transition: {
       duration: 0.4,
-      type: "spring",
+      type: 'spring',
     },
   },
   exit: {
     opacity: 0,
     transition: {
       duration: 0.4,
-      type: "spring",
+      type: 'spring',
     },
   },
 };
@@ -138,18 +138,18 @@ export const fadeIn02: Variants = {
 export const flyoutSearch01: Variants = {
   visible: {
     opacity: 1,
-    top: "60px",
+    top: '60px',
     transition: {
       duration: 0.5,
-      type: "tween",
+      type: 'tween',
     },
   },
   hidden: {
     opacity: 0,
-    top: "80px",
+    top: '80px',
     transition: {
       duration: 0.5,
-      type: "tween",
+      type: 'tween',
     },
   },
 };
@@ -175,16 +175,16 @@ export const flyoutSearch02: Variants = {
     opacity: 0,
     transition: {
       duration: 0.5,
-      type: "tween",
-      when: "afterChildren",
+      type: 'tween',
+      when: 'afterChildren',
     },
   },
   visible: {
     opacity: 1,
     transition: {
       duration: 0.4,
-      type: "tween",
-      when: "beforeChildren",
+      type: 'tween',
+      when: 'beforeChildren',
     },
   },
 };
@@ -195,7 +195,7 @@ export const flyoutSearch02Inner: Variants = {
     y: 50,
     transition: {
       duration: 0.4,
-      type: "tween",
+      type: 'tween',
     },
   },
   visible: {
@@ -203,7 +203,7 @@ export const flyoutSearch02Inner: Variants = {
     y: 0,
     transition: {
       duration: 0.4,
-      type: "tween",
+      type: 'tween',
     },
   },
 };

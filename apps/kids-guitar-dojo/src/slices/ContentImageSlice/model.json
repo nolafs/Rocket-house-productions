@@ -58,10 +58,7 @@
           "config": {
             "label": "Alignment",
             "placeholder": "",
-            "options": [
-              "Right",
-              "Left"
-            ],
+            "options": ["Right", "Left"],
             "default_value": "Right"
           }
         },
@@ -70,11 +67,7 @@
           "config": {
             "label": "Type",
             "placeholder": "",
-            "options": [
-              "Default",
-              "Section",
-              "Article"
-            ]
+            "options": ["Default", "Section", "Article"]
           }
         },
         "has_decoration": {

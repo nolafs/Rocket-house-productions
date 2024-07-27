@@ -7,14 +7,14 @@ import Image from 'next/image';
 import { asText } from '@prismicio/client';
 import { PrismicText } from '@prismicio/react';
 import { PrismicNextLink, PrismicPreview } from '@prismicio/next';
-import {NavigationProps} from '@rocket-house-productions/types';
+import { NavigationProps } from '@rocket-house-productions/types';
 
 interface HeaderProps {
   navigation: NavigationProps;
   logo: any;
 }
 
-export function Navbar({navigation, logo }: HeaderProps) {
+export function Navbar({ navigation, logo }: HeaderProps) {
   const [isActive, setActive] = useState<boolean>(false);
   const currentRoute = usePathname();
 

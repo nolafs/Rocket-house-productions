@@ -1,4 +1,4 @@
-import {RichTextField} from '@prismicio/client';
+import { RichTextField } from '@prismicio/client';
 
 export interface SectionTitleType {
   title: RichTextField | null | undefined;
