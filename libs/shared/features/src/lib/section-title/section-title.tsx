@@ -45,7 +45,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
         {subtitle && (
           <span
             className={cn(
-              "relative flex font-bold w-fit text-base tracking-tight  px-3 py-1 leading-normal mb-5 rounded-full",
+              "relative flex font-bold w-fit text-sm uppercase tracking-tight  px-3 py-1 leading-normal mb-2 md:mb-5 rounded-full",
               color === "A" && "text-primary bg-secondary",
               color === "B" && "text-secondary",
               align === "center" && "mx-auto",
