@@ -31,9 +31,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const settings = await client.getSingle('settings');
 
   return (
-    <html lang="en" className={`${raleway.variable} font-sans`}>
-      <body>
-        <UIProvider>
+    <UIProvider>
+      <html lang="en" className={`${raleway.variable} font-sans`}>
+        <body>
           {/* Loading-bar */}
           <NextTopLoader color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
 
@@ -58,10 +58,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Suspense>
             <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
           </Suspense>
-        </UIProvider>
-        {/* Preview */}
-        <PrismicPreview repositoryName={repositoryName} />
-      </body>
-    </html>
+
+          {/* Preview */}
+          <PrismicPreview repositoryName={repositoryName} />
+        </body>
+      </html>
+    </UIProvider>
   );
 }

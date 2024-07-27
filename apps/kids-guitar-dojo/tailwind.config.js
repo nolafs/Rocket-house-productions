@@ -136,6 +136,8 @@ module.exports = {
       },
       borderRadius: {
         DEFAULT: '0.313rem',
+        lg: '1.25rem',
+        xl: '1.625rem',
       },
       spacing: {
         1.3: '0.313rem',
@@ -148,8 +150,8 @@ module.exports = {
       screens: {
         maxSm: { max: '575px' },
         // => @media (max-width: 575px) { ... }
-        maxXl: { max: '1199px' },
-        // => @media (max-width: 1199px) { ... }
+        maxXl: { max: '1140px' },
+        // => @media (max-width: 1140px) { ... }
         maxLg: { max: '991px' },
         // => @media (max-width: 991px) { ... }
         smToMd: { min: '576px', max: '767px' },
@@ -162,14 +164,8 @@ module.exports = {
         lg: '992px',
         // => @media (min-width: 992px) { ... }
 
-        xl: '1200px',
-        // => @media (min-width: 1200px) { ... }
-
-        '2xl': '1400px',
-        // => @media (min-width: 1400px) { ... }
-
-        '3xl': '1600px',
-        // => @media (min-width: 1600px) { ... }
+        xl: '1140px',
+        // => @media (min-width: 1140px) { ... }
       },
       zIndex: {
         1: 1,
@@ -240,6 +236,27 @@ module.exports = {
         strawGradient: 'linear-gradient(45deg,#fe378c 0,#fe5b34 100%)',
       },
     },
+    corePlugins: {
+      container: false,
+    },
   },
-  plugins: [require('@tailwindcss/typography')],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        '.container': {
+          maxWidth: '100%',
+          '@screen sm': {
+            maxWidth: '640px',
+          },
+          '@screen md': {
+            maxWidth: '768px',
+          },
+          '@screen lg': {
+            maxWidth: '1140px',
+          },
+        },
+      });
+    },
+    require('@tailwindcss/typography'),
+  ],
 };

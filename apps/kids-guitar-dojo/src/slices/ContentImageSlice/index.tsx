@@ -27,7 +27,7 @@ const ContentImageSlice = ({ slice }: ContentImageSliceProps): JSX.Element => {
   }
 
   return (
-    <Bounded as={type} className="mx-auto max-w-6xl">
+    <Bounded as={type} className="mx-auto">
       <ContentBlockImage
         data={{
           section_title: {
