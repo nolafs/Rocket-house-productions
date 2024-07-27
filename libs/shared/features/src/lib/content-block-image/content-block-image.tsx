@@ -43,8 +43,7 @@ export function ContentBlockImage({
         initial="offscreen"
         whileInView="onscreen"
         viewport={{ once: true, amount: 0.1 }}
-        variants={scrollUpVariants}
-      >
+        variants={scrollUpVariants}>
         {section_title && <SectionTitle {...section_title} align="left" titleSize={titleSize} />}
         {motto && <MottoText className="mt-4" size="md" {...motto} />}
       </motion.div>
@@ -53,16 +52,14 @@ export function ContentBlockImage({
           'relative',
           alignment === 'Right' && 'order-1 lg:order-2',
           alignment === 'Left' && 'order-1 lg:order-1',
-        )}
-      >
+        )}>
         {images?.[0] && (
           <motion.div
             className="relative z-10"
             initial="offscreen"
             whileInView="onscreen"
             viewport={{ once: true, amount: 0.1 }}
-            variants={scrollUpVariants}
-          >
+            variants={scrollUpVariants}>
             <PrismicNextImage
               field={images?.[0].image}
               alt={images?.[0].alt}
@@ -79,8 +76,7 @@ export function ContentBlockImage({
               'absolute top-[-90px] z-20',
               alignment === 'Left' && '3xl:left-[-73px] left-5',
               alignment === 'Right' && '3xl:right-[-73px] right-0',
-            )}
-          >
+            )}>
             <PrismicNextImage
               field={images?.[1].image}
               width={190}
@@ -102,8 +98,7 @@ export function ContentBlockImage({
               animate={{
                 x: trans1().x,
                 y: trans1().y,
-              }}
-            >
+              }}>
               <span className="border-desert lg:w-15 lg:h-15 block h-[45px] w-[45px] rounded-full border-[7px] -indent-[99999px]">
                 shape 1
               </span>
@@ -113,8 +108,7 @@ export function ContentBlockImage({
               animate={{
                 x: trans1().x,
                 y: trans1().y,
-              }}
-            >
+              }}>
               <Image src={GridShape1} alt="decore shape 1 content block" />
             </motion.div>
             <motion.div
@@ -122,8 +116,7 @@ export function ContentBlockImage({
               animate={{
                 x: trans1().x,
                 y: trans1().y,
-              }}
-            >
+              }}>
               <Image src={Ring} alt="decore shape 3 content block" />
             </motion.div>
             <motion.div
@@ -131,8 +124,7 @@ export function ContentBlockImage({
               animate={{
                 x: trans1().x,
                 y: trans1().y,
-              }}
-            >
+              }}>
               <Image src={Shape1} alt="decore shape 4 content block" />
             </motion.div>
           </>
