@@ -1,7 +1,6 @@
-
 export function BlogPost() {
   return (
-    <div className=''>
+    <div className="">
       <h1>Welcome to BlogPost!</h1>
     </div>
   );

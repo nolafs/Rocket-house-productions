@@ -1,5 +1,5 @@
 import { Content } from '@prismicio/client';
-import {PrismicRichText, SliceComponentProps} from '@prismicio/react';
+import { PrismicRichText, SliceComponentProps } from '@prismicio/react';
 
 import { Bounded } from '../../components/Bounded';
 import cn from 'classnames';
@@ -14,15 +14,24 @@ export type RichTextSliceProps = SliceComponentProps<Content.RichTextSliceSlice>
  */
 const RichTextSlice = ({ slice }: RichTextSliceProps): JSX.Element => {
   return (
-    <Bounded as="section" className="mx-auto prose prose-sm md:prose-md lg:prose-xl prose-neutral max-w-full ">
-
+    <Bounded as="section" className="prose prose-sm md:prose-md lg:prose-xl prose-neutral mx-auto max-w-full">
       {slice.variation === 'twoColumnsWithHeader' && (
-        <h2 className={cn(slice.primary.header_alignment === 'Center' && 'text-center w-full', slice.primary.header_alignment === 'Right' && 'text-right w-full')}>{slice.primary.heading} {slice.primary.header_alignment}</h2>
+        <h2
+          className={cn(
+            slice.primary.header_alignment === 'Center' && 'w-full text-center',
+            slice.primary.header_alignment === 'Right' && 'w-full text-right',
+          )}
+        >
+          {slice.primary.heading} {slice.primary.header_alignment}
+        </h2>
       )}
       <div
-        className={cn((slice.variation === "twoColumns" || slice.variation === 'twoColumnsWithHeader') && "md:columns-2 md:gap-6","rich-text-prose" )}
+        className={cn(
+          (slice.variation === 'twoColumns' || slice.variation === 'twoColumnsWithHeader') && 'md:columns-2 md:gap-6',
+          'rich-text-prose',
+        )}
       >
-        <PrismicRichText field={slice.primary.text}/>
+        <PrismicRichText field={slice.primary.text} />
       </div>
     </Bounded>
   );

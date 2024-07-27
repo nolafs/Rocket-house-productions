@@ -3,16 +3,16 @@ import './global.scss';
 import { Raleway } from 'next/font/google';
 import { Suspense } from 'react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import {BackToTop, Footer, Navbar} from '@rocket-house-productions/layout';
+import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
 import { GoogleAnalytics } from '@rocket-house-productions/util';
 
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import logo from '@assets/logo.png';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { createClient, repositoryName } from '@/prismicio';
-import {PrismicPreview} from "@prismicio/next";
+import { PrismicPreview } from '@prismicio/next';
 import NextTopLoader from 'nextjs-toploader';
-import {UIProvider} from '@rocket-house-productions/hooks';
+import { UIProvider } from '@rocket-house-productions/hooks';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -30,25 +30,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const navigation = await client.getSingle('navigation');
   const settings = await client.getSingle('settings');
 
-
   return (
     <html lang="en" className={`${raleway.variable} font-sans`}>
       <body>
-      <UIProvider>
+        <UIProvider>
           {/* Loading-bar */}
           <NextTopLoader color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
 
           {/* Menu header */}
-          <Navbar navigation={{items: navigation.data.links}} logo={logo} />
+          <Navbar navigation={{ items: navigation.data.links }} logo={logo} />
 
           {children}
 
           {/* Footer */}
-          <Footer navigation={{items: navigation.data.links}}
-                  logo={logo}
-                  secondaryNavigation={{items: settings.data.secondary_navigation}}
-                  social={settings.data.social_media}
-                  copyright={settings.data.copyright_line}
+          <Footer
+            navigation={{ items: navigation.data.links }}
+            logo={logo}
+            secondaryNavigation={{ items: settings.data.secondary_navigation }}
+            social={settings.data.social_media}
+            copyright={settings.data.copyright_line}
           />
           {/* BackToTop */}
           <Suspense>
@@ -57,10 +57,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {/* Analytics */}
           <Suspense>
             <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
-        </Suspense>
-      </UIProvider>
-      {/* Preview */}
-      <PrismicPreview repositoryName={repositoryName}/>
+          </Suspense>
+        </UIProvider>
+        {/* Preview */}
+        <PrismicPreview repositoryName={repositoryName} />
       </body>
     </html>
   );

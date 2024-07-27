@@ -1,7 +1,5 @@
 .navbar-area {
-
-  @apply fixed w-full z-50 transform-gpu backdrop-blur-md;
-
+  @apply fixed z-50 w-full transform-gpu backdrop-blur-md;
 
   .dropdown-toggle {
     @apply relative;
@@ -10,7 +8,7 @@
     &::after {
       @apply top-1/2;
       @apply absolute;
-      content: "\ea29";
+      content: '\ea29';
       @apply leading-none;
       @apply -right-[18px];
       @apply -translate-y-2/4;
@@ -92,7 +90,7 @@
     box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0);
     transform: translateZ(0);
   }
-  50%{
+  50% {
     background: rgba(255, 255, 255, 0);
     box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0);
     transform: translate3d(0, -100%, 0);
@@ -176,7 +174,7 @@
           .burger-menu {
             i {
               &::before {
-                content: "\ec8d";
+                content: '\ec8d';
               }
             }
           }
@@ -262,7 +260,7 @@
           .burger-menu {
             i {
               &::before {
-                content: "\ec8d";
+                content: '\ec8d';
               }
             }
           }
@@ -348,7 +346,7 @@
           .burger-menu {
             i {
               &::before {
-                content: "\ec8d";
+                content: '\ec8d';
               }
             }
           }

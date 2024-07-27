@@ -3,8 +3,8 @@ export type BlogType = {
   uid: string;
   first_publication_date: string;
   last_publication_date: string;
-  data: BlogPostType
-}
+  data: BlogPostType;
+};
 
 export type BlogPostType = {
   title: string;
@@ -13,4 +13,4 @@ export type BlogPostType = {
   main: any[];
   author: any[];
   feature_image: any;
-}
+};

@@ -1,25 +1,25 @@
 [
-	{
-		"__TYPE__": "SharedSliceContent",
-		"variation": "default",
-		"primary": {
-			"heading": {
-				"__TYPE__": "StructuredTextContent",
-				"value": [
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "Do non eiusmod dolor quis. Nulla est proident ad minim ipsum aliquip ad eiusmod. Occaecat aute duis aliqua id cupidatat duis nostrud non cupidatat amet pariatur ullamco."
-						}
-					}
-				]
-			},
-			"subheading": {
-				"__TYPE__": "FieldContent",
-				"type": "Text",
-				"value": "Parents"
-			}
-		},
-		"items": []
-	}
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "heading": {
+        "__TYPE__": "StructuredTextContent",
+        "value": [
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "Do non eiusmod dolor quis. Nulla est proident ad minim ipsum aliquip ad eiusmod. Occaecat aute duis aliqua id cupidatat duis nostrud non cupidatat amet pariatur ullamco."
+            }
+          }
+        ]
+      },
+      "subheading": {
+        "__TYPE__": "FieldContent",
+        "type": "Text",
+        "value": "Parents"
+      }
+    },
+    "items": []
+  }
 ]

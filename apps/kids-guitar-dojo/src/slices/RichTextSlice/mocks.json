@@ -1,200 +1,200 @@
 [
-	{
-		"__TYPE__": "SharedSliceContent",
-		"variation": "default",
-		"primary": {
-			"text": {
-				"__TYPE__": "StructuredTextContent",
-				"value": [
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "If your kid’s or grandkids have expressed an interest in playing the guitar and wondering where to start,  there’s a few things you have to consider.",
-							"spans": []
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "Here’s a few questions that I hear on a regular basis…",
-							"spans": []
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "What’s the best size guitar ?",
-							"spans": [
-								{
-									"type": "strong",
-									"start": 0,
-									"end": 29
-								}
-							]
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "What age can they actually start ?",
-							"spans": [
-								{
-									"type": "strong",
-									"start": 0,
-									"end": 34
-								}
-							]
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "In this article I will outline all the relevant sizes, how to get the best value for money and where to get a great quality guitar delivered to your door no matter where you live in the world.",
-							"spans": []
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": " When choosing a guitar for a young beginner there are a few things to consider. The size of the guitar as well as the child’s physical size  are all worth considering. There are also a few traps you need to watch out for as their is a lot of information on the web and it can all get a bit confusing.",
-							"spans": []
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "I’m also going to show you the exact instruments I’ve used for my own kid’s and the 100s of students I’ve taught. Some of them being as young as 4yrs old! These particular guitars are amazing value and available and shipped to your door anywhere in the world.",
-							"spans": []
-						},
-						"direction": "ltr"
-					}
-				]
-			}
-		},
-		"items": []
-	},
-	{
-		"__TYPE__": "SharedSliceContent",
-		"variation": "twoColumns",
-		"primary": {
-			"text": {
-				"__TYPE__": "StructuredTextContent",
-				"value": [
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "If your kid’s or grandkids have expressed an interest in playing the guitar and wondering where to start,  there’s a few things you have to consider.",
-							"spans": []
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "Here’s a few questions that I hear on a regular basis…",
-							"spans": []
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "What’s the best size guitar ?",
-							"spans": [
-								{
-									"type": "strong",
-									"start": 0,
-									"end": 29
-								}
-							]
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "What age can they actually start ?",
-							"spans": [
-								{
-									"type": "strong",
-									"start": 0,
-									"end": 34
-								}
-							]
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "In this article I will outline all the relevant sizes, how to get the best value for money and where to get a great quality guitar delivered to your door no matter where you live in the world.",
-							"spans": []
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": " When choosing a guitar for a young beginner there are a few things to consider. The size of the guitar as well as the child’s physical size  are all worth considering. There are also a few traps you need to watch out for as their is a lot of information on the web and it can all get a bit confusing.",
-							"spans": []
-						},
-						"direction": "ltr"
-					},
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "I’m also going to show you the exact instruments I’ve used for my own kid’s and the 100s of students I’ve taught. Some of them being as young as 4yrs old! These particular guitars are amazing value and available and shipped to your door anywhere in the world.",
-							"spans": []
-						},
-						"direction": "ltr"
-					}
-				]
-			}
-		},
-		"items": [
-			{
-				"__TYPE__": "GroupItemContent",
-				"value": []
-			}
-		]
-	},
-	{
-		"__TYPE__": "SharedSliceContent",
-		"variation": "twoColumnsWithHeader",
-		"primary": {
-			"text": {
-				"__TYPE__": "StructuredTextContent",
-				"value": [
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "Ut ex velit culpa voluptate adipisicing elit veniam est eu eu amet culpa ex. Culpa consequat ea ad ea non reprehenderit irure incididunt labore non incididunt. Non anim do nisi ad esse fugiat non do labore."
-						}
-					}
-				]
-			},
-			"heading": {
-				"__TYPE__": "FieldContent",
-				"value": "laugh",
-				"type": "Text"
-			},
-			"header_alignment": {
-				"__TYPE__": "FieldContent",
-				"value": "Left",
-				"type": "Select"
-			}
-		},
-		"items": [
-			{
-				"__TYPE__": "GroupItemContent",
-				"value": []
-			}
-		]
-	}
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "default",
+    "primary": {
+      "text": {
+        "__TYPE__": "StructuredTextContent",
+        "value": [
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "If your kid’s or grandkids have expressed an interest in playing the guitar and wondering where to start,  there’s a few things you have to consider.",
+              "spans": []
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "Here’s a few questions that I hear on a regular basis…",
+              "spans": []
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "What’s the best size guitar ?",
+              "spans": [
+                {
+                  "type": "strong",
+                  "start": 0,
+                  "end": 29
+                }
+              ]
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "What age can they actually start ?",
+              "spans": [
+                {
+                  "type": "strong",
+                  "start": 0,
+                  "end": 34
+                }
+              ]
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "In this article I will outline all the relevant sizes, how to get the best value for money and where to get a great quality guitar delivered to your door no matter where you live in the world.",
+              "spans": []
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": " When choosing a guitar for a young beginner there are a few things to consider. The size of the guitar as well as the child’s physical size  are all worth considering. There are also a few traps you need to watch out for as their is a lot of information on the web and it can all get a bit confusing.",
+              "spans": []
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "I’m also going to show you the exact instruments I’ve used for my own kid’s and the 100s of students I’ve taught. Some of them being as young as 4yrs old! These particular guitars are amazing value and available and shipped to your door anywhere in the world.",
+              "spans": []
+            },
+            "direction": "ltr"
+          }
+        ]
+      }
+    },
+    "items": []
+  },
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "twoColumns",
+    "primary": {
+      "text": {
+        "__TYPE__": "StructuredTextContent",
+        "value": [
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "If your kid’s or grandkids have expressed an interest in playing the guitar and wondering where to start,  there’s a few things you have to consider.",
+              "spans": []
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "Here’s a few questions that I hear on a regular basis…",
+              "spans": []
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "What’s the best size guitar ?",
+              "spans": [
+                {
+                  "type": "strong",
+                  "start": 0,
+                  "end": 29
+                }
+              ]
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "What age can they actually start ?",
+              "spans": [
+                {
+                  "type": "strong",
+                  "start": 0,
+                  "end": 34
+                }
+              ]
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "In this article I will outline all the relevant sizes, how to get the best value for money and where to get a great quality guitar delivered to your door no matter where you live in the world.",
+              "spans": []
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": " When choosing a guitar for a young beginner there are a few things to consider. The size of the guitar as well as the child’s physical size  are all worth considering. There are also a few traps you need to watch out for as their is a lot of information on the web and it can all get a bit confusing.",
+              "spans": []
+            },
+            "direction": "ltr"
+          },
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "I’m also going to show you the exact instruments I’ve used for my own kid’s and the 100s of students I’ve taught. Some of them being as young as 4yrs old! These particular guitars are amazing value and available and shipped to your door anywhere in the world.",
+              "spans": []
+            },
+            "direction": "ltr"
+          }
+        ]
+      }
+    },
+    "items": [
+      {
+        "__TYPE__": "GroupItemContent",
+        "value": []
+      }
+    ]
+  },
+  {
+    "__TYPE__": "SharedSliceContent",
+    "variation": "twoColumnsWithHeader",
+    "primary": {
+      "text": {
+        "__TYPE__": "StructuredTextContent",
+        "value": [
+          {
+            "type": "paragraph",
+            "content": {
+              "text": "Ut ex velit culpa voluptate adipisicing elit veniam est eu eu amet culpa ex. Culpa consequat ea ad ea non reprehenderit irure incididunt labore non incididunt. Non anim do nisi ad esse fugiat non do labore."
+            }
+          }
+        ]
+      },
+      "heading": {
+        "__TYPE__": "FieldContent",
+        "value": "laugh",
+        "type": "Text"
+      },
+      "header_alignment": {
+        "__TYPE__": "FieldContent",
+        "value": "Left",
+        "type": "Select"
+      }
+    },
+    "items": [
+      {
+        "__TYPE__": "GroupItemContent",
+        "value": []
+      }
+    ]
+  }
 ]

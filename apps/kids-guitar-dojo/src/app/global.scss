@@ -17,7 +17,7 @@
 
   .title {
     p > * {
-      @apply font-extrabold text-primary;
+      @apply text-primary font-extrabold;
     }
   }
 }
