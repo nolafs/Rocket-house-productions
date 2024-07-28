@@ -1,3 +1,5 @@
+export * from './lib/newsletter-form/newsletter-form-status';
+export * from './lib/newsletter-form/newsletter-form';
 export * from './lib/hero-header/hero-columns/hero-columns';
 export * from './lib/motto-text/motto-text';
 export * from './lib/section-title/section-title';
