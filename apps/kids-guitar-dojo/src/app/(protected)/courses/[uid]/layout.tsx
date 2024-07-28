@@ -1,5 +1,5 @@
-import '../styles/navbar.scss';
-import './global.scss';
+import '../../../../styles/navbar.scss';
+import '../../../global.scss';
 import { Raleway } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 
