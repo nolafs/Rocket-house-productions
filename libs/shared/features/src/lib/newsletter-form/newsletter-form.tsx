@@ -21,8 +21,6 @@ const findErrors = (fieldName: string, errors: ZodIssue[]) => {
 
 export function NewsletterForm() {
   const [state, formAction] = useFormState(handleSubscription, initialState);
-  console.log(state);
-
   return (
     <form action={formAction} className="mt-6 flex flex-col sm:flex sm:max-w-md">
       <div className={'flex'}>
