@@ -40,10 +40,7 @@
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint",
-        "exclude": [
-          "**/*.next/**",
-          "**/out/**"
-        ]
+        "exclude": ["**/*.next/**", "**/out/**"]
       }
     },
     {
