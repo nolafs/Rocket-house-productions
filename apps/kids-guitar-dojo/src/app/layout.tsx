@@ -7,6 +7,7 @@ import { UIProvider } from '@rocket-house-productions/hooks';
 import { GoogleAnalytics } from '@rocket-house-productions/util';
 import { PrismicPreview } from '@prismicio/next';
 import { repositoryName } from '@/prismicio';
+import { ClerkProvider } from '@clerk/nextjs';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -21,19 +22,21 @@ export const metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <UIProvider>
-      <html lang="en" className={`${raleway.variable} font-sans`}>
-        <body>
-          {children}
-          {/* Analytics */}
-          <Suspense>
-            <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
-          </Suspense>
+    <ClerkProvider>
+      <UIProvider>
+        <html lang="en" className={`${raleway.variable} font-sans`}>
+          <body>
+            {children}
+            {/* Analytics */}
+            <Suspense>
+              <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
+            </Suspense>
 
-          {/* Preview */}
-          <PrismicPreview repositoryName={repositoryName} />
-        </body>
-      </html>
-    </UIProvider>
+            {/* Preview */}
+            <PrismicPreview repositoryName={repositoryName} />
+          </body>
+        </html>
+      </UIProvider>
+    </ClerkProvider>
   );
 }

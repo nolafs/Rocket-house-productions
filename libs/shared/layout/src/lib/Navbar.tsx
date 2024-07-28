@@ -8,6 +8,7 @@ import { asText } from '@prismicio/client';
 import { PrismicText } from '@prismicio/react';
 import { PrismicNextLink, PrismicPreview } from '@prismicio/next';
 import { NavigationProps } from '@rocket-house-productions/types';
+import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 
 interface HeaderProps {
   navigation: NavigationProps;
@@ -64,8 +65,7 @@ export function Navbar({ navigation, logo }: HeaderProps) {
             <button
               className="navbar-toggler absolute right-0 top-[4px] ml-auto xl:hidden rtl:left-0 rtl:right-auto"
               type="button"
-              onClick={handleToggleSearchModal}
-            >
+              onClick={handleToggleSearchModal}>
               <span className="burger-menu cursor-pointer text-[30px] leading-none text-black">
                 <i className="bx bx-menu"></i>
               </span>
@@ -77,12 +77,10 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                   navigation.items.map(item => (
                     <li
                       key={asText(item.label)}
-                      className="group relative py-[10px] first:ml-0 last:mr-0 lg:py-[15px] xl:mx-[10px] xl:py-[35px] 2xl:mx-[18px] 2xl:py-[41.5px]"
-                    >
+                      className="group relative py-[10px] first:ml-0 last:mr-0 lg:py-[15px] xl:mx-[10px] xl:py-[35px] 2xl:mx-[18px] 2xl:py-[41.5px]">
                       <PrismicNextLink
                         field={item.link}
-                        className="hover:text-primary text-base font-medium text-black text-gray-500 transition-all"
-                      >
+                        className="hover:text-primary text-base font-medium text-black text-gray-500 transition-all">
                         <PrismicText field={item.label} />
                       </PrismicNextLink>
                     </li>
@@ -93,18 +91,17 @@ export function Navbar({ navigation, logo }: HeaderProps) {
               <div className="other-options self-center border-t border-[#eeeeee] pb-[10px] pt-[20px] xl:ml-[20px] xl:border-none xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
                 <ul className={'flex flex-row items-center justify-center space-x-5'}>
                   <li>
-                    <Link
-                      href={'/login/'}
-                      className="hover:text-primary text-base font-medium text-black text-gray-500 transition-all"
-                    >
-                      Log in
-                    </Link>
+                    <SignedOut>
+                      <SignInButton />
+                    </SignedOut>
+                    <SignedIn>
+                      <UserButton />
+                    </SignedIn>
                   </li>
                   <li>
                     <Link
                       href="/contact-us/"
-                      className="bg-primary hover:bg-accent inline-block rounded-lg py-[9px] pl-5 pr-3 text-[14px] font-bold uppercase text-white transition duration-500 ease-in-out hover:text-gray-500"
-                    >
+                      className="bg-primary hover:bg-accent inline-block rounded-lg py-[9px] pl-5 pr-3 text-[14px] font-bold uppercase text-white transition duration-500 ease-in-out hover:text-gray-500">
                       Buy now <ArrowRight2 className="relative -top-[2px] inline-block" size={18} />
                     </Link>
                   </li>

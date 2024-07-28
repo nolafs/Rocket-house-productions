@@ -8,6 +8,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@clerk/nextjs": "^5.2.8",
     "@ducanh2912/next-pwa": "^10.2.8",
     "@next/bundle-analyzer": "^14.2.5",
     "@prismicio/client": "^7.6.0",
