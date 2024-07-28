@@ -2,16 +2,23 @@ const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
 const presetTheme = require('../../tailwind.preset.js');
 
-const content = [...createGlobPatternsForDependencies(__dirname)];
-const index = content.findIndex(item => item.includes('apps/kids-guitar-dojo'));
-content[index] = content[index].replace('apps/kids-guitar-dojo/', 'apps/kids-guitar-dojo/(!node_modules)');
-
-console.log(content);
+function getContent() {
+  const content = [...createGlobPatternsForDependencies(__dirname)];
+  const index = content.findIndex(item => item.includes('apps/kids-guitar-dojo'));
+  try {
+    if (index > -1) {
+      content[index] = content[index].replace('apps/kids-guitar-dojo/', 'apps/kids-guitar-dojo/(!node_modules)');
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  return content;
+}
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [presetTheme],
-  content: [join(__dirname, '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'), ...content],
+  content: [join(__dirname, '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'), ...getContent()],
   theme: {
     extend: {
       colors: {
