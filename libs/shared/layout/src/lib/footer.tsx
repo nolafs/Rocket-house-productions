@@ -30,12 +30,12 @@ export function Footer({ navigation, logo, secondaryNavigation, social, copyrigh
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-20 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="grid grid-cols-1 gap-8 xl:col-span-2">
-            <div className="flex w-full">
+            <div className="w-full">
               <div>
                 <Link href="/">
                   <Image src={logo} className="inline" alt="logo" />
                 </Link>
-                <ul role="list" className="mt-10 flex gap-8">
+                <ul role="list" className="just mt-10 flex flex-col gap-8 md:flex-row">
                   {navigation?.items?.map(item => (
                     <li key={asText(item.label)}>
                       <PrismicNextLink
@@ -54,8 +54,8 @@ export function Footer({ navigation, logo, secondaryNavigation, social, copyrigh
               <h3 className="text-lg font-bold leading-6 text-white">Newsletter</h3>
               <NewsletterForm />
             </div>
-            <div className={'self-end'}>
-              <SocialList items={social} icons={true} variantList={1} variantButton={2} />
+            <div className={'w-full md:self-end'}>
+              <SocialList items={social} icons={true} variantList={0} variantButton={2} />
             </div>
           </div>
         </div>

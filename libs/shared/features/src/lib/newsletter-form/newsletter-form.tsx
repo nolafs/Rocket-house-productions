@@ -27,7 +27,7 @@ export function NewsletterForm() {
         <label htmlFor="email-address" className="sr-only">
           Email address
         </label>
-        <div className={'grow'}>
+        <div className={'md:grow'}>
           <input
             id="email"
             name="email"
