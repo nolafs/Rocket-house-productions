@@ -5,13 +5,13 @@ const emailSchema = z.object({
   email: z.string().email().min(1, 'Email cannot be blank'),
 });
 
-export async function handleSubscription(formData: FormData) {
+export async function handleSubscription(prevState: any, formData: FormData) {
   const subscriberEmail = formData.get('email') as string;
   const validation: any = emailSchema.safeParse({ email: subscriberEmail });
 
   console.log(validation);
 
-  if (!validation.success) {
+  if (validation.success) {
     try {
       //sign up with mailerlite
       const response = await fetch('https://api.mailerlite.com/api/v2/subscribers', {
@@ -24,6 +24,18 @@ export async function handleSubscription(formData: FormData) {
           email: subscriberEmail,
         }),
       });
+
+      console.log();
+
+      const rsp = await response.json();
+
+      console.log(rsp);
+
+      return {
+        status: 'success',
+        message: 'successfully subscribed',
+        data: JSON.parse(JSON.stringify(response)),
+      };
     } catch (error) {
       return {
         status: 'failed',
@@ -32,8 +44,12 @@ export async function handleSubscription(formData: FormData) {
       };
     }
   } else {
+    console.log(validation);
+
     return {
-      errors: validation.error.issue,
+      status: 'failed',
+      message: 'Something went wrong!',
+      error: JSON.parse(validation.error),
     };
   }
 }

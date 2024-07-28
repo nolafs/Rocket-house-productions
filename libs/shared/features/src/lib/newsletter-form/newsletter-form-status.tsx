@@ -2,11 +2,11 @@ export function NewsletterFormStatus({ state }: any) {
   return (
     <p
       aria-live="polite"
-      className={`p-2 text-sm ${
+      className={`rounded-md p-2 ${
         state?.status === 'success'
-          ? 'text-success bg-success-bg'
+          ? 'bg-success text-white'
           : state?.status === 'failed' || state?.status === 'invalid email' || state?.status === 'empty'
-            ? 'text-error bg-error-bg'
+            ? 'bg-danger text-white'
             : ''
       } `}>
       {state?.status === 'success'
