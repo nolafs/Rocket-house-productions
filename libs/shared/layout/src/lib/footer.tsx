@@ -7,6 +7,7 @@ import { asText } from '@prismicio/client';
 import SocialList from '../../../features/src/lib/social-list/social-list';
 import Link from 'next/link';
 import Image from 'next/image';
+import { NewsletterForm } from '@rocket-house-productions/features';
 
 export interface FooterProps {
   navigation: NavigationProps;
@@ -39,8 +40,7 @@ export function Footer({ navigation, logo, secondaryNavigation, social, copyrigh
                     <li key={asText(item.label)}>
                       <PrismicNextLink
                         field={item.link}
-                        className="hover:text-primary text-base font-medium text-gray-400 transition-all"
-                      >
+                        className="hover:text-primary text-base font-medium text-gray-400 transition-all">
                         <PrismicText field={item.label} />
                       </PrismicNextLink>
                     </li>
@@ -52,28 +52,7 @@ export function Footer({ navigation, logo, secondaryNavigation, social, copyrigh
           <div className="mt-10 flex flex-col space-y-10 xl:mt-0">
             <div>
               <h3 className="text-lg font-bold leading-6 text-white">Newsletter</h3>
-              <form className="mt-6 sm:flex sm:max-w-md">
-                <label htmlFor="email-address" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  id="email-address"
-                  name="email-address"
-                  type="email"
-                  required
-                  placeholder="Enter your email"
-                  autoComplete="email"
-                  className="w-full min-w-0 appearance-none rounded-md border-0 bg-white px-3 py-1.5 text-base text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-gray-500 sm:w-64 sm:text-sm sm:leading-6 xl:w-full"
-                />
-                <div className="mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0">
-                  <button
-                    type="submit"
-                    className="bg-primary flex w-full items-center justify-center rounded-md px-4 py-3.5 text-sm font-bold uppercase text-white hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500"
-                  >
-                    Subscribe
-                  </button>
-                </div>
-              </form>
+              <NewsletterForm />
             </div>
             <div className={'self-end'}>
               <SocialList items={social} icons={true} variantList={1} variantButton={2} />
@@ -87,8 +66,7 @@ export function Footer({ navigation, logo, secondaryNavigation, social, copyrigh
                 <li key={asText(item.label)}>
                   <PrismicNextLink
                     field={item.link}
-                    className="hover:text-primary text-base font-medium text-gray-500 transition-all"
-                  >
+                    className="hover:text-primary text-base font-medium text-gray-500 transition-all">
                     <PrismicText field={item.label} />
                   </PrismicNextLink>
                 </li>

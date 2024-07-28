@@ -1,8 +1,18 @@
-export function NewsletterFormStatus() {
+export function NewsletterFormStatus({ state }: any) {
   return (
-    <div>
-      <h1>Welcome to NewsletterFormStatus!</h1>
-    </div>
+    <p
+      aria-live="polite"
+      className={`p-2 text-sm ${
+        state?.status === 'success'
+          ? 'text-success bg-success-bg'
+          : state?.status === 'failed' || state?.status === 'invalid email' || state?.status === 'empty'
+            ? 'text-error bg-error-bg'
+            : ''
+      } `}>
+      {state?.status === 'success'
+        ? state?.data?.status
+        : (state?.error?.response?.text?.includes('already a list member') && 'Already listed') || state?.message}
+    </p>
   );
 }
 
