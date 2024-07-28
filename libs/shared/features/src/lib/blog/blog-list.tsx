@@ -1,10 +1,8 @@
-import { BlogType } from '@rocket-house-productions/types';
 import { BlogCard } from '@rocket-house-productions/ui';
-import { BlogPostDocument } from '../../../../../../apps/kids-guitar-dojo/prismicio-types';
 import { PrismicLink } from '@prismicio/react';
 
 interface BlogListProps {
-  posts: BlogPostDocument[] | undefined | null;
+  posts: any[] | undefined | null;
 }
 
 export function BlogList({ posts }: BlogListProps) {
