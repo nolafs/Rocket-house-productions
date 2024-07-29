@@ -35,13 +35,15 @@ export function CtaOneColumn({ data: { headings, buttons, motto, backgroundImage
             width={1440}
             height={460}
             alt=""
-            className={'absolute inset-0 h-auto w-full object-cover object-center'}
+            className={
+              'absolute inset-0 left-1/2 h-auto w-full min-w-[1800px] -translate-x-1/2 object-cover object-center'
+            }
             imgixParams={{ fm: 'webp', fit: 'fill' }}
           />
         </motion.div>
       )}
 
-      <div className={'z-1 container mx-auto flex flex-col'}>
+      <div className={'z-1 container mx-auto flex flex-col px-0 lg:px-10'}>
         {headings && (
           <SectionTitle
             title={motto.text}
