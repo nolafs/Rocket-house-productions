@@ -20,7 +20,7 @@ interface CtaColumnsProps {
 
 export function CtaTwoColumnImage({ data: { headings, buttons, motto, image }, color }: CtaColumnsProps) {
   return (
-    <div className={'cta relative w-full lg:my-40'}>
+    <div className={'cta relative w-full lg:my-52'}>
       <div className={'gap-7.5 container mx-auto grid grid-cols-1 items-center overflow-visible md:grid-cols-2'}>
         <div className={'overflow-visible'}>
           {image && (
