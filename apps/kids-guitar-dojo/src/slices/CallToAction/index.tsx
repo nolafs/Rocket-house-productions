@@ -13,7 +13,7 @@ export type CallToActionProps = SliceComponentProps<Content.CallToActionSlice>;
  */
 const CallToAction = ({ slice }: CallToActionProps): JSX.Element => {
   return (
-    <Bounded as={'div'}>
+    <Bounded as={'div'} yPadding={'sm'}>
       <CtaTwoColumn
         data={{
           headings: slice.primary.heading,

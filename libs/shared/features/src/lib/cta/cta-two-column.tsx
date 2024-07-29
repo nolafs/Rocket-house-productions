@@ -15,7 +15,7 @@ interface HeroColumnsProps {
 export function CtaTwoColumn({ data: { headings, buttons, motto }, color }: HeroColumnsProps) {
   return (
     <div className="rounded bg-gray-900">
-      <div className="md- grid px-6 py-24 sm:py-24 md:grid-cols-2 md:px-10 lg:items-center lg:justify-between lg:px-20">
+      <div className="grid px-6 py-24 sm:py-24 md:grid-cols-2 md:px-10 lg:items-center lg:justify-between lg:px-20">
         <div>
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             <PrismicRichText field={headings} />
@@ -23,7 +23,7 @@ export function CtaTwoColumn({ data: { headings, buttons, motto }, color }: Hero
           {motto && <MottoText {...motto} size="lg" className="mt-[25px]" />}
         </div>
         {buttons && (
-          <div className="mt-10 flex items-center justify-center gap-x-5 lg:mt-0 lg:flex-shrink-0">
+          <div className="mt-10 flex items-center justify-end gap-x-5 lg:mt-0 lg:flex-shrink-0">
             {buttons?.map(({ link, type, label }) => (
               <PrismicLink
                 field={link}
