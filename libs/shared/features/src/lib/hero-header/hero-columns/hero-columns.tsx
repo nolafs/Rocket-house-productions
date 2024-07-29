@@ -31,6 +31,7 @@ export function HeroColumns({
   data: { headings, subheading, text, buttons, motto, image },
   alignment = 'Left',
   color = 'A',
+  decor = 'A',
 }: HeroColumnsProps) {
   const { trans1, trans2 } = useUI();
 
@@ -106,7 +107,10 @@ export function HeroColumns({
           )}
 
           <motion.div
-            className="-z-1 absolute -left-[20%] top-[70px] sm:-left-20 sm:top-[40%]"
+            className={cn(
+              decor === 'A' && '-z-1 absolute -left-[20%] top-[70px] sm:-left-20 sm:top-[40%]',
+              decor === 'B' && 'z-2 absolute -left-[20%] bottom-[10px] sm:-left-20 sm:bottom-[10%]',
+            )}
             animate={{
               x: trans1().x,
               y: trans1().y,
@@ -227,7 +231,7 @@ export function HeroColumns({
               </g>
             </svg>
           </motion.div>
-          {color === 'A' && (
+          {decor === 'A' && (
             <motion.div
               className="z-1 absolute -top-4 right-2.5 max-w-[240px] md:right-[20%] md:w-auto"
               animate={{
@@ -237,9 +241,9 @@ export function HeroColumns({
               <Image src={notes} width="422" height="360" alt={'notes'} />
             </motion.div>
           )}
-          {color === 'B' && (
+          {decor === 'B' && (
             <motion.div
-              className="z-1 absolute -top-4 right-2.5 max-w-[240px] md:left-[20%] md:w-auto"
+              className="z-1 absolute -top-4 right-2.5 max-w-[240px] md:left-[10%] md:w-auto"
               animate={{
                 x: trans2().x,
                 y: trans2().y,

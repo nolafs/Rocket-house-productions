@@ -14,7 +14,7 @@ export type HeroProps = SliceComponentProps<Content.HeroSlice>;
 const Hero = ({ slice }: HeroProps): JSX.Element => {
   if (slice.variation === 'imageAlignmentRight') {
     return (
-      <Bounded as={'header'} yPadding={'lg'}>
+      <Bounded as={'header'}>
         <HeroColumns
           data={{
             headings: slice.primary.heading,
@@ -32,7 +32,7 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
 
   if (slice.variation === 'thunderDecoration') {
     return (
-      <Bounded as={'header'} yPadding={'lg'}>
+      <Bounded as={'header'}>
         <HeroColumns
           data={{
             headings: slice.primary.heading,
