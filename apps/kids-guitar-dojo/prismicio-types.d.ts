@@ -556,7 +556,7 @@ export type NavigationDocument<Lang extends string = string> = prismic.PrismicDo
   Lang
 >;
 
-type PageDocumentDataSlicesSlice = SectionHeadersSlice | RichTextSliceSlice | ContentImageSliceSlice;
+type PageDocumentDataSlicesSlice = HeroSlice | SectionHeadersSlice | RichTextSliceSlice | ContentImageSliceSlice;
 
 /**
  * Content for Page documents
@@ -881,18 +881,211 @@ type ContentImageSliceSliceVariation = ContentImageSliceSliceDefault;
 export type ContentImageSliceSlice = prismic.SharedSlice<'content_image_slice', ContentImageSliceSliceVariation>;
 
 /**
+ * Item in *Hero → Default → Primary → Buttons*
+ */
+export interface HeroSliceDefaultPrimaryButtonsItem {
+  /**
+   * Link field in *Hero → Default → Primary → Buttons*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.buttons[].link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+
+  /**
+   * Label field in *Hero → Default → Primary → Buttons*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.buttons[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Type field in *Hero → Default → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.buttons[].type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<'Default' | 'Outlined'>;
+}
+
+/**
+ * Item in *Hero → Image Alignment Right → Primary → Buttons*
+ */
+export interface HeroSliceImageAlignmentRightPrimaryButtonsItem {
+  /**
+   * Link field in *Hero → Image Alignment Right → Primary → Buttons*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.imageAlignmentRight.primary.buttons[].link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+
+  /**
+   * Label field in *Hero → Image Alignment Right → Primary → Buttons*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.imageAlignmentRight.primary.buttons[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Type field in *Hero → Image Alignment Right → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.imageAlignmentRight.primary.buttons[].type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<'Default' | 'Outlined'>;
+}
+
+/**
+ * Primary content in *Hero → Default → Primary*
+ */
+export interface HeroSliceDefaultPrimary {
+  /**
+   * Heading field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Subheading field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  subheading: prismic.RichTextField;
+
+  /**
+   * Body field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Image field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Buttons field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.buttons[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  buttons: prismic.GroupField<Simplify<HeroSliceDefaultPrimaryButtonsItem>>;
+}
+
+/**
  * Default variation for Hero Slice
  *
  * - **API ID**: `default`
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slice
  */
-export type HeroSliceDefault = prismic.SharedSliceVariation<'default', Record<string, never>, never>;
+export type HeroSliceDefault = prismic.SharedSliceVariation<'default', Simplify<HeroSliceDefaultPrimary>, never>;
+
+/**
+ * Primary content in *Hero → Image Alignment Right → Primary*
+ */
+export interface HeroSliceImageAlignmentRightPrimary {
+  /**
+   * Heading field in *Hero → Image Alignment Right → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.imageAlignmentRight.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Subheading field in *Hero → Image Alignment Right → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.imageAlignmentRight.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  subheading: prismic.RichTextField;
+
+  /**
+   * Body field in *Hero → Image Alignment Right → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.imageAlignmentRight.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Image field in *Hero → Image Alignment Right → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.imageAlignmentRight.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Buttons field in *Hero → Image Alignment Right → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.imageAlignmentRight.primary.buttons[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  buttons: prismic.GroupField<Simplify<HeroSliceImageAlignmentRightPrimaryButtonsItem>>;
+}
+
+/**
+ * Image Alignment Right variation for Hero Slice
+ *
+ * - **API ID**: `imageAlignmentRight`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSliceImageAlignmentRight = prismic.SharedSliceVariation<
+  'imageAlignmentRight',
+  Simplify<HeroSliceImageAlignmentRightPrimary>,
+  never
+>;
 
 /**
  * Slice variation for *Hero*
  */
-type HeroSliceVariation = HeroSliceDefault;
+type HeroSliceVariation = HeroSliceDefault | HeroSliceImageAlignmentRight;
 
 /**
  * Hero Shared Slice
@@ -1118,8 +1311,13 @@ declare module '@prismicio/client' {
       ContentImageSliceSliceVariation,
       ContentImageSliceSliceDefault,
       HeroSlice,
+      HeroSliceDefaultPrimaryButtonsItem,
+      HeroSliceDefaultPrimary,
+      HeroSliceImageAlignmentRightPrimaryButtonsItem,
+      HeroSliceImageAlignmentRightPrimary,
       HeroSliceVariation,
       HeroSliceDefault,
+      HeroSliceImageAlignmentRight,
       RichTextSliceSlice,
       RichTextSliceSliceDefaultPrimary,
       RichTextSliceSliceTwoColumnsPrimary,

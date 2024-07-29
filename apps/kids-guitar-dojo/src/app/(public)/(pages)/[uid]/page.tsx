@@ -28,7 +28,6 @@ export default async function Page({ params }: { params: Params }) {
 
   return (
     <main>
-      <h1>{asText(page.data.title)}</h1>
       <SliceZone slices={page.data.slices} components={components} />
     </main>
   );

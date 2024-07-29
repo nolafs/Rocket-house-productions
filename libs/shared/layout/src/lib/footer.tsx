@@ -19,9 +19,6 @@ export interface FooterProps {
 
 export function Footer({ navigation, logo, secondaryNavigation, social, copyright }: FooterProps) {
   const copyRightDate = new Date().getFullYear();
-
-  console.log(social);
-
   return (
     <footer aria-labelledby="footer-heading" className="bg-gray-900">
       <h2 id="footer-heading" className="sr-only">

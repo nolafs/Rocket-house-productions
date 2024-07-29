@@ -56,7 +56,7 @@ export function Navbar({ navigation, logo }: HeaderProps) {
 
   return (
     <>
-      <div id="navbar" className="navbar-area relative z-[2] bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
+      <div id="navbar" className="navbar-area fixed z-[2] bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
         <div className="container mx-auto">
           <nav className={`navbar relative flex flex-wrap`}>
             <div className="self-center">
