@@ -37,7 +37,7 @@ export function CtaTwoColumnImage({ data: { headings, buttons, motto, image }, c
                 className={
                   'lg:max-width-[819px] z-10 h-auto w-[100%] lg:absolute lg:right-1/2 lg:top-1/2 lg:-translate-y-1/2'
                 }
-                imgixParams={{ fit: 'fill' }}
+                imgixParams={{ fm: 'webp', fit: 'fill' }}
               />
             </motion.div>
           )}
