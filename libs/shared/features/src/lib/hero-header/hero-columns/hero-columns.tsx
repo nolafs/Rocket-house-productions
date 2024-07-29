@@ -55,7 +55,7 @@ export function HeroColumns({
           {text && (
             <span
               className={cn(
-                'text-primary bg-secondary relative mb-2 flex w-fit rounded-full px-3 py-1 text-sm font-bold uppercase leading-normal tracking-tight md:mb-5',
+                'text-primary bg-secondary mb-2 inline-block w-fit rounded-full px-3 py-1 text-sm font-bold uppercase leading-normal tracking-tight md:mb-5',
               )}>
               {text}
             </span>
@@ -72,7 +72,7 @@ export function HeroColumns({
           )}
           {motto && <MottoText {...motto} size="md" className="mt-[25px]" />}
           {buttons && (
-            <div className={'mt-10 flex gap-2.5'}>
+            <div className={'mt-10 flex justify-center gap-2.5 md:justify-start'}>
               {buttons?.map(({ link, type, label, typeCase }) => (
                 <PrismicLink
                   field={link}
@@ -109,7 +109,7 @@ export function HeroColumns({
           <motion.div
             className={cn(
               decor === 'A' && '-z-1 absolute -left-[20%] top-[70px] sm:-left-20 sm:top-[40%]',
-              decor === 'B' && 'z-2 absolute -left-[20%] bottom-[10px] sm:-left-20 sm:bottom-[10%]',
+              decor === 'B' && 'z-2 absolute -bottom-5 -left-[20%] sm:-left-20 sm:bottom-[10%]',
             )}
             animate={{
               x: trans1().x,
@@ -243,7 +243,7 @@ export function HeroColumns({
           )}
           {decor === 'B' && (
             <motion.div
-              className="z-1 absolute -top-4 right-2.5 max-w-[240px] md:left-[10%] md:w-auto"
+              className="z-1 absolute -top-20 left-2.5 max-w-[180px] md:left-[10%] md:w-auto md:max-w-[240px]"
               animate={{
                 x: trans2().x,
                 y: trans2().y,
