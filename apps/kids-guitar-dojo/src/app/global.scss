@@ -4,12 +4,17 @@
 @tailwind utilities;
 
 @layer base {
-  html {
+
+
+  :root {
     --color-primary: #2c67dc;
     --color-secondary: #c2ff7a;
     --color-accent: #89ff00;
     --color-neutral: #c9d8f6;
     --color-base: #ffffff;
+
+    --background: 0, 100%, 100%, 1;
+    --foreground: 0, 0%, 0%, 1;
   }
 
   .rich-text-prose > p:first-of-type {

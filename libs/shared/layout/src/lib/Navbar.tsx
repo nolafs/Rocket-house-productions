@@ -2,13 +2,22 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ArrowRight2 } from 'iconsax-react';
 import Image from 'next/image';
+import { Menu } from 'lucide-react';
 import { asText } from '@prismicio/client';
 import { PrismicText } from '@prismicio/react';
 import { PrismicNextLink, PrismicPreview } from '@prismicio/next';
 import { NavigationProps } from '@rocket-house-productions/types';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import {
+  Button,
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@rocket-house-productions/shadcn-ui';
 
 interface HeaderProps {
   navigation: NavigationProps;
@@ -16,7 +25,6 @@ interface HeaderProps {
 }
 
 export function Navbar({ navigation, logo }: HeaderProps) {
-  const [isActive, setActive] = useState<boolean>(false);
   const currentRoute = usePathname();
 
   console.log(currentRoute);
@@ -44,32 +52,16 @@ export function Navbar({ navigation, logo }: HeaderProps) {
     };
   }, []);
 
-  // Toggle active class
-
-  const handleToggleSearchModal = () => {
-    setActive(!isActive);
-  };
-
   return (
     <>
-      <div id="navbar" className="navbar-area relative z-[2] bg-transparent py-[20px] lg:py-[25px] xl:py-0">
+      <div id="navbar" className="navbar-area relative z-[2] bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
         <div className="container mx-auto">
-          <nav className={`navbar relative flex flex-wrap ${isActive ? 'active' : ''}`}>
+          <nav className={`navbar relative flex flex-wrap`}>
             <div className="self-center">
               <Link href="/">
                 <Image src={logo} className="inline" alt="logo" />
               </Link>
             </div>
-
-            {/* Toggle button */}
-            <button
-              className="navbar-toggler absolute right-0 top-[4px] ml-auto xl:hidden rtl:left-0 rtl:right-auto"
-              type="button"
-              onClick={handleToggleSearchModal}>
-              <span className="burger-menu cursor-pointer text-[30px] leading-none text-black">
-                <i className="bx bx-menu"></i>
-              </span>
-            </button>
 
             <div className="navbar-collapse flex grow basis-auto self-center">
               <ul className="navbar-nav mx-auto flex-row self-center xl:flex">
@@ -101,13 +93,43 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                   <li>
                     <Link
                       href="/contact-us/"
-                      className="bg-primary hover:bg-accent inline-block rounded-lg py-[9px] pl-5 pr-3 text-[14px] font-bold uppercase text-white transition duration-500 ease-in-out hover:text-gray-500">
-                      Buy now <ArrowRight2 className="relative -top-[2px] inline-block" size={18} />
+                      className="bg-primary hover:bg-accent inline-block rounded-sm py-[9px] pl-5 pr-3 text-[14px] font-bold uppercase text-white transition duration-500 ease-in-out hover:text-gray-500">
+                      Buy now
                     </Link>
                   </li>
                 </ul>
               </div>
             </div>
+
+            {/* Toggle button */}
+            <Sheet>
+              <SheetTrigger>
+                <Button variant="link" className={'absolute right-0 top-0 z-50'}>
+                  <span className="burger-menu cursor-pointer text-[30px] leading-none text-black">
+                    <i className="bx bx-menu">
+                      <Menu />
+                    </i>
+                  </span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side={'right'} className={'w-[80vw]'}>
+                <SheetHeader>
+                  <SheetTitle className={'sr-only'}>Menu</SheetTitle>
+                </SheetHeader>
+                <ul className={'b mt-10 flex flex-col divide-y divide-gray-500/10'}>
+                  {navigation &&
+                    navigation.items.map(item => (
+                      <li key={asText(item.label)} className="group relative py-5">
+                        <PrismicNextLink
+                          field={item.link}
+                          className="hover:text-primary text-base font-medium text-black text-gray-500 transition-all">
+                          <PrismicText field={item.label} />
+                        </PrismicNextLink>
+                      </li>
+                    ))}
+                </ul>
+              </SheetContent>
+            </Sheet>
           </nav>
         </div>
       </div>

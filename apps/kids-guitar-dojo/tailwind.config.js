@@ -29,6 +29,8 @@ module.exports = {
         accent: 'var(--color-accent)',
         neutral: 'var(--color-neutral)',
         base: 'var(--color-base)',
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
         body: '#404F65',
         heading: '#2A3342',
         success: {
@@ -265,5 +267,6 @@ module.exports = {
       });
     },
     require('@tailwindcss/typography'),
+    require('tailwindcss-animate'),
   ],
 };

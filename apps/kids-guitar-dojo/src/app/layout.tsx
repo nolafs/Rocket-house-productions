@@ -24,8 +24,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <ClerkProvider>
       <UIProvider>
-        <html lang="en" className={`${raleway.variable} font-sans`}>
-          <body>
+        <html lang="en" className={`${raleway.variable} font-sans`} suppressHydrationWarning>
+          <body className={'bg-background min-h-screen font-sans antialiased'}>
             {children}
             {/* Analytics */}
             <Suspense>
