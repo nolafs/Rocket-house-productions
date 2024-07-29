@@ -862,6 +862,51 @@ export interface CallToActionSliceImagePrimaryButtonsItem {
 }
 
 /**
+ * Item in *CallToAction → Center → Primary → Buttons*
+ */
+export interface CallToActionSliceCenterPrimaryButtonsItem {
+  /**
+   * Label field in *CallToAction → Center → Primary → Buttons*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.center.primary.buttons[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Link field in *CallToAction → Center → Primary → Buttons*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.center.primary.buttons[].link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+
+  /**
+   * Type field in *CallToAction → Center → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.center.primary.buttons[].type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<'Default' | 'Outlined'>;
+
+  /**
+   * Type Case field in *CallToAction → Center → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.center.primary.buttons[].typeCase
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  typeCase: prismic.SelectField<'1' | '2'>;
+}
+
+/**
  * Primary content in *CallToAction → Default → Primary*
  */
 export interface CallToActionSliceDefaultPrimary {
@@ -968,9 +1013,57 @@ export type CallToActionSliceImage = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *CallToAction → Center → Primary*
+ */
+export interface CallToActionSliceCenterPrimary {
+  /**
+   * Heading field in *CallToAction → Center → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.center.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Body field in *CallToAction → Center → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.center.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Buttons field in *CallToAction → Center → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.center.primary.buttons[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  buttons: prismic.GroupField<Simplify<CallToActionSliceCenterPrimaryButtonsItem>>;
+}
+
+/**
+ * Center variation for CallToAction Slice
+ *
+ * - **API ID**: `center`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CallToActionSliceCenter = prismic.SharedSliceVariation<
+  'center',
+  Simplify<CallToActionSliceCenterPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *CallToAction*
  */
-type CallToActionSliceVariation = CallToActionSliceDefault | CallToActionSliceImage;
+type CallToActionSliceVariation = CallToActionSliceDefault | CallToActionSliceImage | CallToActionSliceCenter;
 
 /**
  * CallToAction Shared Slice
@@ -1679,9 +1772,12 @@ declare module '@prismicio/client' {
       CallToActionSliceDefaultPrimary,
       CallToActionSliceImagePrimaryButtonsItem,
       CallToActionSliceImagePrimary,
+      CallToActionSliceCenterPrimaryButtonsItem,
+      CallToActionSliceCenterPrimary,
       CallToActionSliceVariation,
       CallToActionSliceDefault,
       CallToActionSliceImage,
+      CallToActionSliceCenter,
       ContentImageSliceSlice,
       ContentImageSliceSliceDefaultPrimary,
       ContentImageSliceSliceVariation,

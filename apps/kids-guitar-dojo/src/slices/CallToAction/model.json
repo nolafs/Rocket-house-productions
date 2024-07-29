@@ -161,6 +161,81 @@
         }
       },
       "items": {}
+    },
+    {
+      "id": "center",
+      "name": "Center",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Heading",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "body": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Body",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "buttons": {
+          "type": "Group",
+          "config": {
+            "label": "Buttons",
+            "repeat": true,
+            "fields": {
+              "label": {
+                "type": "Text",
+                "config": {
+                  "label": "Label",
+                  "placeholder": ""
+                }
+              },
+              "link": {
+                "type": "Link",
+                "config": {
+                  "label": "Link",
+                  "placeholder": "",
+                  "select": null
+                }
+              },
+              "type": {
+                "type": "Select",
+                "config": {
+                  "label": "Type",
+                  "placeholder": "",
+                  "options": [
+                    "Default",
+                    "Outlined"
+                  ]
+                }
+              },
+              "typeCase": {
+                "type": "Select",
+                "config": {
+                  "label": "Type Case",
+                  "placeholder": "",
+                  "options": [
+                    "1",
+                    "2"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
     }
   ]
 }
