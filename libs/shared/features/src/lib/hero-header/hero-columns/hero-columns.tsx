@@ -46,15 +46,16 @@ export function HeroColumns({
           whileInView="onscreen"
           viewport={{ once: true, amount: 0.1 }}
           variants={scrollUpVariants}>
-          <span
-            className={cn(
-              'relative mb-2 flex w-fit rounded-full px-3 py-1 text-sm font-bold uppercase leading-normal tracking-tight md:mb-5',
-              color === 'A' && 'text-primary bg-secondary',
-              color === 'B' && 'text-secondary',
-            )}>
-            {text}
-          </span>
-
+          {text && (
+            <span
+              className={cn(
+                'relative mb-2 flex w-fit rounded-full px-3 py-1 text-sm font-bold uppercase leading-normal tracking-tight md:mb-5',
+                color === 'A' && 'text-primary bg-secondary',
+                color === 'B' && 'text-secondary',
+              )}>
+              {text}
+            </span>
+          )}
           {headings && (
             <h1 className="text-3xl font-bold leading-[1.17] sm:text-4xl lg:text-5xl">
               <PrismicRichText field={headings} />
@@ -221,31 +222,6 @@ export function HeroColumns({
                   strokeMiterlimit="10"
                 />
               </g>
-            </svg>
-          </motion.div>
-          <motion.div
-            className="absolute left-0 top-[30%] -z-[2]"
-            animate={{
-              x: trans1().x,
-              y: trans1().y,
-            }}>
-            <svg width="422" height="360" viewBox="0 0 422 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M329.461 12.6026C358.773 29.8447 377.165 66.6278 394.981 112.032C412.798 157.436 430.04 211.461 415.672 256.865C401.303 302.27 355.325 339.053 304.748 353.421C254.171 367.215 198.422 358.019 148.994 337.903C98.9924 317.787 55.3124 286.752 27.7251 244.221C0.712528 201.116 -10.2075 146.516 11.6325 110.882C34.0472 75.2488 88.6471 58.5815 129.453 43.6383C169.685 28.6952 195.548 14.9015 228.308 6.85524C261.068 -1.7658 300.725 -4.63948 329.461 12.6026Z"
-                fill="url(#paint0_linear_2737_11687)"
-              />
-              <defs>
-                <linearGradient
-                  id="paint0_linear_2737_11687"
-                  x1="0"
-                  y1="360"
-                  x2="355.632"
-                  y2="-55.9064"
-                  gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#F87537" />
-                  <stop offset="1" stopColor="#FBA81F" />
-                </linearGradient>
-              </defs>
             </svg>
           </motion.div>
           <motion.div
