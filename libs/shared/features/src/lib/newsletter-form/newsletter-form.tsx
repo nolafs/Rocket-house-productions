@@ -22,8 +22,8 @@ const findErrors = (fieldName: string, errors: ZodIssue[]) => {
 export function NewsletterForm() {
   const [state, formAction] = useFormState(handleSubscription, initialState);
   return (
-    <form action={formAction} className="mt-6 flex flex-col sm:flex sm:max-w-md">
-      <div className={'flex'}>
+    <form action={formAction} className="mt-6 flex flex-col">
+      <div className={'flex flex-col md:flex-row'}>
         <label htmlFor="email-address" className="sr-only">
           Email address
         </label>
