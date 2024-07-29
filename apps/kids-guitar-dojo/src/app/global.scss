@@ -4,8 +4,6 @@
 @tailwind utilities;
 
 @layer base {
-
-
   :root {
     --color-neutral: #c9d8f6;
     --color-base: #ffffff;
@@ -46,6 +44,27 @@
   .title {
     p > * {
       @apply text-primary font-extrabold;
+    }
+  }
+
+  .cta {
+    ul{
+      @apply flex flex-col list-image-none;
+      li {
+        @apply relative pl-8 mb-4;
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 20px; /* Adjust based on your image size */
+          height: 20px; /* Adjust based on your image size */
+          background-image: url("/images/checkbox.png"); /* URL of your image */
+          background-size: contain; /* Ensure the image scales properly */
+          background-repeat: no-repeat; /* No repeat of the image */
+        }
+      }
     }
   }
 }

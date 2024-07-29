@@ -5,7 +5,7 @@ import { scrollUpVariants } from '@rocket-house-productions/util';
 import { PrismicNextImage } from '@prismicio/next';
 import MottoText from '../../motto-text/motto-text';
 
-import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { RichTextField } from '@prismicio/client';
 import { PrismicLink, PrismicRichText } from '@prismicio/react';
 import cn from 'classnames';
