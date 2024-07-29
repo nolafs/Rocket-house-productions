@@ -105,14 +105,10 @@ export function Navbar({ navigation, logo }: HeaderProps) {
 
             {/* Toggle button */}
             <Sheet>
-              <SheetTrigger>
-                <Button variant="link" className={'absolute right-0 top-0 z-50 block md:hidden'}>
-                  <span className="burger-menu cursor-pointer text-[30px] leading-none text-black">
-                    <i className="bx bx-menu">
-                      <Menu />
-                    </i>
-                  </span>
-                </Button>
+              <SheetTrigger className={'absolute right-0 top-1/2 z-50 block -translate-y-1/2 items-center md:hidden'}>
+                <i className="bx bx-menu">
+                  <Menu />
+                </i>
               </SheetTrigger>
               <SheetContent side={'right'} className={'w-[80vw]'}>
                 <SheetHeader>
