@@ -46,7 +46,7 @@ export type AuthorDocument<Lang extends string = string> = prismic.PrismicDocume
   Lang
 >;
 
-type BlogDocumentDataSlicesSlice = RichTextSliceSlice;
+type BlogDocumentDataSlicesSlice = CallToActionSlice;
 
 /**
  * Content for Blog documents
@@ -264,7 +264,7 @@ export type BlogPostDocument<Lang extends string = string> = prismic.PrismicDocu
   Lang
 >;
 
-type ContactDocumentDataSlicesSlice = never;
+type ContactDocumentDataSlicesSlice = SectionHeadersSlice | CallToActionSlice;
 
 /**
  * Content for Contact documents
@@ -339,7 +339,7 @@ export type ContactDocument<Lang extends string = string> = prismic.PrismicDocum
   Lang
 >;
 
-type HomeDocumentDataSlicesSlice = ContentImageSliceSlice;
+type HomeDocumentDataSlicesSlice = CallToActionSlice | SectionHeadersSlice | ContentImageSliceSlice;
 
 /**
  * Content for Home documents
