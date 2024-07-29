@@ -9,8 +9,10 @@
 					{
 						"type": "paragraph",
 						"content": {
-							"text": "Irure quis nulla dolor ullamco quis qui mollit id. Sint non voluptate excepteur exercitation reprehenderit nostrud officia laboris officia qui mollit."
-						}
+							"text": "Invest in your child’s musical future with Kids Guitar Dojo",
+							"spans": []
+						},
+						"direction": "ltr"
 					}
 				]
 			},
@@ -20,8 +22,10 @@
 					{
 						"type": "paragraph",
 						"content": {
-							"text": "Dolor consectetur nulla cillum laboris nisi minim minim mollit eu elit minim."
-						}
+							"text": "Watch them thrive in an environment that supports their growth and fosters a lifelong love of music.",
+							"spans": []
+						},
+						"direction": "ltr"
 					}
 				]
 			},
@@ -55,6 +59,30 @@
 									"__TYPE__": "FieldContent",
 									"value": "Outlined",
 									"type": "Select"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Buy now"
+								}
+							],
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "https://slicemachine.dev",
+										"target": ""
+									}
 								}
 							]
 						]

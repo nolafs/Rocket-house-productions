@@ -1,5 +1,7 @@
 import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
+import { Bounded } from '@components/Bounded';
+import { CtaTwoColumn } from '@rocket-house-productions/features';
 
 /**
  * Props for `CallToAction`.
@@ -11,9 +13,15 @@ export type CallToActionProps = SliceComponentProps<Content.CallToActionSlice>;
  */
 const CallToAction = ({ slice }: CallToActionProps): JSX.Element => {
   return (
-    <section data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
-      Placeholder component for call_to_action (variation: {slice.variation}) Slices
-    </section>
+    <Bounded as={'div'}>
+      <CtaTwoColumn
+        data={{
+          headings: slice.primary.heading,
+          motto: { text: slice.primary.body },
+          buttons: slice.primary.buttons,
+        }}
+      />
+    </Bounded>
   );
 };
 

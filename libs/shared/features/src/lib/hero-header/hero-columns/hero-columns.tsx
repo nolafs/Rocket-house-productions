@@ -34,7 +34,7 @@ export function HeroColumns({
   console.log('buttons', buttons);
   return (
     <div className="hero-area pt-20 md:pt-24">
-      <div className={cn('gap-7.5 container grid lg:grid-cols-2')}>
+      <div className={cn('gap-7.5 grid lg:grid-cols-2')}>
         <motion.div
           className={cn(
             'self-center text-center md:text-left',
@@ -45,11 +45,6 @@ export function HeroColumns({
           whileInView="onscreen"
           viewport={{ once: true, amount: 0.1 }}
           variants={scrollUpVariants}>
-          <div
-            className={
-              'text-md text-secondary-light lg:text-lg" mt-3 font-medium leading-relaxed sm:text-[16px]'
-            }></div>
-
           <span
             className={cn(
               'relative mb-2 flex w-fit rounded-full px-3 py-1 text-sm font-bold uppercase leading-normal tracking-tight md:mb-5',

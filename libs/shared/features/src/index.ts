@@ -1,3 +1,4 @@
+export * from './lib/cta/cta-two-column';
 export { NewsletterFormStatus } from './lib/newsletter-form/newsletter-form-status';
 export { NewsletterForm } from './lib/newsletter-form/newsletter-form';
 export { HeroColumns } from './lib/hero-header/hero-columns/hero-columns';
