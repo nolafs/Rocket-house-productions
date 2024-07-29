@@ -85,6 +85,17 @@
                     "Outlined"
                   ]
                 }
+              },
+              "typeCase": {
+                "type": "Select",
+                "config": {
+                  "label": "Type Case",
+                  "placeholder": "",
+                  "options": [
+                    "Default",
+                    "Uppercase"
+                  ]
+                }
               }
             }
           }

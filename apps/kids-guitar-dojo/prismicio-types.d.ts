@@ -1015,6 +1015,16 @@ export interface HeroSliceDefaultPrimaryButtonsItem {
    * - **Documentation**: https://prismic.io/docs/field#select
    */
   type: prismic.SelectField<'Default' | 'Outlined'>;
+
+  /**
+   * Type Case field in *Hero → Default → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.buttons[].typeCase
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  typeCase: prismic.SelectField<'Default' | 'Uppercase'>;
 }
 
 /**

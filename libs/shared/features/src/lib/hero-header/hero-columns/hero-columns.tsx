@@ -68,10 +68,13 @@ export function HeroColumns({
           {motto && <MottoText {...motto} size="md" className="mt-[25px]" />}
           {buttons && (
             <div className={'mt-10 flex gap-2.5'}>
-              {buttons?.map(({ link, type, label, ...rest }) => (
+              {buttons?.map(({ link, type, label, typeCase }) => (
                 <PrismicLink
                   field={link}
-                  className={buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' })}>
+                  className={cn(
+                    buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),
+                    typeCase === 'Uppercase' && 'uppercase',
+                  )}>
                   {label}
                 </PrismicLink>
               ))}
