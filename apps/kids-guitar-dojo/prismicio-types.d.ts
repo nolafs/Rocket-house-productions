@@ -881,6 +881,29 @@ type ContentImageSliceSliceVariation = ContentImageSliceSliceDefault;
 export type ContentImageSliceSlice = prismic.SharedSlice<'content_image_slice', ContentImageSliceSliceVariation>;
 
 /**
+ * Default variation for Hero Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSliceDefault = prismic.SharedSliceVariation<'default', Record<string, never>, never>;
+
+/**
+ * Slice variation for *Hero*
+ */
+type HeroSliceVariation = HeroSliceDefault;
+
+/**
+ * Hero Shared Slice
+ *
+ * - **API ID**: `hero`
+ * - **Description**: Hero
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSlice = prismic.SharedSlice<'hero', HeroSliceVariation>;
+
+/**
  * Primary content in *RichTextSlice → Default → Primary*
  */
 export interface RichTextSliceSliceDefaultPrimary {
@@ -1094,6 +1117,9 @@ declare module '@prismicio/client' {
       ContentImageSliceSliceDefaultPrimary,
       ContentImageSliceSliceVariation,
       ContentImageSliceSliceDefault,
+      HeroSlice,
+      HeroSliceVariation,
+      HeroSliceDefault,
       RichTextSliceSlice,
       RichTextSliceSliceDefaultPrimary,
       RichTextSliceSliceTwoColumnsPrimary,
