@@ -1063,6 +1063,51 @@ export interface HeroSliceImageAlignmentRightPrimaryButtonsItem {
 }
 
 /**
+ * Item in *Hero → Thunder Decoration → Primary → Buttons*
+ */
+export interface HeroSliceThunderDecorationPrimaryButtonsItem {
+  /**
+   * Link field in *Hero → Thunder Decoration → Primary → Buttons*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.buttons[].link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+
+  /**
+   * Label field in *Hero → Thunder Decoration → Primary → Buttons*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.buttons[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Type field in *Hero → Thunder Decoration → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.buttons[].type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<'Default' | 'Outlined'>;
+
+  /**
+   * Type Case field in *Hero → Thunder Decoration → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.buttons[].typeCase
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  typeCase: prismic.SelectField<'Default' | 'Uppercase'>;
+}
+
+/**
  * Primary content in *Hero → Default → Primary*
  */
 export interface HeroSliceDefaultPrimary {
@@ -1215,9 +1260,87 @@ export type HeroSliceImageAlignmentRight = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *Hero → Thunder Decoration → Primary*
+ */
+export interface HeroSliceThunderDecorationPrimary {
+  /**
+   * Heading field in *Hero → Thunder Decoration → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Subheading field in *Hero → Thunder Decoration → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  subheading: prismic.RichTextField;
+
+  /**
+   * Category field in *Hero → Thunder Decoration → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.category
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  category: prismic.KeyTextField;
+
+  /**
+   * Body field in *Hero → Thunder Decoration → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Image field in *Hero → Thunder Decoration → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Buttons field in *Hero → Thunder Decoration → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.buttons[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  buttons: prismic.GroupField<Simplify<HeroSliceThunderDecorationPrimaryButtonsItem>>;
+}
+
+/**
+ * Thunder Decoration variation for Hero Slice
+ *
+ * - **API ID**: `thunderDecoration`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSliceThunderDecoration = prismic.SharedSliceVariation<
+  'thunderDecoration',
+  Simplify<HeroSliceThunderDecorationPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *Hero*
  */
-type HeroSliceVariation = HeroSliceDefault | HeroSliceImageAlignmentRight;
+type HeroSliceVariation = HeroSliceDefault | HeroSliceImageAlignmentRight | HeroSliceThunderDecoration;
 
 /**
  * Hero Shared Slice
@@ -1452,9 +1575,12 @@ declare module '@prismicio/client' {
       HeroSliceDefaultPrimary,
       HeroSliceImageAlignmentRightPrimaryButtonsItem,
       HeroSliceImageAlignmentRightPrimary,
+      HeroSliceThunderDecorationPrimaryButtonsItem,
+      HeroSliceThunderDecorationPrimary,
       HeroSliceVariation,
       HeroSliceDefault,
       HeroSliceImageAlignmentRight,
+      HeroSliceThunderDecoration,
       RichTextSliceSlice,
       RichTextSliceSliceDefaultPrimary,
       RichTextSliceSliceTwoColumnsPrimary,

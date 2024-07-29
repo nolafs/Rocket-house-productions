@@ -30,6 +30,26 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
     );
   }
 
+  if (slice.variation === 'thunderDecoration') {
+    return (
+      <Bounded as={'header'} yPadding={'lg'}>
+        <HeroColumns
+          data={{
+            headings: slice.primary.heading,
+            text: slice.primary.category,
+            subheading: slice.primary.subheading,
+            motto: { text: slice.primary.body },
+            image: slice.primary.image,
+            buttons: slice.primary.buttons,
+          }}
+          alignment={'Left'}
+          color={'B'}
+          decor={'B'}
+        />
+      </Bounded>
+    );
+  }
+
   return (
     <Bounded as={'header'}>
       <HeroColumns
