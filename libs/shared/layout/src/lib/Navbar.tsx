@@ -11,6 +11,7 @@ import { NavigationProps } from '@rocket-house-productions/types';
 import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
 import {
   Button,
+  buttonVariants,
   Sheet,
   SheetContent,
   SheetDescription,
@@ -18,6 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@rocket-house-productions/shadcn-ui';
+import cn from 'classnames';
 
 interface HeaderProps {
   navigation: NavigationProps;
@@ -92,8 +94,8 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                   </li>
                   <li>
                     <Link
-                      href="/contact-us/"
-                      className="bg-primary hover:bg-accent inline-block rounded-sm py-[9px] pl-5 pr-3 text-[14px] font-bold uppercase text-white transition duration-500 ease-in-out hover:text-gray-500">
+                      href="/pricing"
+                      className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'uppercase')}>
                       Buy now
                     </Link>
                   </li>
@@ -104,7 +106,7 @@ export function Navbar({ navigation, logo }: HeaderProps) {
             {/* Toggle button */}
             <Sheet>
               <SheetTrigger>
-                <Button variant="link" className={'absolute right-0 top-0 z-50'}>
+                <Button variant="link" className={'absolute right-0 top-0 z-50 block md:hidden'}>
                   <span className="burger-menu cursor-pointer text-[30px] leading-none text-black">
                     <i className="bx bx-menu">
                       <Menu />
@@ -116,18 +118,39 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                 <SheetHeader>
                   <SheetTitle className={'sr-only'}>Menu</SheetTitle>
                 </SheetHeader>
-                <ul className={'b mt-10 flex flex-col divide-y divide-gray-500/10'}>
-                  {navigation &&
-                    navigation.items.map(item => (
-                      <li key={asText(item.label)} className="group relative py-5">
-                        <PrismicNextLink
-                          field={item.link}
-                          className="hover:text-primary text-base font-medium text-black text-gray-500 transition-all">
-                          <PrismicText field={item.label} />
-                        </PrismicNextLink>
+                <div className={'flex h-full flex-col items-stretch'}>
+                  <div className={'grow'}>
+                    <ul className={'b mt-10 flex flex-col divide-y divide-gray-500/10'}>
+                      {navigation &&
+                        navigation.items.map(item => (
+                          <li key={asText(item.label)} className="group relative py-5">
+                            <PrismicNextLink
+                              field={item.link}
+                              className="hover:text-primary text-base font-medium text-black text-gray-500 transition-all">
+                              <PrismicText field={item.label} />
+                            </PrismicNextLink>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <ul className={'flex flex-row items-center justify-center space-x-5'}>
+                      <li>
+                        <SignedOut>
+                          <SignInButton />
+                        </SignedOut>
+                        <SignedIn>
+                          <UserButton />
+                        </SignedIn>
                       </li>
-                    ))}
-                </ul>
+                      <li>
+                        <Link href="/contact-us/" className={buttonVariants({ variant: 'outline' })}>
+                          Buy now
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </SheetContent>
             </Sheet>
           </nav>
