@@ -5,7 +5,7 @@ import { RichTextField } from '@prismicio/client';
 
 type TProps = {
   className?: string;
-  title: RichTextField | null | undefined;
+  title?: RichTextField | null | undefined;
   subtitle?: string | null | undefined;
   description?: RichTextField | null | undefined;
   align?: 'left' | 'right' | 'center';
@@ -54,8 +54,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
             color === 'C' && 'text-primary',
             titleSize === 'large' && 'text-4xl font-bold leading-tight lg:text-5xl',
             titleClass,
-          )}
-        >
+          )}>
           <PrismicRichText field={title} />
         </h2>
 

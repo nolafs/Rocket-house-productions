@@ -903,7 +903,7 @@ export interface CallToActionSliceCenterPrimaryButtonsItem {
    * - **API ID Path**: call_to_action.center.primary.buttons[].typeCase
    * - **Documentation**: https://prismic.io/docs/field#select
    */
-  typeCase: prismic.SelectField<'1' | '2'>;
+  typeCase: prismic.SelectField<'Default' | 'Uppercase'>;
 }
 
 /**

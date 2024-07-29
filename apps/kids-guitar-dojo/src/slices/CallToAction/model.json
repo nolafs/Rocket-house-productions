@@ -226,8 +226,8 @@
                   "label": "Type Case",
                   "placeholder": "",
                   "options": [
-                    "1",
-                    "2"
+                    "Default",
+                    "Uppercase"
                   ]
                 }
               }

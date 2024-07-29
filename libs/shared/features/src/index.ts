@@ -1,3 +1,4 @@
+export * from './lib/cta/cta-one-column';
 export * from './lib/cta/cta-two-column-image';
 export * from './lib/cta/cta-two-column';
 export { NewsletterFormStatus } from './lib/newsletter-form/newsletter-form-status';

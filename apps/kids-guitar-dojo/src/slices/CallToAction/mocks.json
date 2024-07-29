@@ -271,15 +271,15 @@
 								"type",
 								{
 									"__TYPE__": "FieldContent",
-									"value": "Outlined",
-									"type": "Select"
+									"type": "Select",
+									"value": "Default"
 								}
 							],
 							[
 								"typeCase",
 								{
 									"__TYPE__": "FieldContent",
-									"value": "2",
+									"value": "Uppercase",
 									"type": "Select"
 								}
 							]
@@ -288,7 +288,6 @@
 				]
 			},
 			"background_image": {
-				"__TYPE__": "ImageContent",
 				"origin": {
 					"id": "main",
 					"url": "https://images.unsplash.com/photo-1515378960530-7c0da6231fb1",
@@ -306,6 +305,9 @@
 					},
 					"background": "transparent"
 				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
 				"thumbnails": {}
 			}
 		},
