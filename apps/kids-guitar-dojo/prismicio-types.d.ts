@@ -1045,6 +1045,16 @@ export interface CallToActionSliceCenterPrimary {
    * - **Documentation**: https://prismic.io/docs/field#group
    */
   buttons: prismic.GroupField<Simplify<CallToActionSliceCenterPrimaryButtonsItem>>;
+
+  /**
+   * Background Image field in *CallToAction → Center → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.center.primary.background_image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  background_image: prismic.ImageField<never>;
 }
 
 /**
