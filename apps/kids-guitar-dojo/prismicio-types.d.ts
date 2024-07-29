@@ -1077,6 +1077,16 @@ export interface HeroSliceDefaultPrimary {
   subheading: prismic.RichTextField;
 
   /**
+   * Category field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.category
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  category: prismic.KeyTextField;
+
+  /**
    * Body field in *Hero → Default → Primary*
    *
    * - **Field Type**: Rich Text
@@ -1139,6 +1149,16 @@ export interface HeroSliceImageAlignmentRightPrimary {
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
   subheading: prismic.RichTextField;
+
+  /**
+   * Category field in *Hero → Image Alignment Right → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.imageAlignmentRight.primary.category
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  category: prismic.KeyTextField;
 
   /**
    * Body field in *Hero → Image Alignment Right → Primary*

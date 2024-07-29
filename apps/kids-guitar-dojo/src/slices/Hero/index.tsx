@@ -18,7 +18,8 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
         <HeroColumns
           data={{
             headings: slice.primary.heading,
-            text: slice.primary.subheading,
+            text: slice.primary.category,
+            subheading: slice.primary.subheading,
             motto: { text: slice.primary.body },
             image: slice.primary.image,
             buttons: slice.primary.buttons,
@@ -34,7 +35,8 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
       <HeroColumns
         data={{
           headings: slice.primary.heading,
-          text: slice.primary.subheading,
+          text: slice.primary.category,
+          subheading: slice.primary.subheading,
           motto: { text: slice.primary.body },
           image: slice.primary.image,
           buttons: slice.primary.buttons,

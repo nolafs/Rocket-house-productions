@@ -15,7 +15,8 @@ import notes from './assets/notes.svg';
 interface HeroColumnsProps {
   data: {
     headings: RichTextField | null | undefined;
-    text: RichTextField | null | undefined;
+    subheading: RichTextField | null | undefined;
+    text?: string | null | undefined;
     buttons?: any[];
     motto: { text: RichTextField | null | undefined };
     image: any;
@@ -25,7 +26,7 @@ interface HeroColumnsProps {
 }
 
 export function HeroColumns({
-  data: { headings, text, buttons, motto, image },
+  data: { headings, subheading, text, buttons, motto, image },
   alignment = 'Left',
   color = 'A',
 }: HeroColumnsProps) {
@@ -51,13 +52,18 @@ export function HeroColumns({
               color === 'A' && 'text-primary bg-secondary',
               color === 'B' && 'text-secondary',
             )}>
-            <PrismicRichText field={text} />
+            {text}
           </span>
 
           {headings && (
             <h1 className="text-3xl font-bold leading-[1.17] sm:text-4xl lg:text-5xl">
               <PrismicRichText field={headings} />
             </h1>
+          )}
+          {subheading && (
+            <div className="mt-3 text-2xl font-medium leading-[1.17] sm:text-3xl lg:text-4xl">
+              <PrismicRichText field={subheading} />
+            </div>
           )}
           {motto && <MottoText {...motto} size="md" className="mt-[25px]" />}
           {buttons && (
