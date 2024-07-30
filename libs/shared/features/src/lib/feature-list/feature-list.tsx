@@ -37,7 +37,11 @@ export function FeatureList({
               titleSize="large"
             />
           )}
-          <div className={'mt-20 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'}>
+          <div
+            className={cn(
+              'mt-20 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3',
+              decor === 'A' ? 'lg:grid-cols-4' : 'lg:grid-cols-3',
+            )}>
             {features?.length &&
               features.map(({ image, heading, body }) => (
                 <div className={'flex flex-col items-center text-center'}>
