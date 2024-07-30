@@ -33,7 +33,7 @@ export function HeroCenter({
   return (
     <div
       className={cn(
-        'hero-area relative pb-[130px] pt-[100px] md:py-[170px] xl:pb-[248px] xl:pt-[270px]',
+        'hero-area relative pb-[130px] pt-[100px] md:py-[170px] xl:pb-[248px] xl:pt-[180px]',
         color === 'A' ? 'bg-primary' : 'bg-neutral',
       )}>
       <h1 className="sr-only">Home Page</h1>
