@@ -6,7 +6,7 @@ type TProps = {
   color?: string;
 };
 
-const BottomShape = ({ className, color = 'fill-white' }: TProps) => {
+export const BottomShape = ({ className, color = 'fill-white' }: TProps) => {
   return (
     <div
       className={cn(
@@ -16,10 +16,6 @@ const BottomShape = ({ className, color = 'fill-white' }: TProps) => {
       <BottomShapeSVG className={cn('rotate-y-180-translate-x-half relative left-1/2 block h-full w-full', color)} />
     </div>
   );
-};
-
-BottomShape.defaultProps = {
-  color: 'fill-white/5',
 };
 
 export default BottomShape;

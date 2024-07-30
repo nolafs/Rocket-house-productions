@@ -86,7 +86,6 @@ export function HeroCenter({
         )}
       </motion.div>
       <BottomShape />
-      <div className=""></div>
     </div>
   );
 }

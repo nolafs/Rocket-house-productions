@@ -1,3 +1,4 @@
+export * from './lib/feature-list/feature-list';
 export * from './lib/video-player/video-player-wrapper';
 export * from './lib/hero-header/hero-center/hero-center';
 export { CtaOneColumn } from './lib/cta/cta-one-column';

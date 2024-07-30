@@ -16,8 +16,9 @@ interface ButtonGroupProps {
 export function ButtonGroup({ buttons }: ButtonGroupProps) {
   return (
     <>
-      {buttons?.map(({ link, type, label, typeCase }) => (
+      {buttons?.map(({ link, type, label, typeCase }, index) => (
         <PrismicLink
+          key={(label + index).replace(/\s/g, '-').toLowerCase()}
           field={link}
           className={cn(
             buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),

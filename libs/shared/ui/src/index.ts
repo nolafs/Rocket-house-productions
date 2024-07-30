@@ -6,4 +6,9 @@ export * from './label/label';
 export * from './anchor/Anchor';
 export * from './card/blog-card';
 export { BottomShape } from './bottom-shape/shape-01';
+export { BottomShape as BottomShape2 } from './bottom-shape/shape-02';
+export { BottomShape as BottomShape3 } from './bottom-shape/shape-03';
+export { BottomShape as BottomShape4 } from './bottom-shape/shape-04';
+export { BottomShape as BottomShape5 } from './bottom-shape/shape-05';
+
 export * from './notification/notification-block';

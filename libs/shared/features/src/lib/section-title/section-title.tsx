@@ -40,6 +40,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
               'relative mb-2 flex w-fit rounded-full px-3 py-1 text-sm font-bold uppercase leading-normal tracking-tight md:mb-5',
               color === 'A' && 'text-primary bg-secondary',
               color === 'B' && 'text-secondary',
+              color === 'C' && 'bg-primary text-white',
               align === 'center' && 'mx-auto',
               subtitleClass,
             )}
@@ -51,7 +52,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
           className={cn(
             'title child:text-primary child:font-normal m-0',
             color === 'A' && 'text-gray-900',
-            color === 'C' && 'text-primary',
+            color === 'B' && 'text-primary',
             titleSize === 'large' && 'text-4xl font-bold leading-tight lg:text-5xl',
             titleClass,
           )}>
@@ -59,7 +60,13 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
         </h2>
 
         {description && (
-          <div className={cn('mb-0 mt-[25px] font-medium', descClass, color === 'C' && 'text-primary')}>
+          <div
+            className={cn(
+              'mb-0 mt-[25px] font-medium leading-relaxed text-gray-500',
+              descClass,
+              color === 'A' && 'text-gray-500',
+              color === 'B' && 'text-primary',
+            )}>
             <PrismicRichText field={description} />
           </div>
         )}

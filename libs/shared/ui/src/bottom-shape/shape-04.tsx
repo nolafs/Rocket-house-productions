@@ -6,7 +6,7 @@ type TProps = {
   color?: string;
 };
 
-const BottomShape = ({ className, color = 'fill-white' }: TProps) => {
+export const BottomShape = ({ className, color = 'fill-white' }: TProps) => {
   return (
     <div
       className={cn(
