@@ -37,6 +37,10 @@
     --border: 214.3 31.8% 91.4%;
   }
 
+  main {
+    @apply min-h-lvh;
+  }
+
   .rich-text-prose > p:first-of-type {
     margin-top: 0 !important;
   }

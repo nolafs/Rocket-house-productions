@@ -1,13 +1,17 @@
-export default function Index() {
-  /*
-   * Replace the elements below with your own.
-   *
-   * Note: The corresponding styles are in the ./index.tailwind file.
-   */
+import { SliceZone } from '@prismicio/react';
+import { components } from '@/slices';
+import { createClient } from '@/prismicio';
+import { notFound } from 'next/navigation';
+
+export default async function Index() {
+  const client = createClient();
+  const page = await client.getByType('home').catch(() => notFound());
+
+  console.log(page);
+
   return (
-    <div className={'container mx-auto'}>
-      <div className={'h-screen'}>header</div>
-      <div className={'h-screen'}>body</div>
-    </div>
+    <main>
+      <SliceZone slices={page.results[0].data.slices} components={components} />
+    </main>
   );
 }

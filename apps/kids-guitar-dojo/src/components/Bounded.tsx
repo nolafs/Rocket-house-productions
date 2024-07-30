@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 type BoundedProps = {
   as?: 'div' | 'section' | 'header' | 'article';
-  yPadding?: 'sm' | 'base' | 'lg';
+  yPadding?: 'sm' | 'md' | 'base' | 'lg';
   collapsible?: boolean;
   className?: string;
   children?: ReactNode;
@@ -22,6 +22,7 @@ export function Bounded({
       className={cn(
         'px-6 xl:px-0',
         yPadding === 'sm' && 'py-8 md:py-10',
+        yPadding === 'md' && 'py-16 md:py-20',
         yPadding === 'base' && 'py-20 md:py-28',
         yPadding === 'lg' && 'py-32 md:py-48',
         className,

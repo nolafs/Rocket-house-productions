@@ -22,7 +22,13 @@ export const metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        layout: {
+          logoImageUrl:
+            'https://deploy-preview-1--kids-guitar-dojo.netlify.app/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.8b1fb0cd.png&w=128&q=75',
+        },
+      }}>
       <UIProvider>
         <html lang="en" className={`${raleway.variable} font-sans`} suppressHydrationWarning>
           <body className={'bg-background min-h-screen font-sans antialiased'}>

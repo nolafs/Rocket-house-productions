@@ -22,7 +22,7 @@ export function CtaOneColumn({ data: { headings, buttons, motto, backgroundImage
   console.log('CtaOneColumn', { headings, buttons, motto, backgroundImage });
 
   return (
-    <div className={'bg-primary relative isolate w-full overflow-hidden px-10 py-20 text-white md:py-28'}>
+    <div className={'bg-primary relative isolate my-10 w-full overflow-hidden px-10 py-20 text-white md:py-28'}>
       {backgroundImage && (
         <motion.div
           className="overflow-hidden"

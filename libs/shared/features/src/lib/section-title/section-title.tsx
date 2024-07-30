@@ -33,7 +33,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
     ref,
   ) => {
     return (
-      <div className={cn('section-title relative z-20', align === 'center' && 'text-center', className)} ref={ref}>
+      <div className={cn('section-title relative z-10', align === 'center' && 'text-center', className)} ref={ref}>
         {subtitle && (
           <span
             className={cn(
