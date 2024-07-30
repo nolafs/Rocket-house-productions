@@ -1244,41 +1244,6 @@ export interface HeroSliceDefaultPrimaryButtonsItem {
 }
 
 /**
- * Item in *Hero → Image Alignment Right → Primary → Buttons*
- */
-export interface HeroSliceImageAlignmentRightPrimaryButtonsItem {
-  /**
-   * Link field in *Hero → Image Alignment Right → Primary → Buttons*
-   *
-   * - **Field Type**: Link
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.imageAlignmentRight.primary.buttons[].link
-   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
-   */
-  link: prismic.LinkField;
-
-  /**
-   * Label field in *Hero → Image Alignment Right → Primary → Buttons*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.imageAlignmentRight.primary.buttons[].label
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  label: prismic.KeyTextField;
-
-  /**
-   * Type field in *Hero → Image Alignment Right → Primary → Buttons*
-   *
-   * - **Field Type**: Select
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.imageAlignmentRight.primary.buttons[].type
-   * - **Documentation**: https://prismic.io/docs/field#select
-   */
-  type: prismic.SelectField<'Default' | 'Outlined'>;
-}
-
-/**
  * Item in *Hero → Thunder Decoration → Primary → Buttons*
  */
 export interface HeroSliceThunderDecorationPrimaryButtonsItem {
@@ -1324,9 +1289,64 @@ export interface HeroSliceThunderDecorationPrimaryButtonsItem {
 }
 
 /**
+ * Item in *Hero → Centered → Primary → Buttons*
+ */
+export interface HeroSliceCenteredPrimaryButtonsItem {
+  /**
+   * Link field in *Hero → Centered → Primary → Buttons*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.buttons[].link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+
+  /**
+   * Label field in *Hero → Centered → Primary → Buttons*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.buttons[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Type field in *Hero → Centered → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.buttons[].type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<'Default' | 'Outlined'>;
+
+  /**
+   * Type Case field in *Hero → Centered → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.buttons[].typeCase
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  typeCase: prismic.SelectField<'Default' | 'Uppercase'>;
+}
+
+/**
  * Primary content in *Hero → Default → Primary*
  */
 export interface HeroSliceDefaultPrimary {
+  /**
+   * Page Name field in *Hero → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.default.primary.page_name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  page_name: prismic.KeyTextField;
+
   /**
    * Heading field in *Hero → Default → Primary*
    *
@@ -1398,87 +1418,19 @@ export interface HeroSliceDefaultPrimary {
 export type HeroSliceDefault = prismic.SharedSliceVariation<'default', Simplify<HeroSliceDefaultPrimary>, never>;
 
 /**
- * Primary content in *Hero → Image Alignment Right → Primary*
- */
-export interface HeroSliceImageAlignmentRightPrimary {
-  /**
-   * Heading field in *Hero → Image Alignment Right → Primary*
-   *
-   * - **Field Type**: Rich Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.imageAlignmentRight.primary.heading
-   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
-   */
-  heading: prismic.RichTextField;
-
-  /**
-   * Subheading field in *Hero → Image Alignment Right → Primary*
-   *
-   * - **Field Type**: Rich Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.imageAlignmentRight.primary.subheading
-   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
-   */
-  subheading: prismic.RichTextField;
-
-  /**
-   * Category field in *Hero → Image Alignment Right → Primary*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.imageAlignmentRight.primary.category
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  category: prismic.KeyTextField;
-
-  /**
-   * Body field in *Hero → Image Alignment Right → Primary*
-   *
-   * - **Field Type**: Rich Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.imageAlignmentRight.primary.body
-   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
-   */
-  body: prismic.RichTextField;
-
-  /**
-   * Image field in *Hero → Image Alignment Right → Primary*
-   *
-   * - **Field Type**: Image
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.imageAlignmentRight.primary.image
-   * - **Documentation**: https://prismic.io/docs/field#image
-   */
-  image: prismic.ImageField<never>;
-
-  /**
-   * Buttons field in *Hero → Image Alignment Right → Primary*
-   *
-   * - **Field Type**: Group
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.imageAlignmentRight.primary.buttons[]
-   * - **Documentation**: https://prismic.io/docs/field#group
-   */
-  buttons: prismic.GroupField<Simplify<HeroSliceImageAlignmentRightPrimaryButtonsItem>>;
-}
-
-/**
- * Image Alignment Right variation for Hero Slice
- *
- * - **API ID**: `imageAlignmentRight`
- * - **Description**: Default
- * - **Documentation**: https://prismic.io/docs/slice
- */
-export type HeroSliceImageAlignmentRight = prismic.SharedSliceVariation<
-  'imageAlignmentRight',
-  Simplify<HeroSliceImageAlignmentRightPrimary>,
-  never
->;
-
-/**
  * Primary content in *Hero → Thunder Decoration → Primary*
  */
 export interface HeroSliceThunderDecorationPrimary {
+  /**
+   * Page Name field in *Hero → Thunder Decoration → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.thunderDecoration.primary.page_name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  page_name: prismic.KeyTextField;
+
   /**
    * Heading field in *Hero → Thunder Decoration → Primary*
    *
@@ -1554,9 +1506,93 @@ export type HeroSliceThunderDecoration = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *Hero → Centered → Primary*
+ */
+export interface HeroSliceCenteredPrimary {
+  /**
+   * Page Name field in *Hero → Centered → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.page_name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  page_name: prismic.KeyTextField;
+
+  /**
+   * Heading field in *Hero → Centered → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Subheading field in *Hero → Centered → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  subheading: prismic.RichTextField;
+
+  /**
+   * Category field in *Hero → Centered → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.category
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  category: prismic.KeyTextField;
+
+  /**
+   * Body field in *Hero → Centered → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Image field in *Hero → Centered → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Buttons field in *Hero → Centered → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.centered.primary.buttons[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  buttons: prismic.GroupField<Simplify<HeroSliceCenteredPrimaryButtonsItem>>;
+}
+
+/**
+ * Centered variation for Hero Slice
+ *
+ * - **API ID**: `centered`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSliceCentered = prismic.SharedSliceVariation<'centered', Simplify<HeroSliceCenteredPrimary>, never>;
+
+/**
  * Slice variation for *Hero*
  */
-type HeroSliceVariation = HeroSliceDefault | HeroSliceImageAlignmentRight | HeroSliceThunderDecoration;
+type HeroSliceVariation = HeroSliceDefault | HeroSliceThunderDecoration | HeroSliceCentered;
 
 /**
  * Hero Shared Slice
@@ -1795,14 +1831,14 @@ declare module '@prismicio/client' {
       HeroSlice,
       HeroSliceDefaultPrimaryButtonsItem,
       HeroSliceDefaultPrimary,
-      HeroSliceImageAlignmentRightPrimaryButtonsItem,
-      HeroSliceImageAlignmentRightPrimary,
       HeroSliceThunderDecorationPrimaryButtonsItem,
       HeroSliceThunderDecorationPrimary,
+      HeroSliceCenteredPrimaryButtonsItem,
+      HeroSliceCenteredPrimary,
       HeroSliceVariation,
       HeroSliceDefault,
-      HeroSliceImageAlignmentRight,
       HeroSliceThunderDecoration,
+      HeroSliceCentered,
       RichTextSliceSlice,
       RichTextSliceSliceDefaultPrimary,
       RichTextSliceSliceTwoColumnsPrimary,

@@ -13,8 +13,9 @@ import Image from 'next/image';
 import notes from './assets/notes.svg';
 import thunder from './assets/thunder.svg';
 
-interface HeroColumnsProps {
+interface HeroProps {
   data: {
+    pageName: string | null | undefined;
     headings: RichTextField | null | undefined;
     subheading: RichTextField | null | undefined;
     text?: string | null | undefined;
@@ -28,11 +29,11 @@ interface HeroColumnsProps {
 }
 
 export function HeroColumns({
-  data: { headings, subheading, text, buttons, motto, image },
+  data: { headings, subheading, text, buttons, motto, image, pageName },
   alignment = 'Left',
   color = 'A',
   decor = 'A',
-}: HeroColumnsProps) {
+}: HeroProps) {
   const { trans1, trans2 } = useUI();
 
   const colorA = '#2C67DC';
@@ -41,6 +42,7 @@ export function HeroColumns({
   console.log('buttons', buttons);
   return (
     <div className="hero-area pt-20 md:pt-24">
+      <h1 className="sr-only">{pageName}</h1>
       <div className={cn('gap-7.5 grid lg:grid-cols-2')}>
         <motion.div
           className={cn(
@@ -61,9 +63,9 @@ export function HeroColumns({
             </span>
           )}
           {headings && (
-            <h1 className="text-3xl font-bold leading-[1.17] sm:text-4xl lg:text-5xl">
+            <h2 className="text-3xl font-bold leading-[1.17] sm:text-4xl lg:text-5xl">
               <PrismicRichText field={headings} />
-            </h1>
+            </h2>
           )}
           {subheading && (
             <div className="mt-3 text-2xl font-medium leading-[1.17] sm:text-3xl lg:text-4xl">

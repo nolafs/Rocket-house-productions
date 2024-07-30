@@ -4,3 +4,4 @@ export { Button } from './button/button';
 export * from './label/label';
 export * from './anchor/Anchor';
 export * from './card/blog-card';
+export { BottomShape } from './bottom-shape/shape-01';

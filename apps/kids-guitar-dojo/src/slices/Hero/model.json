@@ -12,6 +12,13 @@
       "description": "Default",
       "imageUrl": "",
       "primary": {
+        "page_name": {
+          "type": "Text",
+          "config": {
+            "label": "Page Name",
+            "placeholder": ""
+          }
+        },
         "heading": {
           "type": "StructuredText",
           "config": {
@@ -104,13 +111,20 @@
       "items": {}
     },
     {
-      "id": "imageAlignmentRight",
-      "name": "Image Alignment Right",
+      "id": "thunderDecoration",
+      "name": "Thunder Decoration",
       "docURL": "...",
       "version": "initial",
       "description": "Default",
       "imageUrl": "",
       "primary": {
+        "page_name": {
+          "type": "Text",
+          "config": {
+            "label": "Page Name",
+            "placeholder": ""
+          }
+        },
         "heading": {
           "type": "StructuredText",
           "config": {
@@ -184,6 +198,17 @@
                     "Outlined"
                   ]
                 }
+              },
+              "typeCase": {
+                "type": "Select",
+                "config": {
+                  "label": "Type Case",
+                  "placeholder": "",
+                  "options": [
+                    "Default",
+                    "Uppercase"
+                  ]
+                }
               }
             }
           }
@@ -192,13 +217,20 @@
       "items": {}
     },
     {
-      "id": "thunderDecoration",
-      "name": "Thunder Decoration",
+      "id": "centered",
+      "name": "Centered",
       "docURL": "...",
       "version": "initial",
       "description": "Default",
       "imageUrl": "",
       "primary": {
+        "page_name": {
+          "type": "Text",
+          "config": {
+            "label": "Page Name",
+            "placeholder": ""
+          }
+        },
         "heading": {
           "type": "StructuredText",
           "config": {

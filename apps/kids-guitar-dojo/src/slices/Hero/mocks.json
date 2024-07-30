@@ -130,118 +130,14 @@
 				"__TYPE__": "FieldContent",
 				"value": "production",
 				"type": "Text"
+			},
+			"page_name": {
+				"__TYPE__": "FieldContent",
+				"value": "shoulder",
+				"type": "Text"
 			}
 		},
 		"items": []
-	},
-	{
-		"__TYPE__": "SharedSliceContent",
-		"variation": "imageAlignmentRight",
-		"primary": {
-			"heading": {
-				"__TYPE__": "StructuredTextContent",
-				"value": [
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "Adipisicing Lorem est est eiusmod id ex occaecat excepteur laboris."
-						}
-					}
-				]
-			},
-			"subheading": {
-				"__TYPE__": "StructuredTextContent",
-				"value": [
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "Pariatur sunt velit non culpa dolore consectetur. Esse nulla incididunt sunt consectetur nulla do amet officia velit non sit."
-						}
-					}
-				]
-			},
-			"category": {
-				"__TYPE__": "FieldContent",
-				"value": "copper",
-				"type": "Text"
-			},
-			"body": {
-				"__TYPE__": "StructuredTextContent",
-				"value": [
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "Velit ipsum laboris id. Adipisicing id dolore nisi ullamco ut velit elit nostrud ullamco Lorem ad aliqua aliqua. Officia id esse elit sunt incididunt sint est proident reprehenderit."
-						}
-					}
-				]
-			},
-			"image": {
-				"origin": {
-					"id": "main",
-					"url": "https://images.unsplash.com/photo-1586952518485-11b180e92764",
-					"width": 4172,
-					"height": 4000
-				},
-				"url": "https://images.unsplash.com/photo-1586952518485-11b180e92764",
-				"width": 4172,
-				"height": 4000,
-				"edit": {
-					"zoom": 1,
-					"crop": {
-						"x": 0,
-						"y": 0
-					},
-					"background": "transparent"
-				},
-				"credits": null,
-				"alt": null,
-				"__TYPE__": "ImageContent",
-				"thumbnails": {}
-			},
-			"buttons": {
-				"__TYPE__": "GroupContentType",
-				"value": [
-					{
-						"__TYPE__": "GroupItemContent",
-						"value": [
-							[
-								"link",
-								{
-									"__TYPE__": "LinkContent",
-									"value": {
-										"__TYPE__": "ExternalLink",
-										"url": "http://twitter.com"
-									}
-								}
-							],
-							[
-								"label",
-								{
-									"__TYPE__": "FieldContent",
-									"value": "name",
-									"type": "Text"
-								}
-							],
-							[
-								"type",
-								{
-									"__TYPE__": "FieldContent",
-									"value": "Default",
-									"type": "Select"
-								}
-							]
-						]
-					}
-				]
-			}
-		},
-		"items": [
-			{
-				"__TYPE__": "GroupItemContent",
-				"value": []
-			}
-		]
 	},
 	{
 		"__TYPE__": "SharedSliceContent",
@@ -355,6 +251,137 @@
 						]
 					}
 				]
+			},
+			"page_name": {
+				"__TYPE__": "FieldContent",
+				"value": "motion",
+				"type": "Text"
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "centered",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "The Easiest Way for Kids to Learn The Guitar 🤘",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"subheading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Kids Guitar Dojo",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"category": {
+				"__TYPE__": "FieldContent",
+				"value": "sentence",
+				"type": "Text"
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Cupidatat exercitation esse ea irure duis anim magna voluptate pariatur. Aliqua culpa irure eu enim incididunt. Consectetur qui ut exercitation laborum consequat anim commodo sunt consectetur laboris do."
+						}
+					}
+				]
+			},
+			"image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+					"width": 3882,
+					"height": 2584
+				},
+				"url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+				"width": 3882,
+				"height": 2584,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "http://twitter.com"
+									}
+								}
+							],
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "equipment",
+									"type": "Text"
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Outlined",
+									"type": "Select"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Uppercase",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			},
+			"page_name": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "howe"
 			}
 		},
 		"items": [

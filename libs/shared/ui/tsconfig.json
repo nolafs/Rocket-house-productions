@@ -2,11 +2,14 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "allowJs": false,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true
   },
-  "files": [],
+  "files": [
+    "../../node_modules/@nrwl/react/typings/image.d.ts",
+    "../../node_modules/@nrwl/react/typings/svg.d.ts"
+  ],
   "include": [],
   "references": [
     {

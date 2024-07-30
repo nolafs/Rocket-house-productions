@@ -49,6 +49,7 @@
     "@nx/react": "19.5.1",
     "@nx/workspace": "19.5.1",
     "@slicemachine/adapter-next": "^0.3.42",
+    "@svgr/webpack": "^8.1.0",
     "@swc-node/register": "~1.9.1",
     "@swc/cli": "~0.3.12",
     "@swc/core": "~1.5.7",
