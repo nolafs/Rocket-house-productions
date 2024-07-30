@@ -32,8 +32,10 @@
 					{
 						"type": "paragraph",
 						"content": {
-							"text": "Nisi non pariatur reprehenderit tempor deserunt adipisicing dolore pariatur qui pariatur excepteur ea enim consequat quis."
-						}
+							"text": "The Ultimate Learn Guitar From Home Program",
+							"spans": []
+						},
+						"direction": "ltr"
 					}
 				]
 			},
@@ -92,8 +94,10 @@
 					{
 						"type": "paragraph",
 						"content": {
-							"text": "Laboris qui aliqua laboris ullamco veniam. Fugiat et cupidatat est magna commodo nulla. Magna occaecat ullamco velit irure labore est sint do."
-						}
+							"text": "Kids Guitar Dojo is the perfect resource for Parents, Teachers and Homeschoolers. This Learn From Home activity-based curriculum makes online guitar lessons for kids easy and enjoyable. We’ve found that kids do much better with an activity-based approach to learning music, which reduces frustration and eliminates the possibility of getting “stuck.” And most importantly for parents, it encourages children to practice independently and voluntarily.",
+							"spans": []
+						},
+						"direction": "ltr"
 					}
 				]
 			}

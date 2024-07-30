@@ -7,6 +7,7 @@ import cn from 'classnames';
 import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
 import { PrismicNextImage } from '@prismicio/next';
+import { ButtonGroup } from '@rocket-house-productions/ui';
 
 interface CtaColumnsProps {
   data: {
@@ -49,16 +50,7 @@ export function CtaTwoColumnImage({ data: { headings, buttons, motto, image }, c
           {motto && <MottoText {...motto} size="lg" className="mt-[25px]" />}
           {buttons && (
             <div className="mt-10 flex flex-col gap-5 md:flex-row lg:flex-shrink-0">
-              {buttons?.map(({ link, type, label, typeCase }) => (
-                <PrismicLink
-                  field={link}
-                  className={cn(
-                    buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),
-                    typeCase === 'Uppercase' && 'uppercase',
-                  )}>
-                  {label}
-                </PrismicLink>
-              ))}
+              <ButtonGroup buttons={buttons} />
             </div>
           )}
         </div>

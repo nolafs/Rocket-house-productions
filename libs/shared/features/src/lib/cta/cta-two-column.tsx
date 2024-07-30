@@ -3,6 +3,7 @@ import { PrismicLink, PrismicRichText } from '@prismicio/react';
 import MottoText from '../motto-text/motto-text';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import cn from 'classnames';
+import { ButtonGroup } from '@rocket-house-productions/ui';
 
 interface CtaColumnsProps {
   data: {
@@ -25,16 +26,7 @@ export function CtaTwoColumn({ data: { headings, buttons, motto }, color }: CtaC
         </div>
         {buttons && (
           <div className="mt-10 flex items-center justify-end gap-x-5 lg:mt-0 lg:flex-shrink-0">
-            {buttons?.map(({ link, type, label, typeCase }) => (
-              <PrismicLink
-                field={link}
-                className={cn(
-                  buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),
-                  typeCase === 'Uppercase' && 'uppercase',
-                )}>
-                {label}
-              </PrismicLink>
-            ))}
+            <ButtonGroup buttons={buttons} />
           </div>
         )}
       </div>

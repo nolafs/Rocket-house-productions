@@ -4,14 +4,13 @@ import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
 import { PrismicNextImage } from '@prismicio/next';
 import MottoText from '../../motto-text/motto-text';
-
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { RichTextField } from '@prismicio/client';
-import { PrismicLink, PrismicRichText } from '@prismicio/react';
+import { PrismicRichText } from '@prismicio/react';
 import cn from 'classnames';
 import Image from 'next/image';
-import notes from './assets/notes.svg';
-import thunder from './assets/thunder.svg';
+import notes from '../../assets/notes.svg';
+import thunder from '../../assets/thunder.svg';
+import { ButtonGroup } from '@rocket-house-productions/ui';
 
 interface HeroProps {
   data: {
@@ -75,16 +74,7 @@ export function HeroColumns({
           {motto && <MottoText {...motto} size="md" className="mt-[25px]" />}
           {buttons && (
             <div className={'mt-10 flex justify-center gap-2.5 md:justify-start'}>
-              {buttons?.map(({ link, type, label, typeCase }) => (
-                <PrismicLink
-                  field={link}
-                  className={cn(
-                    buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),
-                    typeCase === 'Uppercase' && 'uppercase',
-                  )}>
-                  {label}
-                </PrismicLink>
-              ))}
+              <ButtonGroup buttons={buttons} />
             </div>
           )}
         </motion.div>

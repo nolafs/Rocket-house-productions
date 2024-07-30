@@ -2,9 +2,9 @@
 import { useUI } from '@rocket-house-productions/hooks';
 import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
-import { BottomShape } from '@rocket-house-productions/ui';
+import { BottomShape, ButtonGroup } from '@rocket-house-productions/ui';
 import SectionTitle from '../../section-title/section-title';
-import { asText, RichTextField } from '@prismicio/client';
+import { RichTextField } from '@prismicio/client';
 import MottoText from '../../motto-text/motto-text';
 import cn from 'classnames';
 import { PrismicLink } from '@prismicio/react';
@@ -51,17 +51,7 @@ export function HeroCenter({
 
         {buttons && (
           <div className={'mb-16 mt-10 flex justify-center gap-2.5'}>
-            {buttons?.map(({ link, type, label, typeCase }) => (
-              <PrismicLink
-                key={link?.url}
-                field={link}
-                className={cn(
-                  buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),
-                  typeCase === 'Uppercase' && 'uppercase',
-                )}>
-                {label}
-              </PrismicLink>
-            ))}
+            <ButtonGroup buttons={buttons} />
           </div>
         )}
 

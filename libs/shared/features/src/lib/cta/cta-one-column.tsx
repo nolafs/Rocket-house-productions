@@ -7,6 +7,7 @@ import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
 import { PrismicNextImage } from '@prismicio/next';
+import { ButtonGroup } from '@rocket-house-productions/ui';
 
 interface CtaColumnsProps {
   data: {
@@ -55,17 +56,7 @@ export function CtaOneColumn({ data: { headings, buttons, motto, backgroundImage
         )}
         {buttons && (
           <div className="z-1 mt-10 flex items-center justify-center gap-x-5 lg:mt-10 lg:flex-shrink-0">
-            {buttons?.map(({ link, type, label, typeCase }) => (
-              <PrismicLink
-                field={link}
-                className={cn(
-                  buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),
-                  typeCase === 'Uppercase' && 'uppercase',
-                  '!text-primary bg-white',
-                )}>
-                {label}
-              </PrismicLink>
-            ))}
+            <ButtonGroup buttons={buttons} />
           </div>
         )}
       </div>
