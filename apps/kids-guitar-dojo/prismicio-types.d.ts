@@ -1284,6 +1284,86 @@ export interface FeaturesSliceDefaultPrimaryFeaturesItem {
 }
 
 /**
+ * Item in *Features → white → Primary → Buttons*
+ */
+export interface FeaturesSliceWhitePrimaryButtonsItem {
+  /**
+   * Label field in *Features → white → Primary → Buttons*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.buttons[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Link field in *Features → white → Primary → Buttons*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.buttons[].link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+
+  /**
+   * Type field in *Features → white → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.buttons[].type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<'Default' | 'Outlined'>;
+
+  /**
+   * Type Case field in *Features → white → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.buttons[].typeCase
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  typeCase: prismic.SelectField<'Default' | 'Uppercase'>;
+}
+
+/**
+ * Item in *Features → white → Primary → Features*
+ */
+export interface FeaturesSliceWhitePrimaryFeaturesItem {
+  /**
+   * Image field in *Features → white → Primary → Features*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.features[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Heading field in *Features → white → Primary → Features*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.features[].heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Body field in *Features → white → Primary → Features*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.features[].body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+}
+
+/**
  * Primary content in *Features → Default → Primary*
  */
 export interface FeaturesSliceDefaultPrimary {
@@ -1352,9 +1432,73 @@ export type FeaturesSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *Features → white → Primary*
+ */
+export interface FeaturesSliceWhitePrimary {
+  /**
+   * Heading field in *Features → white → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Category field in *Features → white → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.category
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  category: prismic.KeyTextField;
+
+  /**
+   * Body field in *Features → white → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Buttons field in *Features → white → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.buttons[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  buttons: prismic.GroupField<Simplify<FeaturesSliceWhitePrimaryButtonsItem>>;
+
+  /**
+   * Features field in *Features → white → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features.white.primary.features[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  features: prismic.GroupField<Simplify<FeaturesSliceWhitePrimaryFeaturesItem>>;
+}
+
+/**
+ * white variation for Features Slice
+ *
+ * - **API ID**: `white`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FeaturesSliceWhite = prismic.SharedSliceVariation<'white', Simplify<FeaturesSliceWhitePrimary>, never>;
+
+/**
  * Slice variation for *Features*
  */
-type FeaturesSliceVariation = FeaturesSliceDefault;
+type FeaturesSliceVariation = FeaturesSliceDefault | FeaturesSliceWhite;
 
 /**
  * Features Shared Slice
@@ -2173,8 +2317,12 @@ declare module '@prismicio/client' {
       FeaturesSliceDefaultPrimaryButtonsItem,
       FeaturesSliceDefaultPrimaryFeaturesItem,
       FeaturesSliceDefaultPrimary,
+      FeaturesSliceWhitePrimaryButtonsItem,
+      FeaturesSliceWhitePrimaryFeaturesItem,
+      FeaturesSliceWhitePrimary,
       FeaturesSliceVariation,
       FeaturesSliceDefault,
+      FeaturesSliceWhite,
       HeroSlice,
       HeroSliceDefaultPrimaryButtonsItem,
       HeroSliceDefaultPrimary,

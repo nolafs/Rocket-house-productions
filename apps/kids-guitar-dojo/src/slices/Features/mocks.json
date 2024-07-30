@@ -461,5 +461,152 @@
 			}
 		},
 		"items": []
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "white",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Non laboris sint proident ut. Fugiat elit cillum cupidatat quis ullamco id esse est minim velit sit. Exercitation id et duis deserunt ea sint."
+						}
+					}
+				]
+			},
+			"category": {
+				"__TYPE__": "FieldContent",
+				"value": "relationship",
+				"type": "Text"
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Aute duis pariatur adipisicing nostrud. Magna irure labore excepteur pariatur in minim consectetur qui labore elit ipsum labore amet. Aliquip pariatur irure aute elit id consectetur sit labore quis culpa."
+						}
+					}
+				]
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "occur",
+									"type": "Text"
+								}
+							],
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "https://slicemachine.dev"
+									}
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			},
+			"features": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"image",
+								{
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1596195689404-24d8a8d1c6ea",
+										"width": 5000,
+										"height": 4613
+									},
+									"url": "https://images.unsplash.com/photo-1596195689404-24d8a8d1c6ea",
+									"width": 5000,
+									"height": 4613,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										},
+										"background": "transparent"
+									},
+									"credits": null,
+									"alt": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							],
+							[
+								"heading",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Mollit voluptate dolor minim. Velit incididunt laboris ad ut. Quis amet fugiat deserunt aliquip elit non ad reprehenderit ad mollit."
+											}
+										}
+									]
+								}
+							],
+							[
+								"body",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Exercitation est ut adipisicing excepteur incididunt sint laborum. Sint consectetur ullamco excepteur laborum culpa incididunt fugiat pariatur irure adipisicing sint aute nostrud ex laboris. Consectetur amet consequat Lorem id aliqua adipisicing fugiat mollit aliqua deserunt eu."
+											}
+										}
+									]
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
 	}
 ]
