@@ -1,9 +1,6 @@
 'use client';
 import SectionTitle from '../section-title/section-title';
 import { asText, RichTextField } from '@prismicio/client';
-import { PrismicLink } from '@prismicio/react';
-import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
 import { PrismicNextImage } from '@prismicio/next';
@@ -20,8 +17,6 @@ interface CtaColumnsProps {
 }
 
 export function CtaOneColumn({ data: { headings, buttons, motto, backgroundImage }, color }: CtaColumnsProps) {
-  console.log('CtaOneColumn', { headings, buttons, motto, backgroundImage });
-
   return (
     <div className={'bg-primary relative isolate my-10 w-full overflow-hidden px-10 py-20 text-white md:py-28'}>
       {backgroundImage && (

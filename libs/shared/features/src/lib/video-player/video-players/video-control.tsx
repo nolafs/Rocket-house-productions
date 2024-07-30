@@ -43,7 +43,7 @@ export function VideoControl({ poster, handlePlay, width, height, title, mode }:
           width={944}
           height={531}
           alt=""
-          className={'z-10 w-full max-w-[554px] object-contain'}
+          className={'z-10 h-auto w-full object-fill'}
           imgixParams={{ fit: 'fill' }}
         />
       ) : (

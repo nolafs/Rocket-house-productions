@@ -67,7 +67,7 @@ export function HeroCenter({
             viewport={{ once: true, amount: 0.4 }}
             variants={scrollUpVariants}>
             <div className="shadow-xxl group relative z-20 overflow-hidden rounded-lg shadow-black/[22%]">
-              <VideoPlayer {...video} />
+              <VideoPlayer image={image} {...video} />
             </div>
           </motion.div>
         )}

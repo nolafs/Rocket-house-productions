@@ -36,12 +36,14 @@ export function Youtube({
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
   const ref = useRef<any>(null);
 
+  console.log('src', poster);
+
   if (!width) {
-    width = 1920;
+    width = 944;
   }
 
   if (!height) {
-    height = 1200;
+    height = 531;
   }
 
   const opts: Config = {
@@ -93,15 +95,7 @@ export function Youtube({
               className={'absolute z-10 min-h-full w-auto min-w-full max-w-none'}
             />
           )}
-          {!autoplay && (
-            <VideoControl
-              handlePlay={play}
-              title={title}
-              poster={poster && `${poster}?fm=webp&w=${width}&h=${height}&fit=fill`}
-              width={width}
-              height={height}
-            />
-          )}
+          {!autoplay && <VideoControl handlePlay={play} title={title} poster={poster} width={width} height={height} />}
         </VideoFrame>
       </div>
     </VideoPlayerWrapper>
