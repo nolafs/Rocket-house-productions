@@ -1,6 +1,6 @@
-export * from './lib/cta/cta-one-column';
-export * from './lib/cta/cta-two-column-image';
-export * from './lib/cta/cta-two-column';
+export { CtaOneColumn } from './lib/cta/cta-one-column';
+export { CtaTwoColumnImage } from './lib/cta/cta-two-column-image';
+export { CtaTwoColumn } from './lib/cta/cta-two-column';
 export { NewsletterFormStatus } from './lib/newsletter-form/newsletter-form-status';
 export { NewsletterForm } from './lib/newsletter-form/newsletter-form';
 export { HeroColumns } from './lib/hero-header/hero-columns/hero-columns';
