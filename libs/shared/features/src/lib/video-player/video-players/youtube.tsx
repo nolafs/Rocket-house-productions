@@ -35,9 +35,6 @@ export function Youtube({
 }: YoutubeProps) {
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
   const ref = useRef<any>(null);
-
-  console.log('src', poster);
-
   if (!width) {
     width = 944;
   }
