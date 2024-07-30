@@ -472,8 +472,10 @@
 					{
 						"type": "paragraph",
 						"content": {
-							"text": "Non laboris sint proident ut. Fugiat elit cillum cupidatat quis ullamco id esse est minim velit sit. Exercitation id et duis deserunt ea sint."
-						}
+							"text": "What You Get When You Buy the Course",
+							"spans": []
+						},
+						"direction": "ltr"
 					}
 				]
 			},
@@ -481,17 +483,6 @@
 				"__TYPE__": "FieldContent",
 				"value": "relationship",
 				"type": "Text"
-			},
-			"body": {
-				"__TYPE__": "StructuredTextContent",
-				"value": [
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "Aute duis pariatur adipisicing nostrud. Magna irure labore excepteur pariatur in minim consectetur qui labore elit ipsum labore amet. Aliquip pariatur irure aute elit id consectetur sit labore quis culpa."
-						}
-					}
-				]
 			},
 			"buttons": {
 				"__TYPE__": "GroupContentType",
@@ -577,8 +568,10 @@
 										{
 											"type": "paragraph",
 											"content": {
-												"text": "Mollit voluptate dolor minim. Velit incididunt laboris ad ut. Quis amet fugiat deserunt aliquip elit non ad reprehenderit ad mollit."
-											}
+												"text": "Training Wheels for the Guitar",
+												"spans": []
+											},
+											"direction": "ltr"
 										}
 									]
 								}

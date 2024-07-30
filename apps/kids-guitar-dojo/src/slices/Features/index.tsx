@@ -21,8 +21,8 @@ const Features = ({ slice }: FeaturesProps): JSX.Element => {
         motto: { text: slice.primary.body },
         features: slice.primary.features,
       }}
-      decor={'A'}
-      color={'A'}
+      decor={slice.variation === 'white' ? 'B' : 'A'}
+      color={slice.variation === 'white' ? 'B' : 'A'}
     />
   );
 };
