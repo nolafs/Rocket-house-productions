@@ -39,11 +39,11 @@ export function FeatureList({
         <div
           className={cn(
             'mt-20 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3',
-            decor === 'A' ? 'lg:grid-cols-4' : 'lg:grid-cols-3',
+            decor === 'A' ? 'lg:grid-cols-3' : 'lg:grid-cols-4',
           )}>
           {features?.length &&
             features.map(({ image, heading, body }) => (
-              <div className={'flex flex-col items-center text-center'}>
+              <div className={'flex flex-col items-center justify-items-stretch text-center'}>
                 <div className="relative mb-5 h-[170px] w-[170px]">
                   <div className="absolute left-0 top-0 h-[170px] w-[170px] rounded-full bg-white shadow">
                     <PrismicNextImage
@@ -56,7 +56,7 @@ export function FeatureList({
                     />
                   </div>
                 </div>
-                <h3 className={'mb-4 text-2xl font-semibold leading-loose'}>
+                <h3 className={'mb-4 grow text-2xl font-semibold leading-8'}>
                   <PrismicRichText field={heading} />
                 </h3>
                 <div className={'text-gray-900'}>
