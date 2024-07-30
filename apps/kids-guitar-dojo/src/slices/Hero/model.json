@@ -309,6 +309,24 @@
               }
             }
           }
+        },
+        "video_source_type": {
+          "type": "Select",
+          "config": {
+            "label": "Video Source Type",
+            "placeholder": "",
+            "options": [
+              "Youtube",
+              "Vimeo"
+            ]
+          }
+        },
+        "video": {
+          "type": "Embed",
+          "config": {
+            "label": "Video",
+            "placeholder": ""
+          }
         }
       },
       "items": {}

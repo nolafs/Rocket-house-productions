@@ -5,3 +5,4 @@ export * from './label/label';
 export * from './anchor/Anchor';
 export * from './card/blog-card';
 export { BottomShape } from './bottom-shape/shape-01';
+export * from './notification/notification-block';

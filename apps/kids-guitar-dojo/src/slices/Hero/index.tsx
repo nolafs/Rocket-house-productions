@@ -44,6 +44,7 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
             motto: { text: slice.primary.body },
             image: slice.primary.image,
             buttons: slice.primary.buttons,
+            video: slice.primary.video,
           }}
         />
       </>
