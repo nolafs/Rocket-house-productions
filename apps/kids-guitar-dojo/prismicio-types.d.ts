@@ -1570,16 +1570,6 @@ export interface HeroSliceCenteredPrimary {
   buttons: prismic.GroupField<Simplify<HeroSliceCenteredPrimaryButtonsItem>>;
 
   /**
-   * Video Source Type field in *Hero → Centered → Primary*
-   *
-   * - **Field Type**: Select
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.centered.primary.video_source_type
-   * - **Documentation**: https://prismic.io/docs/field#select
-   */
-  video_source_type: prismic.SelectField<'Youtube' | 'Vimeo'>;
-
-  /**
    * Video field in *Hero → Centered → Primary*
    *
    * - **Field Type**: Embed
