@@ -7,9 +7,10 @@ import SectionTitle from '../../section-title/section-title';
 import { RichTextField } from '@prismicio/client';
 import MottoText from '../../motto-text/motto-text';
 import cn from 'classnames';
-import { PrismicLink } from '@prismicio/react';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import VideoPlayer from '../../video-player/video-player';
+
+import Image from 'next/image';
+import Notes from '../../assets/notes.png';
 
 interface HeroProps {
   data: {
@@ -39,6 +40,18 @@ export function HeroCenter({
         color === 'A' ? 'bg-primary' : 'bg-neutral',
       )}>
       <h1 className="sr-only">Home Page</h1>
+      {decor === 'A' && (
+        <div className={'absolute left-1/2 top-[30%] z-50 h-full max-h-[447px] w-full max-w-[1100px] -translate-x-1/2'}>
+          <Image
+            src={Notes}
+            alt="notes decor"
+            layout="fill"
+            objectFit="contain"
+            objectPosition="center"
+            quality={100}
+          />
+        </div>
+      )}
       <motion.div
         className="container mx-auto max-w-3xl text-center"
         initial="offscreen"

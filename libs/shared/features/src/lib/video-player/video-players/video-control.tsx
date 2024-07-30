@@ -40,8 +40,8 @@ export function VideoControl({ poster, handlePlay, width, height, title, mode }:
       {poster ? (
         <PrismicNextImage
           field={poster}
-          width={944}
-          height={531}
+          width={width}
+          height={height}
           alt=""
           className={'z-10 h-auto w-full object-fill'}
           imgixParams={{ fit: 'fill' }}
