@@ -1,6 +1,7 @@
+export * from './lib/section-video/section-video';
 export * from './lib/feature-list/feature-list';
-export * from './lib/video-player/video-player-wrapper';
-export * from './lib/hero-header/hero-center/hero-center';
+export { VideoPlayer } from './lib/video-player/video-player';
+export { HeroCenter } from './lib/hero-header/hero-center/hero-center';
 export { CtaOneColumn } from './lib/cta/cta-one-column';
 export { CtaTwoColumnImage } from './lib/cta/cta-two-column-image';
 export { CtaTwoColumn } from './lib/cta/cta-two-column';

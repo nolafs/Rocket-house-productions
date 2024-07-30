@@ -1,20 +1,17 @@
 'use client';
-import { useUI } from '@rocket-house-productions/hooks';
 import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
 import { BottomShape, ButtonGroup } from '@rocket-house-productions/ui';
-import SectionTitle from '../../section-title/section-title';
+import SectionTitle from '../section-title/section-title';
 import { RichTextField } from '@prismicio/client';
-import MottoText from '../../motto-text/motto-text';
+import MottoText from '../motto-text/motto-text';
 import cn from 'classnames';
-
+import VideoPlayer from '../video-player/video-player';
 import Image from 'next/image';
-import Notes from '../../assets/notes.png';
-import VideoPlayer from '../../video-player/video-player';
+import Notes from '../assets/notes.png';
 
-interface HeroProps {
+interface SectionVideoProps {
   data: {
-    pageName: string | null | undefined;
     headings: RichTextField | null | undefined;
     text?: string | null | undefined;
     buttons?: any[];
@@ -27,31 +24,15 @@ interface HeroProps {
   decor?: 'A' | 'B';
 }
 
-export function HeroCenter({
-  data: { headings, text, buttons, motto, image, pageName, video },
+export function SectionVideo({
+  data: { headings, text, buttons, motto, image, video },
   alignment = 'Left',
   color = 'B',
   decor = 'A',
-}: HeroProps) {
+}: SectionVideoProps) {
   return (
     <div
-      className={cn(
-        'hero-area mb-15 relative z-10 pt-[140px] md:mb-[200px]',
-        color === 'A' ? 'bg-primary' : 'bg-neutral',
-      )}>
-      <h1 className="sr-only">Home Page</h1>
-      {decor === 'A' && (
-        <div className={'absolute left-1/2 top-[30%] z-50 h-full max-h-[447px] w-full max-w-[1100px] -translate-x-1/2'}>
-          <Image
-            src={Notes}
-            alt="notes decor"
-            layout="fill"
-            objectFit="contain"
-            objectPosition="center"
-            quality={100}
-          />
-        </div>
-      )}
+      className={cn('section-area mb-15 relative z-10 pt-24 md:mb-36', color === 'A' ? 'bg-primary' : 'bg-accent/60')}>
       <motion.div
         className="container mx-auto max-w-3xl text-center"
         initial="offscreen"
@@ -62,15 +43,10 @@ export function HeroCenter({
           title={headings}
           subtitle={text}
           titleSize={'large'}
+          color={'C'}
           titleClass={cn(color === 'A' && 'text-white')}
         />
-        {motto && <MottoText {...motto} size="md" className={cn('mt-[25px]', color === 'A' && 'text-white')} />}
-
-        {buttons && (
-          <div className={'mb-16 mt-10 flex justify-center gap-2.5'}>
-            <ButtonGroup buttons={buttons} />
-          </div>
-        )}
+        {motto && <MottoText {...motto} size="md" className={cn('mb-16 mt-[25px]', color === 'A' && 'text-white')} />}
 
         {video && (
           <motion.div
@@ -90,4 +66,4 @@ export function HeroCenter({
   );
 }
 
-export default HeroCenter;
+export default SectionVideo;

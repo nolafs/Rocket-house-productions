@@ -4,6 +4,7 @@ import { Bounded } from '@components/Bounded';
 import SectionTitle from '../../../../../libs/shared/features/src/lib/section-title/section-title';
 import { ButtonGroup } from '@rocket-house-productions/ui';
 import MottoText from '../../../../../libs/shared/features/src/lib/motto-text/motto-text';
+import { SectionVideo } from '@rocket-house-productions/features';
 
 /**
  * Props for `SectionHeaders`.
@@ -19,9 +20,25 @@ const SectionHeaders = ({ slice }: SectionHeadersProps): JSX.Element => {
     subtitle: slice.primary.subheading,
   };
 
+  if (slice.variation === 'video') {
+    return (
+      <Bounded as={'div'} yPadding={'md'}>
+        <SectionVideo
+          data={{
+            headings: slice.primary.heading,
+            text: slice.primary.subheading,
+            motto: { text: slice.primary.body },
+            image: slice.primary.image,
+            video: slice.primary.video,
+          }}
+        />
+      </Bounded>
+    );
+  }
+
   if (slice.variation === 'withButtons') {
     return (
-      <Bounded as={'header'} yPadding={'sm'} className="max-w-8xl mx-auto text-center">
+      <Bounded as={'div'} yPadding={'md'} className="max-w-8xl mx-auto text-center">
         {section_title && <SectionTitle {...section_title} align="center" titleSize="large" />}
         {slice.primary.body && <MottoText text={slice.primary.body} size="md" className="mt-[25px]" />}
         {slice.primary.buttons && (
@@ -34,7 +51,7 @@ const SectionHeaders = ({ slice }: SectionHeadersProps): JSX.Element => {
   }
 
   return (
-    <Bounded as={'header'} yPadding={'sm'} className="max-w-8xl mx-auto">
+    <Bounded as={'div'} yPadding={'sm'} className="max-w-8xl mx-auto">
       {section_title && <SectionTitle {...section_title} align="center" titleSize="large" />}
     </Bounded>
   );

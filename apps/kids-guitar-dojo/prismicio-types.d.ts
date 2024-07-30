@@ -339,7 +339,12 @@ export type ContactDocument<Lang extends string = string> = prismic.PrismicDocum
   Lang
 >;
 
-type HomeDocumentDataSlicesSlice = HeroSlice | CallToActionSlice | SectionHeadersSlice | ContentImageSliceSlice;
+type HomeDocumentDataSlicesSlice =
+  | FeaturesSlice
+  | HeroSlice
+  | CallToActionSlice
+  | SectionHeadersSlice
+  | ContentImageSliceSlice;
 
 /**
  * Content for Home documents
@@ -2029,9 +2034,80 @@ export type SectionHeadersSliceWithButtons = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *SectionHeaders → Video → Primary*
+ */
+export interface SectionHeadersSliceVideoPrimary {
+  /**
+   * Heading field in *SectionHeaders → Video → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.video.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Subheading field in *SectionHeaders → Video → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.video.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subheading: prismic.KeyTextField;
+
+  /**
+   * Body field in *SectionHeaders → Video → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.video.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Image field in *SectionHeaders → Video → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.video.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Video field in *SectionHeaders → Video → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.video.primary.video
+   * - **Documentation**: https://prismic.io/docs/field#embed
+   */
+  video: prismic.EmbedField;
+}
+
+/**
+ * Video variation for SectionHeaders Slice
+ *
+ * - **API ID**: `video`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SectionHeadersSliceVideo = prismic.SharedSliceVariation<
+  'video',
+  Simplify<SectionHeadersSliceVideoPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *SectionHeaders*
  */
-type SectionHeadersSliceVariation = SectionHeadersSliceDefault | SectionHeadersSliceWithButtons;
+type SectionHeadersSliceVariation =
+  | SectionHeadersSliceDefault
+  | SectionHeadersSliceWithButtons
+  | SectionHeadersSliceVideo;
 
 /**
  * SectionHeaders Shared Slice
@@ -2122,9 +2198,11 @@ declare module '@prismicio/client' {
       SectionHeadersSliceDefaultPrimary,
       SectionHeadersSliceWithButtonsPrimaryButtonsItem,
       SectionHeadersSliceWithButtonsPrimary,
+      SectionHeadersSliceVideoPrimary,
       SectionHeadersSliceVariation,
       SectionHeadersSliceDefault,
       SectionHeadersSliceWithButtons,
+      SectionHeadersSliceVideo,
     };
   }
 }
