@@ -22,7 +22,7 @@ const SectionHeaders = ({ slice }: SectionHeadersProps): JSX.Element => {
 
   if (slice.variation === 'video') {
     return (
-      <Bounded as={'div'} yPadding={'md'}>
+      <section className={'py-16 md:py-20'}>
         <SectionVideo
           data={{
             headings: slice.primary.heading,
@@ -32,7 +32,7 @@ const SectionHeaders = ({ slice }: SectionHeadersProps): JSX.Element => {
             video: slice.primary.video,
           }}
         />
-      </Bounded>
+      </section>
     );
   }
 
