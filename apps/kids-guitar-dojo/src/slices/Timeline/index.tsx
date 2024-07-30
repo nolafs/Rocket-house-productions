@@ -13,7 +13,7 @@ export type TimelineProps = SliceComponentProps<Content.TimelineSlice>;
  */
 const Timeline = ({ slice }: TimelineProps): JSX.Element => {
   return (
-    <Bounded as={'section'} yPadding={'lg'}>
+    <Bounded as={'section'} yPadding={'sm'}>
       <SectionTimeline
         data={{
           title: slice.primary.heading,
