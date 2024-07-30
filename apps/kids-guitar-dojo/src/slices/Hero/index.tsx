@@ -41,7 +41,6 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
             pageName: slice.primary.page_name,
             headings: slice.primary.heading,
             text: slice.primary.category,
-            subheading: slice.primary.subheading,
             motto: { text: slice.primary.body },
             image: slice.primary.image,
             buttons: slice.primary.buttons,

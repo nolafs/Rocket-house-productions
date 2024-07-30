@@ -339,7 +339,7 @@ export type ContactDocument<Lang extends string = string> = prismic.PrismicDocum
   Lang
 >;
 
-type HomeDocumentDataSlicesSlice = CallToActionSlice | SectionHeadersSlice | ContentImageSliceSlice;
+type HomeDocumentDataSlicesSlice = HeroSlice | CallToActionSlice | SectionHeadersSlice | ContentImageSliceSlice;
 
 /**
  * Content for Home documents
@@ -1528,16 +1528,6 @@ export interface HeroSliceCenteredPrimary {
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
   heading: prismic.RichTextField;
-
-  /**
-   * Subheading field in *Hero → Centered → Primary*
-   *
-   * - **Field Type**: Rich Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: hero.centered.primary.subheading
-   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
-   */
-  subheading: prismic.RichTextField;
 
   /**
    * Category field in *Hero → Centered → Primary*

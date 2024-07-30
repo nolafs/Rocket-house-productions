@@ -282,19 +282,6 @@
 					}
 				]
 			},
-			"subheading": {
-				"__TYPE__": "StructuredTextContent",
-				"value": [
-					{
-						"type": "paragraph",
-						"content": {
-							"text": "Kids Guitar Dojo",
-							"spans": []
-						},
-						"direction": "ltr"
-					}
-				]
-			},
 			"category": {
 				"__TYPE__": "FieldContent",
 				"value": "sentence",

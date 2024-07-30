@@ -7,12 +7,13 @@ import SectionTitle from '../../section-title/section-title';
 import { asText, RichTextField } from '@prismicio/client';
 import MottoText from '../../motto-text/motto-text';
 import cn from 'classnames';
+import { PrismicLink } from '@prismicio/react';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 
 interface HeroProps {
   data: {
     pageName: string | null | undefined;
     headings: RichTextField | null | undefined;
-    subheading: RichTextField | null | undefined;
     text?: string | null | undefined;
     buttons?: any[];
     motto: { text: RichTextField | null | undefined };
@@ -24,7 +25,7 @@ interface HeroProps {
 }
 
 export function HeroCenter({
-  data: { headings, subheading, text, buttons, motto, image, pageName },
+  data: { headings, text, buttons, motto, image, pageName },
   alignment = 'Left',
   color = 'B',
   decor = 'A',
@@ -44,11 +45,26 @@ export function HeroCenter({
         variants={scrollUpVariants}>
         <SectionTitle
           title={headings}
-          subtitle={asText(subheading)}
+          subtitle={text}
           titleSize={'large'}
           titleClass={cn(color === 'A' && 'text-white')}
         />
         {motto && <MottoText {...motto} size="md" className={cn('mt-[25px]', color === 'A' && 'text-white')} />}
+
+        {buttons && (
+          <div className={'mt-10 flex justify-center gap-2.5'}>
+            {buttons?.map(({ link, type, label, typeCase }) => (
+              <PrismicLink
+                field={link}
+                className={cn(
+                  buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),
+                  typeCase === 'Uppercase' && 'uppercase',
+                )}>
+                {label}
+              </PrismicLink>
+            ))}
+          </div>
+        )}
       </motion.div>
 
       <BottomShape />
