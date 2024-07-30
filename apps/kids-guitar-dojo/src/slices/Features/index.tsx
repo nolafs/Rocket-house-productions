@@ -13,17 +13,19 @@ export type FeaturesProps = SliceComponentProps<Content.FeaturesSlice>;
  */
 const Features = ({ slice }: FeaturesProps): JSX.Element => {
   return (
-    <FeatureList
-      data={{
-        headings: slice.primary.heading,
-        text: slice.primary.category,
-        buttons: slice.primary.buttons,
-        motto: { text: slice.primary.body },
-        features: slice.primary.features,
-      }}
-      decor={slice.variation === 'white' ? 'B' : 'A'}
-      color={slice.variation === 'white' ? 'B' : 'A'}
-    />
+    <section className={'py-16 md:py-20'}>
+      <FeatureList
+        data={{
+          headings: slice.primary.heading,
+          text: slice.primary.category,
+          buttons: slice.primary.buttons,
+          motto: { text: slice.primary.body },
+          features: slice.primary.features,
+        }}
+        decor={slice.variation === 'white' ? 'B' : 'A'}
+        color={slice.variation === 'white' ? 'B' : 'A'}
+      />
+    </section>
   );
 };
 
