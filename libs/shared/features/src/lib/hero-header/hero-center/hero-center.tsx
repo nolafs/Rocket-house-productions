@@ -33,7 +33,11 @@ export function HeroCenter({
   decor = 'A',
 }: HeroProps) {
   return (
-    <div className={cn('hero-area mb-15 relative z-10 md:mb-[140px]', color === 'A' ? 'bg-primary' : 'bg-neutral')}>
+    <div
+      className={cn(
+        'hero-area mb-15 relative z-10 pt-[140px] md:mb-[200px]',
+        color === 'A' ? 'bg-primary' : 'bg-neutral',
+      )}>
       <h1 className="sr-only">Home Page</h1>
       <motion.div
         className="container mx-auto max-w-3xl text-center"
