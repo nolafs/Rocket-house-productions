@@ -1736,6 +1736,51 @@ type RichTextSliceSliceVariation =
 export type RichTextSliceSlice = prismic.SharedSlice<'rich_text_slice', RichTextSliceSliceVariation>;
 
 /**
+ * Item in *SectionHeaders → With Buttons → Primary → Buttons*
+ */
+export interface SectionHeadersSliceWithButtonsPrimaryButtonsItem {
+  /**
+   * Label field in *SectionHeaders → With Buttons → Primary → Buttons*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.withButtons.primary.buttons[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Link field in *SectionHeaders → With Buttons → Primary → Buttons*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.withButtons.primary.buttons[].link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+
+  /**
+   * Type field in *SectionHeaders → With Buttons → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.withButtons.primary.buttons[].type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<'Default' | 'Outlined'>;
+
+  /**
+   * Type Case field in *SectionHeaders → With Buttons → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.withButtons.primary.buttons[].typeCase
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  typeCase: prismic.SelectField<'Default' | 'Uppercase'>;
+}
+
+/**
  * Primary content in *SectionHeaders → Default → Primary*
  */
 export interface SectionHeadersSliceDefaultPrimary {
@@ -1774,9 +1819,67 @@ export type SectionHeadersSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *SectionHeaders → With Buttons → Primary*
+ */
+export interface SectionHeadersSliceWithButtonsPrimary {
+  /**
+   * Heading field in *SectionHeaders → With Buttons → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.withButtons.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Subheading field in *SectionHeaders → With Buttons → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.withButtons.primary.subheading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subheading: prismic.KeyTextField;
+
+  /**
+   * Body field in *SectionHeaders → With Buttons → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.withButtons.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Buttons field in *SectionHeaders → With Buttons → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_headers.withButtons.primary.buttons[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  buttons: prismic.GroupField<Simplify<SectionHeadersSliceWithButtonsPrimaryButtonsItem>>;
+}
+
+/**
+ * With Buttons variation for SectionHeaders Slice
+ *
+ * - **API ID**: `withButtons`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SectionHeadersSliceWithButtons = prismic.SharedSliceVariation<
+  'withButtons',
+  Simplify<SectionHeadersSliceWithButtonsPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *SectionHeaders*
  */
-type SectionHeadersSliceVariation = SectionHeadersSliceDefault;
+type SectionHeadersSliceVariation = SectionHeadersSliceDefault | SectionHeadersSliceWithButtons;
 
 /**
  * SectionHeaders Shared Slice
@@ -1859,8 +1962,11 @@ declare module '@prismicio/client' {
       RichTextSliceSliceTwoColumnsWithHeader,
       SectionHeadersSlice,
       SectionHeadersSliceDefaultPrimary,
+      SectionHeadersSliceWithButtonsPrimaryButtonsItem,
+      SectionHeadersSliceWithButtonsPrimary,
       SectionHeadersSliceVariation,
       SectionHeadersSliceDefault,
+      SectionHeadersSliceWithButtons,
     };
   }
 }
