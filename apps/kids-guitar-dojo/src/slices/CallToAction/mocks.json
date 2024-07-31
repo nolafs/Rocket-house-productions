@@ -65,7 +65,7 @@
 								"typeCase",
 								{
 									"__TYPE__": "FieldContent",
-									"value": "1",
+									"value": "Default",
 									"type": "Select"
 								}
 							]
@@ -97,7 +97,7 @@
 								"typeCase",
 								{
 									"__TYPE__": "FieldContent",
-									"value": "2",
+									"value": "Uppercase",
 									"type": "Select"
 								}
 							],
