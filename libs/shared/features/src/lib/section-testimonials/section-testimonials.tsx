@@ -42,13 +42,13 @@ export function SectionTestimonials({ data, className }: SectionTestimonialsProp
           },
           992: {
             slidesPerView: 2,
-            spaceBetween: 50,
+            spaceBetween: 20,
           },
         }}>
         {data.map(
           (item, idx) =>
             item.name && (
-              <SwiperSlide key={(item.name + idx).replace(/\s/g, '-').toLowerCase()}>
+              <SwiperSlide className={'px-5'} key={(item.name + idx).replace(/\s/g, '-').toLowerCase()}>
                 <TestimonialItemRatings
                   name={item.name}
                   designation={item.designation}

@@ -9,7 +9,7 @@ export function TestimonialRatingItem({ name, designation, review, image, rating
   return (
     <div
       className={cn(
-        'testimonial shadow-2sm shadow-dark/10 flex h-full flex-row flex-wrap justify-items-stretch rounded bg-white px-[50px] pb-[47px] pt-[31px]',
+        'testimonial shadow-2sm shadow-dark/10 my-10 flex h-full flex-row flex-wrap justify-items-stretch rounded bg-white px-[50px] pb-[47px] pt-[31px]',
       )}>
       <div className="mb-5 flex w-full">
         {image && (
