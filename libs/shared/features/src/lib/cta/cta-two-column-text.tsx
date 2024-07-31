@@ -1,7 +1,7 @@
 import { KeyTextField, RichTextField } from '@prismicio/client';
 import SectionTitle from '../section-title/section-title';
 import cn from 'classnames';
-import { BottomShape2 } from '@rocket-house-productions/ui';
+import { BottomShape2, ButtonGroup } from '@rocket-house-productions/ui';
 import { PrismicRichText } from '@prismicio/react';
 
 interface CtaColumnsTextProps {
@@ -23,16 +23,23 @@ export function CtaTwoColumnText({
   return (
     <div className={cn(decor === 'A' && 'bg-accent/60 py-16 lg:py-24', 'relative')}>
       <div className={'container mx-auto'}>
-        {headings && (
-          <SectionTitle
-            title={headings}
-            subtitle={subtitle}
-            align="center"
-            color={decor === 'A' ? 'C' : 'A'}
-            titleSize="large"
-          />
-        )}
-        <div className={'mt-10 md:columns-2 md:gap-6'}>
+        <div className={'grid md:grid-cols-2'}>
+          {headings && (
+            <SectionTitle
+              title={headings}
+              subtitle={subtitle}
+              align="left"
+              color={decor === 'A' ? 'C' : 'A'}
+              titleSize="large"
+            />
+          )}
+          {buttons && (
+            <div className="z-1 mt-10 flex items-center justify-end gap-x-5 lg:mt-10 lg:flex-shrink-0">
+              <ButtonGroup buttons={buttons} />
+            </div>
+          )}
+        </div>
+        <div className={'mb-20 mt-10 md:columns-2 md:gap-6'}>
           <PrismicRichText field={motto.text} />
         </div>
       </div>
