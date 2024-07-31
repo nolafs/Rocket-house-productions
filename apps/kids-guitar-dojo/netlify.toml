@@ -1,5 +1,5 @@
 [build.environment]
-  NEXT_USE_NETLIFY_EDGE = "true"
+  NEXT_USE_NETLIFY_EDGE = "false"
 
 [[redirects]]
   from = "/_next/static/*"
