@@ -1,3 +1,14 @@
+[build.environment]
+  NEXT_USE_NETLIFY_EDGE = "true"
+
+
+[[redirects]]
+  from = '/_next/image/*'
+  query = { q = ':quality', url = ':url', w = ':width' }
+  to = '/.netlify/images?url=:url&w=:width&q=:quality'
+  status = 200
+  force = true
+
 [[headers]]
     for = "/*"
     [headers.values]
