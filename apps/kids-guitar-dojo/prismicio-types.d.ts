@@ -918,6 +918,51 @@ export interface CallToActionSliceCenterPrimaryButtonsItem {
 }
 
 /**
+ * Item in *CallToAction → Text Two Column → Primary → Buttons*
+ */
+export interface CallToActionSliceTextTwoColumnPrimaryButtonsItem {
+  /**
+   * Label field in *CallToAction → Text Two Column → Primary → Buttons*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.textTwoColumn.primary.buttons[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Link field in *CallToAction → Text Two Column → Primary → Buttons*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.textTwoColumn.primary.buttons[].link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+
+  /**
+   * Type field in *CallToAction → Text Two Column → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.textTwoColumn.primary.buttons[].type
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  type: prismic.SelectField<'Default' | 'Outlined'>;
+
+  /**
+   * Type Case field in *CallToAction → Text Two Column → Primary → Buttons*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.textTwoColumn.primary.buttons[].typeCase
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  typeCase: prismic.SelectField<'1' | '2'>;
+}
+
+/**
  * Primary content in *CallToAction → Default → Primary*
  */
 export interface CallToActionSliceDefaultPrimary {
@@ -1082,9 +1127,61 @@ export type CallToActionSliceCenter = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *CallToAction → Text Two Column → Primary*
+ */
+export interface CallToActionSliceTextTwoColumnPrimary {
+  /**
+   * Heading field in *CallToAction → Text Two Column → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.textTwoColumn.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Body field in *CallToAction → Text Two Column → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.textTwoColumn.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Buttons field in *CallToAction → Text Two Column → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.textTwoColumn.primary.buttons[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  buttons: prismic.GroupField<Simplify<CallToActionSliceTextTwoColumnPrimaryButtonsItem>>;
+}
+
+/**
+ * Text Two Column variation for CallToAction Slice
+ *
+ * - **API ID**: `textTwoColumn`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CallToActionSliceTextTwoColumn = prismic.SharedSliceVariation<
+  'textTwoColumn',
+  Simplify<CallToActionSliceTextTwoColumnPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *CallToAction*
  */
-type CallToActionSliceVariation = CallToActionSliceDefault | CallToActionSliceImage | CallToActionSliceCenter;
+type CallToActionSliceVariation =
+  | CallToActionSliceDefault
+  | CallToActionSliceImage
+  | CallToActionSliceCenter
+  | CallToActionSliceTextTwoColumn;
 
 /**
  * CallToAction Shared Slice
@@ -2628,10 +2725,13 @@ declare module '@prismicio/client' {
       CallToActionSliceImagePrimary,
       CallToActionSliceCenterPrimaryButtonsItem,
       CallToActionSliceCenterPrimary,
+      CallToActionSliceTextTwoColumnPrimaryButtonsItem,
+      CallToActionSliceTextTwoColumnPrimary,
       CallToActionSliceVariation,
       CallToActionSliceDefault,
       CallToActionSliceImage,
       CallToActionSliceCenter,
+      CallToActionSliceTextTwoColumn,
       ContentImageSliceSlice,
       ContentImageSliceSliceDefaultPrimary,
       ContentImageSliceSliceVariation,
