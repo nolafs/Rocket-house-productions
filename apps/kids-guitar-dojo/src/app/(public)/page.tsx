@@ -7,11 +7,9 @@ export default async function Index() {
   const client = createClient();
   const page = await client.getByType('home').catch(() => notFound());
 
-  console.log(page);
-
   return (
     <main>
-      <SliceZone slices={page.results[0].data.slices} components={components} />
+      <SliceZone slices={page?.results[0].data.slices} components={components} />
     </main>
   );
 }

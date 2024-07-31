@@ -11,20 +11,11 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
-  output: 'standalone',
-  experimental: {
-    outputFileTracingRoot: path.join(__dirname, '../../'),
-  },
   //...(process.env.ENVIRONMENT_NAME !== 'local' && { headers }),
   images: {
     formats: ['image/webp'],
     minimumCacheTTL: 60,
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-        pathname: '**',
-      },
       {
         protocol: 'https',
         hostname: 'ui-avatars.com',
