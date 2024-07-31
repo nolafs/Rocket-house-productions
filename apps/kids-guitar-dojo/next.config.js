@@ -15,6 +15,15 @@ const nextConfig = {
     svgr: true,
   },
   //...(process.env.ENVIRONMENT_NAME !== 'local' && {headers}),
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com',
+        port: '',
+      },
+    ],
+  },
 };
 
 const plugins = [
