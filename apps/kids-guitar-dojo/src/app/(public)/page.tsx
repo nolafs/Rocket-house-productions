@@ -5,11 +5,11 @@ import { notFound } from 'next/navigation';
 
 export default async function Index() {
   const client = createClient();
-  const page = await client.getByType('home').catch(() => notFound());
+  const page = await client.getSingle('home').catch(() => notFound());
 
   return (
     <main>
-      <SliceZone slices={page?.results[0].data.slices} components={components} />
+      <SliceZone slices={page?.data.slices} components={components} />
     </main>
   );
 }
