@@ -10,5 +10,6 @@ export const components = {
   rich_text_slice: dynamic(() => import('./RichTextSlice')),
   section_headers: dynamic(() => import('./SectionHeaders')),
   stats: dynamic(() => import('./Stats')),
+  testimonials: dynamic(() => import('./Testimonials')),
   timeline: dynamic(() => import('./Timeline')),
 };

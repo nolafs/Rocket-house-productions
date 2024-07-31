@@ -1,3 +1,4 @@
+export * from './star-rating/star-rating';
 export * from './button-group/button-group';
 // Use this file to export React client components (e.g. those with 'use client' directive) or other non-server utilities
 
