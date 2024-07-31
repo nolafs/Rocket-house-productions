@@ -15,6 +15,19 @@ export const scrollUpVariants: Variants = {
   },
 };
 
+export const scrollUpFadeVariants: Variants = {
+  offscreen: {
+    opacity: 0,
+  },
+  onscreen: {
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      duration: 1,
+    },
+  },
+};
+
 export const scrollLeftVariants: Variants = {
   offscreen: {
     opacity: 0,

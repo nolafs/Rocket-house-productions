@@ -62,7 +62,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
         {description && (
           <div
             className={cn(
-              'mb-0 mt-[25px] font-medium leading-relaxed text-gray-500',
+              'mb-0 mt-[25px] font-medium leading-relaxed',
               descClass,
               color === 'A' && 'text-gray-500',
               color === 'B' && 'text-primary',

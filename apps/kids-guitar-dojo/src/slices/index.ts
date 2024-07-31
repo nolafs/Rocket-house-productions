@@ -9,5 +9,6 @@ export const components = {
   hero: dynamic(() => import('./Hero')),
   rich_text_slice: dynamic(() => import('./RichTextSlice')),
   section_headers: dynamic(() => import('./SectionHeaders')),
+  stats: dynamic(() => import('./Stats')),
   timeline: dynamic(() => import('./Timeline')),
 };

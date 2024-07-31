@@ -340,6 +340,7 @@ export type ContactDocument<Lang extends string = string> = prismic.PrismicDocum
 >;
 
 type HomeDocumentDataSlicesSlice =
+  | StatsSlice
   | FeaturesSlice
   | HeroSlice
   | CallToActionSlice
@@ -562,6 +563,7 @@ export type NavigationDocument<Lang extends string = string> = prismic.PrismicDo
 >;
 
 type PageDocumentDataSlicesSlice =
+  | StatsSlice
   | TimelineSlice
   | FeaturesSlice
   | CallToActionSlice
@@ -2265,6 +2267,119 @@ type SectionHeadersSliceVariation =
 export type SectionHeadersSlice = prismic.SharedSlice<'section_headers', SectionHeadersSliceVariation>;
 
 /**
+ * Item in *Stats → Default → Primary → Items*
+ */
+export interface StatsSliceDefaultPrimaryItemsItem {
+  /**
+   * counter field in *Stats → Default → Primary → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: stats.default.primary.items[].counter
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  counter: prismic.KeyTextField;
+
+  /**
+   * title field in *Stats → Default → Primary → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: stats.default.primary.items[].title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * suffix field in *Stats → Default → Primary → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: stats.default.primary.items[].suffix
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  suffix: prismic.KeyTextField;
+
+  /**
+   * prefix field in *Stats → Default → Primary → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: stats.default.primary.items[].prefix
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  prefix: prismic.KeyTextField;
+}
+
+/**
+ * Primary content in *Stats → Default → Primary*
+ */
+export interface StatsSliceDefaultPrimary {
+  /**
+   * Heading field in *Stats → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: stats.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Subtitle field in *Stats → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: stats.default.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+
+  /**
+   * Body field in *Stats → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: stats.default.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Items field in *Stats → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: stats.default.primary.items[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  items: prismic.GroupField<Simplify<StatsSliceDefaultPrimaryItemsItem>>;
+}
+
+/**
+ * Default variation for Stats Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type StatsSliceDefault = prismic.SharedSliceVariation<'default', Simplify<StatsSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Stats*
+ */
+type StatsSliceVariation = StatsSliceDefault;
+
+/**
+ * Stats Shared Slice
+ *
+ * - **API ID**: `stats`
+ * - **Description**: Stats
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type StatsSlice = prismic.SharedSlice<'stats', StatsSliceVariation>;
+
+/**
  * Item in *Timeline → Default → Primary → Items*
  */
 export interface TimelineSliceDefaultPrimaryItemsItem {
@@ -2460,6 +2575,11 @@ declare module '@prismicio/client' {
       SectionHeadersSliceDefault,
       SectionHeadersSliceWithButtons,
       SectionHeadersSliceVideo,
+      StatsSlice,
+      StatsSliceDefaultPrimaryItemsItem,
+      StatsSliceDefaultPrimary,
+      StatsSliceVariation,
+      StatsSliceDefault,
       TimelineSlice,
       TimelineSliceDefaultPrimaryItemsItem,
       TimelineSliceDefaultPrimary,

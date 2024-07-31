@@ -34,6 +34,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "stats": {
+              "type": "SharedSlice"
+            },
             "timeline": {
               "type": "SharedSlice"
             },

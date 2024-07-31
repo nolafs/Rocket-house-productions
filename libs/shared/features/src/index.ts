@@ -1,3 +1,4 @@
+export * from './lib/section-stats/section-stats';
 export { SectionTimeline } from './lib/section-timeline/section-timeline';
 export * from './lib/section-video/section-video';
 export * from './lib/feature-list/feature-list';
