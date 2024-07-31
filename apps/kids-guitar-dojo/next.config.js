@@ -16,10 +16,6 @@ const nextConfig = {
   },
   output: 'standalone',
   // https://nextjs.org/docs/advanced-features/output-file-tracing#caveats
-  experimental: {
-    // this includes files from the monorepo base two directories up
-    outputFileTracingRoot: path.join(__dirname, '../../'),
-  },
   //...(process.env.ENVIRONMENT_NAME !== 'local' && {headers}),
   images: {
     remotePatterns: [
