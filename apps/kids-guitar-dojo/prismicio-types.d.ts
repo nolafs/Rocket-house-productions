@@ -340,6 +340,7 @@ export type ContactDocument<Lang extends string = string> = prismic.PrismicDocum
 >;
 
 type HomeDocumentDataSlicesSlice =
+  | TestimonialsSlice
   | StatsSlice
   | FeaturesSlice
   | HeroSlice
