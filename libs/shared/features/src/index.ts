@@ -1,3 +1,4 @@
+export * from './lib/cta/cta-two-column-text';
 export * from './lib/section-testimonials/section-testimonials';
 export * from './lib/section-testimonials/section-testimonials';
 export * from './lib/section-stats/section-stats';
