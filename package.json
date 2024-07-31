@@ -4,6 +4,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "slicemachine": "start-slicemachine",
     "lint": "nx run-many --target=lint --all",
     "prepare": "husky"
   },
@@ -51,7 +52,8 @@
     "@nx/next": "19.5.1",
     "@nx/react": "19.5.1",
     "@nx/workspace": "19.5.1",
-    "@slicemachine/adapter-next": "^0.3.42",
+    "@slicemachine/adapter-next": "^0.3.43",
+    "slice-machine-ui": "^2.3.0",
     "@svgr/webpack": "^8.1.0",
     "@swc-node/register": "~1.9.1",
     "@swc/cli": "~0.3.12",
