@@ -1,4 +1,4 @@
-export * from './lib/section-timeline/section-timeline';
+export { SectionTimeline } from './lib/section-timeline/section-timeline';
 export * from './lib/section-video/section-video';
 export * from './lib/feature-list/feature-list';
 export { VideoPlayer } from './lib/video-player/video-player';
