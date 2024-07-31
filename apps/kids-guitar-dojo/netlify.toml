@@ -1,10 +1,10 @@
 #[build.environment]
 #  NEXT_USE_NETLIFY_EDGE = "false"
 
-[[redirects]]
-  from = "/_next/static/*"
-  to = "/static/:splat"
-  status = 200
+#[[redirects]]
+#  from = "/_next/static/*"
+#  to = "/static/:splat"
+#  status = 200
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
