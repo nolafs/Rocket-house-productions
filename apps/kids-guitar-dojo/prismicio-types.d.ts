@@ -1141,6 +1141,16 @@ export interface CallToActionSliceTextTwoColumnPrimary {
   heading: prismic.RichTextField;
 
   /**
+   * Subtitle field in *CallToAction → Text Two Column → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: call_to_action.textTwoColumn.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+
+  /**
    * Body field in *CallToAction → Text Two Column → Primary*
    *
    * - **Field Type**: Rich Text

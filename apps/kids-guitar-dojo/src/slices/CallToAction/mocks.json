@@ -339,8 +339,18 @@
 					{
 						"type": "paragraph",
 						"content": {
-							"text": "Sint amet eu consequat aute ut esse ut eiusmod. Aute eu deserunt aute non sit."
-						}
+							"text": "With a single point of view, Flex integrates customer data and marketing tools in one flexible cloud platform that lets you get business results wherever they show up. Flex is the only saas business platform that lets you run your business on one platform, seamlessly across all digital channels.\nWith Flex, you can run your business on one platform, seamlessly across all digital channels—and grow it anywhere. With a single point of view, Flex integrates customer data and marketing tools in one flexible cloud platform that lets you get business results wherever they show up.\nFlex is the only saas business platform that lets you run your business on one platform. Flex is the only saas business platform that lets you run your business on one platform.",
+							"spans": []
+						},
+						"direction": "ltr"
+					},
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "With Flex, you can run your business on one platform, seamlessly across all digital channels—and grow it anywhere. With a single point of view, Flex integrates customer data and marketing tools in one flexible cloud platform that lets you get business results wherever they show up.\nEnterprise software for startups\nTime is money. Stop jumping from tool to tool with all the hassle of integrations.\nNow you can manage your entire business on one platform.\nWith a single point of view, Flex integrates customer data and marketing tools in one flexible cloud platform that lets you get business results wherever they show up.",
+							"spans": []
+						},
+						"direction": "ltr"
 					}
 				]
 			},
@@ -387,6 +397,11 @@
 						]
 					}
 				]
+			},
+			"subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "swung",
+				"type": "Text"
 			}
 		},
 		"items": [

@@ -1,7 +1,7 @@
 import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
-import { CtaTwoColumn, CtaTwoColumnImage } from '@rocket-house-productions/features';
+import { CtaTwoColumn, CtaTwoColumnImage, CtaTwoColumnText } from '@rocket-house-productions/features';
 import CtaOneColumn from '../../../../../libs/shared/features/src/lib/cta/cta-one-column';
 
 /**
@@ -15,13 +15,28 @@ export type CallToActionProps = SliceComponentProps<Content.CallToActionSlice>;
 const CallToAction = ({ slice }: CallToActionProps): JSX.Element => {
   if (slice.variation === 'image') {
     return (
-      <Bounded as={'div'} yPadding={'sm'}>
+      <Bounded as={'section'} yPadding={'sm'}>
         <CtaTwoColumnImage
           data={{
             headings: slice.primary.heading,
             motto: { text: slice.primary.body },
             buttons: slice.primary.buttons,
             image: slice.primary.image,
+          }}
+        />
+      </Bounded>
+    );
+  }
+
+  if (slice.variation === 'textTwoColumn') {
+    return (
+      <Bounded as={'section'} yPadding={'sm'} fullWidth={true}>
+        <CtaTwoColumnText
+          data={{
+            headings: slice.primary.heading,
+            motto: { text: slice.primary.body },
+            buttons: slice.primary.buttons,
+            subtitle: slice.primary.subtitle,
           }}
         />
       </Bounded>
@@ -44,7 +59,7 @@ const CallToAction = ({ slice }: CallToActionProps): JSX.Element => {
   }
 
   return (
-    <Bounded as={'div'} yPadding={'sm'}>
+    <Bounded as={'section'} yPadding={'sm'}>
       <CtaTwoColumn
         data={{
           headings: slice.primary.heading,
