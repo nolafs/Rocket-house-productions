@@ -1,11 +1,11 @@
 'use client';
-import { TestimonialsItem } from '@rocket-house-productions/features';
 import cn from 'classnames';
 import { PrismicRichText } from '@prismicio/react';
 import { PrismicNextImage } from '@prismicio/next';
 import { StarRating } from '@rocket-house-productions/ui';
+import { TestimonialsItemType } from './section-testimonials';
 
-export function TestimonialRatingItem({ name, designation, review, image, rating }: TestimonialsItem) {
+export function TestimonialRatingItem({ name, designation, review, image, rating }: TestimonialsItemType) {
   return (
     <div
       className={cn(

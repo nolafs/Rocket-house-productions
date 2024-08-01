@@ -3,13 +3,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { motion } from 'framer-motion';
-import TestimonialItem from './testimonial-item';
+
 import TestimonialItemRatings from './testimonial-item-ratings';
 
-export type TestimonialsItem = {
+export type TestimonialsItemType = {
   name: string;
   designation: string;
   review: any;
@@ -18,7 +16,7 @@ export type TestimonialsItem = {
 };
 
 interface SectionTestimonialsProps {
-  data: TestimonialsItem[];
+  data: TestimonialsItemType[];
   className?: string;
   variant?: 'default' | 'ratings';
 }
