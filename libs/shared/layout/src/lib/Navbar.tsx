@@ -84,20 +84,27 @@ export function Navbar({ navigation, logo }: HeaderProps) {
               {/* Other options */}
               <div className="other-options self-center border-t border-[#eeeeee] pb-[10px] pt-[20px] xl:ml-[20px] xl:border-none xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
                 <ul className={'flex flex-row items-center justify-center space-x-5'}>
-                  <li>
+                  <li className="flex items-center justify-center">
                     <SignedOut>
-                      <SignInButton />
+                      <Link href="/sign-in" className={buttonVariants({ variant: 'ghost' })}></Link>
                     </SignedOut>
                     <SignedIn>
                       <UserButton />
                     </SignedIn>
                   </li>
                   <li>
-                    <Link
-                      href="/pricing"
-                      className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'uppercase')}>
-                      Buy now
-                    </Link>
+                    <SignedOut>
+                      <Link
+                        href="/pricing"
+                        className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'uppercase')}>
+                        Buy now
+                      </Link>
+                    </SignedOut>
+                    <SignedIn>
+                      <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
+                        Go to Course
+                      </Link>
+                    </SignedIn>
                   </li>
                 </ul>
               </div>
@@ -133,16 +140,23 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                     <ul className={'flex flex-row items-center justify-center space-x-5'}>
                       <li>
                         <SignedOut>
-                          <SignInButton />
+                          <Link href="/sign-in" className={buttonVariants({ variant: 'ghost' })}></Link>
                         </SignedOut>
                         <SignedIn>
                           <UserButton />
                         </SignedIn>
                       </li>
                       <li>
-                        <Link href="/contact-us/" className={buttonVariants({ variant: 'outline' })}>
-                          Buy now
-                        </Link>
+                        <SignedOut>
+                          <Link href="/pricing" className={buttonVariants({ variant: 'outline' })}>
+                            Buy now
+                          </Link>
+                        </SignedOut>
+                        <SignedIn>
+                          <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
+                            Go to Lesson
+                          </Link>
+                        </SignedIn>
                       </li>
                     </ul>
                   </div>
