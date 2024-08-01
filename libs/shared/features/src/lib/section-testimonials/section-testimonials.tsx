@@ -6,17 +6,10 @@ import 'swiper/css/scrollbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import TestimonialItemRatings from './testimonial-item-ratings';
-
-export type TestimonialsItemType = {
-  name: string;
-  designation: string;
-  review: any;
-  image: any;
-  rating?: number;
-};
+import { TestimonialsType } from '@rocket-house-productions/types';
 
 interface SectionTestimonialsProps {
-  data: TestimonialsItemType[];
+  data: TestimonialsType[];
   className?: string;
   variant?: 'default' | 'ratings';
 }

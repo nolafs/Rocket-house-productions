@@ -1,7 +1,8 @@
 import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
-import { SectionTestimonials, TestimonialsItemType } from '@rocket-house-productions/features';
+import { SectionTestimonials } from '@rocket-house-productions/features';
+import { TestimonialsType } from '@rocket-house-productions/types';
 
 /**
  * Props for `Testimonials`.
@@ -13,7 +14,7 @@ export type TestimonialsProps = SliceComponentProps<Content.TestimonialsSlice>;
  */
 const Testimonials = ({ slice }: TestimonialsProps): JSX.Element => {
   const testimonials = slice.primary.items.map(item => {
-    const testimonial: TestimonialsItemType = {
+    const testimonial: TestimonialsType = {
       name: item.name as string,
       designation: item.designation as string,
       review: item.review,
