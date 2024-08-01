@@ -2,6 +2,7 @@ export { SectionFaqs } from './lib/section-faqs/section-faqs';
 export { SectionPricingTable } from './lib/section-pricing-table/section-pricing-table';
 export { CtaTwoColumnText } from './lib/cta/cta-two-column-text';
 export { SectionTestimonials } from './lib/section-testimonials/section-testimonials';
+export { TestimonialItem } from './lib/section-testimonials/testimonial-item';
 export { SectionStats } from './lib/section-stats/section-stats';
 export { SectionTimeline } from './lib/section-timeline/section-timeline';
 export * from './lib/section-video/section-video';
