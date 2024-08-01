@@ -6,3 +6,4 @@ export type { BlogType } from './lib/bog.type';
 export type { BlogPostType } from './lib/bog.type';
 export type { SectionTitleType, MottoType } from './lib/content.type';
 export type { TestimonialsType } from './lib/testimional.type';
+export type { IContactFormInput } from './lib/email.type';

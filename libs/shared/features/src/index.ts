@@ -1,3 +1,4 @@
+export * from './lib/contact-form/contact-form';
 export { SectionFaqs } from './lib/section-faqs/section-faqs';
 export { SectionPricingTable } from './lib/section-pricing-table/section-pricing-table';
 export { CtaTwoColumnText } from './lib/cta/cta-two-column-text';

@@ -18,10 +18,10 @@ interface HeroSimpleProps {
 
 export function HeroSimple({ data: { heading, text, pageName }, color = 'B' }: HeroSimpleProps) {
   return (
-    <header className={'z-10 pt-[140px] md:mb-20'}>
+    <header className={'z-10 pt-[140px] md:mb-24'}>
       <h1 className="sr-only">{pageName}</h1>
       <motion.div
-        className="container z-10 mx-auto max-w-3xl text-center"
+        className="container z-10 mx-auto max-w-[930px] text-center"
         initial="offscreen"
         whileInView="onscreen"
         viewport={{ once: true, amount: 0.1 }}

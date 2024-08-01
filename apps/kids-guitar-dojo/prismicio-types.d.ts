@@ -306,22 +306,66 @@ export type BlogPostDocument<Lang extends string = string> = prismic.PrismicDocu
   Lang
 >;
 
-type ContactDocumentDataSlicesSlice = SectionHeadersSlice | CallToActionSlice;
+type ContactDocumentDataSlicesSlice = CallToActionSlice;
 
 /**
  * Content for Contact documents
  */
 interface ContactDocumentData {
   /**
-   * Titel field in *Contact*
+   * Heading field in *Contact*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact.heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Subtitle field in *Contact*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: contact.titel
+   * - **API ID Path**: contact.subtitle
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
-  titel: prismic.KeyTextField;
+  subtitle: prismic.KeyTextField;
+
+  /**
+   * Email Address field in *Contact*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact.email_address
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  email_address: prismic.KeyTextField;
+
+  /**
+   * Phone Number field in *Contact*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact.phone_number
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  phone_number: prismic.KeyTextField;
+
+  /**
+   * Form Image field in *Contact*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact.form_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  form_image: prismic.ImageField<never>;
 
   /**
    * Slice Zone field in *Contact*

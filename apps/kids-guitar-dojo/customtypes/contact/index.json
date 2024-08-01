@@ -6,11 +6,42 @@
   "status": true,
   "json": {
     "Main": {
-      "titel": {
+      "heading": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Heading",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "subtitle": {
         "type": "Text",
         "config": {
-          "label": "Titel",
+          "label": "Subtitle",
           "placeholder": ""
+        }
+      },
+      "email_address": {
+        "type": "Text",
+        "config": {
+          "label": "Email Address",
+          "placeholder": ""
+        }
+      },
+      "phone_number": {
+        "type": "Text",
+        "config": {
+          "label": "Phone Number",
+          "placeholder": ""
+        }
+      },
+      "form_image": {
+        "type": "Image",
+        "config": {
+          "label": "Form Image",
+          "constraint": {},
+          "thumbnails": []
         }
       },
       "slices": {
@@ -18,9 +49,6 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "section_headers": {
-              "type": "SharedSlice"
-            },
             "call_to_action": {
               "type": "SharedSlice"
             }
