@@ -7,6 +7,7 @@ export const components = {
   content_image_slice: dynamic(() => import('./ContentImageSlice')),
   features: dynamic(() => import('./Features')),
   hero: dynamic(() => import('./Hero')),
+  pricing_table: dynamic(() => import('./PricingTable')),
   rich_text_slice: dynamic(() => import('./RichTextSlice')),
   section_headers: dynamic(() => import('./SectionHeaders')),
   stats: dynamic(() => import('./Stats')),

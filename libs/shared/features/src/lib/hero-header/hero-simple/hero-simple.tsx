@@ -20,7 +20,7 @@ export function HeroSimple({ data: { heading, text, pageName }, color = 'B' }: H
   console.log('HeroSimple', { heading, text, pageName });
 
   return (
-    <header>
+    <header className={'z-10 pt-[140px] md:mb-[200px]'}>
       <h1 className="sr-only">{pageName}</h1>
       <motion.div
         className="container z-10 mx-auto max-w-3xl text-center"

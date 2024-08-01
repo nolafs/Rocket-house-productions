@@ -1,7 +1,7 @@
 'use client';
-import { useUI } from '@rocket-house-productions/hooks';
+
 import { motion } from 'framer-motion';
-import { fadeIn, scrollUpFadeVariants, scrollUpVariants } from '@rocket-house-productions/util';
+import { scrollUpFadeVariants, scrollUpVariants } from '@rocket-house-productions/util';
 import { BottomShape, ButtonGroup } from '@rocket-house-productions/ui';
 import SectionTitle from '../../section-title/section-title';
 import { RichTextField } from '@prismicio/client';
@@ -22,14 +22,13 @@ interface HeroProps {
     image: any;
     video: any;
   };
-  alignment?: 'Left' | 'Right';
+
   color?: 'A' | 'B';
   decor?: 'A' | 'B';
 }
 
 export function HeroCenter({
   data: { headings, text, buttons, motto, image, pageName, video },
-  alignment = 'Left',
   color = 'B',
   decor = 'A',
 }: HeroProps) {

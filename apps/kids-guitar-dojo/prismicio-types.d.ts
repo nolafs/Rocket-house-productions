@@ -659,6 +659,108 @@ export type PageDocument<Lang extends string = string> = prismic.PrismicDocument
 >;
 
 /**
+ * Item in *Pricing → Features*
+ */
+export interface PricingDocumentDataFeaturesItem {
+  /**
+   * Feature field in *Pricing → Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.features[].feature
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  feature: prismic.KeyTextField;
+}
+
+/**
+ * Content for Pricing documents
+ */
+interface PricingDocumentData {
+  /**
+   * Name field in *Pricing*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Description field in *Pricing*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Price field in *Pricing*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.price
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  price: prismic.NumberField;
+
+  /**
+   * Features field in *Pricing*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.features[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  features: prismic.GroupField<Simplify<PricingDocumentDataFeaturesItem>>;
+
+  /**
+   * Most Popular field in *Pricing*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: pricing.most_popular
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  most_popular: prismic.BooleanField;
+
+  /**
+   * Link field in *Pricing*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.link
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+}
+
+/**
+ * Pricing document from Prismic
+ *
+ * - **API ID**: `pricing`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PricingDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+  Simplify<PricingDocumentData>,
+  'pricing',
+  Lang
+>;
+
+/**
  * Item in *Settings → Secondary Navigation*
  */
 export interface SettingsDocumentDataSecondaryNavigationItem {
@@ -780,6 +882,7 @@ export type AllDocumentTypes =
   | LegalDocument
   | NavigationDocument
   | PageDocument
+  | PricingDocument
   | SettingsDocument;
 
 /**
@@ -2072,6 +2175,63 @@ type HeroSliceVariation = HeroSliceDefault | HeroSliceThunderDecoration | HeroSl
 export type HeroSlice = prismic.SharedSlice<'hero', HeroSliceVariation>;
 
 /**
+ * Item in *PricingTable → Default → Primary → Tiers*
+ */
+export interface PricingTableSliceDefaultPrimaryTiersItem {
+  /**
+   * Tier field in *PricingTable → Default → Primary → Tiers*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_table.default.primary.tiers[].tier
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  tier: prismic.ContentRelationshipField<'pricing'>;
+}
+
+/**
+ * Primary content in *PricingTable → Default → Primary*
+ */
+export interface PricingTableSliceDefaultPrimary {
+  /**
+   * Tiers field in *PricingTable → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_table.default.primary.tiers[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  tiers: prismic.GroupField<Simplify<PricingTableSliceDefaultPrimaryTiersItem>>;
+}
+
+/**
+ * Default variation for PricingTable Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type PricingTableSliceDefault = prismic.SharedSliceVariation<
+  'default',
+  Simplify<PricingTableSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *PricingTable*
+ */
+type PricingTableSliceVariation = PricingTableSliceDefault;
+
+/**
+ * PricingTable Shared Slice
+ *
+ * - **API ID**: `pricing_table`
+ * - **Description**: PricingTable
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type PricingTableSlice = prismic.SharedSlice<'pricing_table', PricingTableSliceVariation>;
+
+/**
  * Primary content in *RichTextSlice → Default → Primary*
  */
 export interface RichTextSliceSliceDefaultPrimary {
@@ -2767,6 +2927,9 @@ declare module '@prismicio/client' {
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
+      PricingDocument,
+      PricingDocumentData,
+      PricingDocumentDataFeaturesItem,
       SettingsDocument,
       SettingsDocumentData,
       SettingsDocumentDataSecondaryNavigationItem,
@@ -2813,6 +2976,11 @@ declare module '@prismicio/client' {
       HeroSliceThunderDecoration,
       HeroSliceCentered,
       HeroSliceSimple,
+      PricingTableSlice,
+      PricingTableSliceDefaultPrimaryTiersItem,
+      PricingTableSliceDefaultPrimary,
+      PricingTableSliceVariation,
+      PricingTableSliceDefault,
       RichTextSliceSlice,
       RichTextSliceSliceDefaultPrimary,
       RichTextSliceSliceTwoColumnsPrimary,
