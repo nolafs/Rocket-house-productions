@@ -2014,9 +2014,53 @@ export interface HeroSliceCenteredPrimary {
 export type HeroSliceCentered = prismic.SharedSliceVariation<'centered', Simplify<HeroSliceCenteredPrimary>, never>;
 
 /**
+ * Primary content in *Hero → Simple → Primary*
+ */
+export interface HeroSliceSimplePrimary {
+  /**
+   * Page Name field in *Hero → Simple → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.simple.primary.page_name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  page_name: prismic.KeyTextField;
+
+  /**
+   * Heading field in *Hero → Simple → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.simple.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  heading: prismic.RichTextField;
+
+  /**
+   * Category field in *Hero → Simple → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero.simple.primary.category
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  category: prismic.KeyTextField;
+}
+
+/**
+ * Simple variation for Hero Slice
+ *
+ * - **API ID**: `simple`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSliceSimple = prismic.SharedSliceVariation<'simple', Simplify<HeroSliceSimplePrimary>, never>;
+
+/**
  * Slice variation for *Hero*
  */
-type HeroSliceVariation = HeroSliceDefault | HeroSliceThunderDecoration | HeroSliceCentered;
+type HeroSliceVariation = HeroSliceDefault | HeroSliceThunderDecoration | HeroSliceCentered | HeroSliceSimple;
 
 /**
  * Hero Shared Slice
@@ -2763,10 +2807,12 @@ declare module '@prismicio/client' {
       HeroSliceThunderDecorationPrimary,
       HeroSliceCenteredPrimaryButtonsItem,
       HeroSliceCenteredPrimary,
+      HeroSliceSimplePrimary,
       HeroSliceVariation,
       HeroSliceDefault,
       HeroSliceThunderDecoration,
       HeroSliceCentered,
+      HeroSliceSimple,
       RichTextSliceSlice,
       RichTextSliceSliceDefaultPrimary,
       RichTextSliceSliceTwoColumnsPrimary,

@@ -1,6 +1,6 @@
 import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
-import { HeroCenter, HeroColumns } from '@rocket-house-productions/features';
+import { HeroCenter, HeroColumns, HeroSimple } from '@rocket-house-productions/features';
 import { Bounded } from '@components/Bounded';
 
 /**
@@ -35,16 +35,28 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
 
   if (slice.variation === 'centered') {
     return (
+      <HeroCenter
+        data={{
+          pageName: slice.primary.page_name,
+          headings: slice.primary.heading,
+          text: slice.primary.category,
+          motto: { text: slice.primary.body },
+          image: slice.primary.image,
+          buttons: slice.primary.buttons,
+          video: slice.primary.video,
+        }}
+      />
+    );
+  }
+
+  if (slice.variation === 'simple') {
+    return (
       <>
-        <HeroCenter
+        <HeroSimple
           data={{
             pageName: slice.primary.page_name,
-            headings: slice.primary.heading,
+            heading: slice.primary.heading,
             text: slice.primary.category,
-            motto: { text: slice.primary.body },
-            image: slice.primary.image,
-            buttons: slice.primary.buttons,
-            video: slice.primary.video,
           }}
         />
       </>
