@@ -1,26 +1,6 @@
-import cn from 'classnames';
 import SectionTitle from '../section-title/section-title';
 import { KeyTextField, RichTextField } from '@prismicio/client';
 import FaqItem from './faq-item';
-
-const faqs = [
-  {
-    question: 'How do you make holy water?',
-    answer:
-      'You boil the hell out of it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
-  },
-  {
-    question: 'How do you make holy water?',
-    answer:
-      'You boil the hell out of it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
-  },
-  {
-    question: 'How do you make holy water?',
-    answer:
-      'You boil the hell out of it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
-  },
-  // More questions...
-];
 
 interface SectionFagsProps {
   data: {
@@ -34,6 +14,8 @@ interface SectionFagsProps {
 }
 
 export function SectionFaqs({ data: { headings, text, body, faqs }, color = 'C' }: SectionFagsProps) {
+  console.log('faqs', faqs);
+
   return (
     <div className="lg:grid lg:grid-cols-12 lg:gap-8">
       <div className="lg:col-span-5">
@@ -47,7 +29,7 @@ export function SectionFaqs({ data: { headings, text, body, faqs }, color = 'C' 
         />
       </div>
       <div className="mt-10 lg:col-span-7 lg:mt-0">
-        <dl className="space-y-10">
+        <dl className="space-y-5">
           {faqs.map(faq => (
             <FaqItem key={faq.id} heading={faq.data.heading} body={faq.data.body} />
           ))}

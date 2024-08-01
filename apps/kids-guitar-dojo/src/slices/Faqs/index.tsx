@@ -32,8 +32,6 @@ const Faqs = async ({ slice }: FaqsProps) => {
     }
   }
 
-  console.log('faqItems', faqItems);
-
   if (faqItems.length === 0) {
     console.log('No faq items found');
   }
