@@ -86,7 +86,9 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                 <ul className={'flex flex-row items-center justify-center space-x-5'}>
                   <li className="flex items-center justify-center">
                     <SignedOut>
-                      <Link href="/sign-in" className={buttonVariants({ variant: 'ghost' })}></Link>
+                      <Link href="/sign-in" className={buttonVariants({ variant: 'ghost' })}>
+                        Sign-in
+                      </Link>
                     </SignedOut>
                     <SignedIn>
                       <UserButton />
