@@ -52,7 +52,7 @@ export function FeatureList({
                       height={570}
                       alt=""
                       className={'absolute left-[10px] top-[10px] h-[150px] w-[150px] rounded-full bg-white shadow'}
-                      imgixParams={{ fit: 'fill' }}
+                      imgixParams={{ fit: 'fill', fm: 'webp' }}
                     />
                   </div>
                 </div>

@@ -10,7 +10,13 @@ export function TestimonialItem({ name, designation, review, image }: Testimonia
       className={cn('testimonial shadow-dark/10 flex h-full flex-wrap rounded bg-white px-7 py-8 shadow-md md:py-10')}>
       {image?.src && (
         <figure className="image flex-auto0 w-[70px]">
-          <PrismicNextImage field={image} width={70} height={70} className={'rounded-full'} />
+          <PrismicNextImage
+            field={image}
+            width={70}
+            height={70}
+            imgixParams={{ fm: 'webp', fit: 'crop' }}
+            className={'rounded-full'}
+          />
         </figure>
       )}
 

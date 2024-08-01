@@ -42,7 +42,7 @@ export function VideoControl({ poster, handlePlay, width, height, title, mode }:
           height={height}
           alt=""
           className={'z-10 h-auto w-full object-fill'}
-          imgixParams={{ fit: 'fill' }}
+          imgixParams={{ fit: 'fill', fm: 'webp' }}
         />
       ) : (
         <Image width={width} height={height} loading={'lazy'} src={placeholder} quality={80} alt={title} />

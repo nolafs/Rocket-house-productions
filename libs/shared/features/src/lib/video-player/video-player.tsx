@@ -46,7 +46,7 @@ export function VideoPlayer({
   if (provider_name === 'YouTube') {
     const Youtube = dynamic(() => import('./video-players/youtube'));
 
-    return <Youtube id={id} title={title || id} poster={image} src={embed_url} />;
+    return <Youtube id={id} title={title || id} poster={image} src={embed_url} width={944} height={531} />;
   }
 
   if (provider_name === 'Vimeo') {
