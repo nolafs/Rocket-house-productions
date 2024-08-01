@@ -1,3 +1,4 @@
+export * from './lib/section-faqs/section-faqs';
 export * from './lib/section-pricing-table/section-pricing-table';
 export * from './lib/cta/cta-two-column-text';
 export * from './lib/section-testimonials/section-testimonials';
