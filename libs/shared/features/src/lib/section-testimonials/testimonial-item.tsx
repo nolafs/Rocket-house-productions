@@ -1,8 +1,8 @@
 'use client';
-import { TestimonialsItem } from '@rocket-house-productions/features';
 import cn from 'classnames';
 import { PrismicRichText } from '@prismicio/react';
 import { PrismicNextImage } from '@prismicio/next';
+import { TestimonialsItem } from './section-testimonials';
 
 export function TestimonialItem({ name, designation, review, image }: TestimonialsItem) {
   return (
