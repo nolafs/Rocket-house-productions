@@ -368,6 +368,28 @@ interface ContactDocumentData {
   form_image: prismic.ImageField<never>;
 
   /**
+   * Form Heading field in *Contact*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact.form_heading
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  form_heading: prismic.KeyTextField;
+
+  /**
+   * Form Body field in *Contact*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: contact.form_body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  form_body: prismic.KeyTextField;
+
+  /**
    * Slice Zone field in *Contact*
    *
    * - **Field Type**: Slice Zone

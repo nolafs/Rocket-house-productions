@@ -44,6 +44,20 @@
           "thumbnails": []
         }
       },
+      "form_heading": {
+        "type": "Text",
+        "config": {
+          "label": "Form Heading",
+          "placeholder": ""
+        }
+      },
+      "form_body": {
+        "type": "Text",
+        "config": {
+          "label": "Form Body",
+          "placeholder": ""
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
