@@ -1476,7 +1476,7 @@ export interface FaqsSliceDefaultPrimaryFaqsItem {
    * - **API ID Path**: faqs.default.primary.faqs[].faq
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  faq: prismic.ContentRelationshipField;
+  faq: prismic.ContentRelationshipField<'faq'>;
 }
 
 /**
