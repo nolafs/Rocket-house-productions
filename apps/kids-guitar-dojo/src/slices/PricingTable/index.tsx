@@ -13,8 +13,6 @@ export type PricingTableProps = SliceComponentProps<Content.PricingTableSlice>;
  * Component for "PricingTable" Slices.
  */
 const PricingTable = async ({ slice }: PricingTableProps) => {
-  console.log('PricingTable', slice.primary.tiers);
-
   const client = createClient();
   const tierPricing: any[] = [];
 
