@@ -48,9 +48,8 @@ export function FeatureList({
                   <div className="absolute left-0 top-0 h-[170px] w-[170px] rounded-full bg-white shadow">
                     <PrismicNextImage
                       field={image}
-                      width={570}
-                      height={570}
-                      alt=""
+                      width={150}
+                      height={150}
                       className={'absolute left-[10px] top-[10px] h-[150px] w-[150px] rounded-full bg-white shadow'}
                       imgixParams={{ fit: 'fill', fm: 'webp' }}
                     />
