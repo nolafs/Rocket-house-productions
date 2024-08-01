@@ -1,12 +1,17 @@
-import { ContactForm, HeroSimple } from '@rocket-house-productions/features';
+import { ContactForm, HeroSimple, SocialList } from '@rocket-house-productions/features';
 import { createClient } from '@/prismicio';
 import { notFound } from 'next/navigation';
-import { PrismicImage, SliceZone } from '@prismicio/react';
+import { PrismicImage, PrismicRichText, SliceZone } from '@prismicio/react';
 import { components } from '@/slices';
 import { Bounded } from '@components/Bounded';
 import { LucideMailOpen, PhoneCallIcon, Share2Icon } from 'lucide-react';
-import SocialList from '../../../../../../libs/shared/features/src/lib/social-list/social-list';
+
 import React from 'react';
+
+type Props = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
 
 export default async function Page() {
   const client = createClient();
@@ -75,12 +80,14 @@ export default async function Page() {
         </div>
       </Bounded>
 
-      <Bounded as="section" yPadding={'sm'}>
+      <Bounded as="section" yPadding={'lg'}>
         <div className="grid grid-cols-1 grid-cols-2 gap-7">
           <div className="image">
             <PrismicImage field={page.data.form_image} />
           </div>
           <div>
+            <div className="mb-5 text-4xl font-bold">{page.data.form_heading}</div>
+            <div className="mb-5 text-gray-500">{page.data.form_body}</div>
             <ContactForm />
           </div>
         </div>

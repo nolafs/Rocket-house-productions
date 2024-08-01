@@ -71,6 +71,67 @@
             }
           }
         }
+      },
+      "sign_in_image": {
+        "type": "Image",
+        "config": {
+          "label": "Sign-in Image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
+      "share_image": {
+        "type": "Image",
+        "config": {
+          "label": "OG Image",
+          "constraint": {
+            "width": 1200,
+            "height": 630
+          },
+          "thumbnails": []
+        }
+      },
+      "meta_title": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Title",
+          "placeholder": ""
+        }
+      },
+      "meta_description": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Description",
+          "placeholder": ""
+        }
+      },
+      "meta_keywords": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Keywords",
+          "placeholder": ""
+        }
+      },
+      "canonical_url": {
+        "type": "Text",
+        "config": {
+          "label": "Canonical Url",
+          "placeholder": ""
+        }
+      },
+      "twitter_handler": {
+        "type": "Text",
+        "config": {
+          "label": "Twitter Handler",
+          "placeholder": ""
+        }
+      },
+      "twitter_card_type": {
+        "type": "Text",
+        "config": {
+          "label": "Twitter Card Type",
+          "placeholder": ""
+        }
       }
     }
   }

@@ -1,12 +1,26 @@
 import { SignIn } from '@clerk/nextjs';
+import { createClient } from '@/prismicio';
+import { PrismicNextImage } from '@prismicio/next';
 
-export default function Page() {
+export default async function Page() {
+  const client = createClient();
+  const settings = await client.getSingle('settings');
+
   return (
     <main>
       <div className={'flex h-svh min-h-svh w-full flex-col justify-center md:flex-row'}>
-        <div className={'bg-primary md:w-1/2'}>Some CTA here</div>
+        <div className={'bg-primary flex flex-col items-center justify-center md:w-1/2'}>
+          <PrismicNextImage field={settings.data.sign_in_image} />
+        </div>
         <div className={'flex w-full items-center justify-center bg-white md:w-1/2'}>
-          <SignIn />
+          <SignIn
+            appearance={{
+              variables: {},
+              elements: {
+                formButtonPrimary: 'bg-primary hover:bg-accent border-0',
+              },
+            }}
+          />
         </div>
       </div>
     </main>
