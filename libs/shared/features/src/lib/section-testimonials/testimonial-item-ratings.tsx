@@ -3,9 +3,9 @@ import cn from 'classnames';
 import { PrismicRichText } from '@prismicio/react';
 import { PrismicNextImage } from '@prismicio/next';
 import { StarRating } from '@rocket-house-productions/ui';
-import { TestimonialsItemType } from './section-testimonials';
+import { TestimonialsType } from '@rocket-house-productions/types';
 
-export function TestimonialRatingItem({ name, designation, review, image, rating }: TestimonialsItemType) {
+export function TestimonialRatingItem({ name, designation, review, image, rating }: TestimonialsType) {
   return (
     <div
       className={cn(
