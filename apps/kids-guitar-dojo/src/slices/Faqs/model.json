@@ -38,13 +38,19 @@
           }
         },
         "faqs": {
-          "type": "Link",
+          "type": "Group",
           "config": {
             "label": "FAQs",
-            "select": "document",
-            "customtypes": [
-              "faq"
-            ]
+            "repeat": true,
+            "fields": {
+              "faq": {
+                "type": "Link",
+                "config": {
+                  "label": "FAQ",
+                  "select": "document"
+                }
+              }
+            }
           }
         }
       },

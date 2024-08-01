@@ -1465,6 +1465,21 @@ type ContentImageSliceSliceVariation = ContentImageSliceSliceDefault;
 export type ContentImageSliceSlice = prismic.SharedSlice<'content_image_slice', ContentImageSliceSliceVariation>;
 
 /**
+ * Item in *Faqs → Default → Primary → FAQs*
+ */
+export interface FaqsSliceDefaultPrimaryFaqsItem {
+  /**
+   * FAQ field in *Faqs → Default → Primary → FAQs*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: faqs.default.primary.faqs[].faq
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  faq: prismic.ContentRelationshipField;
+}
+
+/**
  * Primary content in *Faqs → Default → Primary*
  */
 export interface FaqsSliceDefaultPrimary {
@@ -1501,12 +1516,12 @@ export interface FaqsSliceDefaultPrimary {
   /**
    * FAQs field in *Faqs → Default → Primary*
    *
-   * - **Field Type**: Content Relationship
+   * - **Field Type**: Group
    * - **Placeholder**: *None*
-   * - **API ID Path**: faqs.default.primary.faqs
-   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   * - **API ID Path**: faqs.default.primary.faqs[]
+   * - **Documentation**: https://prismic.io/docs/field#group
    */
-  faqs: prismic.ContentRelationshipField<'faq'>;
+  faqs: prismic.GroupField<Simplify<FaqsSliceDefaultPrimaryFaqsItem>>;
 }
 
 /**
@@ -3069,6 +3084,7 @@ declare module '@prismicio/client' {
       ContentImageSliceSliceVariation,
       ContentImageSliceSliceDefault,
       FaqsSlice,
+      FaqsSliceDefaultPrimaryFaqsItem,
       FaqsSliceDefaultPrimary,
       FaqsSliceVariation,
       FaqsSliceDefault,
