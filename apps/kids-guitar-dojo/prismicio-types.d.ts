@@ -606,6 +606,7 @@ export type NavigationDocument<Lang extends string = string> = prismic.PrismicDo
 >;
 
 type PageDocumentDataSlicesSlice =
+  | FaqsSlice
   | PricingTableSlice
   | TestimonialsSlice
   | StatsSlice
@@ -1505,7 +1506,7 @@ export interface FaqsSliceDefaultPrimary {
    * - **API ID Path**: faqs.default.primary.faqs
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  faqs: prismic.ContentRelationshipField;
+  faqs: prismic.ContentRelationshipField<'faq'>;
 }
 
 /**

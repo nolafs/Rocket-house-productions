@@ -36,6 +36,13 @@
 				"__TYPE__": "FieldContent",
 				"type": "Text",
 				"value": "Need some help"
+			},
+			"faqs": {
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "DocumentLink",
+					"id": "mock_document_id"
+				}
 			}
 		},
 		"items": []

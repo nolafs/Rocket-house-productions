@@ -41,7 +41,10 @@
           "type": "Link",
           "config": {
             "label": "FAQs",
-            "select": "document"
+            "select": "document",
+            "customtypes": [
+              "faq"
+            ]
           }
         }
       },
