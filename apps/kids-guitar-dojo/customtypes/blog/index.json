@@ -13,15 +13,18 @@
           "placeholder": ""
         }
       },
+      "subtitle": {
+        "type": "Text",
+        "config": {
+          "label": "Subtitle",
+          "placeholder": ""
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
-          "choices": {
-            "call_to_action": {
-              "type": "SharedSlice"
-            }
-          }
+          "choices": {}
         }
       }
     },

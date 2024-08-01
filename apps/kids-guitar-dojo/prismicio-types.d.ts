@@ -46,7 +46,7 @@ export type AuthorDocument<Lang extends string = string> = prismic.PrismicDocume
   Lang
 >;
 
-type BlogDocumentDataSlicesSlice = CallToActionSlice;
+type BlogDocumentDataSlicesSlice = never;
 
 /**
  * Content for Blog documents
@@ -62,6 +62,17 @@ interface BlogDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   title: prismic.KeyTextField;
+
+  /**
+   * Subtitle field in *Blog*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog.subtitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
 
   /**
    * Slice Zone field in *Blog*
