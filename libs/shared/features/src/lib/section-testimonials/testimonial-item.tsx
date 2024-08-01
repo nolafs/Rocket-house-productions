@@ -2,9 +2,9 @@
 import cn from 'classnames';
 import { PrismicRichText } from '@prismicio/react';
 import { PrismicNextImage } from '@prismicio/next';
-import { TestimonialsItem } from './section-testimonials';
+import { TestimonialsType } from '@rocket-house-productions/types';
 
-export function TestimonialItem({ name, designation, review, image }: TestimonialsItem) {
+export function TestimonialItem({ name, designation, review, image }: TestimonialsType) {
   return (
     <div
       className={cn('testimonial shadow-dark/10 flex h-full flex-wrap rounded bg-white px-7 py-8 shadow-md md:py-10')}>
