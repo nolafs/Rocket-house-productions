@@ -53,15 +53,15 @@ type BlogDocumentDataSlicesSlice = never;
  */
 interface BlogDocumentData {
   /**
-   * Title field in *Blog*
+   * Heading field in *Blog*
    *
-   * - **Field Type**: Text
+   * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: blog.title
+   * - **API ID Path**: blog.heading
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#key-text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
-  title: prismic.KeyTextField;
+  heading: prismic.RichTextField;
 
   /**
    * Subtitle field in *Blog*
@@ -132,6 +132,37 @@ export type BlogDocument<Lang extends string = string> = prismic.PrismicDocument
   Lang
 >;
 
+/**
+ * Content for Blog Category documents
+ */
+interface BlogCategoryDocumentData {
+  /**
+   * Category field in *Blog Category*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_category.category
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  category: prismic.KeyTextField;
+}
+
+/**
+ * Blog Category document from Prismic
+ *
+ * - **API ID**: `blog_category`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BlogCategoryDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+  Simplify<BlogCategoryDocumentData>,
+  'blog_category',
+  Lang
+>;
+
 type BlogPostDocumentDataSlicesSlice = never;
 
 type BlogPostDocumentDataSlices1Slice = never;
@@ -150,6 +181,17 @@ interface BlogPostDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   title: prismic.KeyTextField;
+
+  /**
+   * Category field in *Blog Post*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_post.category
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  category: prismic.ContentRelationshipField<'blog_category'>;
 
   /**
    * Publishing Date field in *Blog Post*
@@ -194,17 +236,6 @@ interface BlogPostDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
   main: prismic.RichTextField;
-
-  /**
-   * test field in *Blog Post*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: blog_post.test
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  test: prismic.KeyTextField;
 
   /**
    * Slice Zone field in *Blog Post*
@@ -931,6 +962,7 @@ export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocu
 export type AllDocumentTypes =
   | AuthorDocument
   | BlogDocument
+  | BlogCategoryDocument
   | BlogPostDocument
   | ContactDocument
   | FaqDocument
@@ -3047,6 +3079,8 @@ declare module '@prismicio/client' {
       BlogDocument,
       BlogDocumentData,
       BlogDocumentDataSlicesSlice,
+      BlogCategoryDocument,
+      BlogCategoryDocumentData,
       BlogPostDocument,
       BlogPostDocumentData,
       BlogPostDocumentDataSlicesSlice,

@@ -1,8 +1,6 @@
 'use client';
 import Image from 'next/image';
-
-import placeholder_white from '../assets/placeholder-white.png';
-import placeholder from '../assets/placeholder.png';
+import placeholder from '../../assets/placeholder.png';
 import { useState } from 'react';
 import cn from 'classnames';
 import { PrismicNextImage } from '@prismicio/next';

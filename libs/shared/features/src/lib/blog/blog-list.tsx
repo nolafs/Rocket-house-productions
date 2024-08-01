@@ -1,5 +1,8 @@
+'use client';
 import { BlogCard } from '@rocket-house-productions/ui';
 import { PrismicLink } from '@prismicio/react';
+import { motion } from 'framer-motion';
+import { scrollUpVariants } from '@rocket-house-productions/util';
 
 interface BlogListProps {
   posts: any[] | undefined | null;
@@ -11,7 +14,12 @@ export function BlogList({ posts }: BlogListProps) {
   }
 
   return (
-    <div className={'container mx-auto mb-20'}>
+    <motion.div
+      className="container z-10 mx-auto mb-20"
+      initial="offscreen"
+      whileInView="onscreen"
+      viewport={{ once: true, amount: 0.1 }}
+      variants={scrollUpVariants}>
       <div className={'grid grid-cols-1 grid-cols-3 md:gap-7 lg:gap-10'}>
         {posts.map(post => (
           <PrismicLink document={post} key={post.id} className={'group'}>
@@ -19,7 +27,7 @@ export function BlogList({ posts }: BlogListProps) {
           </PrismicLink>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -20,6 +20,14 @@
           "placeholder": ""
         }
       },
+      "category": {
+        "type": "Link",
+        "config": {
+          "label": "Category",
+          "select": "document",
+          "customtypes": ["blog_category"]
+        }
+      },
       "publishing_date": {
         "type": "Date",
         "config": {
@@ -50,13 +58,6 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
-        }
-      },
-      "test": {
-        "type": "Text",
-        "config": {
-          "label": "test",
-          "placeholder": ""
         }
       },
       "slices": {
