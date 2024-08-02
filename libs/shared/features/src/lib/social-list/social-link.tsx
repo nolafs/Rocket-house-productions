@@ -24,34 +24,42 @@ export const SocialLink = ({ item, className, icons, iconsClass }: SocialLinkPro
     if (/iPad|iPhone|iPod|android/i.test(userAgent)) {
       // Detect the platform based on the URL
       if (link.url.includes('twitter.com')) {
-        if (/iPad|iPhone|iPod/.test(userAgent)) {
-          appUrl = link.url.replace('https://twitter.com', 'twitter://user?screen_name');
-        } else if (/android/i.test(userAgent)) {
-          appUrl = link.url.replace('https://twitter.com', 'twitter://user?screen_name');
+        const match = link.url.match(/twitter\.com\/([^/]+)/);
+        if (match && match[1]) {
+          const username = match[1];
+          if (/iPad|iPhone|iPod/.test(userAgent)) {
+            appUrl = `twitter://user?screen_name=${username}`;
+          } else if (/android/i.test(userAgent)) {
+            appUrl = `twitter://user?screen_name=${username}`;
+          }
         }
       } else if (link.url.includes('facebook.com')) {
-        // Extract page id or username from the URL for Facebook as needed
+        // Assuming URL has the format 'https://www.facebook.com/page_id' or similar
         if (/iPad|iPhone|iPod/.test(userAgent)) {
-          appUrl = 'fb://facewebmodal/f?href=' + link.url;
+          appUrl = `fb://facewebmodal/f?href=${link.url}`;
         } else if (/android/i.test(userAgent)) {
-          appUrl = 'fb://facewebmodal/f?href=' + link.url;
+          appUrl = `fb://facewebmodal/f?href=${link.url}`;
         }
       } else if (link.url.includes('tiktok.com')) {
-        /* TODO: Implement TikTok deep linking
-        // TikTok's scheme may vary and often requires specific paths; adjust as needed
-        if (/iPad|iPhone|iPod/.test(userAgent)) {
-          // This is an example and may not directly open the app depending on the URL structure
-          appUrl = url.replace("https://www.tiktok.com", "snssdk1233://");
-        } else if (/android/i.test(userAgent)) {
-          appUrl = url.replace("https://www.tiktok.com", "snssdk1233://");
+        // Example: extract the username from 'https://www.tiktok.com/@username'
+        const match = link.url.match(/tiktok\.com\/@([^/]+)/);
+        if (match && match[1]) {
+          const username = match[1];
+          if (/iPad|iPhone|iPod/.test(userAgent)) {
+            appUrl = `snssdk1233://user?username=${username}`;
+          } else if (/android/i.test(userAgent)) {
+            appUrl = `snssdk1233://user?username=${username}`;
+          }
         }
-
-         */
       } else if (link.url.includes('instagram.com')) {
-        if (/iPad|iPhone|iPod/.test(userAgent)) {
-          appUrl = link.url.replace('https://www.instagram.com', 'instagram://user?username');
-        } else if (/android/i.test(userAgent)) {
-          appUrl = link.url.replace('https://www.instagram.com', 'instagram://user?username');
+        const match = link.url.match(/instagram\.com\/([^/]+)/);
+        if (match && match[1]) {
+          const username = match[1];
+          if (/iPad|iPhone|iPod/.test(userAgent)) {
+            appUrl = `instagram://user?username=${username}`;
+          } else if (/android/i.test(userAgent)) {
+            appUrl = `instagram://user?username=${username}`;
+          }
         }
       }
     }
@@ -65,8 +73,7 @@ export const SocialLink = ({ item, className, icons, iconsClass }: SocialLinkPro
       <button
         className={cn(className, 'hover:text-primary h-5 w-5 text-gray-400')}
         onClick={() => openSocialMediaLink(item?.url)}
-        rel="noopener noreferrer"
-      >
+        rel="noopener noreferrer">
         <SocialIcons type={item?.type} url={item?.url} props={iconsClass} />
       </button>
     );
