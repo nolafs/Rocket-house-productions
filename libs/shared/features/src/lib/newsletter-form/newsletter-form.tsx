@@ -32,7 +32,6 @@ export function NewsletterForm() {
             id="email"
             name="email"
             //type="email"
-            required
             placeholder="Enter your email"
             //autoComplete="email"
             className="text-primary w-full min-w-0 appearance-none rounded-md border-0 bg-white px-3 py-3 text-base ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-gray-500 sm:w-64 sm:text-sm sm:leading-6 xl:w-full"

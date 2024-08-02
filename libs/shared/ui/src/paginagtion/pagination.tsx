@@ -11,8 +11,7 @@ export interface PageinationProps {
 }
 
 export function Pagination({ total = 0, currentPage = 0, limit = 9, prevDisabled, nextDisabled }: PageinationProps) {
-  const totalPages = Math.ceil(total / limit);
-  currentPage = Math.floor(currentPage / limit);
+  const totalPages = total;
 
   const prevPageUrl: any = currentPage === 0 ? 0 : currentPage - 1;
   const nextPageUrl: any = currentPage + 1;
@@ -21,7 +20,7 @@ export function Pagination({ total = 0, currentPage = 0, limit = 9, prevDisabled
     return;
   }
 
-  if (currentPage === totalPages - 1) {
+  if (currentPage === totalPages) {
     nextDisabled = true;
   }
 
@@ -40,11 +39,12 @@ export function Pagination({ total = 0, currentPage = 0, limit = 9, prevDisabled
       links.push(
         <Link
           key={'page=' + i}
-          href={`?page=${i - 1}`}
+          href={`/blog?page=${i}`}
           className={cn(
-            currentPage === i - 1
-              ? 'text-accent-300 inline-flex items-center text-sm font-semibold'
-              : 'inline-flex items-center text-sm font-semibold text-gray-500 hover:border-gray-300 hover:text-gray-200',
+            'text-md border-l border-l-gray-200 px-5 py-2',
+            currentPage === i
+              ? 'text-primary inline-flex items-center bg-gray-100/50 font-semibold'
+              : 'inline-flex items-center font-semibold text-gray-500 hover:border-gray-300 hover:text-gray-200',
           )}>
           {i}
         </Link>,
@@ -57,23 +57,23 @@ export function Pagination({ total = 0, currentPage = 0, limit = 9, prevDisabled
   return (
     <div className="container mx-auto mt-10">
       <nav className="flex flex-row justify-center">
-        <div className={'border-primary flex rounded-lg border p-4'}>
-          <div className="flex w-10">
+        <div className={'flex rounded-md border border-gray-200'}>
+          <div className={'p-3'}>
             {!prevDisabled && (
               <Link
-                href={`?page=${prevPageUrl}`}
-                className="inline-flex items-center text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-200">
-                <ChevronLeftIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" aria-label="previous" />
+                href={`/blog?page=${prevPageUrl}`}
+                className="text-md inline-flex items-center font-medium text-gray-500 hover:border-gray-300 hover:text-gray-200">
+                Previous
               </Link>
             )}
           </div>
-          <div className="flex w-10 justify-center gap-5">{pageLinks().map(link => link)}</div>
-          <div className="flex w-10 justify-end">
+          <div className="flex justify-center">{pageLinks().map(link => link)}</div>
+          <div className="flex justify-end border-l border-l-gray-200 p-3">
             {!nextDisabled && (
               <Link
-                href={`?page=${nextPageUrl}`}
-                className="inline-flex items-center text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-300">
-                <ChevronRightIcon className="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" aria-label="next" />
+                href={`/blog?page=${nextPageUrl}`}
+                className="text-md inline-flex items-center font-medium text-gray-500 hover:border-gray-300 hover:text-gray-300">
+                Next
               </Link>
             )}
           </div>

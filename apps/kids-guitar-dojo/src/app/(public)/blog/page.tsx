@@ -1,11 +1,34 @@
 import { BlogList, Breadcrumb, HeroSimple } from '@rocket-house-productions/features';
 import { createClient } from '@/prismicio';
 import { notFound } from 'next/navigation';
+import { Pagination } from '@rocket-house-productions/ui';
 
-export default async function Page() {
+export default async function Page({ searchParams }: { searchParams: { page: string; category: string } }) {
+  const pageNum = Number(searchParams?.page) || 0;
+  const limit = 9;
+
+  console.log('Page Number:', pageNum);
+
   const client = createClient();
   const blogPage = await client.getSingle('blog').catch(() => notFound());
-  const pages = await client.getAllByType('blog_post');
+  const pages = await client.getByType('blog_post', {
+    pageSize: limit,
+    page: pageNum,
+    fetchOptions: {},
+    orderings: [
+      {
+        field: 'my.blog_post.published_on',
+        direction: 'desc',
+      },
+    ],
+  });
+
+  console.log('page', pages.page);
+  console.log('total_pages', pages.total_pages);
+  console.log(
+    'results',
+    pages.results.map(result => result.data.title),
+  );
 
   if (!blogPage) {
     return notFound();
@@ -26,7 +49,8 @@ export default async function Page() {
         }}
       />
       {/* Blog Post */}
-      <BlogList posts={pages} />
+      <BlogList posts={pages.results} />
+      <Pagination total={pages.total_pages} currentPage={pages.page} limit={limit} />
     </main>
   );
 }

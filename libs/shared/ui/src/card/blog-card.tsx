@@ -29,9 +29,13 @@ export const BlogCard = forwardRef<HTMLDivElement, TProps>(
             width={500}
             height={300}
             fill
+            fallbackAlt=""
             imgixParams={{
               fm: 'webp',
               fit: 'fill',
+              crop: ['focalpoint'],
+              w: 500,
+              h: 300,
             }}
             className="z-1 h-full w-full object-cover"
           />
