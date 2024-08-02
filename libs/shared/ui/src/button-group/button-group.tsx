@@ -11,9 +11,10 @@ type groupButton = {
 
 interface ButtonGroupProps {
   buttons?: groupButton[];
+  className?: string;
 }
 
-export function ButtonGroup({ buttons }: ButtonGroupProps) {
+export function ButtonGroup({ buttons, className }: ButtonGroupProps) {
   return (
     <>
       {buttons?.map(({ link, type, label, typeCase }, index) => (
@@ -23,6 +24,7 @@ export function ButtonGroup({ buttons }: ButtonGroupProps) {
           className={cn(
             buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),
             typeCase === 'Uppercase' && 'uppercase',
+            className,
           )}>
           {label}
         </PrismicLink>

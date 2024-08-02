@@ -51,7 +51,7 @@ export function CtaOneColumn({ data: { headings, buttons, motto, backgroundImage
         )}
         {buttons && (
           <div className="z-1 mt-10 flex items-center justify-center gap-x-5 lg:mt-10 lg:flex-shrink-0">
-            <ButtonGroup buttons={buttons} />
+            <ButtonGroup buttons={buttons} className={'bg-primary-foreground !text-primary'} />
           </div>
         )}
       </div>
