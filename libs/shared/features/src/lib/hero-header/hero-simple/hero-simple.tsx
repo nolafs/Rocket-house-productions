@@ -18,7 +18,7 @@ interface HeroSimpleProps {
 
 export function HeroSimple({ data: { heading, text, pageName }, color = 'B' }: HeroSimpleProps) {
   return (
-    <header className={'z-10 pt-[140px] md:mb-24'}>
+    <header className={'z-10 mb-10 px-5 pt-[100px] md:mb-24 md:pt-[140px]'}>
       <h1 className="sr-only">{pageName}</h1>
       <motion.div
         className="container z-10 mx-auto max-w-[930px] text-center"

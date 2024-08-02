@@ -29,7 +29,7 @@ export default async function Page({ params }: { params: Params }) {
 
   return (
     <main>
-      <article>
+      <article className={'px-5'}>
         {/* Header */}
         <HeaderSimple header={page.data.title} />
         {/* Content */}

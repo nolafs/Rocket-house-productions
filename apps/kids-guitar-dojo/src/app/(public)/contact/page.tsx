@@ -43,7 +43,7 @@ export default async function Page() {
                   <LucideMailOpen width={16} height={16} />
                 </i>
               </div>
-              <div className="mb-3 mt-5 text-3xl font-bold">Email</div>
+              <div className="mb-3 mt-5 text-xl font-bold md:text-3xl">Email</div>
               <div className="text-gray-500">
                 <a href={`mailto:${page.data.email_address}`}>{page.data.email_address}</a>
               </div>
@@ -56,7 +56,7 @@ export default async function Page() {
                   <PhoneCallIcon width={16} height={16} />
                 </i>
               </div>
-              <div className="mb-3 mt-5 text-3xl font-bold">Telephone</div>
+              <div className="mb-3 mt-5 text-xl font-bold md:text-3xl">Telephone</div>
               <div className="text-gray-500">
                 <a href={`tel:${page.data.phone_number}`}>{page.data.phone_number}</a>
               </div>
@@ -69,7 +69,7 @@ export default async function Page() {
                   <Share2Icon width={16} height={16} />
                 </i>
               </div>
-              <div className="mb-3 mt-5 text-3xl font-bold">Social</div>
+              <div className="mb-3 mt-5 text-xl font-bold md:text-3xl">Social</div>
               <div className="text-gray-500">
                 <SocialList items={settings.data.social_media} icons={true} variantList={0} variantButton={2} />
               </div>
@@ -79,12 +79,12 @@ export default async function Page() {
       </Bounded>
 
       <Bounded as="section" yPadding={'md'}>
-        <div className="grid grid-cols-1 grid-cols-2 gap-7">
+        <div className="grid grid-cols-1 gap-7 lg:grid-cols-2">
           <div className="image">
             <PrismicImage field={page.data.form_image} />
           </div>
           <div>
-            <div className="mb-5 text-4xl font-bold">{page.data.form_heading}</div>
+            <div className="mb-5 text-3xl font-bold md:text-4xl">{page.data.form_heading}</div>
             <div className="mb-5 text-gray-500">{page.data.form_body}</div>
             <ContactForm items={settings.data.contact_form_enquiries} />
           </div>

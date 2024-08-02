@@ -53,7 +53,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
             'title child:text-primary child:font-normal m-0',
             color === 'A' && 'text-gray-900',
             color === 'B' && 'text-primary',
-            titleSize === 'large' && 'text-4xl font-bold leading-tight lg:text-5xl',
+            titleSize === 'large' && 'text-3xl font-bold leading-tight md:text-4xl lg:text-5xl',
             titleClass,
           )}>
           <PrismicRichText field={title} />

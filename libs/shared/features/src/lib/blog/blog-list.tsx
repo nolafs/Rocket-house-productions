@@ -15,12 +15,12 @@ export function BlogList({ posts }: BlogListProps) {
 
   return (
     <motion.div
-      className="container z-10 mx-auto mb-20"
+      className="container z-10 mx-auto mb-20 px-5"
       initial="offscreen"
       whileInView="onscreen"
       viewport={{ once: true, amount: 0.1 }}
       variants={scrollUpVariants}>
-      <div className={'grid grid-cols-1 grid-cols-3 md:gap-7 lg:gap-10'}>
+      <div className={'grid grid-cols-1 md:grid-cols-2 md:gap-7 lg:grid-cols-3 lg:gap-10'}>
         {posts.map(post => (
           <PrismicLink document={post} key={post.id} className={'group'}>
             <BlogCard {...post.data} />
