@@ -122,19 +122,22 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                   <Menu />
                 </i>
               </SheetTrigger>
-              <SheetContent side={'right'} className={'w-[80vw]'}>
+              <SheetContent side={'right'} className={'w-[80vw] px-0 pb-0'}>
                 <SheetHeader>
                   <SheetTitle className={'sr-only'}>Menu</SheetTitle>
                 </SheetHeader>
                 <div className={'flex h-full flex-col items-stretch'}>
                   <div className={'grow'}>
+                    <Link href="/">
+                      <Image src={logo} className="inline pl-5" alt="logo" />
+                    </Link>
                     <ul className={'b mt-10 flex flex-col divide-y divide-gray-500/10'}>
                       {navigation &&
                         navigation.items.map(item => (
-                          <li key={asText(item.label)} className="group relative py-5">
+                          <li key={asText(item.label)} className="group relative px-5 py-5">
                             <PrismicNextLink
                               field={item.link}
-                              className="hover:text-primary text-base font-medium text-black text-gray-500 transition-all">
+                              className="hover:text-primary text-base font-medium text-gray-500 transition-all">
                               <PrismicText field={item.label} />
                             </PrismicNextLink>
                           </li>
@@ -142,10 +145,15 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                     </ul>
                   </div>
                   <div>
-                    <ul className={'flex flex-row items-center justify-center space-x-5'}>
+                    <ul
+                      className={
+                        'flex flex-row items-center justify-center space-x-5 border-t border-gray-300 bg-gray-100/50 py-5'
+                      }>
                       <li>
                         <SignedOut>
-                          <Link href="/sign-in" className={buttonVariants({ variant: 'ghost' })}></Link>
+                          <Link href="/sign-in" className={buttonVariants({ variant: 'default' })}>
+                            Log in
+                          </Link>
                         </SignedOut>
                         <SignedIn>
                           <UserButton />
