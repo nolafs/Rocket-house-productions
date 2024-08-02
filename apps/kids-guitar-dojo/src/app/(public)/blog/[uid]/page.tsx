@@ -17,12 +17,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const client = createClient();
   const page = await client.getByUID('blog_post', params.uid).catch(() => notFound());
 
+  if (page.data?.feature_image?.url) {
+    page.data.feature_image.url = `${page.data.feature_image.url}?w=1200&h=630&fit=crop&auto=format,compress`;
+  }
+
   return {
     title: page.data?.title,
     description: page.data.meta_description || page.data.description,
     openGraph: {
       title: page.data.meta_title ?? undefined,
-      images: [{ url: page.data.meta_image.url ?? '' }],
+      images: [{ url: page.data.meta_image.url ?? page.data.feature_image.url ?? '' }],
     },
   };
 }

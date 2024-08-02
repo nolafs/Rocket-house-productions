@@ -1175,6 +1175,88 @@ export type AllDocumentTypes =
   | SettingsDocument;
 
 /**
+ * Primary content in *BlogList → Default → Primary*
+ */
+export interface BlogListSliceDefaultPrimary {
+  /**
+   * Heading field in *BlogList → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_list.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Subtitle field in *BlogList → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_list.default.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+
+  /**
+   * Limit field in *BlogList → Default → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_list.default.primary.limit
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  limit: prismic.NumberField;
+
+  /**
+   * Label field in *BlogList → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_list.default.primary.label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Link field in *BlogList → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_list.default.primary.link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+}
+
+/**
+ * Default variation for BlogList Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BlogListSliceDefault = prismic.SharedSliceVariation<
+  'default',
+  Simplify<BlogListSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *BlogList*
+ */
+type BlogListSliceVariation = BlogListSliceDefault;
+
+/**
+ * BlogList Shared Slice
+ *
+ * - **API ID**: `blog_list`
+ * - **Description**: BlogList
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BlogListSlice = prismic.SharedSlice<'blog_list', BlogListSliceVariation>;
+
+/**
  * Item in *CallToAction → Default → Primary → Buttons*
  */
 export interface CallToActionSliceDefaultPrimaryButtonsItem {
@@ -3312,6 +3394,10 @@ declare module '@prismicio/client' {
       SettingsDocumentDataSecondaryNavigationItem,
       SettingsDocumentDataSocialMediaItem,
       AllDocumentTypes,
+      BlogListSlice,
+      BlogListSliceDefaultPrimary,
+      BlogListSliceVariation,
+      BlogListSliceDefault,
       CallToActionSlice,
       CallToActionSliceDefaultPrimaryButtonsItem,
       CallToActionSliceDefaultPrimary,
