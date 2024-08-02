@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { scrollUpFadeVariants, scrollUpVariants } from '@rocket-house-productions/util';
+import { fadeIn, scrollUpFadeVariants, scrollUpVariants } from '@rocket-house-productions/util';
 import { BottomShape, ButtonGroup } from '@rocket-house-productions/ui';
 import SectionTitle from '../../section-title/section-title';
 import { RichTextField } from '@prismicio/client';
@@ -35,26 +35,21 @@ export function HeroCenter({
   return (
     <div
       className={cn(
-        'hero-area mb-15 relative isolate z-10 pt-[140px] md:mb-[200px]',
+        'hero-area mb-15 relative isolate z-10 px-5 pt-[100px] md:mb-[200px] md:pt-[140px]',
         color === 'A' ? 'bg-primary' : 'bg-neutral',
       )}>
       <h1 className="sr-only">Home Page</h1>
       {decor === 'A' && (
         <motion.div
-          className="absolute left-1/2 top-[30%] z-50 h-full max-h-[447px] w-full max-w-[1100px] -translate-x-1/2"
+          className="pointer-events-none absolute left-1/2 top-[30%] z-50 h-full max-h-[447px] w-full min-w-[700px] max-w-[1100px] -translate-x-1/2"
           initial="offscreen"
           whileInView="onscreen"
           viewport={{ once: true, amount: 0.1 }}
           variants={scrollUpFadeVariants}>
-          <Image src={Notes} alt="notes decor" quality={100} className={'h-full w-full object-contain'} />
+          <Image src={Notes} alt="notes decor" quality={100} className={'h-full w-full object-contain object-center'} />
         </motion.div>
       )}
-      <motion.div
-        className="container z-10 mx-auto max-w-3xl text-center"
-        initial="offscreen"
-        whileInView="onscreen"
-        viewport={{ once: true, amount: 0.1 }}
-        variants={scrollUpVariants}>
+      <div className="container z-10 mx-auto max-w-3xl text-center">
         <SectionTitle
           title={headings}
           subtitle={text}
@@ -68,18 +63,13 @@ export function HeroCenter({
             <ButtonGroup buttons={buttons} />
           </div>
         )}
-      </motion.div>
+      </div>
       {video && (
-        <motion.div
-          className="-bottom-15 -mt-15 container relative z-10 mx-auto max-w-[944px] md:-bottom-[140px] md:-mt-[140px]"
-          initial="offscreen"
-          whileInView="onscreen"
-          viewport={{ once: true, amount: 0.4 }}
-          variants={scrollUpVariants}>
-          <div className="shadow-xxl group relative overflow-hidden rounded-lg shadow-black/[22%]">
+        <div className="-bottom-15 -mt-15 container relative z-10 mx-auto max-w-[944px] md:-bottom-[140px] md:-mt-[140px]">
+          <div className="shadow-xxl bg-primary group relative overflow-hidden rounded-lg shadow-black/[22%]">
             <VideoPlayer image={image} {...video} />
           </div>
-        </motion.div>
+        </div>
       )}
 
       <BottomShape />

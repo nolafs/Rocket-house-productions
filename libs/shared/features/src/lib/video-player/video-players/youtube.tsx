@@ -85,6 +85,7 @@ export function Youtube({
               height="100%"
               playing={showPlayer}
               ref={ref}
+              light={poster}
               id={id}
               url={src}
               config={opts}

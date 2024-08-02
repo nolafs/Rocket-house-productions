@@ -24,7 +24,7 @@ export function FeatureList({
 }: FeatureListProps) {
   return (
     <div className={cn(decor === 'A' && 'bg-accent/60 py-16 lg:py-24', 'relative')}>
-      <div className={'container mx-auto'}>
+      <div className={'container mx-auto px-5'}>
         {headings && (
           <SectionTitle
             title={headings}

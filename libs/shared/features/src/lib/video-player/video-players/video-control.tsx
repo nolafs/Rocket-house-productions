@@ -43,6 +43,7 @@ export function VideoControl({ poster, handlePlay, width, height, title, mode }:
           fallbackAlt=""
           className={'z-10 h-auto w-full object-fill'}
           imgixParams={{ fit: 'fill', fm: 'webp' }}
+          quality={80}
         />
       ) : (
         <Image width={width} height={height} loading={'lazy'} src={placeholder} quality={80} alt={title} />

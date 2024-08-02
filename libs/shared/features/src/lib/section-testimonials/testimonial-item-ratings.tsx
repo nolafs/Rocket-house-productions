@@ -9,7 +9,7 @@ export function TestimonialRatingItem({ name, designation, review, image, rating
   return (
     <div
       className={cn(
-        'testimonial shadow-2sm shadow-dark/10 my-10 flex h-full flex-row flex-wrap justify-items-stretch rounded bg-white px-[50px] pb-[47px] pt-[31px]',
+        'testimonial shadow-2sm shadow-dark/10 my-10 flex h-full flex-row flex-wrap justify-items-stretch rounded bg-white px-9 pb-5 pt-5 lg:px-[50px] lg:pb-[47px] lg:pt-[31px]',
       )}>
       <div className="mb-5 flex w-full">
         {image && (
@@ -26,14 +26,16 @@ export function TestimonialRatingItem({ name, designation, review, image, rating
         )}
         <div className="pl-7.5 grow">
           <StarRating rating={rating} align="left" className="mb-[11px]" />
-          <div className={'flex'}>
+          <div className={'flex flex-col md:flex-row'}>
             <h3 className="text-lg font-extrabold">{name}</h3>
-            <span className="ml-3.5 text-lg text-gray-300">/ {designation}</span>
+            <span className="text-sm text-gray-300 md:ml-3.5 md:text-lg">
+              <span className={'hidden md:inline-block'}>/</span> {designation}
+            </span>
           </div>
         </div>
       </div>
 
-      <div className="mb-6 text-lg font-medium leading-relaxed md:mb-[34px]">
+      <div className="mb-6 font-medium leading-relaxed md:mb-[34px] md:text-lg">
         <PrismicRichText field={review} />
       </div>
     </div>
