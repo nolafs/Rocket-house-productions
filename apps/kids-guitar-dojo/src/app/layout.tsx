@@ -37,8 +37,6 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     defaultImages[0] = settings?.data.share_image?.url;
   }
 
-  console.log(settings.data);
-
   return {
     metadataBase: new URL(
       (isURL(settings.data?.canonical_url) && settings.data?.canonical_url) ||

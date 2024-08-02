@@ -1,6 +1,5 @@
 import { BlogList, Breadcrumb, HeroSimple } from '@rocket-house-productions/features';
 import { createClient } from '@/prismicio';
-import { HeaderSimple } from '@rocket-house-productions/layout';
 import { notFound } from 'next/navigation';
 
 export default async function Page() {
@@ -12,13 +11,9 @@ export default async function Page() {
     return notFound();
   }
 
-  console.log(pages);
-
   if (!pages) {
     return <div>Loading...</div>;
   }
-
-  console.log(pages[0].data.category);
 
   return (
     <main>
