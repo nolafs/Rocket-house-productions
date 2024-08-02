@@ -227,6 +227,17 @@ interface BlogPostDocumentData {
   author: prismic.ContentRelationshipField<'author'>;
 
   /**
+   * Description  field in *Blog Post*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_post.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
    * Body field in *Blog Post*
    *
    * - **Field Type**: Rich Text

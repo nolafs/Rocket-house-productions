@@ -51,6 +51,13 @@
           "customtypes": ["author"]
         }
       },
+      "description": {
+        "type": "Text",
+        "config": {
+          "label": "Description ",
+          "placeholder": ""
+        }
+      },
       "main": {
         "type": "StructuredText",
         "config": {
