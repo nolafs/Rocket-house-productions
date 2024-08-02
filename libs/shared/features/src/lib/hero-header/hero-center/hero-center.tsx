@@ -40,14 +40,23 @@ export function HeroCenter({
       )}>
       <h1 className="sr-only">Home Page</h1>
       {decor === 'A' && (
-        <motion.div
-          className="pointer-events-none absolute left-1/2 top-[30%] z-50 h-full max-h-[447px] w-full min-w-[700px] max-w-[1100px] -translate-x-1/2"
-          initial="offscreen"
-          whileInView="onscreen"
-          viewport={{ once: true, amount: 0.1 }}
-          variants={scrollUpFadeVariants}>
-          <Image src={Notes} alt="notes decor" quality={100} className={'h-full w-full object-contain object-center'} />
-        </motion.div>
+        <div className={'w-full overflow-hidden'}>
+          <motion.div
+            className="pointer-events-none absolute left-1/2 z-50 h-full max-h-[447px] w-full max-w-[1100px] -translate-x-1/2 overflow-hidden"
+            initial="offscreen"
+            whileInView="onscreen"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={scrollUpFadeVariants}>
+            <div className={'absolute left-1/2 top-1/2 mx-auto w-full min-w-[700px] -translate-x-1/2 md:top-[30%]'}>
+              <Image
+                src={Notes}
+                alt="notes decor"
+                quality={100}
+                className={'h-full w-full object-contain object-center'}
+              />
+            </div>
+          </motion.div>
+        </div>
       )}
       <div className="container z-10 mx-auto max-w-3xl text-center">
         <SectionTitle
