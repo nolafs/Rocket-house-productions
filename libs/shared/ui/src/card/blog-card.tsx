@@ -46,7 +46,6 @@ export const BlogCard = forwardRef<HTMLDivElement, TProps>(
           <i>
             <CalendarIcon width={24} height={24} />
           </i>
-
           <time dateTime={publishing_date}>{publishDateFormatted(publishing_date)}</time>
         </div>
       </div>

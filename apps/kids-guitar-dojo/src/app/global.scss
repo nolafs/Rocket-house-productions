@@ -51,6 +51,10 @@
     }
   }
 
+  [data-oembed-type="video"] {
+    @apply w-full relative aspect-w-16 aspect-h-9 mb-20;
+  }
+
   .cta {
     ul{
       @apply flex flex-col list-image-none;

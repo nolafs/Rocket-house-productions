@@ -1,3 +1,4 @@
+export { SharePage } from './lib/share-page/share-page';
 export { ContactForm } from './lib/contact-form/contact-form';
 export { SectionFaqs } from './lib/section-faqs/section-faqs';
 export { SectionPricingTable } from './lib/section-pricing-table/section-pricing-table';
