@@ -501,6 +501,7 @@ export type FaqDocument<Lang extends string = string> = prismic.PrismicDocumentW
 >;
 
 type HomeDocumentDataSlicesSlice =
+  | BlogListSlice
   | TestimonialsSlice
   | StatsSlice
   | FeaturesSlice
