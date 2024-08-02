@@ -1,6 +1,5 @@
 import { RichTextField } from '@prismicio/client';
 import SectionTitle from '../section-title/section-title';
-import MottoText from '../motto-text/motto-text';
 import { PrismicRichText } from '@prismicio/react';
 import { BottomShape2, ButtonGroup } from '@rocket-house-productions/ui';
 import { PrismicNextImage } from '@prismicio/next';

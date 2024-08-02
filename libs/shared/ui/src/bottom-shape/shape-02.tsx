@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { ReactComponent as BottomShapeSVG } from '@rocket-house-productions/shared';
+import { Shape2 } from '@rocket-house-productions/shared';
 
 type TProps = {
   className?: string;
@@ -9,7 +9,7 @@ type TProps = {
 export const BottomShape = ({ className, color = 'fill-white' }: TProps) => {
   return (
     <div className={cn('bottom-shape z-1 absolute -bottom-px left-0 h-[70px] w-full', className)}>
-      <BottomShapeSVG className={cn('h-full w-full', color)} />
+      <Shape2 className={cn('h-full w-full', color)} />
     </div>
   );
 };
