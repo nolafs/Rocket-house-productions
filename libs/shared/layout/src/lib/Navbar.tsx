@@ -6,15 +6,13 @@ import Image from 'next/image';
 import { Menu } from 'lucide-react';
 import { asText } from '@prismicio/client';
 import { PrismicText } from '@prismicio/react';
-import { PrismicNextLink, PrismicPreview } from '@prismicio/next';
+import { PrismicNextLink } from '@prismicio/next';
 import { NavigationProps } from '@rocket-house-productions/types';
-import { SignedIn, SignedOut, SignInButton, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import {
-  Button,
   buttonVariants,
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -29,7 +27,7 @@ interface HeaderProps {
 export function Navbar({ navigation, logo }: HeaderProps) {
   const currentRoute = usePathname();
 
-  console.log(currentRoute);
+  console.log(currentRoute, navigation);
 
   // Sticky Navbar
   useEffect(() => {
@@ -57,7 +55,7 @@ export function Navbar({ navigation, logo }: HeaderProps) {
   return (
     <>
       <div id="navbar" className="navbar-area fixed z-20 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
-        <div className="container mx-auto">
+        <div className="container mx-auto max-w-[1266px]">
           <nav className={`navbar relative flex flex-wrap`}>
             <div className="self-center">
               <Link href="/">
@@ -74,7 +72,10 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                       className="group relative py-[10px] first:ml-0 last:mr-0 lg:py-[15px] xl:mx-[10px] xl:py-[35px] 2xl:mx-[18px] 2xl:py-[41.5px]">
                       <PrismicNextLink
                         field={item.link}
-                        className="hover:text-primary text-base font-medium text-black text-gray-500 transition-all">
+                        className={cn(
+                          'hover:text-primary text-base font-medium text-gray-500 underline-offset-4 transition-all hover:underline',
+                          item.link.url === currentRoute && 'text-primary',
+                        )}>
                         <PrismicText field={item.label} />
                       </PrismicNextLink>
                     </li>
@@ -83,11 +84,13 @@ export function Navbar({ navigation, logo }: HeaderProps) {
 
               {/* Other options */}
               <div className="other-options self-center border-t border-[#eeeeee] pb-[10px] pt-[20px] xl:ml-[20px] xl:border-none xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
-                <ul className={'flex flex-row items-center justify-center space-x-5'}>
+                <ul className={'flex flex-row items-center justify-center space-x-2'}>
                   <li className="flex items-center justify-center">
                     <SignedOut>
-                      <Link href="/sign-in" className={buttonVariants({ variant: 'ghost' })}>
-                        Sign-in
+                      <Link
+                        href="/sign-in"
+                        className={cn(buttonVariants({ variant: 'link' }), '!text-[16px] font-medium')}>
+                        Log in
                       </Link>
                     </SignedOut>
                     <SignedIn>
@@ -98,7 +101,7 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                     <SignedOut>
                       <Link
                         href="/pricing"
-                        className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'uppercase')}>
+                        className={cn(buttonVariants({ variant: 'default', size: 'sm' }), '!text-[14px] uppercase')}>
                         Buy now
                       </Link>
                     </SignedOut>

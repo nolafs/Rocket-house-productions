@@ -30,7 +30,7 @@ export function CtaOneColumn({ data: { headings, buttons, motto, backgroundImage
             field={backgroundImage}
             width={1440}
             height={460}
-            alt=""
+            fallbackAlt=""
             className={
               'absolute inset-0 left-1/2 h-auto w-full min-w-[1800px] -translate-x-1/2 object-cover object-center'
             }

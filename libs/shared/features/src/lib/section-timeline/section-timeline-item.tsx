@@ -32,6 +32,7 @@ export function SectionTimelineItem({ isEven, title, image, heading, body }: Sec
                 field={image}
                 width={456}
                 height={320}
+                fallbackAlt=""
                 imgixParams={{
                   fit: 'crop',
                   fm: 'webp',

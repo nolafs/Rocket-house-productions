@@ -14,6 +14,7 @@ export function TestimonialItem({ name, designation, review, image }: Testimonia
             field={image}
             width={70}
             height={70}
+            fallbackAlt=""
             imgixParams={{ fm: 'webp', fit: 'crop' }}
             className={'rounded-full'}
           />

@@ -58,7 +58,7 @@ export function ContentBlockImage({
               field={images?.[0].image}
               width={474}
               height={431}
-              alt=""
+              fallbackAlt=""
               imgixParams={{ fit: 'fill' }}
               className="rounded-lg"
             />
@@ -75,7 +75,7 @@ export function ContentBlockImage({
               field={images?.[1].image}
               width={200}
               height={200}
-              alt=""
+              fallbackAlt=""
               imgixParams={{ fit: 'fill', w: 200, h: 200 }}
               className="rounded-lg"
             />

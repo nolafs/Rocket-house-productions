@@ -91,7 +91,7 @@ export function HeroColumns({
                 field={image}
                 width={570}
                 height={570}
-                alt=""
+                fallbackAlt=""
                 className={'z-10 w-full max-w-[554px] object-contain'}
                 imgixParams={{ fit: 'fill' }}
               />

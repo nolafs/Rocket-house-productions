@@ -40,7 +40,7 @@ export function VideoControl({ poster, handlePlay, width, height, title, mode }:
           field={poster}
           width={width}
           height={height}
-          alt=""
+          fallbackAlt=""
           className={'z-10 h-auto w-full object-fill'}
           imgixParams={{ fit: 'fill', fm: 'webp' }}
         />

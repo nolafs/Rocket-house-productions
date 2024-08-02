@@ -50,6 +50,7 @@ export function FeatureList({
                       field={image}
                       width={150}
                       height={150}
+                      fallbackAlt=""
                       className={'absolute left-[10px] top-[10px] h-[150px] w-[150px] rounded-full bg-white shadow'}
                       imgixParams={{ fit: 'fill', fm: 'webp' }}
                     />

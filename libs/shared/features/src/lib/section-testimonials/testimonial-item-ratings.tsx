@@ -18,6 +18,7 @@ export function TestimonialRatingItem({ name, designation, review, image, rating
               field={image}
               width={90}
               height={90}
+              fallbackAlt=""
               imgixParams={{ fit: 'crop' }}
               className={'rounded-full'}
             />
