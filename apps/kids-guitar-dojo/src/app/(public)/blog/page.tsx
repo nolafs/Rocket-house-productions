@@ -23,13 +23,6 @@ export default async function Page({ searchParams }: { searchParams: { page: str
     ],
   });
 
-  console.log('page', pages.page);
-  console.log('total_pages', pages.total_pages);
-  console.log(
-    'results',
-    pages.results.map(result => result.data.title),
-  );
-
   if (!blogPage) {
     return notFound();
   }
