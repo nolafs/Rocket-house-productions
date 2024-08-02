@@ -6,7 +6,7 @@ export default clerkMiddleware(
   (auth, req) => {
     if (isProtectedRoute(req)) auth().protect();
   },
-  { debug: true },
+  { debug: false },
 );
 
 export const config = {

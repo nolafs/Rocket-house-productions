@@ -38,7 +38,7 @@
   }
 
   main {
-    @apply min-h-lvh;
+    @apply min-h-lvh w-full overflow-hidden;
   }
 
   .rich-text-prose > p:first-of-type {

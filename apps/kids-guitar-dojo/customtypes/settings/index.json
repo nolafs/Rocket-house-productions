@@ -6,6 +6,29 @@
   "status": true,
   "json": {
     "Main": {
+      "contact_form_enquiries": {
+        "type": "Group",
+        "config": {
+          "label": "Contact Form Enquiries",
+          "repeat": true,
+          "fields": {
+            "label": {
+              "type": "Text",
+              "config": {
+                "label": "Label",
+                "placeholder": ""
+              }
+            },
+            "value": {
+              "type": "Text",
+              "config": {
+                "label": "Value",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      },
       "copyright_line": {
         "type": "Text",
         "config": {

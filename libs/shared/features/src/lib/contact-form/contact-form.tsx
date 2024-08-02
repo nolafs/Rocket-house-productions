@@ -18,7 +18,11 @@ const emailSchema = z.object({
   agreeToTerms: z.boolean().refine(val => val, 'You must agree to the Terms & Conditions'),
 });
 
-export function ContactForm() {
+interface ContactFormInputProps {
+  items: any[];
+}
+
+export function ContactForm({ items }: ContactFormInputProps) {
   //const captchaRef: any = useRef(null)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submissionSuccess, setSubmissionSuccess] = useState<boolean>(false);
@@ -92,7 +96,10 @@ export function ContactForm() {
         <input
           type="text"
           placeholder="Name"
-          className={`input input-bordered w-full ${errors.name ? 'input-error' : ''}`}
+          className={cn(
+            `input input-bordered w-full ${errors.name ? 'input-error' : ''}`,
+            'rounded-md border-gray-200',
+          )}
           {...register('name')}
           disabled={isSubmitting}
         />
@@ -101,30 +108,49 @@ export function ContactForm() {
         <input
           type="email"
           placeholder="Email"
-          className={`input input-bordered w-full ${errors.email ? 'input-error' : ''}`}
+          className={cn(
+            `input input-bordered w-full ${errors.email ? 'input-error' : ''}`,
+            'rounded-md border-gray-200',
+          )}
           {...register('email')}
           disabled={isSubmitting}
         />
         {errors.email && <p className="text-error">{errors.email.message}</p>}
 
         <select
-          className={`select select-bordered w-full ${errors.enquiryType ? 'select-error' : ''}`}
+          className={cn(
+            `select select-bordered w-full ${errors.enquiryType ? 'select-error' : ''}`,
+            'rounded-md border-gray-200',
+          )}
           {...register('enquiryType')}
           disabled={isSubmitting}>
           <option value="" disabled defaultValue="">
             Nature of Enquiry
           </option>
-          <option value="general">General Inquiry</option>
-          <option value="billing">Can we chat!</option>
-          <option value="support">Pricing and Quoting</option>
-          <option value="feedback">Collaboration</option>
-          <option value="other">Other</option>
+          {items.length ? (
+            items.map((item, index) => (
+              <option key={item.value + index} value={item.value}>
+                {item.label}
+              </option>
+            ))
+          ) : (
+            <>
+              <option value="general">General Inquiry</option>
+              <option value="billing">Can we chat!</option>
+              <option value="support">Pricing and Quoting</option>
+              <option value="feedback">Collaboration</option>
+              <option value="other">Other</option>
+            </>
+          )}
         </select>
         {errors.enquiryType && <p className="text-error">{errors.enquiryType.message}</p>}
 
         <textarea
           placeholder="Message"
-          className={`textarea textarea-bordered w-full ${errors.message ? 'textarea-error' : ''}`}
+          className={cn(
+            `textarea textarea-bordered w-full ${errors.message ? 'textarea-error' : ''}`,
+            'rounded-md border-gray-200',
+          )}
           {...register('message')}
           rows={4}
           disabled={isSubmitting}
@@ -136,7 +162,7 @@ export function ContactForm() {
             <div className="flex items-center gap-2">
               <input
                 type="checkbox"
-                className={`checkbox ${errors.agreeToTerms ? 'checkbox-error' : ''}`}
+                className={cn(`checkbox ${errors.agreeToTerms ? 'checkbox-error' : ''}`, 'rounded-md')}
                 {...register('agreeToTerms')}
                 id="agreeToTerms"
               />

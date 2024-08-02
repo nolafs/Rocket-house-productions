@@ -913,6 +913,31 @@ export type PricingDocument<Lang extends string = string> = prismic.PrismicDocum
 >;
 
 /**
+ * Item in *Settings → Contact Form Enquiries*
+ */
+export interface SettingsDocumentDataContactFormEnquiriesItem {
+  /**
+   * Label field in *Settings → Contact Form Enquiries*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.contact_form_enquiries[].label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  label: prismic.KeyTextField;
+
+  /**
+   * Value field in *Settings → Contact Form Enquiries*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.contact_form_enquiries[].value
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  value: prismic.KeyTextField;
+}
+
+/**
  * Item in *Settings → Secondary Navigation*
  */
 export interface SettingsDocumentDataSecondaryNavigationItem {
@@ -976,6 +1001,17 @@ export interface SettingsDocumentDataSocialMediaItem {
  * Content for Settings documents
  */
 interface SettingsDocumentData {
+  /**
+   * Contact Form Enquiries field in *Settings*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.contact_form_enquiries[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  contact_form_enquiries: prismic.GroupField<Simplify<SettingsDocumentDataContactFormEnquiriesItem>>;
+
   /**
    * Copyright Line field in *Settings*
    *
@@ -3261,6 +3297,7 @@ declare module '@prismicio/client' {
       PricingDocumentDataFeaturesItem,
       SettingsDocument,
       SettingsDocumentData,
+      SettingsDocumentDataContactFormEnquiriesItem,
       SettingsDocumentDataSecondaryNavigationItem,
       SettingsDocumentDataSocialMediaItem,
       AllDocumentTypes,

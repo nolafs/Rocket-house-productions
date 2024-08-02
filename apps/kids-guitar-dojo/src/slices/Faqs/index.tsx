@@ -16,8 +16,6 @@ const Faqs = async ({ slice }: FaqsProps) => {
   const client = createClient();
   const faqItems: any[] = [];
 
-  console.log('slice', slice.primary.faqs);
-
   if (!slice.primary.faqs.length) {
     console.log('No faqs found');
     return null;

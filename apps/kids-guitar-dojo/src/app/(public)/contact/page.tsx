@@ -18,8 +18,6 @@ export default async function Page() {
   const page = await client.getSingle('contact').catch(() => notFound());
   const settings = await client.getSingle('settings');
 
-  console.log(page);
-
   if (!page) {
     return <div>Loading...</div>;
   }
@@ -80,7 +78,7 @@ export default async function Page() {
         </div>
       </Bounded>
 
-      <Bounded as="section" yPadding={'lg'}>
+      <Bounded as="section" yPadding={'md'}>
         <div className="grid grid-cols-1 grid-cols-2 gap-7">
           <div className="image">
             <PrismicImage field={page.data.form_image} />
@@ -88,7 +86,7 @@ export default async function Page() {
           <div>
             <div className="mb-5 text-4xl font-bold">{page.data.form_heading}</div>
             <div className="mb-5 text-gray-500">{page.data.form_body}</div>
-            <ContactForm />
+            <ContactForm items={settings.data.contact_form_enquiries} />
           </div>
         </div>
       </Bounded>

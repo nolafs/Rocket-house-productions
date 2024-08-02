@@ -1,14 +1,12 @@
 'use client';
 import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
-import { BottomShape, ButtonGroup } from '@rocket-house-productions/ui';
+import { BottomShape } from '@rocket-house-productions/ui';
 import SectionTitle from '../section-title/section-title';
 import { RichTextField } from '@prismicio/client';
 import MottoText from '../motto-text/motto-text';
 import cn from 'classnames';
 import VideoPlayer from '../video-player/video-player';
-import Image from 'next/image';
-import Notes from '../assets/notes.png';
 
 interface SectionVideoProps {
   data: {
@@ -32,7 +30,10 @@ export function SectionVideo({
 }: SectionVideoProps) {
   return (
     <div
-      className={cn('section-area mb-15 relative z-10 pt-24 md:mb-36', color === 'A' ? 'bg-primary' : 'bg-accent/60')}>
+      className={cn(
+        'section-area mb-15 relative z-10 px-5 pt-24 md:mb-36',
+        color === 'A' ? 'bg-primary' : 'bg-accent/60',
+      )}>
       <motion.div
         className="container mx-auto max-w-3xl text-center"
         initial="offscreen"

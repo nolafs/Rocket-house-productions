@@ -70,7 +70,7 @@ export function FeatureList({
           </div>
         )}
       </div>
-      <BottomShape2 />
+      {decor === 'A' && <BottomShape2 />}
     </div>
   );
 }

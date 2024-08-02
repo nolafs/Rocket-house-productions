@@ -12,8 +12,6 @@ export type StatsProps = SliceComponentProps<Content.StatsSlice>;
  * Component for "Stats" Slices.
  */
 const Stats = ({ slice }: StatsProps): JSX.Element => {
-  console.log('slice', slice.primary);
-
   return (
     <Bounded as={'section'} yPadding={'sm'}>
       <SectionStats

@@ -14,8 +14,6 @@ interface SectionFagsProps {
 }
 
 export function SectionFaqs({ data: { headings, text, body, faqs }, color = 'C' }: SectionFagsProps) {
-  console.log('faqs', faqs);
-
   return (
     <div className="lg:grid lg:grid-cols-12 lg:gap-8">
       <div className="lg:col-span-5">

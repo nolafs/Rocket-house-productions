@@ -38,7 +38,6 @@ export function HeroColumns({
   const colorA = '#2C67DC';
   const colorB = '#F59E0B';
 
-  console.log('buttons', buttons);
   return (
     <div className="hero-area pt-20 md:pt-24">
       <h1 className="sr-only">{pageName}</h1>

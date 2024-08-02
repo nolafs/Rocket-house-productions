@@ -9,8 +9,6 @@ export async function handleSubscription(prevState: any, formData: FormData) {
   const subscriberEmail = formData.get('email') as string;
   const validation: any = emailSchema.safeParse({ email: subscriberEmail });
 
-  console.log(validation);
-
   if (validation.success) {
     try {
       //sign up with mailerlite
@@ -25,11 +23,7 @@ export async function handleSubscription(prevState: any, formData: FormData) {
         }),
       });
 
-      console.log();
-
       const rsp = await response.json();
-
-      console.log(rsp);
 
       return {
         status: 'success',
