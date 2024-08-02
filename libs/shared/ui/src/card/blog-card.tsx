@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import cn from 'classnames';
 import { BlogPostType } from '@rocket-house-productions/types';
-import { PrismicNextImage, PrismicNextLink } from '@prismicio/next';
+import { PrismicNextImage } from '@prismicio/next';
 import placeholder from '../assets/placeholder.png';
 import Image from 'next/image';
 import { CalendarIcon } from 'lucide-react';

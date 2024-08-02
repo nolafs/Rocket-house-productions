@@ -1,7 +1,7 @@
 import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
 import { SectionTimeline } from '@rocket-house-productions/features';
-import { Bounded } from '@components/Bounded';
+import { Bounded } from '../../components/Bounded';
 
 /**
  * Props for `Timeline`.

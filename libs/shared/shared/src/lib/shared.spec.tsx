@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import StarRating from './star-rating';
+import Shared from './shared';
 
-describe('StarRating', () => {
+describe('Shared', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<StarRating />);
+    const { baseElement } = render(<Shared />);
     expect(baseElement).toBeTruthy();
   });
 });
