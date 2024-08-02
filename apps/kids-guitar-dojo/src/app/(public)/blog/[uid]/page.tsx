@@ -7,7 +7,7 @@ import { HeaderSimple } from '@rocket-house-productions/layout';
 import { PrismicNextImage } from '@prismicio/next';
 import { DateDisplay } from '@rocket-house-productions/ui';
 import { SharePage } from '@rocket-house-productions/features';
-import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
 import { ChevronLeftIcon, Share2Icon } from 'lucide-react';
 
