@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { ReactComponent as BottomShapeSVG } from '@assets/svgs/bottom-shape-5.svg';
+import { ReactComponent as BottomShapeSVG } from '@rocket-house-productions/shared';
 
 type TProps = {
   className?: string;

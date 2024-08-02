@@ -1,4 +1,4 @@
-import { ReactComponent as BottomShapeSVG } from './assets/bottom-shape.svg';
+import { ReactComponent as BottomShapeSVG } from '@rocket-house-productions/shared';
 import cn from 'classnames';
 
 type TProps = {
