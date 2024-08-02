@@ -62,26 +62,34 @@ export default async function Page({ params }: { params: Params }) {
           <div className={'container absolute bottom-5 mx-auto grid max-w-4xl grid-cols-2 px-8'}>
             <div className={'flex space-x-5'}>
               <div className={'flex flex-col space-y-3'}>
-                <div className={'text-sm font-bold text-white'}>Written by</div>
-                <div className={'flex items-center space-x-3'}>
-                  <div>
-                    <PrismicNextImage
-                      field={author.data.profile_image}
-                      width={32}
-                      height={32}
-                      className={'h-8 w-8 rounded-full'}
-                      imgixParams={{
-                        fm: 'webp',
-                        fit: 'crop',
-                        crop: ['focalpoint'],
-                        width: 32,
-                        height: 32,
-                      }}
-                    />
-                  </div>
-                  <div className={'text-sm font-bold text-white'}>{author.data?.name}</div>
-                </div>
+                {/* Author */}
+                {author?.data?.name && (
+                  <>
+                    <div className={'text-sm font-bold text-white'}>Written by</div>
+                    <div className={'flex items-center space-x-3'}>
+                      {author.data.profile_image && (
+                        <div>
+                          <PrismicNextImage
+                            field={author.data.profile_image}
+                            width={32}
+                            height={32}
+                            className={'h-8 w-8 rounded-full'}
+                            imgixParams={{
+                              fm: 'webp',
+                              fit: 'crop',
+                              crop: ['focalpoint'],
+                              width: 32,
+                              height: 32,
+                            }}
+                          />
+                        </div>
+                      )}
+                      )<div className={'text-sm font-bold text-white'}>{author.data?.name}</div>
+                    </div>
+                  </>
+                )}
               </div>
+
               <div className={'flex flex-col space-y-3'}>
                 <div className={'mb-[2px] text-sm font-bold text-white'}>Published on</div>
                 <DateDisplay publishDate={page.data.publishing_date} className={'text-white'} />
