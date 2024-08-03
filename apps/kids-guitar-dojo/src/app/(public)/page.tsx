@@ -9,7 +9,7 @@ type Params = { uid: string };
 
 export async function generateMetadata({ params }: { params: Params }, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
-  const page = await client.getByUID('page', params.uid).catch(() => notFound());
+  const page = await client.getSingle('home').catch(() => notFound());
 
   let image = null;
   const parentMeta = await parent;
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
   }
 
   return {
-    title: asText(page.data?.title) || parentMeta.title,
+    title: parentMeta.title,
     description: page.data.meta_description || parentMeta.description,
     openGraph: {
       title: page.data.meta_title ?? parentMeta.title ?? undefined,
