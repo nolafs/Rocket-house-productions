@@ -1,9 +1,10 @@
-import { RichTextField } from '@prismicio/client';
+import { asText, RichTextField } from '@prismicio/client';
 import SectionTitle from '../section-title/section-title';
 import { PrismicRichText } from '@prismicio/react';
 import { BottomShape2, ButtonGroup } from '@rocket-house-productions/ui';
 import { PrismicNextImage } from '@prismicio/next';
 import cn from 'classnames';
+import { titleToSlug } from '@rocket-house-productions/util';
 
 interface FeatureListProps {
   data: {
@@ -41,8 +42,10 @@ export function FeatureList({
             decor === 'A' ? 'lg:grid-cols-3' : 'lg:grid-cols-4',
           )}>
           {features?.length &&
-            features.map(({ image, heading, body }) => (
-              <div className={'flex flex-col items-center justify-items-stretch text-center'}>
+            features.map(({ image, heading, body }, idx) => (
+              <div
+                key={titleToSlug(asText(heading) || idx.toString())}
+                className={'flex flex-col items-center justify-items-stretch text-center'}>
                 <div className="relative mb-5 h-[170px] w-[170px]">
                   <div className="absolute left-0 top-0 h-[170px] w-[170px] rounded-full bg-white shadow">
                     <PrismicNextImage
@@ -51,7 +54,7 @@ export function FeatureList({
                       height={150}
                       fallbackAlt=""
                       className={'absolute left-[10px] top-[10px] h-[150px] w-[150px] rounded-full bg-white shadow'}
-                      imgixParams={{ fit: 'fill', fm: 'webp' }}
+                      imgixParams={{ fit: 'fill', fm: 'webp', q: 75 }}
                     />
                   </div>
                 </div>

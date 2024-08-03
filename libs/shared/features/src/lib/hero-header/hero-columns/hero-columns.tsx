@@ -91,6 +91,7 @@ export function HeroColumns({
                 width={570}
                 height={570}
                 fallbackAlt=""
+                loading={'eager'}
                 className={'z-10 w-full max-w-[554px] object-contain'}
                 imgixParams={{ fit: 'fill' }}
               />

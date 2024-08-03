@@ -1678,6 +1678,72 @@ type CallToActionSliceVariation =
 export type CallToActionSlice = prismic.SharedSlice<'call_to_action', CallToActionSliceVariation>;
 
 /**
+ * Item in *ContentImageSlice → Section Content Image → Primary → items*
+ */
+export interface ContentImageSliceSliceSectionContentImagePrimaryItemsItem {
+  /**
+   * Title field in *ContentImageSlice → Section Content Image → Primary → items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.sectionContentImage.primary.items[].title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Subtitle field in *ContentImageSlice → Section Content Image → Primary → items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.sectionContentImage.primary.items[].subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+
+  /**
+   * Body field in *ContentImageSlice → Section Content Image → Primary → items*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.sectionContentImage.primary.items[].text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  text: prismic.RichTextField;
+
+  /**
+   * Image field in *ContentImageSlice → Section Content Image → Primary → items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.sectionContentImage.primary.items[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Optional Image field in *ContentImageSlice → Section Content Image → Primary → items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.sectionContentImage.primary.items[].optional_image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  optional_image: prismic.ImageField<never>;
+
+  /**
+   * Has decoration field in *ContentImageSlice → Section Content Image → Primary → items*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: content_image_slice.sectionContentImage.primary.items[].has_decoration
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  has_decoration: prismic.BooleanField;
+}
+
+/**
  * Primary content in *ContentImageSlice → Default → Primary*
  */
 export interface ContentImageSliceSliceDefaultPrimary {
@@ -1778,9 +1844,57 @@ export type ContentImageSliceSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *ContentImageSlice → Section Content Image → Primary*
+ */
+export interface ContentImageSliceSliceSectionContentImagePrimary {
+  /**
+   * Subheading field in *ContentImageSlice → Section Content Image → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.sectionContentImage.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+
+  /**
+   * Heading field in *ContentImageSlice → Section Content Image → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.sectionContentImage.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * items field in *ContentImageSlice → Section Content Image → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_image_slice.sectionContentImage.primary.items[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  items: prismic.GroupField<Simplify<ContentImageSliceSliceSectionContentImagePrimaryItemsItem>>;
+}
+
+/**
+ * Section Content Image variation for ContentImageSlice Slice
+ *
+ * - **API ID**: `sectionContentImage`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ContentImageSliceSliceSectionContentImage = prismic.SharedSliceVariation<
+  'sectionContentImage',
+  Simplify<ContentImageSliceSliceSectionContentImagePrimary>,
+  never
+>;
+
+/**
  * Slice variation for *ContentImageSlice*
  */
-type ContentImageSliceSliceVariation = ContentImageSliceSliceDefault;
+type ContentImageSliceSliceVariation = ContentImageSliceSliceDefault | ContentImageSliceSliceSectionContentImage;
 
 /**
  * ContentImageSlice Shared Slice
@@ -3415,8 +3529,11 @@ declare module '@prismicio/client' {
       CallToActionSliceTextTwoColumn,
       ContentImageSliceSlice,
       ContentImageSliceSliceDefaultPrimary,
+      ContentImageSliceSliceSectionContentImagePrimaryItemsItem,
+      ContentImageSliceSliceSectionContentImagePrimary,
       ContentImageSliceSliceVariation,
       ContentImageSliceSliceDefault,
+      ContentImageSliceSliceSectionContentImage,
       FaqsSlice,
       FaqsSliceDefaultPrimaryFaqsItem,
       FaqsSliceDefaultPrimary,

@@ -21,7 +21,7 @@ export function CtaTwoColumnText({
   decor = 'A',
 }: CtaColumnsTextProps) {
   return (
-    <div className={cn(decor === 'A' && 'bg-accent/60 py-16 lg:py-24', 'relative')}>
+    <div className={cn(decor === 'A' && 'bg-accent/60 py-16 lg:py-24', 'relative px-5')}>
       <div className={'container mx-auto'}>
         <div className={'grid md:grid-cols-2'}>
           {headings && (
@@ -34,7 +34,7 @@ export function CtaTwoColumnText({
             />
           )}
           {buttons && (
-            <div className="z-1 mt-10 flex items-center justify-end gap-x-5 lg:mt-10 lg:flex-shrink-0">
+            <div className="z-1 mt-10 hidden items-center justify-end gap-x-5 md:flex lg:mt-10 lg:flex-shrink-0">
               <ButtonGroup buttons={buttons} />
             </div>
           )}
@@ -42,6 +42,11 @@ export function CtaTwoColumnText({
         <div className={'mb-20 mt-10 md:columns-2 md:gap-6'}>
           <PrismicRichText field={motto.text} />
         </div>
+        {buttons && (
+          <div className="z-1 mt-10 flex items-center justify-center gap-x-5 md:hidden lg:mt-10 lg:flex-shrink-0">
+            <ButtonGroup buttons={buttons} />
+          </div>
+        )}
       </div>
       <BottomShape2 />
     </div>

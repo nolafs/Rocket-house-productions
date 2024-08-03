@@ -76,7 +76,7 @@ export function HeroCenter({
       {video && (
         <div className="-bottom-15 -mt-15 container relative z-10 mx-auto max-w-[944px] md:-bottom-[140px] md:-mt-[140px]">
           <div className="shadow-xxl bg-primary group relative overflow-hidden rounded-lg shadow-black/[22%]">
-            <VideoPlayer image={image} {...video} />
+            <VideoPlayer image={image} {...video} loading={'eager'} />
           </div>
         </div>
       )}

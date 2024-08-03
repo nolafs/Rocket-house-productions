@@ -16,6 +16,7 @@ export interface VimeoProps {
   height?: number;
   autoplay?: boolean;
   controls?: boolean;
+  loading?: 'lazy' | 'eager';
   loop?: boolean;
   frame?: boolean;
   standard?: boolean;
@@ -30,6 +31,7 @@ export function Vimeo({
   frame,
   controls = true,
   loop = false,
+  loading = 'lazy',
   width = 1920,
   height = 1200,
   standard = true,
@@ -98,6 +100,7 @@ export function Vimeo({
             <VideoControl
               handlePlay={play}
               title={title}
+              loading={loading}
               poster={poster && `${poster}?fm=webp&w=${width}&h=${height}&fit=fill`}
               width={width}
               height={height}

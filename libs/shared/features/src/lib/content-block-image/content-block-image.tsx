@@ -16,6 +16,7 @@ interface ContentBlockImageProps {
   };
   titleSize?: 'default' | 'large' | undefined;
   alignment?: 'Left' | 'Right' | undefined;
+  as?: 'h2' | 'h3';
   hasDecor?: boolean;
 }
 
@@ -24,6 +25,7 @@ export function ContentBlockImage({
   titleSize,
   alignment = 'Right',
   hasDecor,
+  as,
 }: ContentBlockImageProps) {
   const { trans1 } = useUI();
 
@@ -38,7 +40,7 @@ export function ContentBlockImage({
         whileInView="onscreen"
         viewport={{ once: true, amount: 0.1 }}
         variants={scrollUpVariants}>
-        {section_title && <SectionTitle {...section_title} align="left" titleSize={titleSize} />}
+        {section_title && <SectionTitle as={as} {...section_title} align="left" titleSize={titleSize} />}
         {motto && <MottoText className="mt-4" size="md" {...motto} />}
       </motion.div>
       <div
@@ -49,7 +51,7 @@ export function ContentBlockImage({
         )}>
         {images?.[0] && (
           <motion.div
-            className="relative z-10 mx-auto"
+            className="relative z-10 max-h-[431px] max-w-[474px] overflow-hidden"
             initial="offscreen"
             whileInView="onscreen"
             viewport={{ once: true, amount: 0.1 }}
@@ -59,8 +61,8 @@ export function ContentBlockImage({
               width={474}
               height={431}
               fallbackAlt=""
-              imgixParams={{ fit: 'fill' }}
-              className="rounded-lg"
+              imgixParams={{ fit: 'fill', crop: ['focalpoint'], w: 474, h: 431 }}
+              className="h-full w-full rounded-lg object-cover object-center"
             />
           </motion.div>
         )}

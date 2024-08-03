@@ -26,9 +26,6 @@ interface HeaderProps {
 
 export function Navbar({ navigation, logo }: HeaderProps) {
   const currentRoute = usePathname();
-
-  console.log(currentRoute, navigation);
-
   // Sticky Navbar
   useEffect(() => {
     const elementId = document.getElementById('navbar');

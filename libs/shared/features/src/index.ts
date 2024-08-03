@@ -1,3 +1,4 @@
+export * from './lib/section-content-block-list/section-content-block-list';
 export * from './lib/section-blog/section-blog';
 export { SharePage } from './lib/share-page/share-page';
 export { ContactForm } from './lib/contact-form/contact-form';

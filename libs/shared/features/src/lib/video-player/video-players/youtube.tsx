@@ -18,6 +18,7 @@ export interface YoutubeProps {
   autoplay?: boolean;
   controls?: boolean;
   loop?: boolean;
+  loading?: 'lazy' | 'eager';
   frame?: boolean;
 }
 
@@ -30,6 +31,7 @@ export function Youtube({
   frame,
   controls = true,
   loop = false,
+  loading = 'lazy',
   width = 1920,
   height = 1200,
 }: YoutubeProps) {
@@ -93,7 +95,16 @@ export function Youtube({
               className={'absolute z-10 min-h-full w-auto min-w-full max-w-none'}
             />
           )}
-          {!autoplay && <VideoControl handlePlay={play} title={title} poster={poster} width={width} height={height} />}
+          {!autoplay && (
+            <VideoControl
+              handlePlay={play}
+              title={title}
+              poster={poster}
+              loading={loading}
+              width={width}
+              height={height}
+            />
+          )}
         </VideoFrame>
       </div>
     </VideoPlayerWrapper>

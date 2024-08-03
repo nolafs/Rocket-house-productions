@@ -1,112 +1,249 @@
 [
-  {
-    "__TYPE__": "SharedSliceContent",
-    "variation": "default",
-    "primary": {
-      "subheading": {
-        "__TYPE__": "FieldContent",
-        "type": "Text",
-        "value": "Parents"
-      },
-      "heading": {
-        "__TYPE__": "StructuredTextContent",
-        "value": [
-          {
-            "type": "paragraph",
-            "content": {
-              "text": "Get Involved and Have Fun",
-              "spans": [
-                {
-                  "type": "strong",
-                  "start": 4,
-                  "end": 12
-                }
-              ]
-            },
-            "direction": "ltr"
-          }
-        ]
-      },
-      "body": {
-        "__TYPE__": "StructuredTextContent",
-        "value": [
-          {
-            "type": "paragraph",
-            "content": {
-              "text": "Laboris enim ea reprehenderit et ut irure laborum.",
-              "spans": [
-                {
-                  "type": "strong",
-                  "start": 16,
-                  "end": 29
-                }
-              ]
-            },
-            "direction": "ltr"
-          }
-        ]
-      },
-      "image": {
-        "origin": {
-          "id": "main",
-          "url": "https://images.unsplash.com/photo-1547394765-185e1e68f34e",
-          "width": 6000,
-          "height": 4000
-        },
-        "url": "https://images.unsplash.com/photo-1547394765-185e1e68f34e",
-        "width": 6000,
-        "height": 4000,
-        "edit": {
-          "zoom": 1,
-          "crop": {
-            "x": 0,
-            "y": 0
-          },
-          "background": "transparent"
-        },
-        "credits": null,
-        "alt": null,
-        "__TYPE__": "ImageContent",
-        "thumbnails": {}
-      },
-      "optional_image": {
-        "origin": {
-          "id": "main",
-          "url": "https://images.unsplash.com/photo-1600804931749-2da4ce26c869",
-          "width": 3199,
-          "height": 3199
-        },
-        "url": "https://images.unsplash.com/photo-1600804931749-2da4ce26c869",
-        "width": 3199,
-        "height": 3199,
-        "edit": {
-          "zoom": 1,
-          "crop": {
-            "x": 0,
-            "y": 0
-          },
-          "background": "transparent"
-        },
-        "credits": null,
-        "alt": null,
-        "__TYPE__": "ImageContent",
-        "thumbnails": {}
-      },
-      "alignment": {
-        "__TYPE__": "FieldContent",
-        "type": "Select",
-        "value": "Right"
-      },
-      "type": {
-        "__TYPE__": "FieldContent",
-        "type": "Select",
-        "value": "Section"
-      },
-      "has_decoration": {
-        "__TYPE__": "BooleanContent",
-        "value": true
-      }
-    },
-    "items": []
-  }
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"subheading": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Parents"
+			},
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Get Involved and Have Fun",
+							"spans": [
+								{
+									"type": "strong",
+									"start": 4,
+									"end": 12
+								}
+							]
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Laboris enim ea reprehenderit et ut irure laborum.",
+							"spans": [
+								{
+									"type": "strong",
+									"start": 16,
+									"end": 29
+								}
+							]
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1547394765-185e1e68f34e",
+					"width": 6000,
+					"height": 4000
+				},
+				"url": "https://images.unsplash.com/photo-1547394765-185e1e68f34e",
+				"width": 6000,
+				"height": 4000,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			},
+			"optional_image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1600804931749-2da4ce26c869",
+					"width": 3199,
+					"height": 3199
+				},
+				"url": "https://images.unsplash.com/photo-1600804931749-2da4ce26c869",
+				"width": 3199,
+				"height": 3199,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			},
+			"alignment": {
+				"__TYPE__": "FieldContent",
+				"type": "Select",
+				"value": "Right"
+			},
+			"type": {
+				"__TYPE__": "FieldContent",
+				"type": "Select",
+				"value": "Section"
+			},
+			"has_decoration": {
+				"__TYPE__": "BooleanContent",
+				"value": true
+			}
+		},
+		"items": []
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "sectionContentImage",
+		"primary": {
+			"subtitle": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Benefits for parents"
+			},
+			"title": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Why Parents Love Kids Guitar Dojo",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"items": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"title",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "No More Travelling To and From Classes",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"subtitle",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "sight",
+									"type": "Text"
+								}
+							],
+							[
+								"text",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Ut labore anim excepteur dolor Lorem quis do. Nulla do reprehenderit laboris Lorem dolor elit laborum. Enim pariatur officia reprehenderit."
+											}
+										}
+									]
+								}
+							],
+							[
+								"image",
+								{
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1504198070170-4ca53bb1c1fa",
+										"width": 2747,
+										"height": 4120
+									},
+									"url": "https://images.unsplash.com/photo-1504198070170-4ca53bb1c1fa",
+									"width": 2747,
+									"height": 4120,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										},
+										"background": "transparent"
+									},
+									"credits": null,
+									"alt": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							],
+							[
+								"optional_image",
+								{
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+										"width": 4076,
+										"height": 2712
+									},
+									"url": "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+									"width": 4076,
+									"height": 2712,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										},
+										"background": "transparent"
+									},
+									"credits": null,
+									"alt": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							],
+							[
+								"has_decoration",
+								{
+									"__TYPE__": "BooleanContent",
+									"value": false
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	}
 ]

@@ -13,6 +13,7 @@ type TProps = {
   titleSize?: 'default' | 'large';
   subtitleClass?: string;
   titleClass?: string;
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   descClass?: string;
 };
 
@@ -29,6 +30,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
       subtitleClass,
       titleClass,
       descClass,
+      as: Comp = 'h2',
     },
     ref,
   ) => {
@@ -37,7 +39,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
         {subtitle && (
           <span
             className={cn(
-              'relative mb-2 flex w-fit rounded-full px-3 py-1 text-sm font-bold uppercase leading-normal tracking-tight md:mb-5',
+              'relative mb-3 flex w-fit rounded-full px-3 py-1 text-sm font-bold uppercase leading-normal tracking-tight md:mb-5',
               color === 'A' && 'text-primary bg-secondary',
               color === 'B' && 'text-secondary',
               color === 'C' && 'bg-primary text-white',
@@ -48,7 +50,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
           />
         )}
 
-        <h2
+        <Comp
           className={cn(
             'title child:text-primary child:font-normal m-0',
             color === 'A' && 'text-gray-900',
@@ -57,7 +59,7 @@ export const SectionTitle = forwardRef<HTMLDivElement, TProps>(
             titleClass,
           )}>
           <PrismicRichText field={title} />
-        </h2>
+        </Comp>
 
         {description && (
           <div

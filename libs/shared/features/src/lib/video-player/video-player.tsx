@@ -11,6 +11,7 @@ export interface ContentVideoProps {
   provider_url?: any;
   title?: string;
   thumbnail_url?: any;
+  loading?: 'lazy' | 'eager';
   image?: any;
   html: string;
   mode?: 'light' | 'dark';
@@ -30,6 +31,7 @@ export function VideoPlayer({
   provider_url,
   provider_name,
   thumbnail_url,
+  loading,
   embed_url,
   title,
   image,
@@ -46,13 +48,15 @@ export function VideoPlayer({
   if (provider_name === 'YouTube') {
     const Youtube = dynamic(() => import('./video-players/youtube'));
 
-    return <Youtube id={id} title={title || id} poster={image} src={embed_url} width={944} height={531} />;
+    return (
+      <Youtube id={id} title={title || id} poster={image} src={embed_url} width={944} loading={loading} height={531} />
+    );
   }
 
   if (provider_name === 'Vimeo') {
     const Vimeo = dynamic(() => import('./video-players/vimeo'));
 
-    return <Vimeo id={id} title={title || id} poster={image} src={embed_url} />;
+    return <Vimeo id={id} title={title || id} poster={image} loading={loading} src={embed_url} />;
   }
 
   return <div className={'block w-full p-5'}>Type is undefined</div>;

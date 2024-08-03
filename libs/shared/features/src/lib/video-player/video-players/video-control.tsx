@@ -12,10 +12,11 @@ export interface VideoControlProps {
   width?: number;
   height?: number;
   title: string;
+  loading?: 'lazy' | 'eager';
   mode?: 'light' | 'dark';
 }
 
-export function VideoControl({ poster, handlePlay, width, height, title, mode }: VideoControlProps) {
+export function VideoControl({ poster, handlePlay, width, height, title, loading = 'lazy', mode }: VideoControlProps) {
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
 
   const play = () => {
@@ -41,6 +42,7 @@ export function VideoControl({ poster, handlePlay, width, height, title, mode }:
           width={width}
           height={height}
           fallbackAlt=""
+          loading={loading}
           className={'z-10 h-auto w-full object-fill'}
           imgixParams={{ fit: 'fill', fm: 'webp' }}
           quality={80}

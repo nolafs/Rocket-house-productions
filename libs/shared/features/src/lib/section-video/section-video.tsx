@@ -50,16 +50,11 @@ export function SectionVideo({
         {motto && <MottoText {...motto} size="md" className={cn('mb-16 mt-[25px]', color === 'A' && 'text-white')} />}
 
         {video && (
-          <motion.div
-            className="-bottom-15 -mt-15 relative z-10 md:-bottom-[140px] md:-mt-[140px]"
-            initial="offscreen"
-            whileInView="onscreen"
-            viewport={{ once: true, amount: 0.4 }}
-            variants={scrollUpVariants}>
+          <div className="-bottom-15 -mt-15 relative z-10 md:-bottom-[140px] md:-mt-[140px]">
             <div className="shadow-xxl group relative z-20 overflow-hidden rounded-lg shadow-black/[22%]">
               <VideoPlayer image={image} {...video} />
             </div>
-          </motion.div>
+          </div>
         )}
       </motion.div>
       <BottomShape />
