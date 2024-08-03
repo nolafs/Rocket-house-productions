@@ -1,0 +1,154 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"items": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"name",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "anything",
+									"type": "Text"
+								}
+							],
+							[
+								"designation",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "say",
+									"type": "Text"
+								}
+							],
+							[
+								"review",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Culpa irure et duis nulla qui excepteur adipisicing. Fugiat pariatur Lorem duis duis sint adipisicing laboris anim dolore. Nulla excepteur nulla fugiat ullamco voluptate fugiat Lorem labore."
+											}
+										}
+									]
+								}
+							],
+							[
+								"image",
+								{
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2",
+										"width": 3648,
+										"height": 4560
+									},
+									"url": "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?rect=0%2C456%2C3648%2C3648&w=90&h=90",
+									"width": 90,
+									"height": 90,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 456
+										},
+										"background": "transparent"
+									},
+									"credits": null,
+									"alt": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							],
+							[
+								"rating",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Number",
+									"value": "5"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"name",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Olaf"
+								}
+							],
+							[
+								"designation",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Germany"
+								}
+							],
+							[
+								"review",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Very cool",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"image",
+								{
+									"url": "https://images.unsplash.com/photo-1568383306313-1b27a2e28071?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHw2fHxjaXRydXMlMjBmcnVpdHxlbnwwfHx8fDE3MjI0MjI1NTF8MA&ixlib=rb-4.0.3&q=85&rect=1000%2C0%2C4000%2C4000&w=90&h=90",
+									"alt": "sliced fruit",
+									"origin": {
+										"id": "p2n1zvbA5_4",
+										"url": "https://images.unsplash.com/photo-1568383306313-1b27a2e28071?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHw2fHxjaXRydXMlMjBmcnVpdHxlbnwwfHx8fDE3MjI0MjI1NTF8MA&ixlib=rb-4.0.3&q=85",
+										"width": 6000,
+										"height": 4000
+									},
+									"width": 90,
+									"height": 90,
+									"edit": {
+										"background": "transparent",
+										"zoom": 1,
+										"crop": {
+											"x": 1000,
+											"y": 0
+										}
+									},
+									"credits": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							],
+							[
+								"rating",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Number",
+									"value": "5"
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

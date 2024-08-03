@@ -1,0 +1,177 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Kids Guitar Dojo makes a difference!",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "lying",
+				"type": "Text"
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Flex is the only business platform that lets you run your business on one platform, seamlessly across all digital channels.",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"items": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"counter",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "1000"
+								}
+							],
+							[
+								"title",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Happy Students"
+								}
+							],
+							[
+								"suffix",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "+"
+								}
+							],
+							[
+								"prefix",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "together",
+									"type": "Text"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"counter",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "15"
+								}
+							],
+							[
+								"title",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Engaging Lessons"
+								}
+							],
+							[
+								"prefix",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "fence",
+									"type": "Text"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"title",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Lessons Completed"
+								}
+							],
+							[
+								"counter",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "20000"
+								}
+							],
+							[
+								"prefix",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "outside",
+									"type": "Text"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"counter",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "50"
+								}
+							],
+							[
+								"suffix",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "+"
+								}
+							],
+							[
+								"title",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Rewards"
+								}
+							],
+							[
+								"prefix",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "children",
+									"type": "Text"
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

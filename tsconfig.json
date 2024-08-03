@@ -1,0 +1,14 @@
+{
+  "_COMMENT": "only used by shadcn/ui cli",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@rocket-house-productions/shadcn-ui": [
+        "libs/shared/shadcn-ui/src/index.ts"
+      ],
+      "@rocket-house-productions/shadcn-ui/*": [
+        "libs/shared/shadcn-ui/src/*"
+      ]
+    }
+  }
+}

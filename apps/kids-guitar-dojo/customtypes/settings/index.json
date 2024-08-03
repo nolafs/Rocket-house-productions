@@ -1,0 +1,161 @@
+{
+  "format": "custom",
+  "id": "settings",
+  "label": "Settings",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "contact_form_enquiries": {
+        "type": "Group",
+        "config": {
+          "label": "Contact Form Enquiries",
+          "repeat": true,
+          "fields": {
+            "label": {
+              "type": "Text",
+              "config": {
+                "label": "Label",
+                "placeholder": ""
+              }
+            },
+            "value": {
+              "type": "Text",
+              "config": {
+                "label": "Value",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      },
+      "copyright_line": {
+        "type": "Text",
+        "config": {
+          "label": "Copyright Line",
+          "placeholder": ""
+        }
+      },
+      "secondary_navigation": {
+        "type": "Group",
+        "config": {
+          "label": "Secondary Navigation",
+          "repeat": true,
+          "fields": {
+            "label": {
+              "type": "StructuredText",
+              "config": {
+                "label": "Label",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+              }
+            },
+            "link": {
+              "type": "Link",
+              "config": {
+                "label": "Link",
+                "placeholder": "",
+                "select": null
+              }
+            }
+          }
+        }
+      },
+      "social_media": {
+        "type": "Group",
+        "config": {
+          "label": "Social Media",
+          "repeat": true,
+          "fields": {
+            "type": {
+              "type": "Select",
+              "config": {
+                "label": "Type",
+                "placeholder": "",
+                "options": ["facebook", "instagram", "twitter", "gitHub", "youtube", "tiktok"]
+              }
+            },
+            "name": {
+              "type": "Text",
+              "config": {
+                "label": "Name",
+                "placeholder": ""
+              }
+            },
+            "url": {
+              "type": "Link",
+              "config": {
+                "label": "Page Url",
+                "placeholder": "",
+                "allowTargetBlank": false,
+                "select": null
+              }
+            }
+          }
+        }
+      },
+      "sign_in_image": {
+        "type": "Image",
+        "config": {
+          "label": "Sign-in Image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
+      "share_image": {
+        "type": "Image",
+        "config": {
+          "label": "OG Image",
+          "constraint": {
+            "width": 1200,
+            "height": 630
+          },
+          "thumbnails": []
+        }
+      },
+      "meta_title": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Title",
+          "placeholder": ""
+        }
+      },
+      "meta_description": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Description",
+          "placeholder": ""
+        }
+      },
+      "meta_keywords": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Keywords",
+          "placeholder": ""
+        }
+      },
+      "canonical_url": {
+        "type": "Text",
+        "config": {
+          "label": "Canonical Url",
+          "placeholder": ""
+        }
+      },
+      "twitter_handler": {
+        "type": "Text",
+        "config": {
+          "label": "Twitter Handler",
+          "placeholder": ""
+        }
+      },
+      "twitter_card_type": {
+        "type": "Text",
+        "config": {
+          "label": "Twitter Card Type",
+          "placeholder": ""
+        }
+      }
+    }
+  }
+}

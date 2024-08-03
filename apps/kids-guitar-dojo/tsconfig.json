@@ -29,7 +29,10 @@
     "../../apps/kids-guitar-dojo/.next/types/**/*.ts",
     "../../dist/apps/kids-guitar-dojo/.next/types/**/*.ts",
     "next-env.d.ts",
-    ".next/types/**/*.ts"
+    "postcss.config.js",
+    ".next/types/**/*.ts",
+    "dist/apps/kids-guitar-dojo/out/types/**/*.ts",
+    "out/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

@@ -1,0 +1,209 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Do non eiusmod dolor quis. Nulla est proident ad minim ipsum aliquip ad eiusmod. Occaecat aute duis aliqua id cupidatat duis nostrud non cupidatat amet pariatur ullamco."
+						}
+					}
+				]
+			},
+			"subheading": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Parents"
+			}
+		},
+		"items": []
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "withButtons",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "The Ultimate Learn Guitar From Home Program",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"subheading": {
+				"__TYPE__": "FieldContent",
+				"value": "wagon",
+				"type": "Text"
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "long",
+									"type": "Text"
+								}
+							],
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "http://google.com"
+									}
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Kids Guitar Dojo is the perfect resource for Parents, Teachers and Homeschoolers. This Learn From Home activity-based curriculum makes online guitar lessons for kids easy and enjoyable. We’ve found that kids do much better with an activity-based approach to learning music, which reduces frustration and eliminates the possibility of getting “stuck.” And most importantly for parents, it encourages children to practice independently and voluntarily.",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "video",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Why Kids Love Learning with Kids Guitar Dojo",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"subheading": {
+				"__TYPE__": "FieldContent",
+				"value": "powerful",
+				"type": "Text"
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Kids Guitar Dojo offers a fun, gamified learning experience with badges, certificates, and a point system to motivate kids. Our Fast Track Fretboard System features colorful markers that help young learners navigate the guitar, supporting motor skill development and confidence. The markers, which fit various guitar sizes, can be removed as students progress. Additionally, our program includes fun quizzes and an e-book for offline practice, making learning engaging and rewarding.",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1560457079-9a6532ccb118",
+					"width": 4160,
+					"height": 3120
+				},
+				"url": "https://images.unsplash.com/photo-1560457079-9a6532ccb118",
+				"width": 4160,
+				"height": 3120,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			},
+			"video": {
+				"embed_url": "https://youtu.be/1NLZtu5nUFg",
+				"__TYPE__": "EmbedContent",
+				"type": "video",
+				"version": "1.0",
+				"title": "Kids Guitar Dojo I Online Guitar Lessons For Kids",
+				"author_name": "Kids Guitar Dojo",
+				"author_url": "https://www.youtube.com/@kidsguitardojo",
+				"provider_name": "YouTube",
+				"provider_url": "https://www.youtube.com/",
+				"thumbnail_url": "https://i.ytimg.com/vi/1NLZtu5nUFg/hqdefault.jpg",
+				"thumbnail_width": 480,
+				"thumbnail_height": 360,
+				"html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/1NLZtu5nUFg?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Kids Guitar Dojo I Online Guitar Lessons For Kids\"></iframe>",
+				"all": {
+					"embed_url": "https://youtu.be/1NLZtu5nUFg",
+					"type": "video",
+					"version": "1.0",
+					"title": "Kids Guitar Dojo I Online Guitar Lessons For Kids",
+					"author_name": "Kids Guitar Dojo",
+					"author_url": "https://www.youtube.com/@kidsguitardojo",
+					"provider_name": "YouTube",
+					"provider_url": "https://www.youtube.com/",
+					"thumbnail_url": "https://i.ytimg.com/vi/1NLZtu5nUFg/hqdefault.jpg",
+					"thumbnail_width": 480,
+					"thumbnail_height": 360,
+					"html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/1NLZtu5nUFg?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Kids Guitar Dojo I Online Guitar Lessons For Kids\"></iframe>",
+					"height": 113,
+					"width": 200
+				}
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	}
+]

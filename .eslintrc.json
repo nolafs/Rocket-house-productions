@@ -1,13 +1,15 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
+  "ignorePatterns": [
+    "**/*"
+  ],
   "plugins": ["@nx"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
         "@nx/enforce-module-boundaries": [
-          "error",
+          "warn",
           {
             "enforceBuildableLibDependency": true,
             "allow": [],

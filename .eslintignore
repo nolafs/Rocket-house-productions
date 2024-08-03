@@ -1,1 +1,10 @@
 node_modules
+.next/*
+.vscode
+.husky/*
+.github/*
+.next
+out
+out/*
+_next/*
+.nx
