@@ -14,7 +14,28 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@/*": ["apps/kids-guitar-dojo/src/*"],
+      "@assets/*": ["apps/kids-guitar-dojo/src/assets/*"],
+      "@components/*": ["apps/kids-guitar-dojo/src/components/*"],
+      "@layouts/*": ["apps/kids-guitar-dojo/src/layouts/*"],
+      "@rocket-house-productions/features": ["libs/shared/features/src/index.ts"],
+      "@rocket-house-productions/features/server": ["libs/shared/features/src/server.ts"],
+      "@rocket-house-productions/hooks": ["libs/shared/hooks/src/index.ts"],
+      "@rocket-house-productions/hooks/server": ["libs/shared/hooks/src/server.ts"],
+      "@rocket-house-productions/layout": ["libs/shared/layout/src/index.ts"],
+      "@rocket-house-productions/layout/server": ["libs/shared/layout/src/server.ts"],
+      "@rocket-house-productions/shadcn-ui": ["libs/shared/shadcn-ui/src/index.ts"],
+      "@rocket-house-productions/shadcn-ui/server": ["libs/shared/shadcn-ui/src/server.ts"],
+      "@rocket-house-productions/shared": ["libs/shared/shared/src/index.ts"],
+      "@rocket-house-productions/shared/server": ["libs/shared/shared/src/server.ts"],
+      "@rocket-house-productions/types": ["libs/shared/types/src/index.ts"],
+      "@rocket-house-productions/types/server": ["libs/shared/types/src/server.ts"],
+      "@rocket-house-productions/ui": ["libs/shared/ui/src/index.ts"],
+      "@rocket-house-productions/ui/server": ["libs/shared/ui/src/server.ts"],
+      "@rocket-house-productions/util": ["libs/shared/util/src/index.ts"],
+      "@rocket-house-productions/util/server": ["libs/shared/util/src/server.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

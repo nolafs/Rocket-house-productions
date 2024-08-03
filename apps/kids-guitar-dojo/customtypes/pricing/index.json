@@ -1,0 +1,73 @@
+{
+  "format": "custom",
+  "id": "pricing",
+  "label": "Pricing",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "config": {
+          "label": "UID"
+        },
+        "type": "UID"
+      },
+      "name": {
+        "type": "Text",
+        "config": {
+          "label": "Name",
+          "placeholder": ""
+        }
+      },
+      "description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "price": {
+        "type": "Number",
+        "config": {
+          "label": "Price",
+          "placeholder": ""
+        }
+      },
+      "features": {
+        "type": "Group",
+        "config": {
+          "label": "Features",
+          "repeat": true,
+          "fields": {
+            "feature": {
+              "type": "Text",
+              "config": {
+                "label": "Feature",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      },
+      "most_popular": {
+        "type": "Boolean",
+        "config": {
+          "label": "Most Popular",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "link": {
+        "type": "Link",
+        "config": {
+          "label": "Link",
+          "placeholder": "",
+          "select": null
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "id": "pricing_table",
+  "type": "SharedSlice",
+  "name": "PricingTable",
+  "description": "PricingTable",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "tiers": {
+          "type": "Group",
+          "config": {
+            "label": "Tiers",
+            "repeat": true,
+            "fields": {
+              "tier": {
+                "type": "Link",
+                "config": {
+                  "label": "Tier",
+                  "select": "document",
+                  "customtypes": [
+                    "pricing"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

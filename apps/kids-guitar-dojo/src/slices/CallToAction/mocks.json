@@ -1,0 +1,414 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Invest in your child’s musical future with Kids Guitar Dojo",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Watch them thrive in an environment that supports their growth and fosters a lifelong love of music.",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "softly",
+									"type": "Text"
+								}
+							],
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "https://slicemachine.dev"
+									}
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Outlined",
+									"type": "Select"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Buy now"
+								}
+							],
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "https://slicemachine.dev",
+										"target": ""
+									}
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Uppercase",
+									"type": "Select"
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "image",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Pariatur qui deserunt ut consequat."
+						}
+					}
+				]
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Eu ea cillum cupidatat consequat ut aute exercitation Lorem officia voluptate laborum incididunt veniam. Cillum proident magna qui duis reprehenderit velit magna pariatur adipisicing voluptate enim est. Deserunt mollit aute velit aliqua labore ut ut labore excepteur dolor ad cillum."
+						}
+					}
+				]
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "air",
+									"type": "Text"
+								}
+							],
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "https://slicemachine.dev"
+									}
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			},
+			"image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1587840171670-8b850147754e",
+					"width": 4480,
+					"height": 4480
+				},
+				"url": "https://images.unsplash.com/photo-1587840171670-8b850147754e",
+				"width": 4480,
+				"height": 4480,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "center",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Veniam ut eu et in."
+						}
+					}
+				]
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Adipisicing ullamco nostrud proident Lorem esse. Magna Lorem fugiat incididunt eu dolore veniam dolore proident anim elit voluptate."
+						}
+					}
+				]
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "case",
+									"type": "Text"
+								}
+							],
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "http://twitter.com"
+									}
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Select",
+									"value": "Default"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Uppercase",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			},
+			"background_image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1515378960530-7c0da6231fb1",
+					"width": 5616,
+					"height": 3744
+				},
+				"url": "https://images.unsplash.com/photo-1515378960530-7c0da6231fb1",
+				"width": 5616,
+				"height": 3744,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "textTwoColumn",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Consequat mollit excepteur dolor cupidatat incididunt dolor sit Lorem. Aute adipisicing cillum velit aliqua aliquip anim pariatur sint duis aliquip deserunt."
+						}
+					}
+				]
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "With a single point of view, Flex integrates customer data and marketing tools in one flexible cloud platform that lets you get business results wherever they show up. Flex is the only saas business platform that lets you run your business on one platform, seamlessly across all digital channels.\nWith Flex, you can run your business on one platform, seamlessly across all digital channels—and grow it anywhere. With a single point of view, Flex integrates customer data and marketing tools in one flexible cloud platform that lets you get business results wherever they show up.\nFlex is the only saas business platform that lets you run your business on one platform. Flex is the only saas business platform that lets you run your business on one platform.",
+							"spans": []
+						},
+						"direction": "ltr"
+					},
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "With Flex, you can run your business on one platform, seamlessly across all digital channels—and grow it anywhere. With a single point of view, Flex integrates customer data and marketing tools in one flexible cloud platform that lets you get business results wherever they show up.\nEnterprise software for startups\nTime is money. Stop jumping from tool to tool with all the hassle of integrations.\nNow you can manage your entire business on one platform.\nWith a single point of view, Flex integrates customer data and marketing tools in one flexible cloud platform that lets you get business results wherever they show up.",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "fastened",
+									"type": "Text"
+								}
+							],
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "http://twitter.com"
+									}
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "1",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			},
+			"subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "swung",
+				"type": "Text"
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	}
+]

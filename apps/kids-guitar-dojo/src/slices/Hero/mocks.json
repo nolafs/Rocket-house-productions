@@ -1,0 +1,445 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Incididunt non proident velit exercitation consequat."
+						}
+					}
+				]
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Non dolor sit officia commodo aute qui sint sunt aliqua nostrud excepteur dolor. Amet nostrud ea irure pariatur sunt eiusmod quis occaecat eiusmod. Incididunt Lorem est irure culpa adipisicing ipsum pariatur voluptate nulla aliquip eu exercitation nisi adipisicing ad."
+						}
+					}
+				]
+			},
+			"subheading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Parent",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"image": {
+				"url": "https://images.unsplash.com/photo-1520167112707-56e25f2d7d6e?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwzfHxHdWl0YXIlMjBjYXJ0b29uJTIwc2l0dGluZyUyMG9uJTIwY2hhaXJ8ZW58MHx8fHwxNzIyMjQxMjYyfDA&ixlib=rb-4.0.3&q=85&rect=0%2C895%2C3580%2C3580&w=3580&h=3580",
+				"alt": "photo of brown gutiar fret",
+				"origin": {
+					"id": "ZHr2TzM1-hk",
+					"url": "https://images.unsplash.com/photo-1520167112707-56e25f2d7d6e?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwzfHxHdWl0YXIlMjBjYXJ0b29uJTIwc2l0dGluZyUyMG9uJTIwY2hhaXJ8ZW58MHx8fHwxNzIyMjQxMjYyfDA&ixlib=rb-4.0.3&q=85",
+					"width": 3580,
+					"height": 5370
+				},
+				"width": 3580,
+				"height": 3580,
+				"edit": {
+					"background": "transparent",
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 895
+					}
+				},
+				"credits": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "https://prismic.io"
+									}
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							],
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Learn more"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Buy now"
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Select",
+									"value": "Outlined"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Select",
+									"value": "Uppercase"
+								}
+							]
+						]
+					}
+				]
+			},
+			"category": {
+				"__TYPE__": "FieldContent",
+				"value": "production",
+				"type": "Text"
+			},
+			"page_name": {
+				"__TYPE__": "FieldContent",
+				"value": "shoulder",
+				"type": "Text"
+			}
+		},
+		"items": []
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "thunderDecoration",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Paul Greig",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"subheading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Session Musician & Performer",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"category": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Category"
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Minim magna minim sint excepteur. Consectetur pariatur enim commodo ea veniam aliquip proident ex dolore eu occaecat velit aute. Commodo qui sunt officia occaecat tempor adipisicing."
+						}
+					}
+				]
+			},
+			"image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1547394765-185e1e68f34e",
+					"width": 6000,
+					"height": 4000
+				},
+				"url": "https://images.unsplash.com/photo-1547394765-185e1e68f34e",
+				"width": 6000,
+				"height": 4000,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "https://slicemachine.dev"
+									}
+								}
+							],
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "west",
+									"type": "Text"
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Default",
+									"type": "Select"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Uppercase",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			},
+			"page_name": {
+				"__TYPE__": "FieldContent",
+				"value": "motion",
+				"type": "Text"
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "centered",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "The Easiest Way for Kids to Learn The Guitar 🤘",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"category": {
+				"__TYPE__": "FieldContent",
+				"value": "sentence",
+				"type": "Text"
+			},
+			"body": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Cupidatat exercitation esse ea irure duis anim magna voluptate pariatur. Aliqua culpa irure eu enim incididunt. Consectetur qui ut exercitation laborum consequat anim commodo sunt consectetur laboris do."
+						}
+					}
+				]
+			},
+			"image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+					"width": 3882,
+					"height": 2584
+				},
+				"url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+				"width": 3882,
+				"height": 2584,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			},
+			"buttons": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"link",
+								{
+									"__TYPE__": "LinkContent",
+									"value": {
+										"__TYPE__": "ExternalLink",
+										"url": "http://twitter.com"
+									}
+								}
+							],
+							[
+								"label",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "equipment",
+									"type": "Text"
+								}
+							],
+							[
+								"type",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Select",
+									"value": "Default"
+								}
+							],
+							[
+								"typeCase",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "Uppercase",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			},
+			"page_name": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "howe"
+			},
+			"video": {
+				"embed_url": "https://www.youtube.com/watch?v=1NLZtu5nUFg",
+				"type": "video",
+				"version": "1.0",
+				"title": "Kids Guitar Dojo I Online Guitar Lessons For Kids",
+				"author_name": "Kids Guitar Dojo",
+				"author_url": "https://www.youtube.com/@kidsguitardojo",
+				"provider_name": "YouTube",
+				"provider_url": "https://www.youtube.com/",
+				"thumbnail_url": "https://i.ytimg.com/vi/1NLZtu5nUFg/hqdefault.jpg",
+				"thumbnail_width": 480,
+				"thumbnail_height": 360,
+				"html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/1NLZtu5nUFg?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Kids Guitar Dojo I Online Guitar Lessons For Kids\"></iframe>",
+				"__TYPE__": "EmbedContent",
+				"all": {
+					"embed_url": "https://www.youtube.com/watch?v=1NLZtu5nUFg",
+					"type": "video",
+					"version": "1.0",
+					"title": "Kids Guitar Dojo I Online Guitar Lessons For Kids",
+					"author_name": "Kids Guitar Dojo",
+					"author_url": "https://www.youtube.com/@kidsguitardojo",
+					"provider_name": "YouTube",
+					"provider_url": "https://www.youtube.com/",
+					"thumbnail_url": "https://i.ytimg.com/vi/1NLZtu5nUFg/hqdefault.jpg",
+					"thumbnail_width": 480,
+					"thumbnail_height": 360,
+					"html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/1NLZtu5nUFg?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Kids Guitar Dojo I Online Guitar Lessons For Kids\"></iframe>",
+					"height": 113,
+					"width": 200
+				}
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "simple",
+		"primary": {
+			"page_name": {
+				"__TYPE__": "FieldContent",
+				"value": "funny",
+				"type": "Text"
+			},
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Et ex proident quis commodo tempor laborum voluptate. Anim velit voluptate dolore cupidatat dolor. Quis laborum qui voluptate est esse est fugiat nisi ea enim nisi ullamco ullamco ut."
+						}
+					}
+				]
+			},
+			"category": {
+				"__TYPE__": "FieldContent",
+				"value": "curious",
+				"type": "Text"
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	}
+]

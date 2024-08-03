@@ -1,0 +1,311 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Culpa culpa exercitation elit deserunt veniam. Eiusmod ut ut pariatur in proident elit ipsum officia reprehenderit officia incididunt."
+						}
+					}
+				]
+			},
+			"subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "nature",
+				"type": "Text"
+			},
+			"items": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"title",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Step 01"
+								}
+							],
+							[
+								"heading",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Enroll your child, safety first",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"body",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "With their unique profile set up, the learning journey begins. Your child will see a fun landscape with the fretboard at the center. Each lesson is a new adventure plotted along the fretboard, where progress is marked by climbing up the guitar's fretboard. Enjoyable quizzes accompany each lesson, allowing your child to earn awards and unlock secrets with their points, making learning both fun and rewarding.",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"image",
+								{
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1600804931749-2da4ce26c869",
+										"width": 3199,
+										"height": 3199
+									},
+									"url": "https://images.unsplash.com/photo-1600804931749-2da4ce26c869",
+									"width": 3199,
+									"height": 3199,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										},
+										"background": "transparent"
+									},
+									"credits": null,
+									"alt": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"title",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Step 02"
+								}
+							],
+							[
+								"heading",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Create a unique profile",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"body",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "After enrolling, your child can craft a unique profile by choosing a character and naming it. This personalization adds a fun and engaging element to the learning experience, making it more enjoyable and motivating for young learners.",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"image",
+								{
+									"__TYPE__": "ImageContent",
+									"url": "https://images.unsplash.com/photo-1568383245703-b6fccedeefba?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwxMHx8Y2l0cnVzJTIwZnJ1aXR8ZW58MHx8fHwxNzIyMzM1NjkyfDA&ixlib=rb-4.0.3&q=85",
+									"alt": "orange citrus",
+									"origin": {
+										"id": "CFWgJgmm6p8",
+										"url": "https://images.unsplash.com/photo-1568383245703-b6fccedeefba?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwxMHx8Y2l0cnVzJTIwZnJ1aXR8ZW58MHx8fHwxNzIyMzM1NjkyfDA&ixlib=rb-4.0.3&q=85",
+										"width": 6000,
+										"height": 4000
+									},
+									"width": 6000,
+									"height": 4000,
+									"edit": {
+										"background": "transparent",
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										}
+									},
+									"thumbnails": {}
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"title",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Step 03"
+								}
+							],
+							[
+								"heading",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Begin your musical journey",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"body",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "With their unique profile set up, the learning journey begins. Your child will see a fun landscape with the fretboard at the center. Each lesson is a new adventure plotted along the fretboard, where progress is marked by climbing up the guitar's fretboard. Enjoyable quizzes accompany each lesson, allowing your child to earn awards and unlock secrets with their points, making learning both fun and rewarding.",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"image",
+								{
+									"__TYPE__": "ImageContent",
+									"url": "https://images.unsplash.com/photo-1616963738682-9df1389e5932?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHw3fHxjaXRydXMlMjBmcnVpdHxlbnwwfHx8fDE3MjIzMzU2OTJ8MA&ixlib=rb-4.0.3&q=85",
+									"alt": "close up photo of green fruits",
+									"origin": {
+										"id": "XBMe5NM4ZHs",
+										"url": "https://images.unsplash.com/photo-1616963738682-9df1389e5932?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHw3fHxjaXRydXMlMjBmcnVpdHxlbnwwfHx8fDE3MjIzMzU2OTJ8MA&ixlib=rb-4.0.3&q=85",
+										"width": 3523,
+										"height": 2349
+									},
+									"width": 3523,
+									"height": 2349,
+									"edit": {
+										"background": "transparent",
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										}
+									},
+									"thumbnails": {}
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"title",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Step 04"
+								}
+							],
+							[
+								"heading",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Achievement and Recognition",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"body",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "As your child progresses and reaches the top of the guitar, they will collect and unlock various secrets along the way. The journey culminates in a big payoff, with your child receiving a certification of completion. High achievers can enter the Hall of Fame if their points are good enough. Additionally, your child can record their performance and receive a personal evaluation from us, providing valuable feedback and encouragement.",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"image",
+								{
+									"__TYPE__": "ImageContent",
+									"url": "https://images.unsplash.com/photo-1603824231744-517ef271df7e?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwzfHxjaXRydXMlMjBmcnVpdHxlbnwwfHx8fDE3MjIzMzU2OTJ8MA&ixlib=rb-4.0.3&q=85",
+									"alt": "sliced lemon fruit on blue surface",
+									"origin": {
+										"id": "SDX4_TQcxGU",
+										"url": "https://images.unsplash.com/photo-1603824231744-517ef271df7e?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwzfHxjaXRydXMlMjBmcnVpdHxlbnwwfHx8fDE3MjIzMzU2OTJ8MA&ixlib=rb-4.0.3&q=85",
+										"width": 3690,
+										"height": 2470
+									},
+									"width": 3690,
+									"height": 2470,
+									"edit": {
+										"background": "transparent",
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										}
+									},
+									"thumbnails": {}
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

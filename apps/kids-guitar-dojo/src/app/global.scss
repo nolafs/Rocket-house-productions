@@ -1,0 +1,84 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-neutral: #c9d8f6;
+    --color-base: #ffffff;
+
+    --primary: 220 72% 52%;
+    --primary-foreground: 0 100% 100%;
+
+    --secondary: 88 100% 74%;
+    --secondary-foreground: 0 0% 0%;
+
+    --accent: 88 100% 50%;
+    --accent-foreground: 220 72% 52%;
+
+    --background: 0 100% 100%;
+    --foreground: 0 0% 0%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --input: 214.3 31.8% 91.4%;
+
+    --border: 214.3 31.8% 91.4%;
+  }
+
+  main {
+    @apply min-h-lvh w-full overflow-hidden;
+  }
+
+  .rich-text-prose > p:first-of-type {
+    margin-top: 0 !important;
+  }
+
+  .title {
+    p > * {
+      @apply text-primary font-extrabold;
+    }
+  }
+
+  [data-oembed-type="video"] {
+    @apply w-full relative aspect-w-16 aspect-h-9 mb-20;
+  }
+
+  p.block-img {
+    img {
+      @apply block w-full h-full rounded-lg overflow-hidden;
+    }
+  }
+
+  .cta {
+    ul{
+      @apply flex flex-col list-image-none;
+      li {
+        @apply relative pl-8 mb-4;
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 20px; /* Adjust based on your image size */
+          height: 20px; /* Adjust based on your image size */
+          background-image: url("/images/checkbox.png"); /* URL of your image */
+          background-size: contain; /* Ensure the image scales properly */
+          background-repeat: no-repeat; /* No repeat of the image */
+        }
+      }
+    }
+  }
+}

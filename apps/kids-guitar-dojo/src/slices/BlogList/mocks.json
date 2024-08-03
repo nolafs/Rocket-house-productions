@@ -1,0 +1,56 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"limit": {
+				"__TYPE__": "FieldContent",
+				"value": "88",
+				"type": "Number"
+			},
+			"heading": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Cupidatat laboris qui enim. In tempor Lorem ut amet occaecat. Exercitation ipsum duis elit dolor pariatur."
+						}
+					}
+				]
+			},
+			"subtitle": {
+				"__TYPE__": "FieldContent",
+				"value": "somebody",
+				"type": "Text"
+			},
+			"title": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "The latest from the Dojo",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"link": {
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "/blog",
+					"target": null
+				}
+			},
+			"label": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "All News"
+			}
+		},
+		"items": []
+	}
+]

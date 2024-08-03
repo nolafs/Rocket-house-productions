@@ -15,7 +15,7 @@
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+    "sharedGlobals": []
   },
   "plugins": [
     {
@@ -39,7 +39,8 @@
     {
       "plugin": "@nx/eslint/plugin",
       "options": {
-        "targetName": "lint"
+        "targetName": "lint",
+        "exclude": ["**/*.next/**", "**/out/**"]
       }
     },
     {
@@ -55,7 +56,17 @@
         "style": "tailwind",
         "linter": "eslint"
       }
+    },
+    "@nx/react": {
+      "library": {}
     }
   },
-  "nxCloudAccessToken": "NDAxM2IxMmMtYmZmMy00YTMyLTk1NmMtMDUxYzFlZTRjMjAyfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "NDAxM2IxMmMtYmZmMy00YTMyLTk1NmMtMDUxYzFlZTRjMjAyfHJlYWQtd3JpdGU=",
+  "targetDefaults": {
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    }
+  }
 }
