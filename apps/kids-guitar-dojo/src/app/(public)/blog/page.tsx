@@ -8,7 +8,7 @@ type Params = { uid: string };
 
 export async function generateMetadata({ params }: { params: Params }, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
-  const page = await client.getSingle('contact').catch(() => notFound());
+  const page = await client.getSingle('blog').catch(() => notFound());
 
   let image = null;
   const parentMeta = await parent;
@@ -31,8 +31,6 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
 export default async function Page({ searchParams }: { searchParams: { page: string; category: string } }) {
   const pageNum = Number(searchParams?.page) || 0;
   const limit = 9;
-
-  console.log('Page Number:', pageNum);
 
   const client = createClient();
   const blogPage = await client.getSingle('blog').catch(() => notFound());
