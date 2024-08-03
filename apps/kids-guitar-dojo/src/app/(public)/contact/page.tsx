@@ -8,13 +8,12 @@ import { LucideMailOpen, PhoneCallIcon, Share2Icon } from 'lucide-react';
 
 import React from 'react';
 import type { Metadata, ResolvingMetadata } from 'next';
-import { asText } from '@prismicio/client';
 
 type Params = { uid: string };
 
 export async function generateMetadata({ params }: { params: Params }, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
-  const page = await client.getByUID('page', params.uid).catch(() => notFound());
+  const page = await client.getSingle('contact').catch(() => notFound());
 
   let image = null;
   const parentMeta = await parent;
@@ -33,11 +32,6 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
     },
   };
 }
-
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
 
 export default async function Page() {
   const client = createClient();
