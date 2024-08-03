@@ -46,7 +46,7 @@ export default async function Page({ params }: { params: Params }) {
 
   return (
     <main>
-      <article className={'blog-article px-5'}>
+      <article className={'blog-article'}>
         {/* Header */}
         <HeaderSimple
           type={'h1'}
@@ -54,66 +54,68 @@ export default async function Page({ params }: { params: Params }) {
           header={page.data.title}
           align={'left'}
           size={'large'}
+          className={'mb-5 sm:mb-10 md:mb-0'}
         />
+        <div className={'px-5'}>
+          <div className={'container relative isolate mx-auto mb-10 max-w-4xl overflow-hidden rounded-lg'}>
+            <PrismicNextImage
+              field={page.data.feature_image}
+              width={896}
+              height={400}
+              imgixParams={{ fm: 'webp', fit: 'crop', crop: ['focalpoint'], width: 1140, height: 600 }}
+            />
+            <div className={'absolute bottom-5 mx-auto hidden w-full max-w-4xl grid-cols-2 px-8 md:grid'}>
+              <div className={'flex space-x-5'}>
+                <div className={'flex flex-col space-y-3'}>
+                  {/* Author */}
+                  {author?.data?.name && (
+                    <>
+                      <div className={'text-sm font-bold text-white'}>Written by</div>
+                      <div className={'flex items-center space-x-3'}>
+                        {author.data.profile_image && (
+                          <div>
+                            <PrismicNextImage
+                              field={author.data.profile_image}
+                              width={32}
+                              height={32}
+                              className={'h-8 w-8 rounded-full'}
+                              imgixParams={{
+                                fm: 'webp',
+                                fit: 'crop',
+                                crop: ['focalpoint'],
+                                width: 32,
+                                height: 32,
+                              }}
+                            />
+                          </div>
+                        )}
+                        )<div className={'text-sm font-bold text-white'}>{author.data?.name}</div>
+                      </div>
+                    </>
+                  )}
+                </div>
 
-        <div className={'container relative isolate mx-auto mb-10 max-w-4xl overflow-hidden rounded-lg'}>
-          <PrismicNextImage
-            field={page.data.feature_image}
-            width={896}
-            height={400}
-            imgixParams={{ fm: 'webp', fit: 'crop', crop: ['focalpoint'], width: 1140, height: 600 }}
-          />
-          <div className={'container absolute bottom-5 mx-auto grid max-w-4xl grid-cols-2 px-8'}>
-            <div className={'flex space-x-5'}>
-              <div className={'flex flex-col space-y-3'}>
-                {/* Author */}
-                {author?.data?.name && (
-                  <>
-                    <div className={'text-sm font-bold text-white'}>Written by</div>
-                    <div className={'flex items-center space-x-3'}>
-                      {author.data.profile_image && (
-                        <div>
-                          <PrismicNextImage
-                            field={author.data.profile_image}
-                            width={32}
-                            height={32}
-                            className={'h-8 w-8 rounded-full'}
-                            imgixParams={{
-                              fm: 'webp',
-                              fit: 'crop',
-                              crop: ['focalpoint'],
-                              width: 32,
-                              height: 32,
-                            }}
-                          />
-                        </div>
-                      )}
-                      )<div className={'text-sm font-bold text-white'}>{author.data?.name}</div>
-                    </div>
-                  </>
-                )}
+                <div className={'flex flex-col space-y-3'}>
+                  <div className={'mb-[2px] text-sm font-bold text-white'}>Published on</div>
+                  <DateDisplay publishDate={page.data.publishing_date} className={'text-white'} />
+                </div>
+                <div className={'flex flex-col space-y-3'}>
+                  <div className={'text-sm font-bold text-white'}>Category</div>
+                  <div className={'pt-[4px] text-sm font-bold text-white'}>{category.data.category}</div>
+                </div>
               </div>
-
-              <div className={'flex flex-col space-y-3'}>
-                <div className={'mb-[2px] text-sm font-bold text-white'}>Published on</div>
-                <DateDisplay publishDate={page.data.publishing_date} className={'text-white'} />
+              <div className={'self-end'}>
+                <SharePage slug={page.url} title={page.data.title} />
               </div>
-              <div className={'flex flex-col space-y-3'}>
-                <div className={'text-sm font-bold text-white'}>Category</div>
-                <div className={'pt-[4px] text-sm font-bold text-white'}>{category.data.category}</div>
-              </div>
-            </div>
-            <div className={'self-end'}>
-              <SharePage slug={page.url} title={page.data.title} />
             </div>
           </div>
         </div>
         {/* Content */}
-        <div className={'prose prose-sm md:prose-md lg:prose-xl prose-neutral mx-auto mb-20'}>
+        <div className={'prose prose-sm md:prose-md lg:prose-xl prose-neutral mx-auto mb-20 px-5'}>
           <PrismicRichText field={page.data.main} />
         </div>
       </article>
-      <div className={'container mx-auto mb-20 max-w-4xl'}>
+      <div className={'container mx-auto mb-20 max-w-4xl px-5'}>
         <div className={'flex justify-between space-x-3'}>
           <div>
             <Link href={'/blog'} className={buttonVariants({ variant: 'default', size: 'lg' })}>
