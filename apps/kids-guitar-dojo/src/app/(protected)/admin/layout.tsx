@@ -1,12 +1,4 @@
-import '../../global.scss';
-import { Raleway } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
-
-const raleway = Raleway({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-raleway',
-});
 
 export const metadata = {
   title: 'Welcome to Kids Guitar Dojo Admin',

@@ -1,23 +1,12 @@
 import cn from 'classnames';
 import { CheckCircleIcon } from 'lucide-react';
-import { KeyTextField, RichTextField } from '@prismicio/client';
 import { PrismicRichText } from '@prismicio/react';
 import { PrismicNextLink } from '@prismicio/next';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { Tier } from '@rocket-house-productions/types';
 
 interface SectionPricingTableProps {
-  tiers: {
-    id: string;
-    data: {
-      uid?: KeyTextField | string | null | undefined;
-      name: KeyTextField | string | null | undefined;
-      description: RichTextField | null | undefined;
-      price: any;
-      features: { feature: string }[];
-      most_popular?: boolean;
-      link: any;
-    };
-  }[];
+  tiers: Tier[];
 }
 
 export function SectionPricingTable({ tiers }: SectionPricingTableProps) {

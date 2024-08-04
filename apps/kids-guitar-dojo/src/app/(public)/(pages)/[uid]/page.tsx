@@ -5,6 +5,8 @@ import { SliceZone } from '@prismicio/react';
 
 import { createClient } from '@/prismicio';
 import { components } from '@/slices';
+import { OGImage } from '@rocket-house-productions/types';
+import { ResolvedOpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
 
 type Params = { uid: string };
 
@@ -14,7 +16,7 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
 
   let image = null;
   const parentMeta = await parent;
-  const parentOpenGraph: any = parentMeta.openGraph ?? null;
+  const parentOpenGraph: ResolvedOpenGraph | null = parentMeta.openGraph ?? null;
 
   if (image) {
     image = `${page.data.meta_image.url}?w=1200&h=630&fit=crop&fm=webp&q=80`;
@@ -25,7 +27,11 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
     description: page.data.meta_description || parentMeta.description,
     openGraph: {
       title: page.data.meta_title ?? parentMeta.title ?? undefined,
-      images: [{ url: image ?? (parentOpenGraph ? parentOpenGraph.images[0].url : '') }],
+      images: [
+        {
+          url: image ?? (parentOpenGraph?.images ? (parentOpenGraph.images[0] as OGImage).url : ''),
+        },
+      ],
     },
   };
 }

@@ -1,6 +1,8 @@
 import { SignIn } from '@clerk/nextjs';
 import { createClient } from '@/prismicio';
 import { PrismicNextImage } from '@prismicio/next';
+import Image from 'next/image';
+import LogoFull from '@assets/logo_full.png';
 
 export default async function Page() {
   const client = createClient();
@@ -9,18 +11,14 @@ export default async function Page() {
   return (
     <main>
       <div className={'flex h-svh min-h-svh w-full flex-col justify-center md:flex-row'}>
+        <div className={'flex w-full flex-col items-center justify-center bg-white md:w-1/2'}>
+          <div>
+            <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
+          </div>
+          <SignIn />
+        </div>
         <div className={'bg-primary flex flex-col items-center justify-center md:w-1/2'}>
           <PrismicNextImage field={settings.data.sign_in_image} />
-        </div>
-        <div className={'flex w-full items-center justify-center bg-white md:w-1/2'}>
-          <SignIn
-            appearance={{
-              variables: {},
-              elements: {
-                formButtonPrimary: 'bg-primary hover:bg-accent border-0',
-              },
-            }}
-          />
         </div>
       </div>
     </main>

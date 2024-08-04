@@ -1,8 +1,7 @@
 import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
-import { CtaTwoColumn, CtaTwoColumnImage, CtaTwoColumnText } from '@rocket-house-productions/features';
-import CtaOneColumn from '../../../../../libs/shared/features/src/lib/cta/cta-one-column';
+import { CtaTwoColumn, CtaTwoColumnImage, CtaTwoColumnText, CtaOneColumn } from '@rocket-house-productions/features';
 
 /**
  * Props for `CallToAction`.

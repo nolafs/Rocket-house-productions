@@ -10,6 +10,7 @@ import { SharePage } from '@rocket-house-productions/features';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
 import { ChevronLeftIcon, Share2Icon } from 'lucide-react';
+import { ImageFieldImage } from '@prismicio/types';
 
 type Params = { uid: string };
 
@@ -31,6 +32,24 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   };
 }
 
+interface AuthorData {
+  name: string;
+  profile_image: ImageFieldImage;
+}
+
+interface CategoryData {
+  category: string;
+}
+
+interface ContentRelationshipField<T> {
+  data: T;
+}
+
+interface PageData {
+  author: ContentRelationshipField<AuthorData>;
+  category: ContentRelationshipField<CategoryData>;
+}
+
 export default async function Page({ params }: { params: Params }) {
   const client = createClient();
   const page = await client
@@ -39,10 +58,10 @@ export default async function Page({ params }: { params: Params }) {
     })
     .catch(() => notFound());
 
-  console.log(page.data.author);
+  const relation = page.data as PageData;
 
-  const author: { data: { name: string; profile_image: any } } = page.data.author as any;
-  const category: { data: { category: string } } = page.data.category as any;
+  const author = relation.author.data as AuthorData;
+  const category = relation.category.data as CategoryData;
 
   return (
     <main>
@@ -68,14 +87,14 @@ export default async function Page({ params }: { params: Params }) {
               <div className={'flex space-x-5'}>
                 <div className={'flex flex-col space-y-3'}>
                   {/* Author */}
-                  {author?.data?.name && (
+                  {author?.name && (
                     <>
                       <div className={'text-sm font-bold text-white'}>Written by</div>
                       <div className={'flex items-center space-x-3'}>
-                        {author.data.profile_image && (
+                        {author.profile_image && (
                           <div>
                             <PrismicNextImage
-                              field={author.data.profile_image}
+                              field={author.profile_image}
                               width={32}
                               height={32}
                               className={'h-8 w-8 rounded-full'}
@@ -89,7 +108,7 @@ export default async function Page({ params }: { params: Params }) {
                             />
                           </div>
                         )}
-                        )<div className={'text-sm font-bold text-white'}>{author.data?.name}</div>
+                        )<div className={'text-sm font-bold text-white'}>{author?.name}</div>
                       </div>
                     </>
                   )}
@@ -101,7 +120,7 @@ export default async function Page({ params }: { params: Params }) {
                 </div>
                 <div className={'flex flex-col space-y-3'}>
                   <div className={'text-sm font-bold text-white'}>Category</div>
-                  <div className={'pt-[4px] text-sm font-bold text-white'}>{category.data.category}</div>
+                  <div className={'pt-[4px] text-sm font-bold text-white'}>{category.category}</div>
                 </div>
               </div>
               <div className={'self-end'}>

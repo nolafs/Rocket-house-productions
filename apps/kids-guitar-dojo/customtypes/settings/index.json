@@ -103,6 +103,14 @@
           "thumbnails": []
         }
       },
+      "sign_up_image": {
+        "type": "Image",
+        "config": {
+          "label": "Sign-up Image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
       "share_image": {
         "type": "Image",
         "config": {

@@ -1,6 +1,4 @@
 import '../../styles/navbar.scss';
-import '../global.scss';
-import { Raleway } from 'next/font/google';
 import { Suspense } from 'react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
@@ -9,12 +7,6 @@ import logo from '@assets/logo.png';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { createClient } from '@/prismicio';
 import NextTopLoader from 'nextjs-toploader';
-
-const raleway = Raleway({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-raleway',
-});
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const client = createClient();

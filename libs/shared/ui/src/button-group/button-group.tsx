@@ -1,6 +1,7 @@
 import { PrismicLink } from '@prismicio/react';
 import cn from 'classnames';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { GroupField } from '@prismicio/client';
 
 type groupButton = {
   link: any;
@@ -10,14 +11,16 @@ type groupButton = {
 };
 
 interface ButtonGroupProps {
-  buttons?: groupButton[];
+  buttons?: GroupField;
   className?: string;
 }
 
 export function ButtonGroup({ buttons, className }: ButtonGroupProps) {
+  const bts: groupButton[] = buttons as groupButton[];
+
   return (
     <>
-      {buttons?.map(({ link, type, label, typeCase }, index) => (
+      {bts?.map(({ link, type, label, typeCase }, index) => (
         <PrismicLink
           key={(label + index).replace(/\s/g, '-').toLowerCase()}
           field={link}

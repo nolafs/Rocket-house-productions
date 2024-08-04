@@ -99,7 +99,7 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                   <li>
                     <SignedOut>
                       <Link
-                        href="/pricing"
+                        href="/sign-up"
                         className={cn(buttonVariants({ variant: 'default', size: 'sm' }), '!text-[14px] uppercase')}>
                         Buy now
                       </Link>
