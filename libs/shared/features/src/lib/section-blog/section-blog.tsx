@@ -1,25 +1,33 @@
-import { createClient } from '@/prismicio';
 import BlogList from '../blog/blog-list';
+import { KeyTextField, LinkField, RichTextField } from '@prismicio/client';
+import SectionTitle from '../section-title/section-title';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { PrismicLink } from '@prismicio/react';
 
 interface SectionBlogProps {
-  limit?: number;
+  posts: any[];
+  section?: {
+    title: RichTextField | null | undefined;
+    subtitle: KeyTextField | string | null | undefined;
+  };
+  link?: LinkField;
+  label: KeyTextField | string | null | undefined;
 }
 
-export async function SectionBlog({ limit = 3 }: SectionBlogProps) {
-  const getBlogPosts: any = async () => {
-    'use server';
-    const client = createClient();
-    const pages = await client.getAllByType('blog_post', {
-      limit: limit,
-    });
+export async function SectionBlog({ posts, section, link, label }: SectionBlogProps) {
+  if (!posts) return null;
 
-    return pages;
-  };
-  const pages = await getBlogPosts();
-
-  if (!pages) return null;
-
-  return <BlogList posts={pages} />;
+  return (
+    <>
+      {section && <SectionTitle {...section} align="center" titleSize="large" className={'mb-16'} />}
+      <BlogList posts={posts} />
+      <div className={'flex justify-center'}>
+        <PrismicLink field={link} className={buttonVariants({ variant: 'default', size: 'lg' })}>
+          {label}
+        </PrismicLink>
+      </div>
+    </>
+  );
 }
 
 export default SectionBlog;

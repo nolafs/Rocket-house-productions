@@ -1,6 +1,5 @@
 import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
-import { Bounded } from '@components/Bounded';
 import { FeatureList } from '@rocket-house-productions/features';
 
 /**

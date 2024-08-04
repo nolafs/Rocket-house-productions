@@ -1,9 +1,8 @@
 import { Content } from '@prismicio/client';
-import { PrismicLink, SliceComponentProps } from '@prismicio/react';
+import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
-import { SectionBlog, SectionTitle } from '@rocket-house-productions/features';
-import Link from 'next/link';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { SectionBlog } from '@rocket-house-productions/features';
+import { createClient } from '@/prismicio';
 
 /**
  * Props for `BlogList`.
@@ -13,16 +12,28 @@ export type BlogListProps = SliceComponentProps<Content.BlogListSlice>;
 /**
  * Component for "BlogList" Slices.
  */
-const BlogList = ({ slice }: BlogListProps): JSX.Element => {
+const BlogList = async ({ slice }: BlogListProps) => {
+  const getBlogPosts = async () => {
+    'use server';
+    const client = createClient();
+    const pages = await client.getAllByType('blog_post', {
+      limit: slice.primary?.limit || 3,
+    });
+
+    return pages;
+  };
+  const posts = await getBlogPosts();
+
+  if (!posts) return null;
+
   return (
     <Bounded yPadding={'md'}>
-      {slice.primary && <SectionTitle {...slice.primary} align="center" titleSize="large" className={'mb-16'} />}
-      <SectionBlog />
-      <div className={'flex justify-center'}>
-        <PrismicLink field={slice.primary?.link} className={buttonVariants({ variant: 'default', size: 'lg' })}>
-          {slice.primary.label}
-        </PrismicLink>
-      </div>
+      <SectionBlog
+        posts={posts}
+        section={{ ...slice.primary }}
+        link={slice.primary?.link}
+        label={slice.primary.label}
+      />
     </Bounded>
   );
 };
