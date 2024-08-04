@@ -62,7 +62,7 @@
   }
 
   .cta {
-    ul{
+    ul {
       @apply flex flex-col list-image-none;
       li {
         @apply relative pl-8 mb-4;
@@ -80,5 +80,36 @@
         }
       }
     }
+  }
+
+
+
+}
+
+
+.cl-signIn-start,.cl-signUp-start, .cl-cardBox {
+  box-shadow: none !important;
+}
+
+
+.cl-rootBox {
+  .cl-footer {
+    background: transparent !important;
+  }
+
+
+}
+
+.cl-formButtonPrimary {
+  background: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground))!important;
+  border: none !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+  padding: 1rem 1rem !important;
+
+  &:hover {
+    color: hsl(var(--secondary-foreground)) !important;
+    background: hsl(var(--secondary)) !important;
   }
 }

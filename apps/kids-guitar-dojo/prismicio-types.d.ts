@@ -1069,6 +1069,17 @@ interface SettingsDocumentData {
   sign_in_image: prismic.ImageField<never>;
 
   /**
+   * Sign-up Image field in *Settings*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: settings.sign_up_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  sign_up_image: prismic.ImageField<never>;
+
+  /**
    * OG Image field in *Settings*
    *
    * - **Field Type**: Image
