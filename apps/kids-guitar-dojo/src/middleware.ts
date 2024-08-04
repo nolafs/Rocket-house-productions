@@ -4,6 +4,12 @@ const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
 
 export default clerkMiddleware(
   (auth, req) => {
+    const url = req.nextUrl.pathname;
+    // Skip Clerk processing for /slice-simulator and its subpaths
+    if (url.startsWith('/slice-simulator')) {
+      return;
+    }
+
     if (isProtectedRoute(req)) auth().protect();
   },
   { debug: false },
@@ -15,6 +21,5 @@ export const config = {
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
     // Always run for API routes
     '/(api|trpc)(.*)',
-    '!/slide-simulator',
   ],
 };
