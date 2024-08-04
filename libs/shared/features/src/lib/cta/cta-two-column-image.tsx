@@ -1,5 +1,5 @@
 'use client';
-import { RichTextField } from '@prismicio/client';
+import { GroupField, RichTextField } from '@prismicio/client';
 import { PrismicRichText } from '@prismicio/react';
 import MottoText from '../motto-text/motto-text';
 import { motion } from 'framer-motion';
@@ -10,7 +10,7 @@ import { ButtonGroup } from '@rocket-house-productions/ui';
 interface CtaColumnsProps {
   data: {
     headings: RichTextField | null | undefined;
-    buttons?: any[];
+    buttons?: GroupField;
     motto: { text: RichTextField | null | undefined };
     image: any;
   };

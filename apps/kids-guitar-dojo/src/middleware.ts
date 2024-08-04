@@ -5,7 +5,7 @@ const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
 export default clerkMiddleware(
   (auth, req) => {
     const url = req.nextUrl.pathname;
-    // Skip Clerk processing for /slice-simulator and its subpaths
+    // Skip Clerk processing for /slice-simulator and its sub-paths
     if (url.startsWith('/slice-simulator')) {
       return;
     }

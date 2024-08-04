@@ -1,4 +1,4 @@
-import { asText, RichTextField } from '@prismicio/client';
+import { asText, GroupField, RichTextField } from '@prismicio/client';
 import SectionTitle from '../section-title/section-title';
 import { PrismicRichText } from '@prismicio/react';
 import { BottomShape2, ButtonGroup } from '@rocket-house-productions/ui';
@@ -14,7 +14,7 @@ interface FeatureListProps {
   data: {
     headings: RichTextField | null | undefined;
     text?: string | null | undefined;
-    buttons?: any[];
+    buttons?: GroupField;
     motto: { text: RichTextField | null | undefined };
     features: any[];
   };
