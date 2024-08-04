@@ -3,7 +3,8 @@ import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
 import { SectionPricingTable } from '@rocket-house-productions/features';
 import { createClient } from '@/prismicio';
-
+import { AllDocumentTypes } from '../../../prismicio-types';
+import { Tier } from '@rocket-house-productions/types';
 /**
  * Props for `PricingTable`.
  */
@@ -14,7 +15,7 @@ export type PricingTableProps = SliceComponentProps<Content.PricingTableSlice>;
  */
 const PricingTable = async ({ slice }: PricingTableProps) => {
   const client = createClient();
-  const tierPricing: any[] = [];
+  const tierPricing: AllDocumentTypes[] = [];
 
   for (const item of slice.primary.tiers) {
     if (item.tier) {
@@ -31,7 +32,7 @@ const PricingTable = async ({ slice }: PricingTableProps) => {
 
   return (
     <Bounded as={'section'} yPadding={'sm'}>
-      <SectionPricingTable tiers={tierPricing} />
+      <SectionPricingTable tiers={tierPricing as Tier[]} />
     </Bounded>
   );
 };

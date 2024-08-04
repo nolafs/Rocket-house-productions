@@ -5,7 +5,20 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@next/next/no-html-link-for-pages": ["error", "apps/kids-guitar-dojo/pages"]
+        "@next/next/no-html-link-for-pages": ["error", "apps/kids-guitar-dojo/pages"],
+        "@nx/enforce-module-boundaries": [
+          "warn",
+          {
+            "allow": [
+              "@components/*",
+              "@hooks/*",
+              "@utils/*",
+              "@assets/*",
+              "@/slices",
+              "@/prismicio"
+            ]
+          }
+        ]
       }
     },
     {

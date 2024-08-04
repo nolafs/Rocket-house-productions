@@ -3,6 +3,7 @@ import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
 import { SectionFaqs } from '@rocket-house-productions/features';
 import { createClient } from '@/prismicio';
+import { AllDocumentTypes } from '../../../prismicio-types';
 
 /**
  * Props for `Faqs`.
@@ -14,7 +15,7 @@ export type FaqsProps = SliceComponentProps<Content.FaqsSlice>;
  */
 const Faqs = async ({ slice }: FaqsProps) => {
   const client = createClient();
-  const faqItems: any[] = [];
+  const faqItems: AllDocumentTypes[] = [];
 
   if (!slice.primary.faqs.length) {
     console.log('No faqs found');
