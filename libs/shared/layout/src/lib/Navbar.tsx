@@ -26,6 +26,8 @@ interface HeaderProps {
 
 export function Navbar({ navigation, logo }: HeaderProps) {
   const currentRoute = usePathname();
+  const [open, setOpen] = useState(false);
+
   // Sticky Navbar
   useEffect(() => {
     const elementId = document.getElementById('navbar');
@@ -51,7 +53,7 @@ export function Navbar({ navigation, logo }: HeaderProps) {
 
   return (
     <>
-      <div id="navbar" className="navbar-area fixed z-20 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
+      <div id="navbar" className="navbar-area fixed z-10 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
         <div className="container mx-auto max-w-[1266px]">
           <nav className={`navbar relative flex flex-wrap`}>
             <div className="self-center">
@@ -113,13 +115,13 @@ export function Navbar({ navigation, logo }: HeaderProps) {
             </div>
 
             {/* Toggle button */}
-            <Sheet>
+            <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger className={'absolute right-0 top-1/2 z-50 block -translate-y-1/2 items-center md:hidden'}>
                 <i className="bx bx-menu">
                   <Menu />
                 </i>
               </SheetTrigger>
-              <SheetContent side={'right'} className={'w-[80vw] px-0 pb-0'}>
+              <SheetContent side={'right'} className={'z[999] w-[80vw] px-0 pb-0'}>
                 <SheetHeader>
                   <SheetTitle className={'sr-only'}>Menu</SheetTitle>
                 </SheetHeader>
@@ -134,6 +136,7 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                           <li key={asText(item.label)} className="group relative px-5 py-5">
                             <PrismicNextLink
                               field={item.link}
+                              onClick={() => setOpen(false)}
                               className="hover:text-primary text-base font-medium text-gray-500 transition-all">
                               <PrismicText field={item.label} />
                             </PrismicNextLink>
