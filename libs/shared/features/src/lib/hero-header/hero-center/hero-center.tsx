@@ -35,7 +35,7 @@ export function HeroCenter({
   return (
     <div
       className={cn(
-        'hero-area mb-15 relative isolate z-10 px-5 pt-[100px] md:mb-[200px] md:pt-[140px]',
+        'hero-area mb-15 relative isolate px-5 pt-[100px] md:mb-[200px] md:pt-[140px]',
         color === 'A' ? 'bg-primary' : 'bg-neutral',
       )}>
       <h1 className="sr-only">Home Page</h1>
