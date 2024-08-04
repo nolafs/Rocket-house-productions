@@ -1,6 +1,6 @@
 'use client';
 import SectionTitle from '../section-title/section-title';
-import { asText, RichTextField } from '@prismicio/client';
+import { asText, GroupField, RichTextField } from '@prismicio/client';
 import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
 import { PrismicNextImage } from '@prismicio/next';
@@ -9,7 +9,7 @@ import { ButtonGroup } from '@rocket-house-productions/ui';
 interface CtaColumnsProps {
   data: {
     headings: RichTextField | null | undefined;
-    buttons?: any[];
+    buttons?: GroupField;
     motto: { text: RichTextField | null | undefined };
     backgroundImage?: any;
   };

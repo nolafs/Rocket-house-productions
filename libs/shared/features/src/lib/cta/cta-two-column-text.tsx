@@ -1,4 +1,4 @@
-import { KeyTextField, RichTextField } from '@prismicio/client';
+import { GroupField, KeyTextField, RichTextField } from '@prismicio/client';
 import SectionTitle from '../section-title/section-title';
 import cn from 'classnames';
 import { BottomShape2, ButtonGroup } from '@rocket-house-productions/ui';
@@ -8,7 +8,7 @@ interface CtaColumnsTextProps {
   data: {
     headings: RichTextField | null | undefined;
     subtitle?: KeyTextField | null | undefined;
-    buttons?: any[];
+    buttons?: GroupField;
     motto: { text: RichTextField | null | undefined };
   };
   color?: 'A' | 'B';

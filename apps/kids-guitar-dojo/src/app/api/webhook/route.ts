@@ -1,3 +1,4 @@
+'use server';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { stripe } from '@rocket-house-productions/integration';

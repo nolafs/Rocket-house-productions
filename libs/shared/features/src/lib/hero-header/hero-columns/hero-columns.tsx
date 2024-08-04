@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
 import { PrismicNextImage } from '@prismicio/next';
 import MottoText from '../../motto-text/motto-text';
-import { RichTextField } from '@prismicio/client';
+import { GroupField, RichTextField } from '@prismicio/client';
 import { PrismicRichText } from '@prismicio/react';
 import cn from 'classnames';
 import Image from 'next/image';
@@ -18,7 +18,7 @@ interface HeroProps {
     headings: RichTextField | null | undefined;
     subheading: RichTextField | null | undefined;
     text?: string | null | undefined;
-    buttons?: any[];
+    buttons?: GroupField;
     motto: { text: RichTextField | null | undefined };
     image: any;
   };
