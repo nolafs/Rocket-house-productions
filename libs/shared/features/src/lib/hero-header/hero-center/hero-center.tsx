@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { fadeIn, scrollUpFadeVariants, scrollUpVariants } from '@rocket-house-productions/util';
 import { BottomShape, ButtonGroup } from '@rocket-house-productions/ui';
 import SectionTitle from '../../section-title/section-title';
-import { RichTextField } from '@prismicio/client';
+import { GroupField, RichTextField } from '@prismicio/client';
 import MottoText from '../../motto-text/motto-text';
 import cn from 'classnames';
 
@@ -17,7 +17,7 @@ interface HeroProps {
     pageName: string | null | undefined;
     headings: RichTextField | null | undefined;
     text?: string | null | undefined;
-    buttons?: any[];
+    buttons?: GroupField;
     motto: { text: RichTextField | null | undefined };
     image: any;
     video: any;
