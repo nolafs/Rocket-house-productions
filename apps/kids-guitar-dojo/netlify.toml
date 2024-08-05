@@ -1,11 +1,5 @@
 #[build.environment]
 #  NEXT_USE_NETLIFY_EDGE = "false"
-
-#[[redirects]]
-#  from = "/_next/static/*"
-#  to = "/static/:splat"
-#  status = 200
-
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
@@ -16,20 +10,20 @@
     "!node_modules/sharp/build/Release/sharp-darwin-*"
   ]
 
-[[redirects]]
-  from = '/_next/image/*'
-  query = { q = ':quality', url = ':url', w = ':width' }
-  to = '/.netlify/images?url=:url&w=:width&q=:quality'
-  status = 200
-  force = true
+#[[redirects]]
+#  from = '/_next/image/*'
+#  query = { q = ':quality', url = ':url', w = ':width' }
+#  to = '/.netlify/images?url=:url&w=:width&q=:quality'
+#  status = 200
+#  force = true
 
-#[[headers]]
-#    for = "/*"
-#    [headers.values]
-#        X-Frame-Options = "DENY"
-#        X-XSS-Protection = "1; mode=block"
-#        X-Content-Type-Options = "nosniff"
-#        Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+[[headers]]
+    for = "/*"
+    [headers.values]
+        X-Frame-Options = "DENY"
+        X-XSS-Protection = "1; mode=block"
+        X-Content-Type-Options = "nosniff"
+        Strict-Transport-Security = "max-age=31536000; includeSubDomains"
 [[headers]]
     for = "/*"
     [headers.values]
