@@ -8,6 +8,7 @@ import { GoogleAnalytics } from '@rocket-house-productions/util';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -83,18 +84,20 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <UIProvider>
-      <html lang="en" className={`${raleway.variable} font-sans`} suppressHydrationWarning={true}>
-        <body className={'bg-background min-h-screen font-sans antialiased'}>
-          {children}
-          {/* Analytics */}
-          <Suspense>
-            <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
-          </Suspense>
-          {/* Preview */}
-          <PrismicPreview repositoryName={repositoryName} />
-        </body>
-      </html>
-    </UIProvider>
+    <ClerkProvider>
+      <UIProvider>
+        <html lang="en" className={`${raleway.variable} font-sans`} suppressHydrationWarning={true}>
+          <body className={'bg-background min-h-screen font-sans antialiased'}>
+            {children}
+            {/* Analytics */}
+            <Suspense>
+              <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
+            </Suspense>
+            {/* Preview */}
+            <PrismicPreview repositoryName={repositoryName} />
+          </body>
+        </html>
+      </UIProvider>
+    </ClerkProvider>
   );
 }
