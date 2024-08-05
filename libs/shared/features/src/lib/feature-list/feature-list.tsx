@@ -62,11 +62,13 @@ export function FeatureList({
                     />
                   </div>
                 </div>
-                <h3 className={'mb-4 grow text-2xl font-semibold leading-8'}>
-                  <PrismicRichText field={heading} />
-                </h3>
-                <div className={'text-gray-900'}>
-                  <PrismicRichText field={body} />
+                <div className={'grow'}>
+                  <h3 className={'mb-4 text-2xl font-semibold leading-8'}>
+                    <PrismicRichText field={heading} />
+                  </h3>
+                  <div className={'text-gray-900'}>
+                    <PrismicRichText field={body} />
+                  </div>
                 </div>
               </div>
             ))}
