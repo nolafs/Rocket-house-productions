@@ -1,4 +1,4 @@
-import '../../styles/navbar.scss';
+import '../../../styles/navbar.scss';
 import { Suspense } from 'react';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
