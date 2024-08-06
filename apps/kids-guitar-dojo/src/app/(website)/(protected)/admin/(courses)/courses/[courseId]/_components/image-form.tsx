@@ -75,14 +75,7 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
         ))}
       {isEditing && (
         <div>
-          <FileUpload
-            endpoint="courseImage"
-            onChange={url => {
-              if (url) {
-                onSubmit({ imageUrl: url });
-              }
-            }}
-          />
+          file upload here
           <div className="text-muted-foreground mt-4 text-xs">16:9 aspect ratio recommended</div>
         </div>
       )}
