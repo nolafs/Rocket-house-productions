@@ -31,6 +31,7 @@
     "next-env.d.ts",
     "postcss.config.js",
     ".next/types/**/*.ts",
+    "types/**/*.d.ts",
     "dist/apps/kids-guitar-dojo/out/types/**/*.ts",
     "out/types/**/*.ts"
   ],

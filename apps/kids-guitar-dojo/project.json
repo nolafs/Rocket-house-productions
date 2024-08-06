@@ -4,6 +4,11 @@
   "sourceRoot": "apps/kids-guitar-dojo",
   "projectType": "application",
   "tags": [],
+  "nohoist": [
+    {
+      "@hookform/resolvers": "^3.9.0"
+    }
+  ],
   "// targets": "to see all targets run: nx show project kids-guitar-dojo --web",
   "targets": {
     "slicemachine": {

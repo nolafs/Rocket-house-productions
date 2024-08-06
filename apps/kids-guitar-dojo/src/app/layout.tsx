@@ -9,6 +9,7 @@ import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
+import { ConfettiProvider, ToastProvider } from '@rocket-house-productions/providers';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -88,6 +89,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <UIProvider>
         <html lang="en" className={`${raleway.variable} font-sans`} suppressHydrationWarning={true}>
           <body className={'bg-background min-h-screen font-sans antialiased'}>
+            <ConfettiProvider />
+            <ToastProvider />
             {children}
             {/* Analytics */}
             <Suspense>

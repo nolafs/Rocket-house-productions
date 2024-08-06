@@ -7,11 +7,16 @@ import logo from '@assets/logo.png';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { createClient } from '@/prismicio';
 import NextTopLoader from 'nextjs-toploader';
+import { auth } from '@clerk/nextjs/server';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const client = createClient();
   const navigation = await client.getSingle('navigation');
   const settings = await client.getSingle('settings');
+
+  const { sessionClaims } = auth();
+
+  console.log('sessionClaims', sessionClaims?.metadata?.role === 'admin');
 
   return (
     <>
@@ -19,7 +24,11 @@ export default async function Layout({ children }: { children: React.ReactNode }
       <NextTopLoader color={'hsl(var(--accent))'} height={5} showSpinner={false} shadow={false} zIndex={99999} />
 
       {/* Menu header */}
-      <Navbar navigation={{ items: navigation.data.links }} logo={logo} />
+      <Navbar
+        navigation={{ items: navigation.data.links }}
+        logo={logo}
+        isAdmin={sessionClaims?.metadata?.role === 'admin'}
+      />
 
       {children}
 

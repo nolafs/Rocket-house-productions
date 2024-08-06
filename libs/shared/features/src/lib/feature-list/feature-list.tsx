@@ -82,13 +82,13 @@ export function FeatureList({
       {decor === 'A' && (
         <>
           <BottomShape2 />
-          <div className={'absolute -bottom-16 left-1/2 z-50 -translate-x-1/2'}>
+          <div className={'absolute -bottom-16 left-1/2 z-20 -translate-x-1/2'}>
             <Image src={Ninja} alt={'ninja'} />
           </div>
-          <div className={'absolute -bottom-16 -left-10 z-50 md:left-10'}>
+          <div className={'absolute -bottom-16 -left-10 z-20 md:left-10'}>
             <Image src={ThunderStarLeft} alt={'star'} width={240} height={150} />
           </div>
-          <div className={'absolute -bottom-16 -right-10 z-50 md:right-10'}>
+          <div className={'absolute -bottom-16 -right-10 z-20 md:right-10'}>
             <Image src={ThunderStarRight} alt={'star'} width={190} height={162} />
           </div>
         </>
