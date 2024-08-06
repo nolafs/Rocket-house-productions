@@ -163,7 +163,7 @@ export type BlogCategoryDocument<Lang extends string = string> = prismic.Prismic
   Lang
 >;
 
-type BlogPostDocumentDataSlicesSlice = never;
+type BlogPostDocumentDataSlicesSlice = RichTextSliceSlice | FaqsSlice | CallToActionSlice;
 
 type BlogPostDocumentDataSlices1Slice = never;
 

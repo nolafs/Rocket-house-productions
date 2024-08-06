@@ -4,6 +4,11 @@
   "sourceRoot": "apps/kids-guitar-dojo",
   "projectType": "application",
   "tags": [],
+  "nohoist": [
+    {
+      "@hookform/resolvers": "^3.9.0"
+    }
+  ],
   "// targets": "to see all targets run: nx show project kids-guitar-dojo --web",
   "targets": {
     "slicemachine": {
@@ -17,10 +22,37 @@
         "cwd": "apps/kids-guitar-dojo"
       }
     },
+    "prisma": {
+      "command": "prisma"
+    },
+    "migrate": {
+      "command": "prisma migrate dev"
+    },
+    "generate-types": {
+      "command": "prisma generate"
+    },
+    "prismic-studio": {
+      "command": "prisma studio"
+    },
     "bundleAnalyzer": {
       "executor": "nx:run-commands",
       "options": {
         "command": "ANALYZE=true nx build kids-guitar-dojo"
+      }
+    },
+    "build-with-types": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "nx run kids-guitar-dojo:generate-types"
+          },
+          {
+            "command": "nx build kids-guitar-dojo"
+          }
+
+        ],
+        "parallel": false
       }
     }
   }
