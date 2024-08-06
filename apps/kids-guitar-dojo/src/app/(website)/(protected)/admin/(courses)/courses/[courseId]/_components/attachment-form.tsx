@@ -99,14 +99,7 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
       )}
       {isEditing && (
         <div>
-          <FileUpload
-            endpoint="courseAttachment"
-            onChange={url => {
-              if (url) {
-                onSubmit({ url: url });
-              }
-            }}
-          />
+          File upload here
           <div className="text-muted-foreground mt-4 text-xs">
             Add anything your students might need to complete the course
           </div>
