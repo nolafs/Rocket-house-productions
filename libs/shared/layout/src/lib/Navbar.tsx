@@ -84,7 +84,7 @@ export function Navbar({ navigation, logo, isAdmin = false }: HeaderProps) {
             </div>
 
             {/* Other options */}
-            <div className="other-options self-center border-t border-[#eeeeee] pb-[10px] pt-[20px] xl:ml-[20px] xl:border-none xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
+            <div className="other-options hidden self-center pb-[10px] pt-[20px] md:block xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
               <ul className={'flex flex-row items-center justify-center space-x-2'}>
                 <li className="flex items-center justify-center">
                   <SignedOut>

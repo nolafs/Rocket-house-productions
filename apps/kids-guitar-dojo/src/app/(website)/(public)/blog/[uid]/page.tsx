@@ -118,10 +118,12 @@ export default async function Page({ params }: { params: Params }) {
                   <div className={'mb-[2px] text-sm font-bold text-white'}>Published on</div>
                   <DateDisplay publishDate={page.data.publishing_date} className={'text-white'} />
                 </div>
-                <div className={'flex flex-col space-y-3'}>
-                  <div className={'text-sm font-bold text-white'}>Category</div>
-                  <div className={'pt-[4px] text-sm font-bold text-white'}>{category.category}</div>
-                </div>
+                {category?.category && (
+                  <div className={'flex flex-col space-y-3'}>
+                    <div className={'text-sm font-bold text-white'}>Category</div>
+                    <div className={'pt-[4px] text-sm font-bold text-white'}>{category?.category}</div>
+                  </div>
+                )}
               </div>
               <div className={'self-end'}>
                 <SharePage slug={page.url} title={page.data.title} />
