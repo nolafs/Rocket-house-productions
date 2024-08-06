@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import { Menu } from 'lucide-react';
+import { Menu, SettingsIcon } from 'lucide-react';
 import { asText } from '@prismicio/client';
 import { PrismicText } from '@prismicio/react';
 import { PrismicNextLink } from '@prismicio/next';
 import { NavigationProps } from '@rocket-house-productions/types';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, useAuth, UserButton } from '@clerk/nextjs';
 import {
   buttonVariants,
   Sheet,
@@ -22,9 +22,10 @@ import cn from 'classnames';
 interface HeaderProps {
   navigation: NavigationProps;
   logo: any;
+  isAdmin?: boolean;
 }
 
-export function Navbar({ navigation, logo }: HeaderProps) {
+export function Navbar({ navigation, logo, isAdmin = false }: HeaderProps) {
   const currentRoute = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -80,38 +81,48 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                     </li>
                   ))}
               </ul>
+            </div>
 
-              {/* Other options */}
-              <div className="other-options self-center border-t border-[#eeeeee] pb-[10px] pt-[20px] xl:ml-[20px] xl:border-none xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
-                <ul className={'flex flex-row items-center justify-center space-x-2'}>
-                  <li className="flex items-center justify-center">
-                    <SignedOut>
-                      <Link
-                        href="/sign-in"
-                        className={cn(buttonVariants({ variant: 'link' }), '!text-[16px] font-medium')}>
-                        Log in
-                      </Link>
-                    </SignedOut>
-                    <SignedIn>
-                      <UserButton />
-                    </SignedIn>
-                  </li>
-                  <li>
-                    <SignedOut>
-                      <Link
-                        href="/sign-up"
-                        className={cn(buttonVariants({ variant: 'default', size: 'sm' }), '!text-[14px] uppercase')}>
-                        Buy now
-                      </Link>
-                    </SignedOut>
-                    <SignedIn>
+            {/* Other options */}
+            <div className="other-options hidden self-center pb-[10px] pt-[20px] md:block xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
+              <ul className={'flex flex-row items-center justify-center space-x-2'}>
+                <li className="flex items-center justify-center">
+                  <SignedOut>
+                    <Link
+                      href="/sign-in"
+                      className={cn(buttonVariants({ variant: 'link' }), '!text-[16px] font-medium')}>
+                      Log in
+                    </Link>
+                  </SignedOut>
+                  <SignedIn>
+                    <UserButton />
+                  </SignedIn>
+                </li>
+                <li>
+                  <SignedOut>
+                    <Link
+                      href="/sign-up"
+                      className={cn(buttonVariants({ variant: 'default', size: 'sm' }), '!text-[14px] uppercase')}>
+                      Buy now
+                    </Link>
+                  </SignedOut>
+                  <SignedIn>
+                    <div className={'flex space-x-1'}>
                       <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
                         Go to Course
                       </Link>
-                    </SignedIn>
-                  </li>
-                </ul>
-              </div>
+                      {isAdmin && (
+                        <Link href="/admin" className={buttonVariants({ variant: 'default' })}>
+                          <i>
+                            <SettingsIcon className={'h-4 w-4'} />{' '}
+                          </i>
+                          Admin
+                        </Link>
+                      )}
+                    </div>
+                  </SignedIn>
+                </li>
+              </ul>
             </div>
 
             {/* Toggle button */}
@@ -169,6 +180,11 @@ export function Navbar({ navigation, logo }: HeaderProps) {
                           <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
                             Go to Lesson
                           </Link>
+                          {isAdmin && (
+                            <Link href="/admin" className={buttonVariants({ variant: 'outline' })}>
+                              Admin
+                            </Link>
+                          )}
                         </SignedIn>
                       </li>
                     </ul>

@@ -7,8 +7,9 @@ import { UIProvider } from '@rocket-house-productions/hooks';
 import { GoogleAnalytics } from '@rocket-house-productions/util';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
-import { ClerkProvider } from '@clerk/nextjs';
 import { Metadata, ResolvingMetadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
+import { ConfettiProvider, ToastProvider } from '@rocket-house-productions/providers';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -48,6 +49,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     },
     title: settings?.data.meta_title || (await parent).title || '-= Kids Guitar Dojo =-',
     description: settings?.data.meta_description || (await parent).description,
+    keywords: settings?.data.meta_keywords || (await parent).keywords || '',
     openGraph: {
       images: [...defaultImages],
     },
@@ -88,6 +90,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <UIProvider>
         <html lang="en" className={`${raleway.variable} font-sans`} suppressHydrationWarning={true}>
           <body className={'bg-background min-h-screen font-sans antialiased'}>
+            <ConfettiProvider />
+            <ToastProvider />
             {children}
             {/* Analytics */}
             <Suspense>

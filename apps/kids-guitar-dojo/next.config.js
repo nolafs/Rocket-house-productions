@@ -5,10 +5,18 @@
 const { composePlugins, withNx } = require('@nx/next');
 //const headers = require('./config/headers');
 const pluginsExtends = require('./config/plugins');
+const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
+    }
+
+    return config;
+  },
   nx: {
     // Set this to true if you would like to use SVGR
     // See: https://github.com/gregberge/svgr

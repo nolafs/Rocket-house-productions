@@ -5,3 +5,4 @@ export * from './lib/googleAnalytics';
 export * from './lib/variants';
 export * from './lib/titleToSlug';
 export { cn } from './lib/cn';
+export * from './lib/format';
