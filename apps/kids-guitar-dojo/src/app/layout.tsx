@@ -49,6 +49,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     },
     title: settings?.data.meta_title || (await parent).title || '-= Kids Guitar Dojo =-',
     description: settings?.data.meta_description || (await parent).description,
+    keywords: settings?.data.meta_keywords || (await parent).keywords || '',
     openGraph: {
       images: [...defaultImages],
     },

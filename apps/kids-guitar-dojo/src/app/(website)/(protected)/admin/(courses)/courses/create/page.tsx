@@ -61,8 +61,8 @@ const CreatePage = () => {
         <Form {...(form as any)}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-8">
             <FormField
-              control={form.control as any}
               name="title"
+              control={form.control as any}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Course title</FormLabel>
