@@ -5,7 +5,7 @@ import { createClient } from '@/prismicio';
 import { components } from '@/slices';
 import { HeaderSimple } from '@rocket-house-productions/layout';
 import { PrismicNextImage } from '@prismicio/next';
-import { DateDisplay } from '@rocket-house-productions/ui';
+import { BackButton, DateDisplay } from '@rocket-house-productions/ui';
 import { BlogList, SharePage } from '@rocket-house-productions/features';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
@@ -154,12 +154,7 @@ export default async function Page({ params }: { params: Params }) {
       <div className={'container mx-auto max-w-4xl px-5'}>
         <div className={'flex justify-between space-x-3'}>
           <div>
-            <Link href={'/blog'} className={buttonVariants({ variant: 'default', size: 'lg' })}>
-              <i>
-                <ChevronLeftIcon className={'h-6 w-6'} />
-              </i>
-              Back <span className={'sr-only'}>to blog</span>
-            </Link>
+            <BackButton />
           </div>
           <div className={'flex items-center space-x-3 self-end text-gray-500'}>
             <i>
