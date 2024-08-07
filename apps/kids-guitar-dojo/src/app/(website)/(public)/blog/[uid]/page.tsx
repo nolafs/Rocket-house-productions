@@ -12,6 +12,7 @@ import Link from 'next/link';
 import { ChevronLeftIcon, Share2Icon } from 'lucide-react';
 import { ImageFieldImage } from '@prismicio/types';
 import * as prismic from '@prismicio/client';
+import { Bounded } from '@components/Bounded';
 type Params = { uid: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
@@ -149,7 +150,8 @@ export default async function Page({ params }: { params: Params }) {
           <PrismicRichText field={page.data.main} />
         </div>
       </article>
-      <div className={'container mx-auto mb-20 max-w-4xl px-5'}>
+      <div className="mx-auto mb-5 w-full max-w-6xl border-t border-gray-100" />
+      <div className={'container mx-auto max-w-4xl px-5'}>
         <div className={'flex justify-between space-x-3'}>
           <div>
             <Link href={'/blog'} className={buttonVariants({ variant: 'default', size: 'lg' })}>
@@ -167,8 +169,12 @@ export default async function Page({ params }: { params: Params }) {
           </div>
         </div>
       </div>
+      <div className="mx-auto mt-5 w-full max-w-6xl border-t border-gray-100" />
+      <section className={'container mx-auto mt-16'}>
+        <h2 className="mb-10 text-5xl font-extrabold tracking-tight text-gray-900">You May Also Like...</h2>
+        <BlogList posts={relatedPosts.results} />
+      </section>
       <SliceZone slices={page.data.slices} components={components} />
-      <BlogList posts={relatedPosts.results} />
     </main>
   );
 }
