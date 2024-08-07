@@ -60,12 +60,11 @@
           "placeholder_false": "false"
         }
       },
-      "link": {
-        "type": "Link",
+      "stripeProductId": {
+        "type": "Text",
         "config": {
-          "label": "Link",
-          "placeholder": "",
-          "select": null
+          "label": "StripeProductId",
+          "placeholder": ""
         }
       }
     }

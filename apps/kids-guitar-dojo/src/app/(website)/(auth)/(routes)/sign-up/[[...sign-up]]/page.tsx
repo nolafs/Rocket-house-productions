@@ -17,7 +17,10 @@ export default async function Page({ params }: { params: { product: string[] } }
           <div>
             <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
           </div>
-          <SignUp signInUrl={'/sign-in'} fallbackRedirectUrl="/courses" signInFallbackRedirectUrl="/"></SignUp>
+          <SignUp
+            signInUrl={'/sign-in'}
+            fallbackRedirectUrl={params?.product ? `/courses?product=${params.product}` : '/courses'}
+            signInFallbackRedirectUrl="/"></SignUp>
         </div>
       </div>
     </main>

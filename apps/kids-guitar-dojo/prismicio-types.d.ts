@@ -898,15 +898,15 @@ interface PricingDocumentData {
   most_popular: prismic.BooleanField;
 
   /**
-   * Link field in *Pricing*
+   * StripeProductId field in *Pricing*
    *
-   * - **Field Type**: Link
+   * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: pricing.link
+   * - **API ID Path**: pricing.stripeProductId
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   * - **Documentation**: https://prismic.io/docs/field#key-text
    */
-  link: prismic.LinkField;
+  stripeProductId: prismic.KeyTextField;
 }
 
 /**

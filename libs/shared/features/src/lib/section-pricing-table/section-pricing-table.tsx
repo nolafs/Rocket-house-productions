@@ -4,6 +4,7 @@ import { PrismicRichText } from '@prismicio/react';
 import { PrismicNextLink } from '@prismicio/next';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { Tier } from '@rocket-house-productions/types';
+import Link from 'next/link';
 
 interface SectionPricingTableProps {
   tiers: Tier[];
@@ -39,8 +40,8 @@ export function SectionPricingTable({ tiers }: SectionPricingTableProps) {
           <div className="mt-4 leading-6 text-gray-600">
             <PrismicRichText field={tier.data.description} />
           </div>
-          <PrismicNextLink
-            field={tier.data.link}
+          <Link
+            href={'/sign-up?product=' + tier.data.stripeProductId}
             className={cn(
               buttonVariants({
                 variant: tier.data.most_popular ? 'default' : 'outline',
@@ -49,7 +50,7 @@ export function SectionPricingTable({ tiers }: SectionPricingTableProps) {
               }),
             )}>
             Start now
-          </PrismicNextLink>
+          </Link>
           <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
             {tier.data.features.map((item, idx) => (
               <li key={tier.id + 'feature' + idx} className="flex gap-x-3">
