@@ -149,6 +149,7 @@ export default async function Page({ params }: { params: Params }) {
         <div className={'prose prose-sm md:prose-md lg:prose-xl prose-neutral mx-auto mb-20 px-5'}>
           <PrismicRichText field={page.data.main} />
         </div>
+        <SliceZone slices={page.data.slices} components={components} />
       </article>
       <div className="mx-auto mb-5 w-full max-w-6xl border-t border-gray-100" />
       <div className={'container mx-auto max-w-4xl px-5'}>
@@ -169,7 +170,6 @@ export default async function Page({ params }: { params: Params }) {
         <h2 className="mb-10 px-5 text-5xl font-extrabold tracking-tight text-gray-900">You May Also Like...</h2>
         <BlogList posts={relatedPosts.results} />
       </section>
-      <SliceZone slices={page.data.slices} components={components} />
     </main>
   );
 }
