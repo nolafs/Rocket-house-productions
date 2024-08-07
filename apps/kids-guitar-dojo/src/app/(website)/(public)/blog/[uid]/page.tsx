@@ -6,12 +6,12 @@ import { components } from '@/slices';
 import { HeaderSimple } from '@rocket-house-productions/layout';
 import { PrismicNextImage } from '@prismicio/next';
 import { DateDisplay } from '@rocket-house-productions/ui';
-import { SharePage } from '@rocket-house-productions/features';
+import { BlogList, SharePage } from '@rocket-house-productions/features';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
 import { ChevronLeftIcon, Share2Icon } from 'lucide-react';
 import { ImageFieldImage } from '@prismicio/types';
-
+import * as prismic from '@prismicio/client';
 type Params = { uid: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
@@ -43,6 +43,7 @@ interface CategoryData {
 
 interface ContentRelationshipField<T> {
   data: T;
+  id: string;
 }
 
 interface PageData {
@@ -62,6 +63,18 @@ export default async function Page({ params }: { params: Params }) {
 
   const author = relation.author.data as AuthorData;
   const category = relation.category.data as CategoryData;
+
+  const categoryId = relation.category.id;
+
+  const relatedPosts = await client.getByType('blog_post', {
+    pageSize: 3,
+    fetchLinks: ['blog_category.category'],
+    filters: [prismic.filter.at('my.blog_post.category', categoryId)],
+    orderings: {
+      field: 'document.first_publication_date',
+      direction: 'desc',
+    },
+  });
 
   return (
     <main>
@@ -155,6 +168,7 @@ export default async function Page({ params }: { params: Params }) {
         </div>
       </div>
       <SliceZone slices={page.data.slices} components={components} />
+      <BlogList posts={relatedPosts.results} />
     </main>
   );
 }
