@@ -1,10 +1,10 @@
-import { SignUp } from '@clerk/nextjs';
+import { RedirectToSignUp, SignUp } from '@clerk/nextjs';
 import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
 import { PrismicNextImage } from '@prismicio/next';
 import { createClient } from '@/prismicio';
 
-export default async function Page() {
+export default async function Page({ params }: { params: { product: string[] } }) {
   const client = createClient();
   const settings = await client.getSingle('settings');
   return (
@@ -17,7 +17,7 @@ export default async function Page() {
           <div>
             <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
           </div>
-          <SignUp />
+          <SignUp signInUrl={'/sign-in'} fallbackRedirectUrl="/courses" signInFallbackRedirectUrl="/"></SignUp>
         </div>
       </div>
     </main>
