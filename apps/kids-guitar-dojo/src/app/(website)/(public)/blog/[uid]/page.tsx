@@ -171,7 +171,7 @@ export default async function Page({ params }: { params: Params }) {
       </div>
       <div className="mx-auto mt-5 w-full max-w-6xl border-t border-gray-100" />
       <section className={'container mx-auto mt-16'}>
-        <h2 className="mb-10 text-5xl font-extrabold tracking-tight text-gray-900">You May Also Like...</h2>
+        <h2 className="mb-10 px-5 text-5xl font-extrabold tracking-tight text-gray-900">You May Also Like...</h2>
         <BlogList posts={relatedPosts.results} />
       </section>
       <SliceZone slices={page.data.slices} components={components} />
