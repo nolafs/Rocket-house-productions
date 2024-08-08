@@ -907,6 +907,17 @@ interface PricingDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   stripeProductId: prismic.KeyTextField;
+
+  /**
+   * position field in *Pricing*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.position
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  position: prismic.NumberField;
 }
 
 /**

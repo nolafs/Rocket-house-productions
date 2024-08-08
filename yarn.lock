@@ -1091,55 +1091,55 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@clerk/backend@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@clerk/backend/-/backend-1.6.0.tgz#00a6d1545ea05a2833aa3739b6de3f8871f9c1fb"
-  integrity sha512-MsUR+70/dSdHCOykBvtmUuU4opHYpNnFKNIzZcNgDyYhEA0HSxnJXaeLdZ+LKwxdR88fgzbeAOlD5A2l+cx48w==
+"@clerk/backend@1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@clerk/backend/-/backend-1.6.1.tgz#e1d2a22f73e707c8afbcf04011afa63a9aa216f9"
+  integrity sha512-UA1zLXuHQBZ7CQtRXTKl5siejmfqOYs4jLfAyMnsHjY0r+PJ2/oZ4WsFepJNw1CdQdP2hi8wmrSuV3EZA6VjnQ==
   dependencies:
-    "@clerk/shared" "2.4.4"
-    "@clerk/types" "4.12.0"
+    "@clerk/shared" "2.4.5"
+    "@clerk/types" "4.12.1"
     cookie "0.5.0"
     snakecase-keys "5.4.4"
     tslib "2.4.1"
 
-"@clerk/clerk-react@5.3.2":
-  version "5.3.2"
-  resolved "https://registry.yarnpkg.com/@clerk/clerk-react/-/clerk-react-5.3.2.tgz#89e7027ccbd59892d7eef118a0178d0fb409994d"
-  integrity sha512-ZXV48wUut8+Mg3qAkL8TrZjS0O+1M2ctgGCL40YAp8u5xR3/WplhO75PtDmChfwgiZCuPI8Gu34VYaFBqdy1eQ==
+"@clerk/clerk-react@5.3.3":
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/@clerk/clerk-react/-/clerk-react-5.3.3.tgz#b03e88c6fe65109d56f2ddabce922c887a8031a2"
+  integrity sha512-GtwC2tQegwA74M2XiTLiwJ7wkywlwDjjz4gJLzSST33sa903uVlnWEUONFQjINgra8pfx9f2U6mmHVj1F27FQw==
   dependencies:
-    "@clerk/shared" "2.4.4"
-    "@clerk/types" "4.12.0"
+    "@clerk/shared" "2.4.5"
+    "@clerk/types" "4.12.1"
     tslib "2.4.1"
 
-"@clerk/nextjs@^5.2.8":
-  version "5.2.13"
-  resolved "https://registry.yarnpkg.com/@clerk/nextjs/-/nextjs-5.2.13.tgz#2ff7c2b7cbdf9dbdc00f1095e9f706e8b0b49e31"
-  integrity sha512-a/X75XCWg9pYZGNQY/t8MhuNE93CExd3PvY6wQs4+GZVJe3dNdKc35JSYVU8B3lHlCp+u+8C3A7O/3mS3jcuYg==
+"@clerk/nextjs@^5.2.14":
+  version "5.2.14"
+  resolved "https://registry.yarnpkg.com/@clerk/nextjs/-/nextjs-5.2.14.tgz#a8d5884902f7395399e131d9074b58f4ff7c09f4"
+  integrity sha512-6m62iOOeSJkuyD+kw/k9zGaU+MpYTaFuFr+pX4TCQEgrvc3aOdeUXcLeeNYDIAORNtPtDx5+YS/Ld3J60/BG1Q==
   dependencies:
-    "@clerk/backend" "1.6.0"
-    "@clerk/clerk-react" "5.3.2"
-    "@clerk/shared" "2.4.4"
-    "@clerk/types" "4.12.0"
+    "@clerk/backend" "1.6.1"
+    "@clerk/clerk-react" "5.3.3"
+    "@clerk/shared" "2.4.5"
+    "@clerk/types" "4.12.1"
     crypto-js "4.2.0"
     path-to-regexp "6.2.2"
     server-only "0.0.1"
     tslib "2.4.1"
 
-"@clerk/shared@2.4.4":
-  version "2.4.4"
-  resolved "https://registry.yarnpkg.com/@clerk/shared/-/shared-2.4.4.tgz#6b0570c127a2d59e94abd6cf73c7d826b334445e"
-  integrity sha512-DcyuVFoBzPC9ZIdLN8P0fIv+ACfWMc19hD9Jye4vXyM0HNh18X/2KUg8IPAaNBUusT5/RyBVtxK2g3MHR+x/0Q==
+"@clerk/shared@2.4.5":
+  version "2.4.5"
+  resolved "https://registry.yarnpkg.com/@clerk/shared/-/shared-2.4.5.tgz#52a92ab25c3bca56d16c1f86418d74528ed9c975"
+  integrity sha512-WK8/LLow7q+OXzsRWtSAkqsBbtt16TcivfvN5bIhbcs52jIiA1EvIOetwFk5yXDNBHdEn2GxL7UXxdBaodselA==
   dependencies:
-    "@clerk/types" "4.12.0"
+    "@clerk/types" "4.12.1"
     glob-to-regexp "0.4.1"
     js-cookie "3.0.5"
     std-env "^3.7.0"
     swr "^2.2.0"
 
-"@clerk/types@4.12.0":
-  version "4.12.0"
-  resolved "https://registry.yarnpkg.com/@clerk/types/-/types-4.12.0.tgz#e294b31782495d33e433b0ae1b14ec433b422182"
-  integrity sha512-y5P36XMWRphFPwcC8NxptAvPbeH6MZcicULn4x7c1K6gHyGwoieGywwPHAdrc5c/aKGIVp8Zlg93iQi7Vj0qJg==
+"@clerk/types@4.12.1":
+  version "4.12.1"
+  resolved "https://registry.yarnpkg.com/@clerk/types/-/types-4.12.1.tgz#7eadeb94a44b8f8a8e0579e37fc3f50ec3cfe4a4"
+  integrity sha512-0torlmJM3S3kYdaZuIrw1pf4K8aMvoFV+PE1xg7MGfZ0enD9UO3Vhw24pP/yBhI4hVGtNu95E63gpeOFIYysrA==
   dependencies:
     csstype "3.1.1"
 
@@ -10043,11 +10043,6 @@ minimist@^1.2.0, minimist@^1.2.6, minimist@^1.2.8:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/minipass/-/minipass-7.1.2.tgz#93a9626ce5e5e66bd4db86849e7515e92340a707"
   integrity sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==
-
-miro@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/miro/-/miro-0.0.1.tgz#31e505614c667c0a012a21c0b6cf841f6a349e0a"
-  integrity sha512-DRR0LVFYBe+HlPmI2dc3jD29NDXNf43ZbjJuRZ3TXF9bE5eQPlyJFJ9McoUWdg5sOk3HIhabtUlWbsmurJz7ww==
 
 mkdirp@^0.5.6:
   version "0.5.6"

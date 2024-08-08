@@ -9,7 +9,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@clerk/nextjs": "^5.2.8",
+    "@clerk/nextjs": "^5.2.14",
     "@ducanh2912/next-pwa": "^10.2.8",
     "@gsap/react": "^2.1.1",
     "@hello-pangea/dnd": "^16.6.0",

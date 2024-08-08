@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Webhook } from 'svix';
 import { db } from '@rocket-house-productions/integration';
-import { WebhookEvent } from '@clerk/nextjs/server';
+import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { headers } from 'next/headers';
 
 export const config = {
@@ -65,13 +65,16 @@ export async function POST(req: Request, res: Response) {
           await db.account.create({
             data: {
               userId: id,
-              stripeCustomerId: '', // Add any required fields here with default or empty values
-              firstName: '',
-              lastName: '',
-              email: '',
             },
           });
         }
+
+        await clerkClient.users.updateUserMetadata(id, {
+          publicMetadata: {
+            status: 'inactive',
+          },
+        });
+
         return NextResponse.json({ message: 'Success' });
       }
       case 'user.deleted': {

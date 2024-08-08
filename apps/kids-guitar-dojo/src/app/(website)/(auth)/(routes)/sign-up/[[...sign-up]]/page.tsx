@@ -3,10 +3,18 @@ import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
 import { PrismicNextImage } from '@prismicio/next';
 import { createClient } from '@/prismicio';
+import { auth } from '@clerk/nextjs/server';
 
 export default async function Page({ params }: { params: { product: string[] } }) {
   const client = createClient();
   const settings = await client.getSingle('settings');
+
+  const { userId } = auth();
+
+  if (userId) {
+    return '/courses';
+  }
+
   return (
     <main>
       <div className={'flex h-svh min-h-svh w-full flex-col justify-center md:flex-row'}>
@@ -17,10 +25,7 @@ export default async function Page({ params }: { params: { product: string[] } }
           <div>
             <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
           </div>
-          <SignUp
-            signInUrl={'/sign-in'}
-            fallbackRedirectUrl={params?.product ? `/courses?product=${params.product}` : '/courses'}
-            signInFallbackRedirectUrl="/"></SignUp>
+          <SignUp signInUrl={'/sign-in'} />
         </div>
       </div>
     </main>
