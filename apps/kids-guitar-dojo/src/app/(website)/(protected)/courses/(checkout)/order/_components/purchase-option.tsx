@@ -1,32 +1,43 @@
 'use client';
 import { usePurchaseStore } from '@rocket-house-productions/store';
-import { PricingDocument } from '../../../../../../../prismicio-types';
-import { useEffect, useState } from 'react';
-import { CtaTwoColumn, SectionPricingTable } from '@rocket-house-productions/features';
-import { Tier } from '@rocket-house-productions/types';
+import { ReactNode, useEffect, useState } from 'react';
 import { Bounded } from '@components/Bounded';
 import { Loader2 } from 'lucide-react';
 import LogoFull from '@assets/logo_full.png';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import Image from 'next/image';
+import { checkoutUrl } from '@rocket-house-productions/actions/server';
 
 interface PurchaseOptionProps {
-  tiers: PricingDocument[];
+  children?: ReactNode;
+  userId: string;
+  email: string | null | undefined;
 }
 
-export function PurchaseOption({ tiers }: PurchaseOptionProps) {
+export function PurchaseOption({ children, userId, email }: PurchaseOptionProps) {
   const { productId, type, setProductId, setType } = usePurchaseStore();
   const [state, setState] = useState<string | null>(null);
 
   useEffect(() => {
-    //todo: payment logic
+    console.log('productId', productId);
     //if product id go to stripe payment
     if (productId) {
       console.log('productId', productId);
       //payment link to stripe
+      const payment = async () => {
+        await checkoutUrl(productId, userId, email || '');
+      };
+
+      payment();
+      setState(null);
+    } else {
+      setState('ready');
     }
 
-    setState('ready');
+    return () => {
+      setProductId(null);
+      setState(null);
+    };
   }, [productId, type]);
 
   return (
@@ -38,9 +49,7 @@ export function PurchaseOption({ tiers }: PurchaseOptionProps) {
               <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
             </div>
             <h1 className={'text-2xl font-bold lg:text-3xl'}>Please select from the following options:</h1>
-            <Bounded as={'section'} yPadding={'sm'}>
-              <SectionPricingTable tiers={tiers as Tier[]} />
-            </Bounded>
+            {children}
             <Bounded as={'section'} yPadding={'sm'} className={'w-full max-w-3xl px-5'}>
               <div className="w-full rounded-md bg-gray-200">
                 <div className="grid px-6 py-16 sm:py-5 md:grid-cols-2 md:px-7 lg:items-center lg:justify-between lg:px-8">

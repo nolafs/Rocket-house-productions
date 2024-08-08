@@ -22,6 +22,9 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
+  experimental: {
+    taint: true,
+  },
   //...(process.env.ENVIRONMENT_NAME !== 'local' && {headers}),
   images: {
     remotePatterns: [

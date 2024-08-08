@@ -4,6 +4,7 @@ import LogoFull from '@assets/logo_full.png';
 import { PrismicNextImage } from '@prismicio/next';
 import { createClient } from '@/prismicio';
 import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
 export default async function Page({ params }: { params: { product: string[] } }) {
   const client = createClient();
@@ -12,7 +13,7 @@ export default async function Page({ params }: { params: { product: string[] } }
   const { userId } = auth();
 
   if (userId) {
-    return '/courses';
+    redirect('/courses');
   }
 
   return (
@@ -25,7 +26,11 @@ export default async function Page({ params }: { params: { product: string[] } }
           <div>
             <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
           </div>
-          <SignUp signInUrl={'/sign-in'} />
+          <SignUp
+            signInUrl={'/sign-in'}
+            signInFallbackRedirectUrl={'/courses/order'}
+            forceRedirectUrl={'/courses/order'}
+          />
         </div>
       </div>
     </main>

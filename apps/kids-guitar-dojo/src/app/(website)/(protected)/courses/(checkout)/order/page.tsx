@@ -3,10 +3,14 @@ import { redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration';
 import PurchaseOption from './_components/purchase-option';
 import { createClient } from '@/prismicio';
-import { NavbarSimple } from '@rocket-house-productions/layout';
+import { Bounded } from '@components/Bounded';
+import { SectionPricingTable } from '@rocket-house-productions/features';
+import { Tier } from '@rocket-house-productions/types';
 
 export default async function Page({ params }: { params: { product: string[] } }) {
   const { userId, sessionClaims } = auth();
+
+  console.log('COURSE ORDER', userId, sessionClaims);
 
   if (!userId) {
     return redirect('/');
@@ -18,7 +22,6 @@ export default async function Page({ params }: { params: { product: string[] } }
     },
   });
 
-  console.log('user', user);
   if (!user) {
     return redirect('/');
   }
@@ -32,15 +35,18 @@ export default async function Page({ params }: { params: { product: string[] } }
     orderings: [
       {
         field: 'my.pricing.position',
-        direction: 'desc',
+        direction: 'asc',
       },
     ],
   });
 
   return (
     <main>
-      <NavbarSimple isAdmin={sessionClaims?.metadata?.role === 'admin'} />
-      <PurchaseOption tiers={tiers} />
+      <PurchaseOption userId={userId} email={sessionClaims?.email as string}>
+        <Bounded as={'section'} yPadding={'sm'}>
+          <SectionPricingTable tiers={tiers as Tier[]} checkout={true} />
+        </Bounded>
+      </PurchaseOption>
     </main>
   );
 }

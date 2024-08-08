@@ -6,6 +6,8 @@
   "scripts": {
     "slicemachine": "start-slicemachine",
     "lint": "nx run-many --target=lint --all",
+    "stripe-tunnel": "stripe listen --forward-to localhost:3000/api/webhooks",
+    "clerk-tunnel": "lt --port 3000",
     "prepare": "husky"
   },
   "dependencies": {

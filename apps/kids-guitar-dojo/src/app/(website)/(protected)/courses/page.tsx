@@ -5,14 +5,16 @@ import { db } from '@rocket-house-productions/integration';
 export default async function Page({ params }: { params: { product: string[] } }) {
   const { userId } = auth();
 
+  console.log('COURSE');
+
   if (!userId) {
-    return redirect('/coruses/error?status=unauthorized');
+    return redirect('/course/error?status=unauthorized');
   }
 
   const user = await clerkClient.users.getUser(userId);
 
   if (!user) {
-    return redirect('/coruses/error?status=unauthorized');
+    return redirect('/course/error?status=unauthorized');
   }
 
   try {

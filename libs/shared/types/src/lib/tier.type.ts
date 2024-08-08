@@ -5,9 +5,9 @@ export type Tier = {
     uid?: KeyTextField | string | null | undefined;
     name: KeyTextField | string | null | undefined;
     description: RichTextField | null | undefined;
-    price: any;
     features: { feature: string }[];
     most_popular?: boolean;
     stripeProductId?: string;
+    sales?: boolean;
   };
 };
