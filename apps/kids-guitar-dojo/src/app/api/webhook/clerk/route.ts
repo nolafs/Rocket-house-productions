@@ -4,12 +4,6 @@ import { db } from '@rocket-house-productions/integration';
 import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { headers } from 'next/headers';
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || ``;
 
 async function validateRequest(request: Request) {
