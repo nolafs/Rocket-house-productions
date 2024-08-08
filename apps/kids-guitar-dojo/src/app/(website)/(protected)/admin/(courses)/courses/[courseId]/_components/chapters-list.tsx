@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Lesson } from '@prisma/client';
+import { Module } from '@prisma/client';
 
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
@@ -11,7 +11,7 @@ import cn from 'classnames';
 import { Badge } from '@rocket-house-productions/shadcn-ui';
 
 interface ChaptersListProps {
-  items: Lesson[];
+  items: Module[];
   onReorder: (updateData: { id: string; position: number }[]) => void;
   onEdit: (id: string) => void;
 }
@@ -80,7 +80,6 @@ export const ChaptersList = ({ items, onReorder, onEdit }: ChaptersListProps) =>
                     </div>
                     {chapter.title}
                     <div className="ml-auto flex items-center gap-x-2 pr-2">
-                      {chapter.isFree && <Badge>Free</Badge>}
                       <Badge className={cn('bg-slate-500', chapter.isPublished && 'bg-sky-700')}>
                         {chapter.isPublished ? 'Published' : 'Draft'}
                       </Badge>
