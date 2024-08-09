@@ -21,6 +21,9 @@ export const checkoutUrl = async (productId: string, userId: string, email = '')
     throw new Error('Invalid checkout session url');
   }
 
+  // Redirect to the checkout session URL
+  console.log(`Redirecting to checkout session URL: ${checkoutSession.url}`);
+
   redirect(checkoutSession.url);
 };
 
