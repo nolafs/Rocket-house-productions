@@ -1,12 +1,21 @@
-import { SignUp } from '@clerk/nextjs';
+import { RedirectToSignUp, SignUp } from '@clerk/nextjs';
 import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
 import { PrismicNextImage } from '@prismicio/next';
 import { createClient } from '@/prismicio';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
-export default async function Page() {
+export default async function Page({ params }: { params: { product: string[] } }) {
   const client = createClient();
   const settings = await client.getSingle('settings');
+
+  const { userId } = auth();
+
+  if (userId) {
+    redirect('/courses');
+  }
+
   return (
     <main>
       <div className={'flex h-svh min-h-svh w-full flex-col justify-center md:flex-row'}>
@@ -17,7 +26,11 @@ export default async function Page() {
           <div>
             <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
           </div>
-          <SignUp />
+          <SignUp
+            signInUrl={'/sign-in'}
+            signInFallbackRedirectUrl={'/courses/order'}
+            forceRedirectUrl={'/courses/order'}
+          />
         </div>
       </div>
     </main>

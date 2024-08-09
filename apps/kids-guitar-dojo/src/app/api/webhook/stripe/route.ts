@@ -1,7 +1,7 @@
 'use server';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { stripe } from '@rocket-house-productions/integration';
+import { db, stripe } from '@rocket-house-productions/integration';
 
 //add swagger docs
 /**
@@ -109,7 +109,16 @@ export async function POST(req: Request, res: Response) {
         case 'charge.succeeded':
           data = event.data.object as Stripe.Charge;
           console.log(`💰 Charge status: ${data.metadata.invoice_id}`);
-          //TODO update user status here
+
+          await db.account.update({
+            where: {
+              userId: data.metadata.userId,
+            },
+            data: {
+              status: 'active',
+              stripeCustomerId: data.customer as string,
+            },
+          });
           console.log(`💰 Charge status: ${data.status}`);
           break;
         case 'invoice.paid':

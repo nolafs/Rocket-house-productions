@@ -5,13 +5,14 @@ import { createClient } from '@/prismicio';
 import { components } from '@/slices';
 import { HeaderSimple } from '@rocket-house-productions/layout';
 import { PrismicNextImage } from '@prismicio/next';
-import { DateDisplay } from '@rocket-house-productions/ui';
-import { SharePage } from '@rocket-house-productions/features';
+import { BackButton, DateDisplay } from '@rocket-house-productions/ui';
+import { BlogList, SharePage } from '@rocket-house-productions/features';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
 import { ChevronLeftIcon, Share2Icon } from 'lucide-react';
 import { ImageFieldImage } from '@prismicio/types';
-
+import * as prismic from '@prismicio/client';
+import { Bounded } from '@components/Bounded';
 type Params = { uid: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
@@ -43,6 +44,7 @@ interface CategoryData {
 
 interface ContentRelationshipField<T> {
   data: T;
+  id: string;
 }
 
 interface PageData {
@@ -62,6 +64,18 @@ export default async function Page({ params }: { params: Params }) {
 
   const author = relation.author.data as AuthorData;
   const category = relation.category.data as CategoryData;
+
+  const categoryId = relation.category.id;
+
+  const relatedPosts = await client.getByType('blog_post', {
+    pageSize: 3,
+    fetchLinks: ['blog_category.category'],
+    filters: [prismic.filter.at('my.blog_post.category', categoryId)],
+    orderings: {
+      field: 'document.first_publication_date',
+      direction: 'desc',
+    },
+  });
 
   return (
     <main>
@@ -135,16 +149,13 @@ export default async function Page({ params }: { params: Params }) {
         <div className={'prose prose-sm md:prose-md lg:prose-xl prose-neutral mx-auto mb-20 px-5'}>
           <PrismicRichText field={page.data.main} />
         </div>
+        <SliceZone slices={page.data.slices} components={components} />
       </article>
-      <div className={'container mx-auto mb-20 max-w-4xl px-5'}>
+      <div className="mx-auto mb-5 w-full max-w-6xl border-t border-gray-100" />
+      <div className={'container mx-auto max-w-4xl px-5'}>
         <div className={'flex justify-between space-x-3'}>
           <div>
-            <Link href={'/blog'} className={buttonVariants({ variant: 'default', size: 'lg' })}>
-              <i>
-                <ChevronLeftIcon className={'h-6 w-6'} />
-              </i>
-              Back <span className={'sr-only'}>to blog</span>
-            </Link>
+            <BackButton />
           </div>
           <div className={'flex items-center space-x-3 self-end text-gray-500'}>
             <i>
@@ -154,7 +165,11 @@ export default async function Page({ params }: { params: Params }) {
           </div>
         </div>
       </div>
-      <SliceZone slices={page.data.slices} components={components} />
+      <div className="mx-auto mt-5 w-full max-w-6xl border-t border-gray-100" />
+      <section className={'container mx-auto mt-16'}>
+        <h2 className="mb-10 px-5 text-5xl font-extrabold tracking-tight text-gray-900">You May Also Like...</h2>
+        <BlogList posts={relatedPosts.results} />
+      </section>
     </main>
   );
 }

@@ -29,7 +29,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
       id: params.courseId,
     },
     include: {
-      lessons: {
+      modules: {
         orderBy: {
           position: 'asc',
         },
@@ -59,7 +59,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
     course.imageUrl,
     //course.price,
     course.categoryId,
-    course.lessons.some(lesson => lesson.isPublished),
+    course.modules.some(module => module.isPublished),
   ];
 
   const totalFields = requiredFields.length;
