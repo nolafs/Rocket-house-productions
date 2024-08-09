@@ -2,43 +2,8 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { db, stripe } from '@rocket-house-productions/integration';
-import { Account } from '@prisma/client';
+import { clerkClient } from '@clerk/nextjs/server';
 
-//add swagger docs
-/**
- * @swagger
- * /api/webhook:
- *   post:
- *     tags:
- *       - Webhook
- *     summary: Stripe webhook
- *     description: Stripe webhook
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               stripe:
- *                 type: object
- *                 properties:
- *                   id:
- *                     type: string
- *                     required: true
- *                   hash:
- *                     type: string
- *                     required: true
- *     responses:
- *       200:
- *         description: Successful operation
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- */
 export async function POST(req: Request, res: Response) {
   let event: Stripe.Event;
 
@@ -136,6 +101,13 @@ export async function POST(req: Request, res: Response) {
               billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
             },
           });
+
+          await clerkClient.users.updateUserMetadata(data.metadata.userId, {
+            publicMetadata: {
+              status: 'active',
+            },
+          });
+
           console.log(`💰 Charge status: ${data.status}`);
           break;
         }

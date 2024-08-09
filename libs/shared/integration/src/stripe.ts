@@ -35,6 +35,9 @@ export const stripeCheckout = async (productId: string) => {
       mode: 'payment',
       customer_email: sessionClaims?.email as string,
       billing_address_collection: 'required',
+      shipping_address_collection: {
+        allowed_countries: ['US', 'AU', 'IT', 'GB'],
+      },
       line_items: [
         {
           price: productPrice.data[0].id,
