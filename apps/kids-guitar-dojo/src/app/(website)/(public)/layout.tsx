@@ -14,9 +14,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
   const navigation = await client.getSingle('navigation');
   const settings = await client.getSingle('settings');
 
-  const { sessionClaims } = auth();
+  const { userId, sessionClaims } = auth();
 
-  console.log('sessionClaims', sessionClaims?.metadata?.role === 'admin');
+  console.log('sessionClaims', sessionClaims);
+  console.log('userId', userId);
 
   return (
     <>
