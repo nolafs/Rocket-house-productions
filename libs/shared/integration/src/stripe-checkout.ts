@@ -6,26 +6,27 @@ import { auth } from '@clerk/nextjs/server';
 export const stripeCheckoutAction = async (data: FormData) => {
   const productId = data.get('productId');
 
-  console.log('stripeCheckoutAction', productId);
-  console.log('data', data);
-
   if (typeof productId !== 'string' || !productId) {
     throw new Error('Invalid product ID');
   }
 
-  const { userId, sessionClaims } = auth();
+  const { userId } = auth();
 
   if (!userId) {
     return null;
   }
 
-  const checkoutSession = await stripeCheckout(productId, userId, sessionClaims?.email as string);
+  try {
+    const checkoutSession = await stripeCheckout(productId);
 
-  if (!checkoutSession?.url) {
-    throw new Error('Invalid checkout session url');
+    if (!checkoutSession?.url) {
+      throw new Error('Invalid checkout session url');
+    }
+
+    redirect(checkoutSession.url);
+  } catch (error) {
+    console.error('[stripeCheckoutAction] Error creating checkout session', error);
   }
-
-  redirect(checkoutSession.url);
 };
 
 export default stripeCheckoutAction;
