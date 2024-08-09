@@ -25,8 +25,11 @@ export const stripeCheckout = async (productId: string) => {
       query: `product:'${productId}' AND active:'true'`,
     });
 
+    const { metadata } = await stripe.products.retrieve(productId);
+
     console.log('productPrice', productPrice.data);
     console.log('userId', userId);
+    console.log('metadata', metadata);
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
@@ -43,6 +46,7 @@ export const stripeCheckout = async (productId: string) => {
       payment_intent_data: {
         metadata: {
           userId: userId,
+          courseId: metadata?.course_id,
         },
       },
     });

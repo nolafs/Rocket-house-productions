@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { db, stripe } from '@rocket-house-productions/integration';
+import { Account } from '@prisma/client';
 
 //add swagger docs
 /**
@@ -106,7 +107,7 @@ export async function POST(req: Request, res: Response) {
           //await cancelBooking(data.metadata.id);
           console.log(`❌ Charge status: ${data.status}`);
           break;
-        case 'charge.succeeded':
+        case 'charge.succeeded': {
           data = event.data.object as Stripe.Charge;
           console.log(`💰 Charge status: ${data.status}`);
           console.log('data', data);
@@ -116,11 +117,28 @@ export async function POST(req: Request, res: Response) {
             },
             data: {
               status: 'active',
-              stripeCustomerId: data.customer as string,
+              stripeCustomerId: (data?.customer as string) || null,
+            },
+          });
+
+          const account = await db.account.findUnique({
+            where: {
+              userId: data.metadata.userId,
+            },
+          });
+
+          await db.purchase.create({
+            data: {
+              accountId: account?.id as string,
+              courseId: data.metadata.courseId,
+              stripeChargeId: data?.id,
+              amount: data.amount,
+              billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
             },
           });
           console.log(`💰 Charge status: ${data.status}`);
           break;
+        }
         case 'invoice.paid':
           data = event.data.object as Stripe.Invoice;
           console.log(`💰 Invoice status: ${data.id}`);
