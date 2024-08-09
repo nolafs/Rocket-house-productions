@@ -108,8 +108,8 @@ export async function POST(req: Request, res: Response) {
           break;
         case 'charge.succeeded':
           data = event.data.object as Stripe.Charge;
-          console.log(`💰 Charge status: ${data.metadata.invoice_id}`);
-
+          console.log(`💰 Charge status: ${data.status}`);
+          console.log('data', data);
           await db.account.update({
             where: {
               userId: data.metadata.userId,
