@@ -24,6 +24,9 @@ export default async function Page({ params }: { params: { product: string[] } }
       },
     });
     console.log('userDB status', userDb?.status);
+    if (userDb?.status === 'inactive') {
+      return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
+    }
   } catch (error) {
     console.error('User not found');
   }
