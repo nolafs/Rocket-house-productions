@@ -20,7 +20,6 @@ async function validateRequest(request: Request) {
 }
 
 export async function POST(req: Request, res: Response) {
-  console.log('Webhook received');
   const headersList = headers();
 
   if (!WEBHOOK_SECRET) {
@@ -38,12 +37,19 @@ export async function POST(req: Request, res: Response) {
   try {
     const payload = await validateRequest(req);
 
-    const { id } = payload.data;
     const eventType = payload.type;
 
     switch (eventType) {
       case 'user.created': {
-        console.log('User created', id);
+        console.log('USER CREATE');
+
+        const { id, first_name, last_name, email_addresses } = payload.data;
+
+        await clerkClient().users.updateUserMetadata(id, {
+          publicMetadata: {
+            status: 'inactive',
+          },
+        });
 
         if (!id) {
           throw new Error('Invalid user ID');
@@ -55,45 +61,62 @@ export async function POST(req: Request, res: Response) {
           },
         });
 
+        console.log('count', count);
+
+        const updateData = {
+          userId: id,
+          firstName: first_name,
+          lastName: last_name,
+          email: email_addresses[0].email_address,
+        };
+
+        console.log('updateData', updateData);
+
         if (count === 0) {
           await db.account.create({
             data: {
               userId: id,
+              firstName: first_name,
+              lastName: last_name,
+              email: email_addresses[0].email_address,
             },
           });
         }
 
-        await clerkClient.users.updateUserMetadata(id, {
-          publicMetadata: {
-            status: 'inactive',
-          },
-        });
-
         return NextResponse.json({ message: 'Success' });
       }
       case 'user.deleted': {
-        console.log('User deleted', id);
+        console.log('USER DELETE');
+
+        const { id } = payload.data;
 
         if (!id) {
           throw new Error('Invalid user ID');
         }
 
-        await db.account.delete({
+        const count = await db.account.count({
           where: {
             userId: id,
           },
         });
 
+        console.log('count', count, id);
+
+        if (count !== 0) {
+          await db.account.delete({
+            where: {
+              userId: id,
+            },
+          });
+        }
+
         return NextResponse.json({ message: 'Success' });
       }
       default: {
         console.log('Unhandled event', eventType);
-        break;
+        return NextResponse.json({ message: 'Success' });
       }
     }
-
-    console.log('payload', payload);
-    return NextResponse.json({ message: 'Success' });
   } catch (error) {
     console.log('error', error);
     return NextResponse.json({ message: 'Error' }, { status: 400 });

@@ -1,10 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-
-import { Course } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
-
 import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react';
 
 // Components
@@ -16,57 +13,72 @@ import {
   Badge,
   Button,
 } from '@rocket-house-productions/shadcn-ui';
+import { Account, Purchase } from '@prisma/client';
 
-// Utils
-import cn from 'classnames';
-
-export const columns: ColumnDef<Course>[] = [
+export const columns: ColumnDef<Purchase>[] = [
   {
-    accessorKey: 'title',
+    accessorKey: 'id',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Title
+          Id
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: 'price',
+    accessorKey: 'stripeChargeId',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Price
+          Stipe Charge Id
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
-    },
-    cell: ({ row }) => {
-      const price = parseFloat(row.getValue('price') || '0');
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(price);
-
-      return <div>{formatted}</div>;
     },
   },
   {
-    accessorKey: 'isPublished',
+    accessorKey: 'amount',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Published
+          Amount
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => {
-      const isPublished = row.getValue('isPublished') || false;
-
+  },
+  {
+    accessorKey: 'status',
+    header: ({ column }) => {
       return (
-        <Badge className={cn('bg-slate-500', isPublished && 'bg-sky-700')}>{isPublished ? 'Published' : 'Draft'}</Badge>
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: '_count.purchases',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Number of Purchases
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: 'notifications',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Notifications
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
   },
@@ -84,7 +96,7 @@ export const columns: ColumnDef<Course>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <Link href={`/admin/courses/${id}`}>
+            <Link href={`/courses/${id}`}>
               <DropdownMenuItem>
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
