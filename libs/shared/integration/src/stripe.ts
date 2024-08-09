@@ -30,13 +30,14 @@ export const stripeCheckout = async (productId: string) => {
     console.log('productPrice', productPrice.data);
     console.log('userId', userId);
     console.log('metadata', metadata);
+    console.log('process.env.BASE_URL', process.env.BASE_URL);
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
       customer_email: sessionClaims?.email as string,
       billing_address_collection: 'required',
       shipping_address_collection: {
-        allowed_countries: ['US', 'AU', 'IT', 'GB'],
+        allowed_countries: ['US', 'AU', 'NZ', 'CA', 'GB', 'AE', 'DE', 'FR', 'SG'],
       },
       line_items: [
         {

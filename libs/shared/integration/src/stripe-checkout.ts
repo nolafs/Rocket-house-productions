@@ -1,5 +1,5 @@
 'use server';
-import { stripe, stripeCheckout } from './stripe';
+import { stripeCheckout } from './stripe';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 
@@ -16,17 +16,15 @@ export const stripeCheckoutAction = async (data: FormData) => {
     return null;
   }
 
-  try {
-    const checkoutSession = await stripeCheckout(productId);
+  console.log('stripeCheckoutAction', userId);
 
-    if (!checkoutSession?.url) {
-      throw new Error('Invalid checkout session url');
-    }
+  const checkoutSession = await stripeCheckout(productId);
 
-    redirect(checkoutSession.url);
-  } catch (error) {
-    console.error('[stripeCheckoutAction] Error creating checkout session', error);
+  if (!checkoutSession?.url) {
+    throw new Error('Invalid checkout session url');
   }
+
+  redirect(checkoutSession.url);
 };
 
 export default stripeCheckoutAction;
