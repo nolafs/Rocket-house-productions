@@ -30,6 +30,7 @@ export const stripeCheckout = async (productId: string) => {
     console.log('productPrice', productPrice.data);
     console.log('userId', userId);
     console.log('metadata', metadata);
+    console.log('process.env.BASE_URL', process.env.BASE_URL);
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
