@@ -36,7 +36,7 @@ export const stripeCheckout = async (productId: string) => {
       customer_email: sessionClaims?.email as string,
       billing_address_collection: 'required',
       shipping_address_collection: {
-        allowed_countries: ['US', 'AU', 'IT', 'GB'],
+        allowed_countries: ['US', 'AU', 'NZ', 'CA', 'GB', 'AE', 'DE', 'FR', 'SG'],
       },
       line_items: [
         {
