@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Account" ALTER COLUMN "stripeCustomerId" DROP NOT NULL,
+ALTER COLUMN "firstName" DROP NOT NULL,
+ALTER COLUMN "lastName" DROP NOT NULL,
+ALTER COLUMN "email" DROP NOT NULL;

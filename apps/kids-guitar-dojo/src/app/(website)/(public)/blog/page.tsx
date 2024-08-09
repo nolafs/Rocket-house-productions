@@ -46,7 +46,7 @@ export default async function Page({ searchParams }: { searchParams: { page: str
     fetchOptions: {},
     orderings: [
       {
-        field: 'my.blog_post.published_on',
+        field: 'my.blog_post.publishing_date',
         direction: 'desc',
       },
     ],
@@ -56,9 +56,7 @@ export default async function Page({ searchParams }: { searchParams: { page: str
     return notFound();
   }
 
-  if (!pages) {
-    return <div>Loading...</div>;
-  }
+  console.log('pages', pages.results);
 
   return (
     <main>

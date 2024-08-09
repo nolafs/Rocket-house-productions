@@ -15,7 +15,7 @@ export default async function Page() {
           <div>
             <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
           </div>
-          <SignIn />
+          <SignIn signUpUrl={'/sign-up'} fallbackRedirectUrl="/courses" signUpFallbackRedirectUrl="/" />
         </div>
         <div className={'bg-primary flex flex-col items-center justify-center md:w-1/2'}>
           <PrismicNextImage field={settings.data.sign_in_image} />

@@ -4,3 +4,4 @@ export * from './lib/footer';
 
 export { BackToTop } from './lib/BackToTop';
 export { Navbar } from './lib/Navbar';
+export { NavbarSimple } from './lib/NavbarSimple';

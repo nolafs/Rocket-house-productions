@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import cn from 'classnames';
 import { BlogPostType } from '@rocket-house-productions/types';
-import { PrismicNextImage, PrismicNextLink } from '@prismicio/next';
+import { PrismicNextImage } from '@prismicio/next';
 import placeholder from '../assets/placeholder.png';
 import Image from 'next/image';
 import { CalendarIcon } from 'lucide-react';
@@ -15,7 +15,7 @@ const publishDateFormatted = (publishDate: string) => {
 };
 
 export const BlogCard = forwardRef<HTMLDivElement, TProps>(
-  ({ title, publishing_date, category, feature_image, className }, ref) => (
+  ({ title, publishing_date, first_publication_date, category, feature_image, className }, ref) => (
     <div
       className={cn(
         'blog-card relative flex h-full scale-100 flex-col justify-items-stretch overflow-hidden rounded bg-white transition-all group-hover:scale-[1.02] group-hover:shadow-xl group-hover:shadow-black/5',
@@ -50,7 +50,9 @@ export const BlogCard = forwardRef<HTMLDivElement, TProps>(
           <i>
             <CalendarIcon width={24} height={24} />
           </i>
-          <time dateTime={publishing_date}>{publishDateFormatted(publishing_date)}</time>
+          <time dateTime={publishing_date || first_publication_date}>
+            {publishDateFormatted(publishing_date || first_publication_date)}
+          </time>
         </div>
       </div>
     </div>

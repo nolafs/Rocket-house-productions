@@ -864,15 +864,27 @@ interface PricingDocumentData {
   description: prismic.RichTextField;
 
   /**
-   * Price field in *Pricing*
+   * StripeProductId field in *Pricing*
    *
-   * - **Field Type**: Number
+   * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: pricing.price
+   * - **API ID Path**: pricing.stripeProductId
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#number
+   * - **Documentation**: https://prismic.io/docs/field#key-text
    */
-  price: prismic.NumberField;
+  stripeProductId: prismic.KeyTextField;
+
+  /**
+   * Sales field in *Pricing*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: pricing.sales
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  sales: prismic.BooleanField;
 
   /**
    * Features field in *Pricing*
@@ -898,15 +910,15 @@ interface PricingDocumentData {
   most_popular: prismic.BooleanField;
 
   /**
-   * Link field in *Pricing*
+   * position field in *Pricing*
    *
-   * - **Field Type**: Link
+   * - **Field Type**: Number
    * - **Placeholder**: *None*
-   * - **API ID Path**: pricing.link
+   * - **API ID Path**: pricing.position
    * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   * - **Documentation**: https://prismic.io/docs/field#number
    */
-  link: prismic.LinkField;
+  position: prismic.NumberField;
 }
 
 /**

@@ -15,7 +15,7 @@ import { ChaptersList } from './chapters-list';
 
 import cn from 'classnames';
 
-import { Lesson, Course } from '@prisma/client';
+import { Module, Course } from '@prisma/client';
 import {
   Button,
   Form,
@@ -27,7 +27,7 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 
 interface ChaptersFormProps {
-  initialData: Course & { lessons: Lesson[] };
+  initialData: Course & { modules: Module[] };
   courseId: string;
 }
 
@@ -127,9 +127,9 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
         </Form>
       )}
       {!isCreating && (
-        <div className={cn('mt-2 text-sm', !initialData.lessons.length && 'italic text-slate-500')}>
-          {!initialData.lessons.length && 'No chapters'}
-          <ChaptersList onEdit={onEdit} onReorder={onReorder} items={initialData.lessons || []} />
+        <div className={cn('mt-2 text-sm', !initialData.modules.length && 'italic text-slate-500')}>
+          {!initialData.modules.length && 'No chapters'}
+          <ChaptersList onEdit={onEdit} onReorder={onReorder} items={initialData.modules || []} />
         </div>
       )}
       {!isCreating && <p className="text-muted-foreground mt-4 text-xs">Drag and drop to reorder the chapters</p>}

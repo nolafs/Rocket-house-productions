@@ -24,7 +24,7 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; chapterId
   const chapter = await db.lesson.findUnique({
     where: {
       id: params.chapterId,
-      courseId: params.courseId,
+      moduleId: params.courseId,
     },
     include: {
       bunnyData: true,

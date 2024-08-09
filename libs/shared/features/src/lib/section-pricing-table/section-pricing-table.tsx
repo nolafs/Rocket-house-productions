@@ -1,18 +1,22 @@
 import cn from 'classnames';
 import { CheckCircleIcon } from 'lucide-react';
 import { PrismicRichText } from '@prismicio/react';
-import { PrismicNextLink } from '@prismicio/next';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { Tier } from '@rocket-house-productions/types';
+
+import BuyButton from '../buy-button/buy-button';
+import CheckoutButton from '../buy-button/checkout-button';
+import StripePricing from './stripe-pricing';
 
 interface SectionPricingTableProps {
   tiers: Tier[];
+  checkout?: boolean;
 }
 
-export function SectionPricingTable({ tiers }: SectionPricingTableProps) {
+export function SectionPricingTable({ tiers, checkout = false }: SectionPricingTableProps) {
   if (tiers.length === 0) {
     return null;
   }
+
   return (
     <div className="isolate mx-auto grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
       {tiers.map((tier, idx) => (
@@ -39,17 +43,13 @@ export function SectionPricingTable({ tiers }: SectionPricingTableProps) {
           <div className="mt-4 leading-6 text-gray-600">
             <PrismicRichText field={tier.data.description} />
           </div>
-          <PrismicNextLink
-            field={tier.data.link}
-            className={cn(
-              buttonVariants({
-                variant: tier.data.most_popular ? 'default' : 'outline',
-                size: 'lg',
-                className: 'mt-6 w-full shadow-sm shadow-black/30',
-              }),
-            )}>
-            Start now
-          </PrismicNextLink>
+          <StripePricing productId={tier.data.stripeProductId} sales={tier.data.sales} />
+          {checkout ? (
+            <CheckoutButton type={'payed'} mostPopular={tier.data.most_popular} productId={tier.data.stripeProductId} />
+          ) : (
+            <BuyButton type={'payed'} mostPopular={tier.data.most_popular} productId={tier.data.stripeProductId} />
+          )}
+
           <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
             {tier.data.features.map((item, idx) => (
               <li key={tier.id + 'feature' + idx} className="flex gap-x-3">

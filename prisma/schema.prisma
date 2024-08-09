@@ -25,7 +25,7 @@ model Course {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
-  lessons    Lesson[]
+  modules     Module[]
   attachments Attachment[]
   purchases   Purchase[]
 
@@ -33,7 +33,25 @@ model Course {
   updatedAt DateTime @updatedAt()
 
   @@index([categoryId])
+}
 
+model Module {
+  id          String  @id @default(uuid())
+  title       String
+  description String? @db.Text
+  position    Int
+  isPublished Boolean @default(false)
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  lessons Lesson[]
+  awards Award[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@index([courseId])
 }
 
 model Category {
@@ -64,18 +82,60 @@ model Lesson {
   position    Int
   isPublished Boolean @default(false)
   isFree      Boolean @default(false)
+  prismaSlug  String?
 
   bunnyData BunnyData?
 
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  moduleId String
+  module   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 
-  userProgress UserProgress[]
+  childProgress ChildProgress[]
+  awards        Award[]
+
+  questionaries Questionary[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
-  @@index([courseId])
+  @@index([moduleId])
+}
+
+model Questionary {
+  id          String  @id @default(uuid())
+  title       String
+  description String? @db.Text
+  position    Int
+  isPublished Boolean @default(false)
+
+  lessonId String
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  questions Question[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@index([lessonId])
+}
+
+model Question {
+  id          String  @id @default(uuid())
+  title       String
+  description String? @db.Text
+  position    Int
+  isPublished Boolean @default(false)
+
+  questionaryId String
+  questionary   Questionary @relation(fields: [questionaryId], references: [id], onDelete: Cascade)
+
+  correctAnswer Boolean
+
+  points Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@index([questionaryId])
 }
 
 model BunnyData {
@@ -83,47 +143,99 @@ model BunnyData {
   assetId    String
   playbackId String?
 
-  lessonId String  @unique
+  lessonId String @unique
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 }
 
-
-
-model UserProgress {
+model ChildProgress {
   id     String @id @default(uuid())
-  userId String
+  childId String
 
   lessonId String
-  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   isCompleted Boolean @default(false)
+  currentProgress Float @default(0)
+
+  awards Award[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
+  @@unique([childId, lessonId])
   @@index([lessonId])
-  @@unique([userId, lessonId])
+}
+
+model Award {
+  id          String       @id @default(uuid())
+  name        String
+  description String?
+
+  childProgressId String
+  childProgress ChildProgress @relation(fields: [childProgressId], references: [id], onDelete: Cascade)
+
+  module   Module? @relation(fields: [moduleId], references: [id])
+  moduleId String?
+
+  lesson   Lesson? @relation(fields: [lessonId], references: [id])
+  lessonId String?
+
+  awardedAt   DateTime     @default(now())
 }
 
 model Purchase {
   id     String @id @default(uuid())
-  userId String
+  childId String?
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  stripeProductId String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
+  @@unique([accountId, courseId, childId])
   @@index([courseId])
-  @@unique([userId, courseId])
 }
 
-model StripeCustomer {
-  id               String @id @default(uuid())
-  userId           String @unique
-  stripeCustomerId String @unique
+model Account {
+  id               String  @id @default(uuid())
+  userId           String  @unique
+
+  stripeCustomerId String?  @unique
+
+  children Child[]
+  purchases Purchase[]
+
+  firstName        String?
+  lastName         String?
+  email            String?  @unique
+  status           String  @default("inactive")
+  newsletter       Boolean @default(false)
+  nofications      Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
+}
+
+model Child {
+  id       String @id @default(uuid())
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  name String
+  profilePicture String?
+  birthday  DateTime
+
+  parentConsent Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@unique([accountId])
 }

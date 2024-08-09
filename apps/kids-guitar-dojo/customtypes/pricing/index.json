@@ -28,11 +28,20 @@
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
         }
       },
-      "price": {
-        "type": "Number",
+      "stripeProductId": {
+        "type": "Text",
         "config": {
-          "label": "Price",
+          "label": "StripeProductId",
           "placeholder": ""
+        }
+      },
+      "sales": {
+        "type": "Boolean",
+        "config": {
+          "label": "Sales",
+          "placeholder_false": "false",
+          "placeholder_true": "true",
+          "default_value": false
         }
       },
       "features": {
@@ -60,12 +69,11 @@
           "placeholder_false": "false"
         }
       },
-      "link": {
-        "type": "Link",
+      "position": {
+        "type": "Number",
         "config": {
-          "label": "Link",
-          "placeholder": "",
-          "select": null
+          "label": "position",
+          "placeholder": ""
         }
       }
     }
