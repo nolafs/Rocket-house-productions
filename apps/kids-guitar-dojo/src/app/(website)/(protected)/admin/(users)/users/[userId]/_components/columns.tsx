@@ -7,8 +7,8 @@ import { ArrowUpDown } from 'lucide-react';
 // Components
 import { Badge, Button } from '@rocket-house-productions/shadcn-ui';
 import { Purchase } from '@prisma/client';
-import DialogAddress from '@/app/(website)/(protected)/admin/(users)/users/[userId]/_components/dialog-address';
-import currencyToSymbole from '../../../../../../../../../../../libs/shared/util/src/lib/currencyToSymbole';
+import DialogAddress from './dialog-address';
+import { CurrencyToSymbol } from '@rocket-house-productions/util';
 
 export const columns: ColumnDef<Purchase>[] = [
   {
@@ -47,7 +47,7 @@ export const columns: ColumnDef<Purchase>[] = [
       const amount = row.getValue('amount') as number;
       return (
         <p>
-          {currencyToSymbole('USD')} {(amount / 100).toFixed(2)}
+          {CurrencyToSymbol('USD')} {(amount / 100).toFixed(2)}
         </p>
       );
     },
