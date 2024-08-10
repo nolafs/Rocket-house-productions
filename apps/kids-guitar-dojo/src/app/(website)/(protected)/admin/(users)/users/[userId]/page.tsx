@@ -5,17 +5,9 @@ import { columns } from './_components/columns';
 import { redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration';
 import { Banner } from '@rocket-house-productions/features';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  Input,
-  Label,
-  Textarea,
-} from '@rocket-house-productions/shadcn-ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
 import Actions from './_components/actions';
+import ActionRole from './_components/action-role';
 
 export default async function Page({ params }: { params: { userId: string } }) {
   const { userId, sessionClaims } = auth();
@@ -58,16 +50,19 @@ export default async function Page({ params }: { params: { userId: string } }) {
             <CardContent>
               <div className="grid gap-6">
                 <div className="grid gap-3">
-                  <Label htmlFor="name">First Name</Label>
+                  First Name
                   <p>{user?.firstName}</p>
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="name">Last Name</Label>
+                  Last Name
                   <p>{user?.lastName}</p>
                 </div>
-                <div className="grid gap-3">
-                  <Label htmlFor="name">Email</Label>
+                <div className="grid gap-3 border-b border-b-gray-100 pb-5">
+                  Email
                   <p>{user?.email}</p>
+                </div>
+                <div className="grid gap-3">
+                  <ActionRole userId={userId} />
                 </div>
               </div>
             </CardContent>
