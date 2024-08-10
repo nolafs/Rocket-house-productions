@@ -83,7 +83,34 @@ export async function POST(req: Request, res: Response) {
           });
         }
 
-        return NextResponse.json({ message: 'Success' });
+        break;
+      }
+      case 'user.updated': {
+        const { id, first_name, last_name, email_addresses } = payload.data;
+
+        if (!id) {
+          throw new Error('Invalid user ID');
+        }
+
+        const count = await db.account.count({
+          where: {
+            userId: id,
+          },
+        });
+
+        if (count) {
+          await db.account.update({
+            where: {
+              userId: id,
+            },
+            data: {
+              firstName: first_name,
+              lastName: last_name,
+              email: email_addresses[0].email_address,
+            },
+          });
+        }
+        break;
       }
       case 'user.deleted': {
         console.log('USER DELETE');
@@ -110,13 +137,15 @@ export async function POST(req: Request, res: Response) {
           });
         }
 
-        return NextResponse.json({ message: 'Success' });
+        break;
       }
       default: {
         console.log('Unhandled event', eventType);
-        return NextResponse.json({ message: 'Success' });
+        break;
       }
     }
+
+    return NextResponse.json({ message: 'Success' });
   } catch (error) {
     console.log('error', error);
     return NextResponse.json({ message: 'Error' }, { status: 400 });
