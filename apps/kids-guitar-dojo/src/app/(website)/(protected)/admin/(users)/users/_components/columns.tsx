@@ -100,11 +100,12 @@ export const columns: ColumnDef<Account>[] = [
       const purchases = row.getValue('purchases') as Purchase[];
       const spend = purchases.reduce((acc, purchase) => acc + purchase.amount, 0);
 
-      return (
-        <p className={'text-center'}>
-          {CurrencyToSymbol('USD')} {(spend / 100).toFixed(2)}
-        </p>
-      );
+      const formatted = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(spend);
+
+      return <p className={'text-center'}>{formatted}</p>;
     },
   },
   {
