@@ -48,6 +48,7 @@ export async function POST(req: Request, res: Response) {
         await clerkClient().users.updateUserMetadata(id, {
           publicMetadata: {
             status: 'inactive',
+            role: 'member',
           },
         });
 

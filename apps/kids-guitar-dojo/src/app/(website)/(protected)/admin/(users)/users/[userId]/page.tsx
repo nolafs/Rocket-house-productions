@@ -15,6 +15,7 @@ import {
   Label,
   Textarea,
 } from '@rocket-house-productions/shadcn-ui';
+import Actions from './_components/actions';
 
 export default async function Page({ params }: { params: { userId: string } }) {
   const { userId, sessionClaims } = auth();
@@ -42,7 +43,13 @@ export default async function Page({ params }: { params: { userId: string } }) {
     <>
       {!user?.purchases.length && <Banner variant="warning" label="No purchases found for the customer" />}
       <div className="p-6">
-        <div className="mb-10 grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-y-2">
+            <h1 className="text-2xl font-medium">Account detail</h1>
+          </div>
+          <Actions userId={userId} />
+        </div>
+        <div className="mb-10 mt-16 grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
           <Card x-chunk="dashboard-07-chunk-0">
             <CardHeader>
               <CardTitle>Account Details</CardTitle>
@@ -51,16 +58,16 @@ export default async function Page({ params }: { params: { userId: string } }) {
             <CardContent>
               <div className="grid gap-6">
                 <div className="grid gap-3">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" type="text" className="w-full" defaultValue="Username" />
+                  <Label htmlFor="name">First Name</Label>
+                  <p>{user?.firstName}</p>
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" type="text" className="w-full" defaultValue="Username" />
+                  <Label htmlFor="name">Last Name</Label>
+                  <p>{user?.lastName}</p>
                 </div>
                 <div className="grid gap-3">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" type="text" className="w-full" defaultValue="Username" />
+                  <Label htmlFor="name">Email</Label>
+                  <p>{user?.email}</p>
                 </div>
               </div>
             </CardContent>

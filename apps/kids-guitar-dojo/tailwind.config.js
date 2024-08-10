@@ -34,6 +34,8 @@ module.exports = {
         base: 'var(--color-base)',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        popover: 'hsl(var(--popover))',
+        'popover-foreground': 'hsl(var(--popover-foreground))',
         body: '#404F65',
         heading: '#2A3342',
         success: {
@@ -129,7 +131,7 @@ module.exports = {
         sm: '0 3px 9px',
         '2sm': '0 0 20px',
         '3sm': '0 2px 20px',
-        md: '0 0 30px',
+        md: '0 0 10px',
         '2md': '0 2px 29px',
         '3md': '0 8px 20px 0',
         '4md': '0 10px 30px',

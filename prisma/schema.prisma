@@ -196,6 +196,8 @@ model Purchase {
   stripeChargeId String?
   amount          Int
 
+  type            String?
+
   billingAddress String?
 
   createdAt DateTime @default(now())
@@ -220,6 +222,8 @@ model Account {
   status           String  @default("inactive")
   newsletter       Boolean @default(false)
   nofications      Boolean @default(true)
+
+  role             String  @default("member")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
