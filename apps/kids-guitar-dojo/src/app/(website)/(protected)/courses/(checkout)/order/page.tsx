@@ -16,20 +16,6 @@ export default async function Page({ params }: { params: { product: string[] } }
     return redirect('/');
   }
 
-  const user = await db.account.findFirst({
-    where: {
-      userId: userId,
-    },
-  });
-
-  if (!user) {
-    return redirect('/');
-  }
-
-  if (user?.status !== 'inactive') {
-    redirect('/courses');
-  }
-
   const client = createClient();
   const tiers = await client.getAllByType('pricing', {
     orderings: [

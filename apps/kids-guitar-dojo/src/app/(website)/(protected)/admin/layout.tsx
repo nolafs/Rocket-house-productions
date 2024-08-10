@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Navigation from './_components/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { FolderIcon, HomeIcon, UsersIcon } from 'lucide-react';
+import { FolderIcon, GraduationCapIcon, HomeIcon, UsersIcon } from 'lucide-react';
 import NavigationMobile from '@/app/(website)/(protected)/admin/_components/navigation-mobile';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
@@ -25,12 +25,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
   if (sessionClaims?.metadata.role !== 'admin') {
     redirect('/');
   }
-
-  const navigation = [
-    { name: 'Dashboard', href: '/admin', icon: HomeIcon, current: true },
-    { name: 'Users', href: '/admin/users', icon: UsersIcon, current: false },
-    { name: 'Courses', href: '/admin/courses', icon: FolderIcon, current: false },
-  ];
 
   return (
     <div>
