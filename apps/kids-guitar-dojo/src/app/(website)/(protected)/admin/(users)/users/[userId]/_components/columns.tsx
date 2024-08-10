@@ -2,73 +2,93 @@
 
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 
 // Components
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  Badge,
-  Button,
-} from '@rocket-house-productions/shadcn-ui';
-import { Account } from '@prisma/client';
+import { Badge, Button } from '@rocket-house-productions/shadcn-ui';
+import { Purchase } from '@prisma/client';
+import DialogAddress from '@/app/(website)/(protected)/admin/(users)/users/[userId]/_components/dialog-address';
+import currencyToSymbole from '../../../../../../../../../../../libs/shared/util/src/lib/currencyToSymbole';
 
-export const columns: ColumnDef<Account>[] = [
+export const columns: ColumnDef<Purchase>[] = [
   {
-    accessorKey: 'userId',
+    accessorKey: 'id',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          User Id
+          Id
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: 'firstName',
+    accessorKey: 'stripeChargeId',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          First Name
+          Stipe Charge Id
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: 'lastName',
+    accessorKey: 'amount',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Last Name
+          Amount
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-  },
-  {
-    accessorKey: 'status',
-    header: ({ column }) => {
+    cell: ({ row }) => {
+      const amount = row.getValue('amount') as number;
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <p>
+          {currencyToSymbole('USD')} {(amount / 100).toFixed(2)}
+        </p>
       );
     },
   },
   {
-    accessorKey: '_count.purchases',
+    accessorKey: 'childId',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Number of Purchases
+          Enrolled
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const child = row.getValue('childId');
+      return child ? (
+        <div className="flex items-center gap-x-2">
+          <Link href={`/admin/enrolled/${child}`}>
+            <Button variant="ghost">View</Button>
+          </Link>
+          <Badge variant="default">Enrolled</Badge>
+        </div>
+      ) : (
+        <Badge variant="destructive">Not Enrolled</Badge>
+      );
+    },
+  },
+  {
+    accessorKey: 'billingAddress',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Billing Address
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const billingAddress = row.getValue('billingAddress') as string;
+      return <DialogAddress address={JSON.parse(billingAddress)} />;
     },
   },
   {
@@ -81,30 +101,9 @@ export const columns: ColumnDef<Account>[] = [
         </Button>
       );
     },
-  },
-  {
-    id: 'actions',
     cell: ({ row }) => {
-      const { id } = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-4 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <Link href={`/admin/users/${id}`}>
-              <DropdownMenuItem>
-                <Pencil className="mr-2 h-4 w-4" />
-                Edit
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      const notifications: boolean = row.getValue('notifications');
+      return notifications ? <Badge variant="default">Active</Badge> : <Badge variant="destructive">Inactive</Badge>;
     },
   },
 ];
