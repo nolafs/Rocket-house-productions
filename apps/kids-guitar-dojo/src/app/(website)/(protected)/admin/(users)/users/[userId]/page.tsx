@@ -25,7 +25,11 @@ export default async function Page({ params }: { params: { userId: string } }) {
       id: params.userId,
     },
     include: {
-      purchases: true,
+      purchases: {
+        include: {
+          course: true,
+        },
+      },
     },
   });
 

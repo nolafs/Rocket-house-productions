@@ -38,8 +38,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 
-  console.log('data', data);
-
   const table = useReactTable({
     data,
     columns,
@@ -57,14 +55,6 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
   return (
     <div>
-      <div className="flex items-center justify-between py-4">
-        <Input
-          placeholder="Filter purchases..."
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
-          onChange={event => table.getColumn('title')?.setFilterValue(event.target.value)}
-          className="max-w-sm"
-        />
-      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
