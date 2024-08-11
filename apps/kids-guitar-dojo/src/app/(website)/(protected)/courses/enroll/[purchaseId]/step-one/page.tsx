@@ -6,11 +6,10 @@ export default function Page({ params }: { params: { purchaseId: string } }) {
   const baseUrl = `${BASE_URL}/${params.purchaseId}`;
 
   return (
-    <DialogLayout title="Parent consent">
+    <DialogLayout title="🎸 Parent's Jam Session 🎸">
       <div className="flex-1">
-        Hello and welcome to Kids Guitar Dojo! I&apos;m truly thrilled to have you and your child as part of our musical
-        family. Whether your little one is strumming for the very first time or already has a taste for guitar melodies,
-        you&apos;ve chosen an extraordinary path to embark upon.
+        Before your child can strum their first chord, we need a little help from you. Just fill in your details, agree
+        to our terms, and give the green light for some musical fun! 🎶
       </div>
       <div className={'mt-10 flex w-full shrink flex-row justify-between'}>
         <PrevButton baseUrl={baseUrl} />
