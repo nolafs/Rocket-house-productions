@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import Image from 'next/image';
-import Bg from '../assets/bg-scene.png';
+import Bg from '../assets/bg-scene.webp';
 
 interface ParallaxSceneProps {
   children: ReactNode;
