@@ -14,7 +14,7 @@ interface NextButtonProps {
 
 const steps = STEPS;
 
-export const NextButton = ({ label = 'next', baseUrl = '/' }: NextButtonProps) => {
+export const NextButton = ({ label = 'Next', baseUrl = '/' }: NextButtonProps) => {
   const pathname = usePathname();
   const currentPath = path.basename(pathname);
   const [currentStep, setCurrentStep] = useState(1);
