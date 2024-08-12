@@ -1,3 +1,7 @@
+export interface FormErrors {
+  [key: string]: string | undefined;
+}
+
 export enum OnBoardingRoutes {
   INTRO = '/intro',
   PARENT_DETAILS = '/step-one',
