@@ -27,6 +27,7 @@ import samurai from './_assets/samurai_1.png';
 import temple_1 from './_assets/temple_1.png';
 import yukata from './_assets/yukata.png';
 import kimono from './_assets/kimono_1.png';
+import checked from './_assets/checked.png';
 
 const initialState: FormErrors = {};
 
@@ -86,8 +87,8 @@ export default function Page({ params }: { params: { purchaseId: string } }) {
 
   return (
     <DialogLayout title="🎸 Hey Kids, This Part's for You! 🎸">
-      Select your avatar 🌟
-      <div className={'mt-10 w-full'}>
+      <div className={'flex-0'}>Select your avatar 🌟</div>
+      <div className={'mt-10 flex h-full w-full flex-1 flex-col justify-stretch'}>
         <Form {...(form as any)}>
           {serverError && Object.keys(serverError).length !== 0 && serverError?.issues && (
             <div className="rounded-md bg-red-50 p-4">
@@ -114,7 +115,7 @@ export default function Page({ params }: { params: { purchaseId: string } }) {
           )}
           <form
             ref={formRef}
-            className="space-y-4"
+            className="flex h-full w-full flex-1 flex-col justify-stretch space-y-4"
             action={formAction}
             onSubmit={evt => {
               evt.preventDefault();
@@ -123,35 +124,40 @@ export default function Page({ params }: { params: { purchaseId: string } }) {
                 formAction(new FormData(formRef.current!));
               })(evt);
             }}>
-            <FormField
-              control={form.control as any}
-              name="avatar"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <div className="grid flex-1 grid-cols-7 gap-2">
-                      {avatarOptions.map((avatar: avatar) => (
-                        <div key={avatar.name} className="flex flex-col items-center">
-                          <label className="cursor-pointer">
-                            <input {...field} type="radio" value={avatar.image.src} className="sr-only" />
-                            <Image
-                              src={avatar.image}
-                              alt={avatar.name}
-                              width={64}
-                              height={64}
-                              quality={80}
-                              sizes={'(max-width: 600px) 220px, 100vw'}
-                              loading={'lazy'}
-                            />
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className={'flex flex-1 flex-col justify-center'}>
+              <FormField
+                control={form.control as any}
+                name="avatar"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="grid flex-1 grid-cols-7 gap-2">
+                        {avatarOptions.map((avatar: avatar) => (
+                          <div key={avatar.name} className="flex flex-col items-center justify-center">
+                            <label className="relative cursor-pointer">
+                              <input {...field} type="radio" value={avatar.image.src} className="peer sr-only" />
+                              <Image
+                                src={avatar.image}
+                                alt={avatar.name}
+                                width={64}
+                                height={64}
+                                quality={80}
+                                sizes={'(max-width: 600px) 220px, 100vw'}
+                                loading={'lazy'}
+                              />
+                              <div className="absolute bottom-0 right-0 flex items-center justify-center opacity-0 peer-checked:opacity-100">
+                                <Image src={checked} alt={'check-icon'} width={24} height={24} />
+                              </div>
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control as any}
               name="productId"

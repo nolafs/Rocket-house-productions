@@ -14,7 +14,9 @@ export function DialogLayout({ title, children }: DialogLayoutProps) {
         <header className={'bg-pink-500 pb-8 pt-7'}>
           <h2 className="text-shadow relative text-3xl leading-[38px] text-white">{title}</h2>
         </header>
-        <div className="content flex h-full w-full flex-1 flex-col px-6 pb-5 pt-7 md:px-10">{children}</div>
+        <div className="content flex h-full w-full flex-1 flex-col justify-stretch px-6 pb-5 pt-7 md:px-10">
+          {children}
+        </div>
       </div>
     </div>
   );
