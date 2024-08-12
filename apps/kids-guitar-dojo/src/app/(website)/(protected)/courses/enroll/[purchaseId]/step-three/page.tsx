@@ -1,19 +1,177 @@
+'use client';
 import { DialogLayout } from '@rocket-house-productions/lesson';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  Input,
+} from '@rocket-house-productions/shadcn-ui';
+import { BASE_URL, FormErrors } from '../_component/path-types';
+import stepThreeFormAction from './action';
+import { useFormState } from 'react-dom';
+import { useForm } from 'react-hook-form';
+import z from 'zod';
+import { stepThreeSchema } from '../_component/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { XIcon } from 'lucide-react';
+import { useRef } from 'react';
+import { PrevButton } from '../_component/button-prev';
+import Image from 'next/image';
+import bonsai from './_assets/bonsai.png';
+import carpFish from './_assets/carp-fish.png';
+import daruma from './_assets/daruma.png';
+import samurai from './_assets/samurai_1.png';
+import temple_1 from './_assets/temple_1.png';
+import yukata from './_assets/yukata.png';
+import kimono from './_assets/kimono_1.png';
 
-export default async function Page({ params }: { params: { purchaseId: string } }) {
+const initialState: FormErrors = {};
+
+type avatar = {
+  name: string;
+  image: any;
+  url?: string;
+};
+
+const avatarOptions = [
+  {
+    name: 'kimono',
+    image: kimono,
+  },
+  {
+    name: 'bonsai',
+    image: bonsai,
+  },
+  {
+    name: 'carpFish',
+    image: carpFish,
+  },
+  {
+    name: 'daruma',
+    image: daruma,
+  },
+  {
+    name: 'samurai',
+    image: samurai,
+  },
+  {
+    name: 'temple_1',
+    image: temple_1,
+  },
+  {
+    name: 'yukata',
+    image: yukata,
+  },
+];
+
+export default function Page({ params }: { params: { purchaseId: string } }) {
+  const baseUrl = `${BASE_URL}/${params.purchaseId}`;
+
+  const [serverError, formAction] = useFormState(stepThreeFormAction, initialState);
+
+  const form = useForm<z.infer<typeof stepThreeSchema>>({
+    resolver: zodResolver(stepThreeSchema),
+    defaultValues: {
+      avatar: '',
+      productId: params.purchaseId,
+    },
+  }); // zodResolver(stepThreeSchema)
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+  console.log(avatarOptions);
+
   return (
-    <DialogLayout title="Welcome to Kids Guitar Dojo">
-      Hello and welcome to Kids Guitar Dojo! I&apos;m truly thrilled to have you and your child as part of our musical
-      family. Whether your little one is strumming for the very first time or already has a taste for guitar melodies,
-      you&apos;ve chosen an extraordinary path to embark upon. As you dive in know that we&apos;re here to guide and
-      support you every step of the way. Our aim is to make learning the guitar an exciting and rewarding experience for
-      both you and your child. With our carefully crafted lessons and unique approach, your child will soon be
-      discovering the magic of music.
+    <DialogLayout title="🎸 Hey Kids, This Part's for You! 🎸">
+      Select your avatar 🌟
       <div className={'mt-10 w-full'}>
-        <Button variant={'lesson'} size={'lg'}>
-          Get Started
-        </Button>
+        <Form {...(form as any)}>
+          {serverError && Object.keys(serverError).length !== 0 && serverError?.issues && (
+            <div className="rounded-md bg-red-50 p-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <XIcon aria-hidden="true" className="h-5 w-5 text-red-400" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">
+                    There were {Object.keys(serverError).length + 1} errors with your submission
+                  </h3>
+                  <div className="mt-2 text-sm text-red-700">
+                    <ul role="list" className="list-disc space-y-1 pl-5">
+                      {Object.keys(serverError).map(issue => (
+                        <li key={issue} className="flex gap-1">
+                          {issue}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          <form
+            ref={formRef}
+            className="space-y-4"
+            action={formAction}
+            onSubmit={evt => {
+              evt.preventDefault();
+              console.log('submitting form', formRef.current!);
+              form.handleSubmit(() => {
+                formAction(new FormData(formRef.current!));
+              })(evt);
+            }}>
+            <FormField
+              control={form.control as any}
+              name="avatar"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <div className="grid flex-1 grid-cols-7 gap-2">
+                      {avatarOptions.map((avatar: avatar) => (
+                        <div key={avatar.name} className="flex flex-col items-center">
+                          <label className="cursor-pointer">
+                            <input {...field} type="radio" value={avatar.image.src} className="sr-only" />
+                            <Image
+                              src={avatar.image}
+                              alt={avatar.name}
+                              width={64}
+                              height={64}
+                              quality={80}
+                              sizes={'(max-width: 600px) 220px, 100vw'}
+                              loading={'lazy'}
+                            />
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control as any}
+              name="productId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input {...field} type="hidden" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className={'flex w-full shrink flex-row justify-between pt-5'}>
+              <PrevButton baseUrl={baseUrl} />
+              <Button type={'submit'} variant={'lesson'} size={'lg'}>
+                Next
+              </Button>
+            </div>
+          </form>
+        </Form>
       </div>
     </DialogLayout>
   );

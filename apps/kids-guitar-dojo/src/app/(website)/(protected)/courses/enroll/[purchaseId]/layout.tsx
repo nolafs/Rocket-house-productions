@@ -16,9 +16,11 @@ export default async function Layout({ children, params }: LayoutProps) {
     <OnBoardingContextProvider>
       <ParallaxScene>
         <main className="flex min-h-full flex-col place-items-center justify-stretch px-6 py-24 sm:py-32 lg:px-8">
-          <div className={'grow'}>{children}</div>
-          <div>
-            <StepNavigation baseUrl={baseUrl} />
+          <div className={'py-10'}>
+            {children}
+            <div>
+              <StepNavigation baseUrl={baseUrl} />
+            </div>
           </div>
         </main>
       </ParallaxScene>

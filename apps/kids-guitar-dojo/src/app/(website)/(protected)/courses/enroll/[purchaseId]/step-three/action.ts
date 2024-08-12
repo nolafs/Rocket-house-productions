@@ -3,15 +3,13 @@ import { stepOneSchema } from '../_component/schemas';
 import { OnBoardingRoutes, FormErrors, BASE_URL } from '../_component/path-types';
 import { redirect } from 'next/navigation';
 
-export default async function stepOneFormAction(prevState: FormErrors | undefined, formData: FormData) {
+export default async function stepThreeFormAction(prevState: FormErrors | undefined, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
 
   console.log('before data', data);
 
   const update = {
     ...data,
-    confirmTerms: data.confirmTerms === 'on' ? true : false,
-    parentConsent: data.parentConsent === 'on' ? true : false,
   };
 
   const validated = stepOneSchema.safeParse(update);
@@ -27,6 +25,5 @@ export default async function stepOneFormAction(prevState: FormErrors | undefine
   }
 
   const baseUrl = `${BASE_URL}/${formData.get('productId')}`;
-  console.log('stepOneFormAction', data);
-  redirect(`${baseUrl}${OnBoardingRoutes.CHILD_DETAILS}`);
+  redirect(`${baseUrl}${OnBoardingRoutes.REVIEW}`);
 }
