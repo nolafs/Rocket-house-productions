@@ -55,7 +55,7 @@ export default function StepThreeForm({ baseUrl }: StepThreeFormProps) {
       onBoardingData.favoriteSuperpower
     ) {
       const generatedName = generateFunName({
-        gender: onBoardingData.gender,
+        gender: onBoardingData.gender || 'other',
         favoriteColor: onBoardingData.favoriteColor,
         favoriteAnimal: onBoardingData.favoriteAnimal,
         favoriteHobby: onBoardingData.favoriteHobby,
