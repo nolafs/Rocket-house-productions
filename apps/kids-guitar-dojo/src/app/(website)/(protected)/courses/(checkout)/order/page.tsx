@@ -1,6 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { db } from '@rocket-house-productions/integration';
 import PurchaseOption from './_components/purchase-option';
 import { createClient } from '@/prismicio';
 import { Bounded } from '@components/Bounded';
