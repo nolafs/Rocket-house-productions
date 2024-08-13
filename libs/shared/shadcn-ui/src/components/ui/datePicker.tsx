@@ -4,7 +4,7 @@ import { Button } from './button';
 import { Calendar } from './calendar';
 import { Popover, PopoverContent, PopoverTrigger } from './popover';
 import { FC, useState } from 'react';
-import dayjs from 'Dayjs';
+import dayjs from 'dayjs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 import { CalendarIcon } from 'lucide-react';
 import { FormControl } from './form';

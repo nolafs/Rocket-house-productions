@@ -1,5 +1,5 @@
 // Use this file to export React client components (e.g. those with 'use client' directive) or other non-server utilities
 
-export * from './stripe';
-export * from './stripe-checkout';
+export { stripe, stripeCheckout } from './stripe';
+export { stripeCheckoutAction } from './stripe-checkout';
 export * from './db';

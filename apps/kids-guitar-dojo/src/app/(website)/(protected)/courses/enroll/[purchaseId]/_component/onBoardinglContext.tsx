@@ -12,13 +12,12 @@ const defaultOnBoarding: OnBoardingInitialValuesType = {
   notify: false,
   birthday: '',
   name: '',
-  childEmail: '',
   avatar: '',
-  favoriteColor: 'other',
-  favoriteAnimal: 'other',
-  favoriteSuperpower: 'other',
-  favoriteHobby: 'other',
-  gender: 'prefer_not_to_say',
+  favoriteColor: undefined,
+  favoriteAnimal: undefined,
+  favoriteSuperpower: undefined,
+  favoriteHobby: undefined,
+  gender: undefined,
 };
 
 const LOCAL_STORAGE_KEY = 'kids-guitar-dojo-onboarding';
@@ -48,8 +47,8 @@ export const OnBoardingContextProvider = ({ children }: { children: React.ReactN
   }, [onBoardingData, dataLoaded]);
 
   const updateOnBoardingDetails = useCallback(
-    (dealDetails: Partial<OnBoardingType>) => {
-      setOnBoardingData({ ...setOnBoardingData, ...dealDetails });
+    (onBoardingDetails: Partial<OnBoardingType>) => {
+      setOnBoardingData({ ...setOnBoardingData, ...onBoardingDetails });
     },
     [onBoardingData],
   );

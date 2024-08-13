@@ -1,4 +1,5 @@
 'use client';
+
 import { usePurchaseStore } from '@rocket-house-productions/store';
 import { ReactNode, useEffect, useState } from 'react';
 import { Bounded } from '@components/Bounded';
@@ -6,9 +7,9 @@ import { Loader2 } from 'lucide-react';
 import LogoFull from '@assets/logo_full.png';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import Image from 'next/image';
-import { checkoutUrl } from '@rocket-house-productions/actions/server';
 import { useUser } from '@rocket-house-productions/hooks';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 interface PurchaseOptionProps {
   children?: ReactNode;
@@ -27,7 +28,11 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
       if (productId) {
         //payment link to stripe
         const payment = async () => {
-          await checkoutUrl(productId, userId, email || '');
+          await axios.post('/api/stripe/checkurl', {
+            productId,
+            userId: user.id,
+            email,
+          });
         };
         payment();
         setState(null);
