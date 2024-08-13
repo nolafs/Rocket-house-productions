@@ -14,6 +14,11 @@ const defaultOnBoarding: OnBoardingInitialValuesType = {
   name: '',
   childEmail: '',
   avatar: '',
+  favoriteColor: 'other',
+  favoriteAnimal: 'other',
+  favoriteSuperpower: 'other',
+  favoriteHobby: 'other',
+  gender: 'prefer_not_to_say',
 };
 
 const LOCAL_STORAGE_KEY = 'kids-guitar-dojo-onboarding';

@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from 'Dayjs';
 import { CalendarIcon } from 'lucide-react';
 import cn from 'classnames';
 

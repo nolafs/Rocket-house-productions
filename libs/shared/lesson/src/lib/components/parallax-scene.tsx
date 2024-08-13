@@ -39,7 +39,7 @@ export function ParallaxScene({ children }: ParallaxSceneProps) {
   }, [container]);
 
   return (
-    <div className={cn(styles.grad, 'relative isolate h-svh max-h-svh w-full')}>
+    <div className={cn(styles.grad, 'relative isolate h-svh max-h-svh w-full overflow-hidden')}>
       <div className={'absolute inset-0 z-10 flex h-svh flex-col place-items-center justify-center'}>
         <div>{children}</div>
       </div>

@@ -8,6 +8,7 @@ export enum OnBoardingRoutes {
   CHILD_DETAILS = '/step-two',
   CHILD_AVATAR = '/step-three',
   REVIEW = '/review',
+  COMPLETED = '/courses/lesson',
 }
 
 export const BASE_URL = '/courses/enroll/';
@@ -33,5 +34,5 @@ export const STEPS = [
     route: 'step-three',
     link: OnBoardingRoutes.CHILD_AVATAR,
   },
-  { title: 'Review', route: 'review', link: '/review' },
+  { title: 'Review', route: 'review', link: OnBoardingRoutes.REVIEW },
 ];

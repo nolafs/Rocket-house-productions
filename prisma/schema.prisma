@@ -221,7 +221,6 @@ model Account {
   email            String?  @unique
   status           String  @default("inactive")
   newsletter       Boolean @default(false)
-  nofications      Boolean @default(true)
 
   role             String  @default("member")
 
@@ -240,6 +239,7 @@ model Child {
   birthday  DateTime
 
   parentConsent Boolean @default(false)
+  notifications  Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()

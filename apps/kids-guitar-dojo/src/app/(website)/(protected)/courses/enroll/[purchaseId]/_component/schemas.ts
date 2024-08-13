@@ -16,14 +16,13 @@ export const stepOneSchema = z.object({
 });
 
 export const stepTwoSchema = z.object({
-  birthday: z.string().min(1, 'Please Enter Birthday'),
+  birthday: z.string().min(1, { message: 'Please enter a valid date' }),
   productId: z.string().min(1, 'Please Enter Product Id'),
-  favoriteColor: z.enum(
-    ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'black', 'white', 'brown', 'gray', 'other'],
-    {
-      message: 'Invalid selection for favoriteColor',
-    },
-  ),
+  favoriteColor: z
+    .enum(['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'black', 'white', 'brown', 'gray', 'other'], {
+      message: 'Invalid selection for favorite color',
+    })
+    .optional(),
   favoriteAnimal: z.enum(
     [
       'dog',
@@ -71,7 +70,7 @@ export const stepTwoSchema = z.object({
       'other',
     ],
     {
-      message: 'Invalid selection for favoriteAnimal',
+      message: 'Invalid selection for favorite animal',
     },
   ),
   favoriteSuperpower: z.enum(
@@ -86,19 +85,20 @@ export const stepTwoSchema = z.object({
       'other',
     ],
     {
-      message: 'Invalid selection for favoriteSuperpower',
+      message: 'Invalid selection for favorite superpower',
     },
   ),
   favoriteHobby: z.enum(['sports', 'reading', 'drawing', 'music', 'dancing', 'cooking', 'video_games', 'other'], {
-    message: 'Invalid selection for favoriteHobby',
+    message: 'Invalid selection for favorite hobby',
   }),
-  gender: z.enum(['male', 'female', 'non-binary', 'prefer_not_to_say', 'other'], {
+  gender: z.enum(['male', 'female', 'non_binary', 'prefer_not_to_say', 'other'], {
     message: 'Invalid selection for gender',
   }),
 });
 
 export const stepThreeSchema = z.object({
   avatar: z.string().min(1, 'Please Upload Avatar'),
+  name: z.string().min(1, 'Please Enter Name'),
   productId: z.string().min(1, 'Please Enter Product Id'),
 });
 
@@ -118,8 +118,79 @@ export const onBoardingInitialValuesSchema = z.object({
   notify: z.boolean().optional(),
   birthday: z.string().optional(),
   name: z.string().optional(),
-  childEmail: z.string().optional(),
   avatar: z.string().optional(),
+  productId: z.string().optional(),
+  favoriteColor: z.enum([
+    'red',
+    'blue',
+    'green',
+    'yellow',
+    'orange',
+    'purple',
+    'pink',
+    'black',
+    'white',
+    'brown',
+    'gray',
+    'other',
+  ]),
+  favoriteAnimal: z.enum([
+    'dog',
+    'cat',
+    'fish',
+    'bird',
+    'rabbit',
+    'hamster',
+    'turtle',
+    'lizard',
+    'snake',
+    'horse',
+    'guinea pig',
+    'frog',
+    'mouse',
+    'ferret',
+    'hedgehog',
+    'chinchilla',
+    'hermit crab',
+    'parrot',
+    'gerbil',
+    'goat',
+    'alpaca',
+    'iguana',
+    'gecko',
+    'tarantula',
+    'scorpion',
+    'pig',
+    'cow',
+    'duck',
+    'chicken',
+    'peacock',
+    'pony',
+    'lamb',
+    'raccoon',
+    'fox',
+    'owl',
+    'penguin',
+    'koala',
+    'kangaroo',
+    'sea turtle',
+    'dolphin',
+    'whale',
+    'octopus',
+    'other',
+  ]),
+  favoriteSuperpower: z.enum([
+    'flying',
+    'invisibility',
+    'super_strength',
+    'teleportation',
+    'telekinesis',
+    'time_travel',
+    'mind_reading',
+    'other',
+  ]),
+  favoriteHobby: z.enum(['sports', 'reading', 'drawing', 'music', 'dancing', 'cooking', 'video_games', 'other']),
+  gender: z.enum(['male', 'female', 'non_binary', 'prefer_not_to_say', 'other']),
 });
 
 export type OnBoardingType = z.infer<typeof onBoardingSchema>;

@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { product: string[] } }
     return redirect('/course/error?status=unauthorized');
   }
 
-  const user = await clerkClient.users.getUser(userId);
+  const user = await clerkClient().users.getUser(userId);
 
   if (!user) {
     return redirect('/course/error?status=unauthorized');
@@ -53,10 +53,18 @@ export default async function Page({ params }: { params: { product: string[] } }
   if (userDb?._count?.purchases) {
     const unEnrolledPurchases = userDb.purchases.filter(purchase => !purchase.childId);
 
+    console.log('[COURSE] PURCHASES', unEnrolledPurchases.length);
+
     if (unEnrolledPurchases.length === 0) {
       // All purchases are enrolled
-      console.log('[COURSE] ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
-      // todo: go to course selection
+      if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
+        // Only one purchase, and it's enrolled
+        console.log('[COURSE] SINGLE PURCHASE ENROLLED - GO TO LESSON');
+        return redirect(`/courses/lesson/${userDb.purchases[0].id}`);
+      } else {
+        console.log('[COURSE] ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
+        // todo: go to course selection
+      }
     } else if (unEnrolledPurchases.length === 1) {
       // Only one purchase is not enrolled
       console.log('[COURSE] PURCHASE SINGLE NOT ENROLLED - GO TO ENROLLMENT');
@@ -66,10 +74,6 @@ export default async function Page({ params }: { params: { product: string[] } }
       console.log('[COURSE] PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
       // todo: select your purchase to [purchaseId]
     }
-  } else if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
-    // Only one purchase, and it's enrolled
-    console.log('[COURSE] SINGLE PURCHASE ENROLLED - GO TO LESSON');
-    // todo: go to LESSON
   } else {
     console.log('[COURSE] NO PURCHASES FOUND');
     // Handle the case where there are no purchases
@@ -77,6 +81,8 @@ export default async function Page({ params }: { params: { product: string[] } }
   }
 
   // check if count is more than one
+
+  console.log('[COURSE] WAITING DATA');
 
   return (
     <div className={'mt-5 flex h-svh w-full flex-col items-center justify-center'}>

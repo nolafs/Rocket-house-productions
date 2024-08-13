@@ -13,17 +13,15 @@ export default async function Layout({ children, params }: LayoutProps) {
   const baseUrl = `${BASE_URL}/${params.purchaseId}`;
 
   return (
-    <OnBoardingContextProvider>
-      <ParallaxScene>
-        <main className="flex min-h-full flex-col place-items-center justify-stretch px-6 py-24 sm:py-32 lg:px-8">
-          <div className={'py-10'}>
-            {children}
-            <div>
-              <StepNavigation baseUrl={baseUrl} />
-            </div>
+    <ParallaxScene>
+      <main className="flex min-h-full flex-col place-items-center justify-stretch px-6 py-24 sm:py-32 lg:px-8">
+        <div className={'py-10'}>
+          <OnBoardingContextProvider>{children}</OnBoardingContextProvider>
+          <div>
+            <StepNavigation baseUrl={baseUrl} />
           </div>
-        </main>
-      </ParallaxScene>
-    </OnBoardingContextProvider>
+        </div>
+      </main>
+    </ParallaxScene>
   );
 }

@@ -1,12 +1,10 @@
 'use server';
 import { stepOneSchema } from '../_component/schemas';
-import { OnBoardingRoutes, FormErrors, BASE_URL } from '../_component/path-types';
+import { OnBoardingRoutes, FormErrors } from '../_component/path-types';
 import { redirect } from 'next/navigation';
 
 export default async function stepOneFormAction(prevState: FormErrors | undefined, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
-
-  console.log('before data', data);
 
   const update = {
     ...data,
@@ -26,7 +24,5 @@ export default async function stepOneFormAction(prevState: FormErrors | undefine
     return errors;
   }
 
-  const baseUrl = `${BASE_URL}/${formData.get('productId')}`;
-  console.log('stepOneFormAction', data);
-  redirect(`${baseUrl}${OnBoardingRoutes.CHILD_DETAILS}`);
+  redirect(`${data.productId}/${OnBoardingRoutes.CHILD_DETAILS}`);
 }
