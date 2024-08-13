@@ -1,0 +1,9 @@
+{
+  "name": "lesson",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/lesson/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project lesson --web",
+  "targets": {}
+}

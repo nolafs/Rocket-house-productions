@@ -33,23 +33,14 @@ export const columns: ColumnDef<Course>[] = [
     },
   },
   {
-    accessorKey: 'price',
+    accessorKey: 'id',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Price
+          Id
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
-    },
-    cell: ({ row }) => {
-      const price = parseFloat(row.getValue('price') || '0');
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(price);
-
-      return <div>{formatted}</div>;
     },
   },
   {

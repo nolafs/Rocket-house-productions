@@ -1,3 +1,4 @@
+import '../../../../styles/lesson.scss';
 import NextTopLoader from 'nextjs-toploader';
 
 export const metadata = {
@@ -7,10 +8,10 @@ export const metadata = {
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className={'lesson'}>
       {/* Loading-bar */}
       <NextTopLoader color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
       {children}
-    </>
+    </div>
   );
 }

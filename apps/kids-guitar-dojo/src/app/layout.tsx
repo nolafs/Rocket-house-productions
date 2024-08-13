@@ -1,6 +1,6 @@
 import '../styles/navbar.scss';
 import './global.scss';
-import { Raleway } from 'next/font/google';
+import { Raleway, Mochiy_Pop_One, Nunito } from 'next/font/google';
 import { Suspense } from 'react';
 
 import { UIProvider } from '@rocket-house-productions/hooks';
@@ -15,6 +15,19 @@ const raleway = Raleway({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-raleway',
+});
+
+const nunito = Nunito({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-nunito',
+});
+
+const mochiyPopOne = Mochiy_Pop_One({
+  subsets: ['latin'],
+  weight: '400',
+  display: 'swap',
+  variable: '--font-mochiy-pop-one',
 });
 
 type Props = {
@@ -88,7 +101,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <ClerkProvider>
       <UIProvider>
-        <html lang="en" className={`${raleway.variable} font-sans`} suppressHydrationWarning={true}>
+        <html
+          lang="en"
+          className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
+          suppressHydrationWarning={true}>
           <body className={'bg-background min-h-screen font-sans antialiased'}>
             <ConfettiProvider />
             <ToastProvider />

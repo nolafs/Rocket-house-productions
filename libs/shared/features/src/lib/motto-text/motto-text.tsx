@@ -1,6 +1,5 @@
 import { forwardRef } from 'react';
 import cn from 'classnames';
-import { Anchor } from '@rocket-house-productions/ui';
 import { RichTextField } from '@prismicio/client';
 import { PrismicRichText } from '@prismicio/react';
 

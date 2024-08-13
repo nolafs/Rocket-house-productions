@@ -27,6 +27,7 @@ export default async function Page() {
           purchases: true,
         },
       },
+      purchases: true,
     },
   });
 

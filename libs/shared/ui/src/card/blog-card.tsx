@@ -5,7 +5,7 @@ import { PrismicNextImage } from '@prismicio/next';
 import placeholder from '../assets/placeholder.png';
 import Image from 'next/image';
 import { CalendarIcon } from 'lucide-react';
-import dayjs from 'dayjs';
+import dayjs from 'Dayjs';
 type TProps = Pick<BlogPostType, any> & {
   className?: string;
 };
