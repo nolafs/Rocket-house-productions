@@ -1,6 +1,7 @@
 const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
 const presetTheme = require('../../tailwind.preset.js');
+const plugin = require('tailwindcss/plugin');
 
 function getContent() {
   const content = [...createGlobPatternsForDependencies(__dirname)];
@@ -34,19 +35,25 @@ module.exports = {
         base: 'var(--color-base)',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        destructive: 'hsl(var(--destructive))',
+        'destructive-foreground': 'hsl(var(--destructive-foreground))',
         popover: 'hsl(var(--popover))',
         'popover-foreground': 'hsl(var(--popover-foreground))',
+        'lesson-background': 'var(--lesson-background)',
+        'lesson-foreground': 'var(--lesson-foreground)',
+        warning: 'hsl(var(--warning))',
+        'warning-foreground': 'hsl(var(--warning-foreground))',
         body: '#404F65',
         heading: '#2A3342',
         success: {
           DEFAULT: '#4CAF50',
           100: '#7ed321',
         },
-        warning: {
-          DEFAULT: '#FFC107',
-          100: '#fdb494',
-        },
         danger: {
+          DEFAULT: '#F44336',
+          100: '#d85554',
+        },
+        error: {
           DEFAULT: '#F44336',
           100: '#d85554',
         },
@@ -109,6 +116,8 @@ module.exports = {
       }),
       fontFamily: {
         sans: ['var(--font-raleway)'],
+        'lesson-body': ['var(--font-nunito)'],
+        'lesson-heading': ['var(--font-mochiy-pop-one)'],
       },
       fontSize: {
         sm: '0.75rem',
@@ -143,6 +152,11 @@ module.exports = {
         '3xl': '0 30px 50px',
         '4xl': '0 14px 59px',
         xxl: '0 130px 50px -100px',
+      },
+      textShadow: {
+        sm: '0 1px 2px var(--tw-shadow-color)',
+        DEFAULT: '0 2px 4px var(--tw-shadow-color)',
+        lg: '0 8px 16px var(--tw-shadow-color)',
       },
       letterSpacing: {
         tightest: '-0.125rem',
@@ -271,6 +285,16 @@ module.exports = {
         },
       });
     },
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          'text-shadow': value => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme('textShadow') },
+      );
+    }),
     require('@tailwindcss/typography'),
     require('tailwindcss-animate'),
   ],

@@ -13,7 +13,8 @@ import {
   Badge,
   Button,
 } from '@rocket-house-productions/shadcn-ui';
-import { Account } from '@prisma/client';
+import { Account, Purchase } from '@prisma/client';
+import { CurrencyToSymbol } from '@rocket-house-productions/util';
 
 export const columns: ColumnDef<Account>[] = [
   {
@@ -50,6 +51,18 @@ export const columns: ColumnDef<Account>[] = [
     },
   },
   {
+    accessorKey: 'email',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+
+  {
     accessorKey: 'status',
     header: ({ column }) => {
       return (
@@ -64,11 +77,35 @@ export const columns: ColumnDef<Account>[] = [
     accessorKey: '_count.purchases',
     header: ({ column }) => {
       return (
+        <div className={'mx-auto text-center'}>
+          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+            No.
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'purchases',
+    header: ({ column }) => {
+      return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Number of Purchases
+          Total Spend
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const purchases = row.getValue('purchases') as Purchase[];
+      const spend = purchases.reduce((acc, purchase) => acc + purchase.amount, 0);
+
+      const formatted = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(spend);
+
+      return <p className={'text-center'}>{formatted}</p>;
     },
   },
   {
@@ -80,6 +117,10 @@ export const columns: ColumnDef<Account>[] = [
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const notifications: boolean = row.getValue('notifications');
+      return notifications ? <Badge variant="default">Active</Badge> : <Badge variant="destructive">Inactive</Badge>;
     },
   },
   {

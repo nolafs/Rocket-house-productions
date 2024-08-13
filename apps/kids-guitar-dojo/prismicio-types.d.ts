@@ -739,11 +739,11 @@ type PageDocumentDataSlicesSlice =
   | ContentImageSliceSlice;
 
 /**
- * Content for Page documents
+ * Content for StepThreeForm documents
  */
 interface PageDocumentData {
   /**
-   * Title field in *Page*
+   * Title field in *StepThreeForm*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
@@ -754,7 +754,7 @@ interface PageDocumentData {
   title: prismic.RichTextField;
 
   /**
-   * Parent field in *Page*
+   * Parent field in *StepThreeForm*
    *
    * - **Field Type**: Link
    * - **Placeholder**: *None*
@@ -765,7 +765,7 @@ interface PageDocumentData {
   parent: prismic.LinkField;
 
   /**
-   * Slice Zone field in *Page*
+   * Slice Zone field in *StepThreeForm*
    *
    * - **Field Type**: Slice Zone
    * - **Placeholder**: *None*
@@ -774,7 +774,7 @@ interface PageDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#slices
    */
   slices: prismic.SliceZone<PageDocumentDataSlicesSlice> /**
-   * Meta Title field in *Page*
+   * Meta Title field in *StepThreeForm*
    *
    * - **Field Type**: Text
    * - **Placeholder**: A title of the page used for social media and search engines
@@ -785,7 +785,7 @@ interface PageDocumentData {
   meta_title: prismic.KeyTextField;
 
   /**
-   * Meta Description field in *Page*
+   * Meta Description field in *StepThreeForm*
    *
    * - **Field Type**: Text
    * - **Placeholder**: A brief summary of the page
@@ -796,7 +796,7 @@ interface PageDocumentData {
   meta_description: prismic.KeyTextField;
 
   /**
-   * Meta Image field in *Page*
+   * Meta Image field in *StepThreeForm*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
@@ -808,7 +808,7 @@ interface PageDocumentData {
 }
 
 /**
- * Page document from Prismic
+ * StepThreeForm document from Prismic
  *
  * - **API ID**: `page`
  * - **Repeatable**: `true`
@@ -1011,7 +1011,7 @@ export interface SettingsDocumentDataSocialMediaItem {
   name: prismic.KeyTextField;
 
   /**
-   * Page Url field in *Settings → Social Media*
+   * StepThreeForm Url field in *Settings → Social Media*
    *
    * - **Field Type**: Link
    * - **Placeholder**: *None*
@@ -2457,7 +2457,7 @@ export interface HeroSliceCenteredPrimaryButtonsItem {
  */
 export interface HeroSliceDefaultPrimary {
   /**
-   * Page Name field in *Hero → Default → Primary*
+   * StepThreeForm Name field in *Hero → Default → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -2541,7 +2541,7 @@ export type HeroSliceDefault = prismic.SharedSliceVariation<'default', Simplify<
  */
 export interface HeroSliceThunderDecorationPrimary {
   /**
-   * Page Name field in *Hero → Thunder Decoration → Primary*
+   * StepThreeForm Name field in *Hero → Thunder Decoration → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -2629,7 +2629,7 @@ export type HeroSliceThunderDecoration = prismic.SharedSliceVariation<
  */
 export interface HeroSliceCenteredPrimary {
   /**
-   * Page Name field in *Hero → Centered → Primary*
+   * StepThreeForm Name field in *Hero → Centered → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -2713,7 +2713,7 @@ export type HeroSliceCentered = prismic.SharedSliceVariation<'centered', Simplif
  */
 export interface HeroSliceSimplePrimary {
   /**
-   * Page Name field in *Hero → Simple → Primary*
+   * StepThreeForm Name field in *Hero → Simple → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
