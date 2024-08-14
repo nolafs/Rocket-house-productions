@@ -78,14 +78,27 @@ export const submitOnBoardingAction = async (
       },
     });
 
-    await db.purchase.update({
+    const purchaseId = baseUrl.split('/').pop();
+
+    //check if purchase has already childId
+    const purchase = await db.purchase.findFirst({
       where: {
-        id: baseUrl.split('/').pop(),
-      },
-      data: {
-        childId: child.id,
+        id: purchaseId,
       },
     });
+
+    if (!purchase?.childId) {
+      await db.purchase.update({
+        where: {
+          id: baseUrl.split('/').pop(),
+        },
+        data: {
+          childId: child.id,
+        },
+      });
+    } else {
+      console.error('[ONBOARDING] [REVIEW] Already enrolled a child on purchase');
+    }
   } catch (error) {
     console.error('[ONBOARDING] [REVIEW] Error updating purchase with child id', error);
 
