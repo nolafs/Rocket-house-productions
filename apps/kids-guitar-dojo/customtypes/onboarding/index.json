@@ -37,6 +37,70 @@
           "allowTargetBlank": true,
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
         }
+      },
+      "onboarding_step_one_header": {
+        "type": "Text",
+        "config": {
+          "label": "Onboarding Step One Header",
+          "placeholder": ""
+        }
+      },
+      "onboarding_step_one_body": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Onboarding Step One body",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "onboarding_step_two_header": {
+        "type": "Text",
+        "config": {
+          "label": "Onboarding Step Two Header",
+          "placeholder": ""
+        }
+      },
+      "onboarding_step_two_body": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Onboarding Step Two Body",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "onboarding_step_three_header": {
+        "type": "Text",
+        "config": {
+          "label": "Onboarding Step Three Header",
+          "placeholder": ""
+        }
+      },
+      "onboarding_step_three_body": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Onboarding Step Three Body",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "onboarding_step_review_header": {
+        "type": "Text",
+        "config": {
+          "label": "Onboarding Step Review Header",
+          "placeholder": ""
+        }
+      },
+      "onboarding_step_review_body": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Onboarding Step Review Body",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
       }
     }
   }

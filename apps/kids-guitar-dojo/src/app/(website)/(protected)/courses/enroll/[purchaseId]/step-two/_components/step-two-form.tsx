@@ -28,14 +28,18 @@ import { PrevButton } from '../../_component/button-prev';
 import { XIcon } from 'lucide-react';
 import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import ButtonSubmit from '../../_component/button-submit';
+import { KeyTextField, RichTextField } from '@prismicio/types';
+import { PrismicRichText } from '@prismicio/react';
 
 const initialState: FormErrors = {};
 
 interface StepTwoFormProps {
   baseUrl: string;
+  header?: KeyTextField | string | null | undefined;
+  body?: RichTextField | string | null | undefined;
 }
 
-export default function StepTwoForm({ baseUrl }: StepTwoFormProps) {
+export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps) {
   const [serverError, formAction] = useFormState(stepTwoFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
 
@@ -55,9 +59,8 @@ export default function StepTwoForm({ baseUrl }: StepTwoFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
   return (
-    <DialogLayout title="🎸 Hey Kids, This Part's for You! 🎸">
-      Fill in your details, and get ready for some musical fun! 🎶 We’ll only use your info to create a fun profile
-      name—never shared with anyone else.
+    <DialogLayout title={header || "🎸 Hey Kids, This Part's for You! 🎸"}>
+      {body && <div className="body">{typeof body === 'string' ? body : <PrismicRichText field={body} />}</div>}
       <div className={'flex-1 text-left'}>
         <Form {...(form as any)}>
           {serverError && Object.keys(serverError).length !== 0 && (

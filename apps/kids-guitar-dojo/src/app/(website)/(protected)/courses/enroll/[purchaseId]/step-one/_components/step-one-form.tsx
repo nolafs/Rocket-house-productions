@@ -23,6 +23,8 @@ import { useRef } from 'react';
 import { XIcon } from 'lucide-react';
 import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import ButtonSubmit from '../../_component/button-submit';
+import { KeyTextField, RichTextField } from '@prismicio/types';
+import { PrismicRichText } from '@prismicio/react';
 
 const initialState: FormErrors = {};
 
@@ -37,9 +39,11 @@ interface StepOneFormProps {
       email: string | null | undefined;
     };
   };
+  header?: KeyTextField | string | null | undefined;
+  body?: RichTextField | string | null | undefined;
 }
 
-export default function StepOneForm({ baseUrl, purchase }: StepOneFormProps) {
+export default function StepOneForm({ baseUrl, purchase, header, body }: StepOneFormProps) {
   const [serverError, formAction] = useFormState(stepOneFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
 
@@ -60,11 +64,8 @@ export default function StepOneForm({ baseUrl, purchase }: StepOneFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
   return (
-    <DialogLayout title="🎸 Parent's Jam Session 🎸">
-      <div className="">
-        Before your child can strum their first chord, we need a little help from you. Just fill in your details, agree
-        to our terms, and give the green light for some musical fun! 🎶
-      </div>
+    <DialogLayout title={header || "🎸 Parent's Jam Session 🎸"}>
+      {body && <div className="body">{typeof body === 'string' ? body : <PrismicRichText field={body} />}</div>}
       <div className={'flex-1 text-left'}>
         <Form {...(form as any)}>
           {serverError && Object.keys(serverError).length !== 0 && serverError?.issues && (

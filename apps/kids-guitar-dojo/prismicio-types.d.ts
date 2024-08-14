@@ -772,6 +772,94 @@ interface OnboardingDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
   onboarding_intro_body: prismic.RichTextField;
+
+  /**
+   * Onboarding Step One Header field in *Onboarding*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_step_one_header
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  onboarding_step_one_header: prismic.KeyTextField;
+
+  /**
+   * Onboarding Step One body field in *Onboarding*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_step_one_body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  onboarding_step_one_body: prismic.RichTextField;
+
+  /**
+   * Onboarding Step Two Header field in *Onboarding*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_step_two_header
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  onboarding_step_two_header: prismic.KeyTextField;
+
+  /**
+   * Onboarding Step Two Body field in *Onboarding*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_step_two_body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  onboarding_step_two_body: prismic.RichTextField;
+
+  /**
+   * Onboarding Step Three Header field in *Onboarding*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_step_three_header
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  onboarding_step_three_header: prismic.KeyTextField;
+
+  /**
+   * Onboarding Step Three Body field in *Onboarding*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_step_three_body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  onboarding_step_three_body: prismic.RichTextField;
+
+  /**
+   * Onboarding Step Review Header field in *Onboarding*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_step_review_header
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  onboarding_step_review_header: prismic.KeyTextField;
+
+  /**
+   * Onboarding Step Review Body field in *Onboarding*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_step_review_body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  onboarding_step_review_body: prismic.RichTextField;
 }
 
 /**
