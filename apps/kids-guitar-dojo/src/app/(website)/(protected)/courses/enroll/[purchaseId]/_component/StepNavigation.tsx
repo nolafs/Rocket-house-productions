@@ -25,7 +25,7 @@ export default function StepNavigation({ baseUrl }: StepNavigationProps) {
   return (
     <div className="bg-lesson-background mb-12 mt-4 min-w-60 rounded-full px-3 py-5 lg:mb-0">
       {/* list of form steps */}
-      <div className="relative flex flex-row justify-between gap-x-20">
+      <div className="relative flex flex-row justify-between gap-x-5 md:gap-x-20">
         {steps.map((step, i) => (
           <Link
             href={`${baseUrl}${step.link}`}

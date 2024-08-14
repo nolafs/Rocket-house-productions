@@ -29,12 +29,12 @@ export default async function Page({ params }: { params: { product: string[] } }
       return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
     }
   } catch (error) {
-    console.error('User not found');
-  }
+    if (user?.publicMetadata.status === 'inactive') {
+      console.log('[COURSE] INACTIVE');
+      return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
+    }
 
-  if (user?.publicMetadata.status === 'inactive') {
-    console.log('[COURSE] INACTIVE');
-    return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
+    console.error('User not found');
   }
 
   // CHECK USER HAS PURCHASED COURSE
