@@ -33,9 +33,11 @@ export default async function Layout({ children, params }: LayoutProps) {
   });
 
   return (
-    <ParallaxScene>
-      <Header avatar={child?.profilePicture} name={child?.name} />
-      {children}
-    </ParallaxScene>
+    <div className={'lesson'}>
+      <ParallaxScene>
+        <Header avatar={child?.profilePicture} name={child?.name} />
+        {children}
+      </ParallaxScene>
+    </div>
   );
 }

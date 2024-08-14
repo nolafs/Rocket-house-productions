@@ -1,0 +1,43 @@
+{
+  "format": "custom",
+  "id": "onboarding",
+  "label": "Onboarding",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "success_page_header": {
+        "type": "Text",
+        "config": {
+          "label": "Success Page Header",
+          "placeholder": ""
+        }
+      },
+      "success_page_body": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Success Page Body",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "onboarding_intro_header": {
+        "type": "Text",
+        "config": {
+          "label": "Onboarding Intro Header",
+          "placeholder": ""
+        }
+      },
+      "onboarding_intro_body": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Onboarding Intro Body",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      }
+    }
+  }
+}

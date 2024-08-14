@@ -8,7 +8,7 @@ import LogoFull from '@assets/logo_full.png';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import Image from 'next/image';
 import { useUser } from '@rocket-house-productions/hooks';
-import { useRouter } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
 import axios from 'axios';
 
 interface PurchaseOptionProps {
@@ -28,11 +28,16 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
       if (productId) {
         //payment link to stripe
         const payment = async () => {
-          await axios.post('/api/stripe/checkurl', {
+          const redirectUrl = await axios.post('/api/stripe/checkurl', {
             productId,
             userId: user.id,
             email,
           });
+          if (redirectUrl.data?.url) {
+            router.push(redirectUrl.data.url);
+          } else {
+            setState('ready');
+          }
         };
         payment();
         setState(null);

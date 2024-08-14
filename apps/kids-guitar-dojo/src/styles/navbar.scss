@@ -1,5 +1,5 @@
 .navbar-area {
-  @apply fixed z-[40] w-full transform-gpu backdrop-blur-md;
+  @apply fixed z-[40] w-full transform-gpu backdrop-blur-sm;
 
   .dropdown-toggle {
     @apply relative;
