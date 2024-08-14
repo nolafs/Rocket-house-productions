@@ -8,7 +8,7 @@ export enum OnBoardingRoutes {
   CHILD_DETAILS = '/step-two',
   CHILD_AVATAR = '/step-three',
   REVIEW = '/review',
-  COMPLETED = '/courses/lesson',
+  COMPLETED = '/courses',
 }
 
 export const BASE_URL = '/courses/enroll/';

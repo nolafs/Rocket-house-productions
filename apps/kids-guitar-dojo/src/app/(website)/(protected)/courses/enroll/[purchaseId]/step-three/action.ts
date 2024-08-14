@@ -4,7 +4,11 @@ import { OnBoardingRoutes, FormErrors } from '../_component/path-types';
 import { redirect } from 'next/navigation';
 
 export default async function stepThreeFormAction(prevState: FormErrors | undefined, formData: FormData) {
+  console.log('data', formData);
+
   const data = Object.fromEntries(formData.entries());
+
+  console.log('data', data);
 
   const update = {
     ...data,
