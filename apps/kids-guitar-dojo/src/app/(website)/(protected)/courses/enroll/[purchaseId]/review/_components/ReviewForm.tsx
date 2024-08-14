@@ -8,12 +8,16 @@ import { Avatar, DialogLayout } from '@rocket-house-productions/lesson';
 import { Button, Form } from '@rocket-house-productions/shadcn-ui';
 import PrevButton from '../../_component/button-prev';
 import { CheckIcon, XIcon } from 'lucide-react';
+import { PrismicRichText } from '@prismicio/react';
+import { KeyTextField, RichTextField } from '@prismicio/types';
 
 interface ReviewFormProps {
   baseUrl: string;
+  header?: KeyTextField | string | null | undefined;
+  body?: RichTextField | string | null | undefined;
 }
 
-export default function ReviewForm({ baseUrl }: ReviewFormProps) {
+export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
   const router = useRouter();
   const { onBoardingData, resetLocalStorage } = useOnBoardingContext();
 
@@ -38,7 +42,8 @@ export default function ReviewForm({ baseUrl }: ReviewFormProps) {
   };
 
   return (
-    <DialogLayout title="Review">
+    <DialogLayout title={header || 'Review'}>
+      {body && <div className="body">{typeof body === 'string' ? body : <PrismicRichText field={body} />}</div>}
       <form action={handleFormSubmit}>
         <h2>Parent information</h2>
         <dl className="mt-5 divide-y">

@@ -25,15 +25,19 @@ import checked from './_assets/checked.png';
 import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import { generateFunName } from '../generateFunName';
 import ButtonSubmit from '../../_component/button-submit';
+import { KeyTextField, RichTextField } from '@prismicio/types';
+import { PrismicRichText } from '@prismicio/react';
 const initialState: FormErrors = {};
 
 const avatarOptions = ['kimono', 'bonsai', 'carpFish', 'daruma', 'samurai', 'temple_1', 'yukata'];
 
 interface StepThreeFormProps {
   baseUrl: string;
+  header?: KeyTextField | string | null | undefined;
+  body?: RichTextField | string | null | undefined;
 }
 
-export default function StepThreeForm({ baseUrl }: StepThreeFormProps) {
+export default function StepThreeForm({ baseUrl, header, body }: StepThreeFormProps) {
   const [serverError, formAction] = useFormState(stepThreeFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
   const [name, setName] = useState<string | null>('');
@@ -69,10 +73,11 @@ export default function StepThreeForm({ baseUrl }: StepThreeFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
   return (
-    <DialogLayout title="🎸 Hey Kids, This Part's for You! 🎸">
+    <DialogLayout title={header || "🎸 Hey Kids, This Part's for You! 🎸"}>
+      {body && <div className="body">{typeof body === 'string' ? body : <PrismicRichText field={body} />}</div>}
       {name && (
-        <div className={'flex-0 mb-10 rounded-full bg-pink-500 p-3 text-2xl font-bold text-white'}>
-          <span className={'mr-2 opacity-60'}>Your name is</span>
+        <div className={'flex-0 mb-10 rounded-lg bg-pink-500 p-3 text-2xl font-bold text-white lg:rounded-full'}>
+          <span className={'mr-2 block opacity-60 lg:inline-block'}>Your name is</span>
           <span className={'font-extrabold'}>{name}</span> 🎉
         </div>
       )}
@@ -109,6 +114,7 @@ export default function StepThreeForm({ baseUrl }: StepThreeFormProps) {
             onChange={e => {
               const formData = new FormData(formRef.current!);
               const formUpdate = Object.fromEntries(formData.entries());
+
               updateOnBoardingDetails({
                 ...onBoardingData,
                 ...formUpdate,
@@ -134,7 +140,7 @@ export default function StepThreeForm({ baseUrl }: StepThreeFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <div className="grid flex-1 grid-cols-7 gap-2">
+                      <div className="mt-5 grid flex-1 grid-cols-2 gap-2 md:grid-cols-5 lg:grid-cols-7">
                         {avatarOptions.map(avatar => (
                           <div key={avatar} className="flex flex-col items-center justify-center">
                             <label className="relative cursor-pointer">

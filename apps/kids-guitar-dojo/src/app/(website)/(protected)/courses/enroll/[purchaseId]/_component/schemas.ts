@@ -97,7 +97,7 @@ export const stepTwoSchema = z.object({
 });
 
 export const stepThreeSchema = z.object({
-  avatar: z.string().min(1, 'Please Upload Avatar'),
+  avatar: z.string().min(1, 'Please Select Avatar'),
   name: z.string().min(1, 'Please Enter Name'),
   productId: z.string().min(1, 'Please Enter Product Id'),
 });

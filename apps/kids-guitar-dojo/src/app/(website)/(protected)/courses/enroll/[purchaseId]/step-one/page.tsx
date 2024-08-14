@@ -2,6 +2,7 @@ import React from 'react';
 import StepOneForm from './_components/step-one-form';
 import { BASE_URL } from '../_component/path-types';
 import { db } from '@rocket-house-productions/integration';
+import { createClient } from '@/prismicio';
 
 export default async function StepTwo({ params }: { params: { purchaseId: string } }) {
   const baseUrl = `${BASE_URL}${params.purchaseId}`;
@@ -17,7 +18,8 @@ export default async function StepTwo({ params }: { params: { purchaseId: string
     },
   });
 
-  console.log('purchase', purchase);
+  const client = createClient();
+  const { data } = await client.getSingle('onboarding');
 
   return (
     <div>
@@ -32,6 +34,8 @@ export default async function StepTwo({ params }: { params: { purchaseId: string
             email: purchase?.account.email,
           },
         }}
+        header={data.onboarding_step_one_header}
+        body={data?.onboarding_step_one_body}
       />
     </div>
   );
