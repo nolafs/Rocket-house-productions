@@ -57,6 +57,14 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 
   return (
     <div>
+      <div className="flex items-center justify-between py-4">
+        <Input
+          placeholder="Filter users email..."
+          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+          onChange={event => table.getColumn('email')?.setFilterValue(event.target.value)}
+          className="max-w-sm"
+        />
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
