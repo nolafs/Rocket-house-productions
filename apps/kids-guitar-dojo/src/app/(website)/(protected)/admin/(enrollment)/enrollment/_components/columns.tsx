@@ -12,12 +12,14 @@ import {
   DropdownMenuTrigger,
   Badge,
   Button,
+  buttonVariants,
 } from '@rocket-house-productions/shadcn-ui';
-import { Account, Purchase } from '@prisma/client';
+import { Account, Child, Purchase } from '@prisma/client';
+import dayjs from 'dayjs';
 
-export const columns: ColumnDef<Account>[] = [
+export const columns: ColumnDef<Child>[] = [
   {
-    accessorKey: 'userId',
+    accessorKey: 'id',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
@@ -28,110 +30,110 @@ export const columns: ColumnDef<Account>[] = [
     },
   },
   {
-    accessorKey: 'firstName',
+    accessorKey: 'name',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          First Name
+          Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
   },
   {
-    accessorKey: 'lastName',
+    accessorKey: 'birthday',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Last Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: 'email',
-    header: ({ column }) => {
-      return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-  },
-
-  {
-    accessorKey: 'status',
-    header: ({ column }) => {
-      return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Status
+          Birthday
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const status = row.getValue('status') as string;
-      return <Badge variant={status ? 'default' : 'destructive'}>{status}</Badge>;
+      const birthday = row.getValue('birthday') as string;
+      return dayjs(birthday).format('MMMM D, YYYY');
     },
   },
   {
-    accessorKey: '_count.purchases',
-    header: ({ column }) => {
-      return (
-        <div className={'mx-auto text-center'}>
-          <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-            No.
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: 'purchases',
+    accessorKey: 'account.id',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Total Spend
+          Parent Account
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const purchases = row.getValue('purchases') as Purchase[];
-      const spend = purchases.reduce((acc, purchase) => acc + purchase.amount, 0);
-
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(spend / 100);
-
-      return <p className={'text-center'}>{formatted}</p>;
+      const id = row.getValue('account.id') as string;
+      return (
+        <Link href={`/admin/users/${id}`} className={buttonVariants({ size: 'sm' })}>
+          View
+        </Link>
+      );
     },
   },
+
   {
-    accessorKey: 'newsletter',
+    accessorKey: 'parentConsent',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Newsletter
+          Parent consent
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const notifications: boolean = row.getValue('newsletter');
-      return notifications ? (
+      const status = row.getValue('parentConsent') as string;
+      return status ? (
         <i>
-          <CheckIcon className={'fill-success h-6 w-6'}></CheckIcon>{' '}
+          <CheckIcon className={'text-success h-6 w-6'}></CheckIcon>{' '}
         </i>
       ) : (
         <i>
-          <XIcon className={'fill-destructive h-6 w-6'}></XIcon>
+          <XIcon className={'text-destructive h-6 w-6'}></XIcon>
         </i>
       );
+    },
+  },
+  {
+    accessorKey: 'notifications',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Notifications
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const notifications: boolean = row.getValue('notifications');
+      return notifications ? (
+        <i>
+          <CheckIcon className={'text-success h-6 w-6'}></CheckIcon>{' '}
+        </i>
+      ) : (
+        <i>
+          <XIcon className={'text-destructive h-6 w-6'}></XIcon>
+        </i>
+      );
+    },
+  },
+  {
+    accessorKey: 'createdAt',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          createdAt
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const createdAt = row.getValue('createdAt') as string;
+      return dayjs(createdAt).format('MMMM D, YYYY');
     },
   },
   {
