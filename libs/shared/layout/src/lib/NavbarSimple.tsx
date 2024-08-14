@@ -1,25 +1,25 @@
 import Link from 'next/link';
 import { Home, Menu, SettingsIcon } from 'lucide-react';
-import { NavigationProps } from '@rocket-house-productions/types';
 import { SignedIn, SignedOut, useAuth, UserButton } from '@clerk/nextjs';
 import cn from 'classnames';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import Image from 'next/image';
+import React from 'react';
 
 interface HeaderProps {
   isAdmin?: boolean;
+  logo?: any;
 }
 
-export function NavbarSimple({ isAdmin = false }: HeaderProps) {
+export function NavbarSimple({ isAdmin = false, logo }: HeaderProps) {
   return (
     <>
-      <div
-        id="navbar"
-        className="navbar-area fixed z-10 border border-b-gray-100 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
+      <div id="navbar" className="navbar-area fixed z-10 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
         <div className="container mx-auto max-w-[1266px] py-3">
           <nav className={`navbar relative flex flex-wrap justify-between`}>
             <div className="self-center">
-              <Link href="/" className={cn(buttonVariants({ variant: 'default' }))}>
-                <Home className={'mr-1 h-4 w-4'} /> Back
+              <Link href="/">
+                <Image src={logo} className="inline" alt="logo" />
                 <span className={'sr-only'}>Back to home</span>
               </Link>
             </div>

@@ -725,6 +725,70 @@ export type NavigationDocument<Lang extends string = string> = prismic.PrismicDo
   Lang
 >;
 
+/**
+ * Content for Onboarding documents
+ */
+interface OnboardingDocumentData {
+  /**
+   * Success Page Header field in *Onboarding*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.success_page_header
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  success_page_header: prismic.KeyTextField;
+
+  /**
+   * Success Page Body field in *Onboarding*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.success_page_body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  success_page_body: prismic.RichTextField;
+
+  /**
+   * Onboarding Intro Header field in *Onboarding*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_intro_header
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  onboarding_intro_header: prismic.KeyTextField;
+
+  /**
+   * Onboarding Intro Body field in *Onboarding*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_intro_body
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  onboarding_intro_body: prismic.RichTextField;
+}
+
+/**
+ * Onboarding document from Prismic
+ *
+ * - **API ID**: `onboarding`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type OnboardingDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<
+  Simplify<OnboardingDocumentData>,
+  'onboarding',
+  Lang
+>;
+
 type PageDocumentDataSlicesSlice =
   | FaqsSlice
   | PricingTableSlice
@@ -739,11 +803,11 @@ type PageDocumentDataSlicesSlice =
   | ContentImageSliceSlice;
 
 /**
- * Content for StepThreeForm documents
+ * Content for Page documents
  */
 interface PageDocumentData {
   /**
-   * Title field in *StepThreeForm*
+   * Title field in *Page*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: *None*
@@ -754,7 +818,7 @@ interface PageDocumentData {
   title: prismic.RichTextField;
 
   /**
-   * Parent field in *StepThreeForm*
+   * Parent field in *Page*
    *
    * - **Field Type**: Link
    * - **Placeholder**: *None*
@@ -765,7 +829,7 @@ interface PageDocumentData {
   parent: prismic.LinkField;
 
   /**
-   * Slice Zone field in *StepThreeForm*
+   * Slice Zone field in *Page*
    *
    * - **Field Type**: Slice Zone
    * - **Placeholder**: *None*
@@ -774,7 +838,7 @@ interface PageDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#slices
    */
   slices: prismic.SliceZone<PageDocumentDataSlicesSlice> /**
-   * Meta Title field in *StepThreeForm*
+   * Meta Title field in *Page*
    *
    * - **Field Type**: Text
    * - **Placeholder**: A title of the page used for social media and search engines
@@ -785,7 +849,7 @@ interface PageDocumentData {
   meta_title: prismic.KeyTextField;
 
   /**
-   * Meta Description field in *StepThreeForm*
+   * Meta Description field in *Page*
    *
    * - **Field Type**: Text
    * - **Placeholder**: A brief summary of the page
@@ -796,7 +860,7 @@ interface PageDocumentData {
   meta_description: prismic.KeyTextField;
 
   /**
-   * Meta Image field in *StepThreeForm*
+   * Meta Image field in *Page*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
@@ -808,7 +872,7 @@ interface PageDocumentData {
 }
 
 /**
- * StepThreeForm document from Prismic
+ * Page document from Prismic
  *
  * - **API ID**: `page`
  * - **Repeatable**: `true`
@@ -1011,7 +1075,7 @@ export interface SettingsDocumentDataSocialMediaItem {
   name: prismic.KeyTextField;
 
   /**
-   * StepThreeForm Url field in *Settings → Social Media*
+   * Page Url field in *Settings → Social Media*
    *
    * - **Field Type**: Link
    * - **Placeholder**: *None*
@@ -1194,6 +1258,7 @@ export type AllDocumentTypes =
   | HomeDocument
   | LegalDocument
   | NavigationDocument
+  | OnboardingDocument
   | PageDocument
   | PricingDocument
   | SettingsDocument;
@@ -2457,7 +2522,7 @@ export interface HeroSliceCenteredPrimaryButtonsItem {
  */
 export interface HeroSliceDefaultPrimary {
   /**
-   * StepThreeForm Name field in *Hero → Default → Primary*
+   * Page Name field in *Hero → Default → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -2541,7 +2606,7 @@ export type HeroSliceDefault = prismic.SharedSliceVariation<'default', Simplify<
  */
 export interface HeroSliceThunderDecorationPrimary {
   /**
-   * StepThreeForm Name field in *Hero → Thunder Decoration → Primary*
+   * Page Name field in *Hero → Thunder Decoration → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -2629,7 +2694,7 @@ export type HeroSliceThunderDecoration = prismic.SharedSliceVariation<
  */
 export interface HeroSliceCenteredPrimary {
   /**
-   * StepThreeForm Name field in *Hero → Centered → Primary*
+   * Page Name field in *Hero → Centered → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -2713,7 +2778,7 @@ export type HeroSliceCentered = prismic.SharedSliceVariation<'centered', Simplif
  */
 export interface HeroSliceSimplePrimary {
   /**
-   * StepThreeForm Name field in *Hero → Simple → Primary*
+   * Page Name field in *Hero → Simple → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -3520,6 +3585,8 @@ declare module '@prismicio/client' {
       NavigationDocument,
       NavigationDocumentData,
       NavigationDocumentDataLinksItem,
+      OnboardingDocument,
+      OnboardingDocumentData,
       PageDocument,
       PageDocumentData,
       PageDocumentDataSlicesSlice,
