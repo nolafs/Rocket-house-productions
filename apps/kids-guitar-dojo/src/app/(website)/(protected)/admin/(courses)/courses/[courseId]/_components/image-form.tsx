@@ -49,7 +49,7 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
       formData.append('imageUrl', values.imageUrl);
       const imageUrl = await uploadImageAction(formData);
       console.log('[IMAGE FORM] imageUrl', imageUrl);
-      //await axios.patch(`/api/courses/${courseId}`, values);
+      await axios.patch(`/api/courses/${courseId}`, imageUrl);
       toast.success('Course updated');
       toggleEdit();
       router.refresh();
