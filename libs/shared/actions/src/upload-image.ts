@@ -13,7 +13,7 @@ export const uploadImageAction = async (formData: FormData) => {
   try {
     const imageArrayBuffer = await data.imageUrl.arrayBuffer();
     const processedFile = await sharp(imageArrayBuffer).webp().toBuffer();
-    const path = `${nanoid()}.webp`;
+    const path = `images/${nanoid()}.webp`;
     await uploadFile(path, processedFile);
 
     const imageUrl = new URL(path, `https://${process.env.BUNNYCDN_CDN_HOSTNAME}/`);
