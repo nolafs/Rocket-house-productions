@@ -33,6 +33,11 @@ const nextConfig = {
         hostname: 'img.clerk.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'kids-guitar-dojo.b-cdn.net',
+        port: '',
+      },
     ],
   },
 };

@@ -41,6 +41,8 @@ const CategoryForm = ({ initialData, courseId, options }: CategoryFormProps) => 
 
   const toggleEdit = () => setIsEditing(current => !current);
 
+  console.log('initialData', options);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

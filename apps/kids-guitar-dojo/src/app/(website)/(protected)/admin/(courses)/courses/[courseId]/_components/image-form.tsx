@@ -14,16 +14,26 @@ import { Button } from '@rocket-house-productions/shadcn-ui';
 
 import { Course } from '@prisma/client';
 import { FileUpload } from '@rocket-house-productions/features';
+import { uploadImageAction } from '@rocket-house-productions/actions/server';
 
 interface ImageFormProps {
   initialData: Course;
   courseId: string;
 }
 
+const MAX_FILE_SIZE = 5000000;
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+
 const formSchema = z.object({
-  imageUrl: z.string().min(1, {
-    message: 'Image is required',
-  }),
+  imageUrl: z
+    .any()
+    .refine(files => files?.length >= 1, { message: 'Image is required.' })
+    .refine(files => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), {
+      message: '.jpg, .jpeg, .png and .webp files are accepted.',
+    })
+    .refine(files => files?.[0]?.size <= MAX_FILE_SIZE, {
+      message: `Max file size is 5MB.`,
+    }),
 });
 
 const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
@@ -34,7 +44,16 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      console.log('[IMAGE FORM] values', values);
+      const formData = new FormData();
+      formData.append('imageUrl', values.imageUrl);
+      const imageUrl = await uploadImageAction(formData);
+      console.log('[IMAGE FORM] imageUrl', {
+        imageUrl,
+      });
+      await axios.patch(`/api/courses/${courseId}`, {
+        imageUrl: imageUrl,
+      });
       toast.success('Course updated');
       toggleEdit();
       router.refresh();
@@ -69,13 +88,20 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
             <ImageIcon className="h-10 w-10 text-slate-500" />
           </div>
         ) : (
-          <div className="relative mt-2 aspect-video">
+          <div className="relative h-60 w-full">
             <Image alt="Upload" fill className="rounded-md object-cover" src={initialData.imageUrl} />
           </div>
         ))}
       {isEditing && (
         <div>
-          file upload here
+          <FileUpload
+            onChange={file => {
+              if (file) {
+                console.log('file', file);
+                onSubmit({ imageUrl: file[0] });
+              }
+            }}
+          />
           <div className="text-muted-foreground mt-4 text-xs">16:9 aspect ratio recommended</div>
         </div>
       )}
