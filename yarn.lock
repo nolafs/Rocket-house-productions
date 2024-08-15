@@ -2613,12 +2613,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/bundle-analyzer@^14.2yarn.5":
-  version: 15.0.0-rc.0
-  resolution: "@next/bundle-analyzer@npm:15.0.0-rc.0"
+"@next/bundle-analyzer@npm:^14.2.5":
+  version: 14.2.5
+  resolution: "@next/bundle-analyzer@npm:14.2.5"
   dependencies:
     webpack-bundle-analyzer: "npm:4.10.1"
-  checksum: 10c0/4127967901e3c4b20c70c2a390591516989f76427bc2b8a7edc518739ab23a02c103fa629096b4bc0f4631a2619895c093362d049b3e5e3b1ca9173af14e0e5a
+  checksum: 10c0/0f5b8657e7797c4b30335fe0300a362eb32d3d96a93ee24e85e55fdee6fa3896a86ce81429003949e21d6c9f03114f42293bb74c6fba745c4f0fee9968e2d027
   languageName: node
   linkType: hard
 
@@ -4862,7 +4862,7 @@ __metadata:
     "@gsap/react": "npm:^2.1.1"
     "@hello-pangea/dnd": "npm:^16.6.0"
     "@hookform/resolvers": "npm:^3.9.0"
-    "@next/bundle-analyzer": ^14.2yarn.5
+    "@next/bundle-analyzer": "npm:^14.2.5"
     "@nx/cypress": "npm:19.5.1"
     "@nx/eslint": "npm:19.5.1"
     "@nx/eslint-plugin": "npm:19.5.1"
