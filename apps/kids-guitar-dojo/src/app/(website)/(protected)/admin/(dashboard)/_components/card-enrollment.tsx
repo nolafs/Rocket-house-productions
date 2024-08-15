@@ -18,8 +18,6 @@ export async function CardEnrollment() {
     },
   });
 
-  console.log(`Children added this month: ${childrenCountCurrentMonth}`);
-
   const previousMonthStart = new Date(currentMonthStart);
   previousMonthStart.setMonth(previousMonthStart.getMonth() - 1); // Move to the start of the previous month
 
@@ -31,10 +29,6 @@ export async function CardEnrollment() {
       },
     },
   });
-
-  console.log(`Children added last month: ${childrenCountPreviousMonth}`);
-
-  const difference = childrenCountCurrentMonth - childrenCountPreviousMonth;
 
   let percentDifference;
 

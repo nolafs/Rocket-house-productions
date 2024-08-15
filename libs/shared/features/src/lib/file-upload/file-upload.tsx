@@ -1,28 +1,29 @@
 'use client';
 
-import toast from 'react-hot-toast';
-
-//import { UploadDropzone } from '@/lib/uploadthing';
-//import { ourFileRouter } from '@/app/api/uploadthing/core';
+import Dropzone from 'react-dropzone';
+import { CloudUploadIcon } from 'lucide-react';
 
 interface FileUploadProps {
-  onChange: (url?: string) => void;
-  endpoint: any; //keyof typeof ourFileRouter;
+  onChange: (file?: any) => void;
 }
 
-export const FileUpload = ({ onChange, endpoint }: FileUploadProps) => {
-  /*
+export const FileUpload = ({ onChange }: FileUploadProps) => {
   return (
-    <UploadDropzone
-      endpoint={endpoint}
-      onClientUploadComplete={(res) => {
-        onChange(res?.[0].url);
-      }}
-      onUploadError={(error: Error) => {
-        toast.error(`${error?.message}`);
-      }}
-    />
+    <Dropzone onDrop={acceptedFiles => onChange(acceptedFiles)}>
+      {({ getRootProps, getInputProps }) => (
+        <section>
+          <div {...getRootProps()}>
+            <input {...getInputProps()} />
+            <div
+              className={
+                'mt-2 flex aspect-video h-60 flex-col items-center justify-center rounded-md border-4 border-dashed border-slate-400 bg-slate-200'
+              }>
+              <CloudUploadIcon className={'h-10 w-10 text-slate-500'} />
+              <div>Drag 'n' drop some files here, or click to select files</div>
+            </div>
+          </div>
+        </section>
+      )}
+    </Dropzone>
   );
-
-   */
 };

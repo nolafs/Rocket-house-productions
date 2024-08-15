@@ -9,7 +9,6 @@ export async function CardRevenue() {
     },
   });
 
-  console.log('purchases', purchases);
   let spend = '0';
 
   if (purchases) {
