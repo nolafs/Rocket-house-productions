@@ -48,8 +48,12 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
       const formData = new FormData();
       formData.append('imageUrl', values.imageUrl);
       const imageUrl = await uploadImageAction(formData);
-      console.log('[IMAGE FORM] imageUrl', imageUrl);
-      await axios.patch(`/api/courses/${courseId}`, imageUrl);
+      console.log('[IMAGE FORM] imageUrl', {
+        imageUrl,
+      });
+      await axios.patch(`/api/courses/${courseId}`, {
+        imageUrl: imageUrl,
+      });
       toast.success('Course updated');
       toggleEdit();
       router.refresh();
@@ -84,7 +88,7 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
             <ImageIcon className="h-10 w-10 text-slate-500" />
           </div>
         ) : (
-          <div className="relative mt-2 aspect-video">
+          <div className="relative h-60 w-full">
             <Image alt="Upload" fill className="rounded-md object-cover" src={initialData.imageUrl} />
           </div>
         ))}
