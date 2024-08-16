@@ -38,7 +38,12 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
     return redirect('/');
   }
 
-  const requiredFields = [moduleSection.title, moduleSection.description, moduleSection.position];
+  const requiredFields = [
+    moduleSection.title,
+    moduleSection.description,
+    //moduleSection.position,
+    //moduleSection.lessons.some(lesson => lesson.isPublished),
+  ];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -56,7 +61,7 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
         <div className="flex items-center justify-between">
           <div className="w-full">
             <Link
-              href={`/courses/${params.courseId}`}
+              href={`/admin/courses/${params.courseId}`}
               className="mb-6 flex items-center text-sm transition hover:opacity-75">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to course setup

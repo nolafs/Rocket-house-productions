@@ -18,6 +18,7 @@ model Course {
   id          String  @id @default(uuid())
   userId      String
   title       String  @db.Text
+  slug        String? @unique
   description String? @db.Text
   imageUrl    String? @db.Text
   isPublished Boolean @default(false)
@@ -38,6 +39,7 @@ model Course {
 model Module {
   id          String  @id @default(uuid())
   title       String
+  slug String? @unique
   description String? @db.Text
   position    Int
   isPublished Boolean @default(false)
@@ -79,6 +81,7 @@ model Attachment {
 model Lesson {
   id          String  @id @default(uuid())
   title       String
+  slug        String? @unique
   description String? @db.Text
   videoUrl    String? @db.Text
   position    Int

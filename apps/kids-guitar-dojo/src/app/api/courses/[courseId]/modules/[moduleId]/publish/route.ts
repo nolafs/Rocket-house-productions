@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration';
 
-export async function PATCH(req: Request, { params }: { params: { courseId: string; chapterId: string } }) {
+export async function PATCH(req: Request, { params }: { params: { courseId: string; moduleId: string } }) {
   try {
     const { userId } = auth();
 
@@ -22,14 +22,14 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
 
     const moduleSection = await db.module.findUnique({
       where: {
-        id: params.chapterId,
+        id: params.moduleId,
         courseId: params.courseId,
       },
     });
 
-    const publishedChapter = await db.module.update({
+    const publishedModule = await db.module.update({
       where: {
-        id: params.chapterId,
+        id: params.moduleId,
         courseId: params.courseId,
       },
       data: {
@@ -37,7 +37,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
       },
     });
 
-    return NextResponse.json(publishedChapter);
+    return NextResponse.json(publishedModule);
   } catch (error) {
     console.log('[COURSES_COURSE-ID_MODULE-ID_PUBLISH]', error);
     return new NextResponse('Internal Error', { status: 500 });
