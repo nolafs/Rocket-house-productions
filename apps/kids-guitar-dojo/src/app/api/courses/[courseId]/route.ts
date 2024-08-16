@@ -17,7 +17,7 @@ export async function DELETE(req: Request, { params }: { params: { courseId: str
       },
       include: {
         /*
-        chapters: {
+        modules: {
           include: {
             muxData: true,
           },
@@ -32,7 +32,7 @@ export async function DELETE(req: Request, { params }: { params: { courseId: str
     }
 
     /*
-    for (const chapter of course.chapters) {
+    for (const chapter of course.modules) {
       if (chapter.muxData?.assetId) {
         // await Video.Assets.del(chapter.muxData.assetId);
       }

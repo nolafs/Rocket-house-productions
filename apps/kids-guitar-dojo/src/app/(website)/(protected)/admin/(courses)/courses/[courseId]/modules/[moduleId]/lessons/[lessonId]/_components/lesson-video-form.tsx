@@ -18,14 +18,15 @@ import { FileUpload } from '@rocket-house-productions/features';
 interface ChapterVideoFormProps {
   initialData: Lesson & { muxData?: BunnyData | null };
   courseId: string;
-  chapterId: string;
+  moduleId: string;
+  lessonId: string;
 }
 
 const formSchema = z.object({
   videoUrl: z.string().min(1),
 });
 
-const ChapterVideoForm = ({ initialData, courseId, chapterId }: ChapterVideoFormProps) => {
+const LessonVideoForm = ({ initialData, courseId, moduleId, lessonId }: ChapterVideoFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -33,8 +34,8 @@ const ChapterVideoForm = ({ initialData, courseId, chapterId }: ChapterVideoForm
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
-      toast.success('Chapter updated');
+      await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`, values);
+      toast.success('Lesson updated');
       toggleEdit();
       router.refresh();
     } catch (error) {
@@ -85,4 +86,4 @@ const ChapterVideoForm = ({ initialData, courseId, chapterId }: ChapterVideoForm
   );
 };
 
-export default ChapterVideoForm;
+export default LessonVideoForm;
