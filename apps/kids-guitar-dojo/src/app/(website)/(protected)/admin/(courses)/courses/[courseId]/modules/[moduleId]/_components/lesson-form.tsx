@@ -11,11 +11,11 @@ import { useForm } from 'react-hook-form';
 import { Loader2, PlusCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import { ChaptersList } from './chapters-list';
+import { LessonList } from './lesson-list';
 
 import cn from 'classnames';
 
-import { Module, Course } from '@prisma/client';
+import { Module, Lesson } from '@prisma/client';
 import {
   Button,
   Form,
@@ -26,8 +26,9 @@ import {
   Input,
 } from '@rocket-house-productions/shadcn-ui';
 
-interface ChaptersFormProps {
-  initialData: Course & { modules: Module[] };
+interface LessonsFormProps {
+  initialData: Module & { lessons: Lesson[] };
+  moduleId: string;
   courseId: string;
 }
 
@@ -35,7 +36,7 @@ const formSchema = z.object({
   title: z.string().min(1),
 });
 
-const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
+const LessonForm = ({ initialData, moduleId, courseId }: LessonsFormProps) => {
   const router = useRouter();
 
   const [isCreating, setIsCreating] = useState(false);
@@ -56,8 +57,8 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${courseId}/chapters`, values);
-      toast.success('Chapter created');
+      await axios.post(`/api/courses/${courseId}/modules/${moduleId}/lessons`, values);
+      toast.success('Lesson created');
       toggleCreating();
       router.refresh();
     } catch (error) {
@@ -69,10 +70,10 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
     try {
       setIsUpdating(true);
 
-      await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
+      await axios.put(`/api/courses/${courseId}/modules/${moduleId}/lessons/reorder`, {
         list: updateData,
       });
-      toast.success('Chapters reordered');
+      toast.success('Lesson reordered');
       router.refresh();
     } catch (error) {
       toast.error('Something went wrong');
@@ -82,7 +83,7 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
   };
 
   const onEdit = (id: string) => {
-    router.push(`/teacher/courses/${courseId}/chapters/${id}`);
+    router.push(`/admin/courses/${courseId}/modules/${moduleId}/lessons/${id}`);
   };
 
   return (
@@ -93,14 +94,14 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
         </div>
       )}
       <div className="flex items-center justify-between font-medium">
-        Course chapters
+        Module lesson
         <Button onClick={toggleCreating} variant="ghost">
           {isCreating ? (
             <>Cancel</>
           ) : (
             <>
               <PlusCircle className="mr-2 h-4 w-4" />
-              Add a chapter
+              Add a Lesson
             </>
           )}
         </Button>
@@ -127,14 +128,14 @@ const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
         </Form>
       )}
       {!isCreating && (
-        <div className={cn('mt-2 text-sm', !initialData.modules.length && 'italic text-slate-500')}>
-          {!initialData.modules.length && 'No chapters'}
-          <ChaptersList onEdit={onEdit} onReorder={onReorder} items={initialData.modules || []} />
+        <div className={cn('mt-2 text-sm', !initialData.lessons.length && 'italic text-slate-500')}>
+          {!initialData.lessons.length && 'No lessons'}
+          <LessonList onEdit={onEdit} onReorder={onReorder} items={initialData.lessons || []} />
         </div>
       )}
-      {!isCreating && <p className="text-muted-foreground mt-4 text-xs">Drag and drop to reorder the chapters</p>}
+      {!isCreating && <p className="text-muted-foreground mt-4 text-xs">Drag and drop to reorder the lessons</p>}
     </div>
   );
 };
 
-export default ChaptersForm;
+export default LessonForm;
