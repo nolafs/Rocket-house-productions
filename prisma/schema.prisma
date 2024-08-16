@@ -65,6 +65,8 @@ model Attachment {
   name String
   url  String @db.Text
 
+  type String?
+
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 

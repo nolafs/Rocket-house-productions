@@ -56,7 +56,7 @@ export const columns: ColumnDef<Child>[] = [
     },
   },
   {
-    accessorKey: 'account.id',
+    accessorKey: 'account',
     header: ({ column }) => {
       return (
         <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
@@ -66,9 +66,9 @@ export const columns: ColumnDef<Child>[] = [
       );
     },
     cell: ({ row }) => {
-      const id = row.getValue('account.id') as string;
+      const account = row.getValue('account') as Account;
       return (
-        <Link href={`/admin/users/${id}`} className={buttonVariants({ size: 'sm' })}>
+        <Link href={`/admin/users/${account?.id}`} className={buttonVariants({ size: 'sm' })}>
           View
         </Link>
       );

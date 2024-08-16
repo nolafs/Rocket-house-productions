@@ -3,25 +3,46 @@ import 'server-only';
 import { uploadFile } from './storage';
 import sharp from 'sharp';
 import { nanoid } from 'nanoid';
-import { parseAsync } from 'valibot';
 import { UploadImageSchema } from './schema/upload-image.schema';
 
 export const uploadImageAction = async (formData: FormData) => {
   const formDataObject = Object.fromEntries(formData.entries());
-  const data = await parseAsync(UploadImageSchema, formDataObject);
+  // zod validate
+  const validated = UploadImageSchema.safeParse(formDataObject);
 
-  try {
-    const imageArrayBuffer = await data.imageUrl.arrayBuffer();
-    const processedFile = await sharp(imageArrayBuffer).webp().toBuffer();
-    const path = `images/${nanoid()}.webp`;
-    await uploadFile(path, processedFile);
+  console.log('[uploadImageAction] validated', formDataObject);
 
-    const imageUrl = new URL(path, `https://${process.env.BUNNYCDN_CDN_HOSTNAME}/`);
+  if (!validated.success) {
+    console.log('[uploadImageAction] error', validated.error);
+    return {
+      status: 'error',
+      validationErrors: validated?.error.issues,
+      file: null,
+    };
+  } else {
+    try {
+      console.log('[uploadImageAction] success', validated);
 
-    console.log('imageUrl', imageUrl.toString());
-
-    return imageUrl.toString();
-  } catch (error) {
-    console.error('[uploadImageAction] Error uploading image', error);
+      const data = validated.data;
+      console.log('[uploadImageAction] data', data);
+      const imageArrayBuffer = await data.imageFiles.arrayBuffer();
+      const processedFile = await sharp(imageArrayBuffer).webp().toBuffer();
+      const path = `images/${nanoid()}.webp`;
+      const upload = await uploadFile(path, processedFile);
+      const imageUrl = new URL(path, `https://${process.env.BUNNYCDN_CDN_HOSTNAME}/`);
+      if (upload) {
+        return {
+          status: 'success',
+          file: imageUrl.toString(),
+        };
+      } else {
+        return {
+          status: 'error',
+          file: null,
+        };
+      }
+    } catch (error) {
+      console.error('[uploadImageAction] Error uploading image', error);
+    }
   }
 };
