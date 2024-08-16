@@ -27,10 +27,10 @@ const LessonActions = ({ disabled, courseId, moduleId, lessonId, isPublished }: 
 
       if (isPublished) {
         await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/unpublish`);
-        toast.success('Chapter unpublished');
+        toast.success('Lesson unpublished');
       } else {
         await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/publish`);
-        toast.success('Chapter published');
+        toast.success('Lesson published');
       }
 
       router.refresh();

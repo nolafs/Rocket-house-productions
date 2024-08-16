@@ -32,6 +32,18 @@ export default async function Layout({ children, params }: LayoutProps) {
     },
   });
 
+  if (!child) {
+    return redirect(`/courses/error?status=error&message=No%20child%20found`);
+  }
+
+  //Get latest course
+  const course = await db.course.findFirst({
+    where: {
+      id: purchase.courseId,
+      isPublished: true,
+    },
+  });
+
   return (
     <div className={'lesson'}>
       <ParallaxScene>
