@@ -9,10 +9,21 @@ import axios from 'axios';
 import { File, Loader2, PlusCircle, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+} from '@rocket-house-productions/shadcn-ui';
 
 import { Attachment, Course } from '@prisma/client';
 import { FileUpload } from '@rocket-house-productions/features';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface AttachmentFormProps {
   initialData: Course & { attachments: Attachment[] };
@@ -21,6 +32,8 @@ interface AttachmentFormProps {
 
 const formSchema = z.object({
   url: z.string().min(1),
+  name: z.string().min(1),
+  type: z.string().min(1),
 });
 
 const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
@@ -28,9 +41,20 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      url: '',
+      name: '',
+      type: '',
+    },
+  });
+
   const toggleEdit = () => setIsEditing(current => !current);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log('[ATTACHMENT FORM]', values);
+
     try {
       await axios.post(`/api/courses/${courseId}/attachments`, values);
       toast.success('Course updated');
@@ -99,7 +123,52 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
       )}
       {isEditing && (
         <div>
-          File upload here
+          <Form {...(form as any)}>
+            <form>
+              <FormField
+                control={form.control as any}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={'sr-only'}>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control as any}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={'sr-only'}>Type</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Type" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control as any}
+                name="url"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className={'sr-only'}>Image</FormLabel>
+                    <FormControl>
+                      <FileUpload onChange={file => field.onChange(file)} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button onClick={form.handleSubmit(onSubmit)} variant="default" className="mt-4">
+                Save
+              </Button>
+            </form>
+          </Form>
           <div className="text-muted-foreground mt-4 text-xs">
             Add anything your students might need to complete the course
           </div>

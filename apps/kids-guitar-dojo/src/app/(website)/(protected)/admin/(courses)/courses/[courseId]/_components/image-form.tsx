@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import * as z from 'zod';
-import axios from 'axios';
 
 import { ImageIcon, Pencil, PlusCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -13,27 +12,16 @@ import toast from 'react-hot-toast';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 
 import { Course } from '@prisma/client';
-import { FileUpload } from '@rocket-house-productions/features';
-import { uploadImageAction } from '@rocket-house-productions/actions/server';
+import { FileImageUpload } from '@rocket-house-productions/features';
+import axios from 'axios';
 
 interface ImageFormProps {
   initialData: Course;
   courseId: string;
 }
 
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-
 const formSchema = z.object({
-  imageUrl: z
-    .any()
-    .refine(files => files?.length >= 1, { message: 'Image is required.' })
-    .refine(files => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type), {
-      message: '.jpg, .jpeg, .png and .webp files are accepted.',
-    })
-    .refine(files => files?.[0]?.size <= MAX_FILE_SIZE, {
-      message: `Max file size is 5MB.`,
-    }),
+  imageUrl: z.string().optional(),
 });
 
 const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
@@ -44,16 +32,12 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log('[IMAGE FORM] values', values);
-      const formData = new FormData();
-      formData.append('imageUrl', values.imageUrl);
-      const imageUrl = await uploadImageAction(formData);
-      console.log('[IMAGE FORM] imageUrl', {
-        imageUrl,
-      });
+      console.log('[IMAGE FORM]', values);
+
       await axios.patch(`/api/courses/${courseId}`, {
-        imageUrl: imageUrl,
+        imageUrl: values.imageUrl,
       });
+
       toast.success('Course updated');
       toggleEdit();
       router.refresh();
@@ -94,11 +78,10 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
         ))}
       {isEditing && (
         <div>
-          <FileUpload
+          <FileImageUpload
             onChange={file => {
               if (file) {
-                console.log('file', file);
-                onSubmit({ imageUrl: file[0] });
+                onSubmit({ imageUrl: file });
               }
             }}
           />
