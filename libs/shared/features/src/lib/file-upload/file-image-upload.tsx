@@ -1,44 +1,34 @@
 'use client';
 
 import Dropzone from 'react-dropzone';
-import { CloudUploadIcon, File } from 'lucide-react';
-import { uploadFileAction } from '@rocket-house-productions/actions/server';
+import { CloudUploadIcon } from 'lucide-react';
+import { uploadImageAction } from '@rocket-house-productions/actions/server';
 import { useState } from 'react';
 
 interface FileUploadProps {
   onChange: (file?: any) => void;
 }
 
-export const FileUpload = ({ onChange }: FileUploadProps) => {
+export const FileImageUpload = ({ onChange }: FileUploadProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [file, setFile] = useState<any>(null);
 
   const onFileUpload = async (files: File[]) => {
-    console.log('[FileUpload] files', files);
-    setError(null);
-    setFile(null);
-    if (files.length === 0) {
-      console.log('No files selected');
-    }
+    const formData = new FormData();
+    const fileObjects = files.map(file => {
+      formData.append('imageFiles', file, file.name);
+    });
 
     setLoading(true);
 
-    const formData = new FormData();
-    const fileObjects = files.map(file => {
-      formData.append('file', file, file.name);
-    });
-
-    const response = await uploadFileAction(formData);
+    const response = await uploadImageAction(formData);
     if (response?.status === 'success') {
-      console.log('[FileUpload] response', response);
       setLoading(false);
-      setFile(response.file);
       onChange(response.file);
     } else {
       setLoading(false);
-      setError('Error uploading file');
-      console.error('[FileUpload] error uploading file', response);
+      setError('Error uploading image');
+      console.error('[FileUpload] error uploading image', response);
     }
   };
 
@@ -60,12 +50,6 @@ export const FileUpload = ({ onChange }: FileUploadProps) => {
           </section>
         )}
       </Dropzone>
-      {!loading && !error && file && (
-        <div className="flex w-full items-center rounded-md border-sky-200 bg-sky-100 p-3 text-sky-700">
-          <File className="mr-2 h-4 w-4 flex-shrink-0" />
-          <p className="line-clamp-1 text-xs">{file}</p>
-        </div>
-      )}
       {loading && <div className={'text-sm'}>Uploading...</div>}
       {error && <div className={'text-error text-sm font-bold'}>Error: {error}</div>}
     </>
