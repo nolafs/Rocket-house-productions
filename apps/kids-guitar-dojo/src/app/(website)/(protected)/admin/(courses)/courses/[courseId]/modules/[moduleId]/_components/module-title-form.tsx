@@ -14,28 +14,26 @@ import toast from 'react-hot-toast';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
+  FormMessage,
+  Input,
   Button,
-  Checkbox,
 } from '@rocket-house-productions/shadcn-ui';
 
-import cn from 'classnames';
-
-import { Lesson } from '@prisma/client';
-
-interface ChapterAccessFormProps {
-  initialData: Lesson;
+interface ModuleTitleFormProps {
+  initialData: {
+    title: string;
+  };
   courseId: string;
-  chapterId: string;
+  moduleId: string;
 }
 
 const formSchema = z.object({
-  isFree: z.boolean().default(false),
+  title: z.string().min(1),
 });
 
-const ChapterAccessForm = ({ initialData, courseId, chapterId }: ChapterAccessFormProps) => {
+const ModuleTitleForm = ({ initialData, courseId, moduleId }: ModuleTitleFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -43,16 +41,14 @@ const ChapterAccessForm = ({ initialData, courseId, chapterId }: ChapterAccessFo
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      isFree: Boolean(initialData.isFree),
-    },
+    defaultValues: initialData,
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      await axios.patch(`/api/courses/${courseId}/module/${moduleId}`, values);
       toast.success('Chapter updated');
       toggleEdit();
       router.refresh();
@@ -64,37 +60,31 @@ const ChapterAccessForm = ({ initialData, courseId, chapterId }: ChapterAccessFo
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">
-        Chapter access
+        Module title
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit access
+              Edit title
             </>
           )}
         </Button>
       </div>
-      {!isEditing && (
-        <div className={cn('mt-2 text-sm', !initialData.isFree && 'italic text-slate-500')}>
-          {initialData.isFree ? <p>This chapter is free for preview.</p> : <p>This chapter is not free.</p>}
-        </div>
-      )}
+      {!isEditing && <p className="mt-2 text-sm">{initialData.title}</p>}
       {isEditing && (
         <Form {...(form as any)}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control as any}
-              name="isFree"
+              name="title"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem>
                   <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    <Input disabled={isSubmitting} placeholder="ex. 'Introduction to the course'" {...field} />
                   </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormDescription>Check this box if you want to make this chapter free for preview</FormDescription>
-                  </div>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -110,4 +100,4 @@ const ChapterAccessForm = ({ initialData, courseId, chapterId }: ChapterAccessFo
   );
 };
 
-export default ChapterAccessForm;
+export default ModuleTitleForm;

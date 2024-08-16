@@ -10,7 +10,7 @@ import DescriptionForm from './_components/description-form';
 import ImageForm from './_components/image-form';
 import CategoryForm from './_components/category-form';
 import AttachmentForm from './_components/attachment-form';
-import ChaptersForm from './_components/chapters-form';
+import ModulesForm from './_components/modules-form';
 import Actions from './_components/actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
@@ -48,8 +48,6 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
       name: 'asc',
     },
   });
-
-  console.log('course', course, 'categories', categories);
 
   if (!course) {
     return redirect('/');
@@ -107,9 +105,9 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={ListChecks} />
-                <h2 className="text-xl">Course chapters</h2>
+                <h2 className="text-xl">Course Modules</h2>
               </div>
-              <ChaptersForm initialData={course} courseId={course.id} />
+              <ModulesForm initialData={course} courseId={course.id} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">

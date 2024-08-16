@@ -9,14 +9,14 @@ import { Trash } from 'lucide-react';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { ConfirmModal } from '@rocket-house-productions/features';
 
-interface ChapterActionsProps {
+interface ModuleActionsProps {
   disabled: boolean;
   courseId: string;
-  chapterId: string;
+  moduleId: string;
   isPublished: boolean;
 }
 
-const ChapterActions = ({ disabled, courseId, chapterId, isPublished }: ChapterActionsProps) => {
+const ModuleActions = ({ disabled, courseId, moduleId, isPublished }: ModuleActionsProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,10 +25,10 @@ const ChapterActions = ({ disabled, courseId, chapterId, isPublished }: ChapterA
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/unpublish`);
+        await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/unpublish`);
         toast.success('Chapter unpublished');
       } else {
-        await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/publish`);
+        await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/publish`);
         toast.success('Chapter published');
       }
 
@@ -44,11 +44,11 @@ const ChapterActions = ({ disabled, courseId, chapterId, isPublished }: ChapterA
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
+      await axios.delete(`/api/courses/${courseId}/modules/${moduleId}`);
 
-      toast.success('Chapter deleted');
+      toast.success('Module deleted');
       router.refresh();
-      router.push(`/teacher/courses/${courseId}`);
+      router.push(`/courses/${courseId}`);
     } catch (error) {
       toast.error('Something went wrong');
     } finally {
@@ -70,4 +70,4 @@ const ChapterActions = ({ disabled, courseId, chapterId, isPublished }: ChapterA
   );
 };
 
-export default ChapterActions;
+export default ModuleActions;
