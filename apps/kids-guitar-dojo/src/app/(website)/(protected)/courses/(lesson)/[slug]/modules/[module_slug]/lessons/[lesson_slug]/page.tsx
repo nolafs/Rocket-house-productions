@@ -57,8 +57,10 @@ export default async function Page({ params }: PageProps) {
   console.log('lesson', data);
 
   return (
-    <div>
+    <div className={'prose prose-sm md:prose-md lg:prose-lg max-w-5xl'}>
+      <div>Video here</div>
       <h1>{data?.lesson.title}</h1>
+      {data?.lesson?.description && <div dangerouslySetInnerHTML={{ __html: data?.lesson?.description }}></div>}
     </div>
   );
 }
