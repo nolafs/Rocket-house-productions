@@ -1,6 +1,6 @@
 import SocialLink from './social-link';
 import cn from 'classnames';
-// eslint-disable-next-line @nx/enforce-module-boundaries
+
 import { SocialLinkItemType } from '@rocket-house-productions/types';
 
 /* eslint-disable-next-line */

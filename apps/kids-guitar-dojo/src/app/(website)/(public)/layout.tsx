@@ -1,10 +1,7 @@
 import '../../../styles/navbar.scss';
 import { Suspense } from 'react';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import logo from '@assets/logo.png';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { createClient } from '@/prismicio';
 import NextTopLoader from 'nextjs-toploader';
 import { auth } from '@clerk/nextjs/server';

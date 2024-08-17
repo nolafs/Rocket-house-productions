@@ -2,6 +2,7 @@ import { auth, clerkClient } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { getAccount } from '@rocket-house-productions/actions/server';
+import { db } from '@rocket-house-productions/integration';
 
 export default async function Page({ params }: { params: { product: string[] } }) {
   const { userId } = auth();
@@ -59,8 +60,16 @@ export default async function Page({ params }: { params: { product: string[] } }
       // All purchases are enrolled
       if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
         // Only one purchase, and it's enrolled
-        console.log('[COURSE] SINGLE PURCHASE ENROLLED - GO TO LESSON');
-        return redirect(`/courses/lesson/${userDb.purchases[0].id}`);
+
+        const course = await db.course.findUnique({
+          where: {
+            id: userDb.purchases[0].courseId,
+          },
+        });
+
+        console.log('[COURSE] SINGLE PURCHASE ENROLLED - GO TO LESSON', course);
+
+        return redirect(`/courses/${course?.slug}`);
       } else {
         console.log('[COURSE] ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
         // todo: go to course selection
@@ -72,7 +81,7 @@ export default async function Page({ params }: { params: { product: string[] } }
     } else {
       // More than one purchase is not enrolled
       console.log('[COURSE] PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
-      // todo: select your purchase to [purchaseId]
+      // todo: select your purchase to [module_slug]
     }
   } else {
     console.log('[COURSE] NO PURCHASES FOUND');

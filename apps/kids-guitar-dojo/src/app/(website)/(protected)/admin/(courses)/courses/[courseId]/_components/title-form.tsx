@@ -19,7 +19,9 @@ import {
   FormMessage,
   Input,
   Button,
+  FormLabel,
 } from '@rocket-house-productions/shadcn-ui';
+import { SlugFormControl } from '@rocket-house-productions/lesson';
 
 interface TitleFormProps {
   initialData: {
@@ -29,14 +31,14 @@ interface TitleFormProps {
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: 'Title is required',
-  }),
+  title: z.string().min(1, 'Title is required'),
+  slug: z.string().min(1, 'Slug is required').nullable(),
 });
 
 const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(initialData.title);
 
   const toggleEdit = () => setIsEditing(current => !current);
 
@@ -84,6 +86,24 @@ const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
                 <FormItem>
                   <FormControl>
                     <Input disabled={isSubmitting} placeholder="ex. 'Advanced web development'" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control as any}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Slug</FormLabel>
+                  <FormControl>
+                    <SlugFormControl
+                      disabled={isSubmitting}
+                      initialTitle={title}
+                      {...field}
+                      onSlugChange={newSlug => field.onChange(newSlug)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

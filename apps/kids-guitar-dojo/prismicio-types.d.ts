@@ -669,6 +669,61 @@ export type LegalDocument<Lang extends string = string> = prismic.PrismicDocumen
   Lang
 >;
 
+type LessonDocumentDataSlicesSlice = RichTextSliceSlice;
+
+/**
+ * Content for Lesson documents
+ */
+interface LessonDocumentData {
+  /**
+   * Title field in *Lesson*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Subtitle field in *Lesson*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.subtitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  subtitle: prismic.KeyTextField;
+
+  /**
+   * Slice Zone field in *Lesson*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<LessonDocumentDataSlicesSlice>;
+}
+
+/**
+ * Lesson document from Prismic
+ *
+ * - **API ID**: `lesson`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type LessonDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+  Simplify<LessonDocumentData>,
+  'lesson',
+  Lang
+>;
+
 /**
  * Item in *Navigation → Links*
  */
@@ -1345,6 +1400,7 @@ export type AllDocumentTypes =
   | FaqDocument
   | HomeDocument
   | LegalDocument
+  | LessonDocument
   | NavigationDocument
   | OnboardingDocument
   | PageDocument
@@ -3670,6 +3726,9 @@ declare module '@prismicio/client' {
       LegalDocument,
       LegalDocumentData,
       LegalDocumentDataSlicesSlice,
+      LessonDocument,
+      LessonDocumentData,
+      LessonDocumentDataSlicesSlice,
       NavigationDocument,
       NavigationDocumentData,
       NavigationDocumentDataLinksItem,

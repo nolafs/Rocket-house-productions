@@ -1,7 +1,7 @@
 'use client';
 import SocialIcons from './social-icons';
 import cn from 'classnames';
-// eslint-disable-next-line @nx/enforce-module-boundaries
+
 import { LinkPrismicType, SocialLinkItemType } from '@rocket-house-productions/types';
 import { Button } from '@rocket-house-productions/ui';
 
