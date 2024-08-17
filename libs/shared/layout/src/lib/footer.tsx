@@ -3,11 +3,10 @@ import { PrismicNextLink } from '@prismicio/next';
 import { PrismicText } from '@prismicio/react';
 import React from 'react';
 import { asText } from '@prismicio/client';
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import SocialList from '../../../features/src/lib/social-list/social-list';
+
 import Link from 'next/link';
 import Image from 'next/image';
-import { NewsletterForm } from '@rocket-house-productions/features';
+import { NewsletterForm, SocialList } from '@rocket-house-productions/features';
 
 export interface FooterProps {
   navigation: NavigationProps;

@@ -1,32 +1,40 @@
 import { db } from '@rocket-house-productions/integration';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { auth } from '@clerk/nextjs/server';
+import Link from 'next/link';
+import cn from 'classnames';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 
 interface PageProps {
-  params: { purchaseId: string };
+  params: { slug: string };
 }
 
 export default async function Page({ params }: PageProps) {
-  const purchase = await db.purchase.findFirst({
-    where: {
-      id: params.purchaseId,
-    },
-  });
+  const { userId } = auth();
 
-  console.log('[LESSON] purchase', purchase);
-
-  if (!purchase) {
-    return notFound();
+  if (!userId) {
+    return redirect('/');
   }
 
   const course = await db.course.findFirst({
     where: {
-      id: purchase.courseId,
+      slug: params.slug,
       isPublished: true,
     },
     include: {
       modules: {
+        where: {
+          isPublished: true,
+        },
+        orderBy: {
+          position: 'asc',
+        },
         include: {
-          lessons: true,
+          lessons: {
+            where: {
+              isPublished: true,
+            },
+          },
         },
       },
     },
@@ -47,10 +55,14 @@ export default async function Page({ params }: PageProps) {
               <h2>
                 {idx + 1} {module.title}
               </h2>
-              <ul className={'indent-1.5 text-sm'}>
-                {module.lessons.map(lesson => (
+              <ul className={'ml-10 text-sm'}>
+                {module.lessons.map((lesson, idx) => (
                   <li key={lesson.id}>
-                    <h3>{lesson.title}</h3>
+                    <Link
+                      className={cn(buttonVariants({ variant: 'ghost' }))}
+                      href={`/courses/${course.slug}/modules/${module.slug}/lessons/${lesson.slug}`}>
+                      Lesson {idx + 1}: {lesson.title}
+                    </Link>
                   </li>
                 ))}
               </ul>

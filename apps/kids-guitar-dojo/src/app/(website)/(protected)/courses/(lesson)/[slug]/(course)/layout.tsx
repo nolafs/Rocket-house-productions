@@ -5,18 +5,22 @@ import { notFound, redirect } from 'next/navigation';
 
 interface LayoutProps {
   children: ReactNode;
-  params: { purchaseId: string };
+  params: { slug: string };
 }
 
 export default async function Layout({ children, params }: LayoutProps) {
+  // find purchase by course slug
   const purchase = await db.purchase.findFirst({
     where: {
-      id: params.purchaseId,
-    },
-    include: {
-      account: true,
+      course: {
+        slug: params.slug,
+      },
     },
   });
+
+  // When more than one purchase we have to look for many purchases and then allow child selection
+
+  console.log('[COURSE PAGE]', purchase);
 
   if (!purchase) {
     return notFound();
@@ -35,14 +39,6 @@ export default async function Layout({ children, params }: LayoutProps) {
   if (!child) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }
-
-  //Get latest course
-  const course = await db.course.findFirst({
-    where: {
-      id: purchase.courseId,
-      isPublished: true,
-    },
-  });
 
   return (
     <div className={'lesson'}>

@@ -49,6 +49,12 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
     },
   });
 
+  const attachmentCategories = await db.attachmemtType.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+  });
+
   if (!course) {
     return redirect('/');
   }
@@ -113,7 +119,14 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
                 <IconBadge icon={File} />
                 <h2 className="text-xl">Resources & Attachments</h2>
               </div>
-              <AttachmentForm initialData={course} courseId={course.id} />
+              <AttachmentForm
+                attachmentCategories={attachmentCategories.map(category => ({
+                  label: category.name,
+                  value: category.id,
+                }))}
+                initialData={course}
+                courseId={course.id}
+              />
             </div>
           </div>
         </div>

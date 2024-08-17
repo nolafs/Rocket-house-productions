@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import * as z from 'zod';
@@ -22,9 +22,11 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
   Input,
 } from '@rocket-house-productions/shadcn-ui';
+import { SlugFormControl } from '@rocket-house-productions/lesson';
 
 interface ModulesFormProps {
   initialData: Course & { modules: Module[] };
@@ -33,6 +35,7 @@ interface ModulesFormProps {
 
 const formSchema = z.object({
   title: z.string().min(1),
+  slug: z.string().min(1),
 });
 
 const ModulesForm = ({ initialData, courseId }: ModulesFormProps) => {
@@ -40,6 +43,8 @@ const ModulesForm = ({ initialData, courseId }: ModulesFormProps) => {
 
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+
+  const [title, setTitle] = useState(initialData.title);
 
   const toggleCreating = () => {
     setIsCreating(current => !current);
@@ -49,6 +54,7 @@ const ModulesForm = ({ initialData, courseId }: ModulesFormProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
+      slug: '',
     },
   });
 
@@ -114,7 +120,33 @@ const ModulesForm = ({ initialData, courseId }: ModulesFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input disabled={isSubmitting} placeholder="ex. 'Introduction to the course...'" {...field} />
+                    <Input
+                      disabled={isSubmitting}
+                      onChangeCapture={e => {
+                        console.log('e', e.currentTarget.value);
+                        setTitle(e.currentTarget.value);
+                      }}
+                      placeholder="ex. 'Introduction to the course...'"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control as any}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Slug</FormLabel>
+                  <FormControl>
+                    <SlugFormControl
+                      disabled={isSubmitting}
+                      initialTitle={title}
+                      {...field}
+                      onSlugChange={newSlug => field.onChange(newSlug)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -24,19 +24,21 @@ import { Attachment, Course } from '@prisma/client';
 import { FileUpload } from '@rocket-house-productions/features';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import AttachmentCategoryForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/attachment-category-form';
 
 interface AttachmentFormProps {
   initialData: Course & { attachments: Attachment[] };
+  attachmentCategories: { label: string; value: string }[];
   courseId: string;
 }
 
 const formSchema = z.object({
   url: z.string().min(1),
   name: z.string().min(1),
-  type: z.string().min(1),
+  attachmentType: z.string().min(1),
 });
 
-const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
+const AttachmentForm = ({ initialData, courseId, attachmentCategories }: AttachmentFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -46,7 +48,7 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
     defaultValues: {
       url: '',
       name: '',
-      type: '',
+      attachmentType: '',
     },
   });
 
@@ -140,19 +142,6 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
               />
               <FormField
                 control={form.control as any}
-                name="type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className={'sr-only'}>Type</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Type" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control as any}
                 name="url"
                 render={({ field }) => (
                   <FormItem>
@@ -162,6 +151,13 @@ const AttachmentForm = ({ initialData, courseId }: AttachmentFormProps) => {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control as any}
+                name="attachmentType"
+                render={({ field }) => (
+                  <AttachmentCategoryForm types={attachmentCategories} field={field} form={form} />
                 )}
               />
               <Button onClick={form.handleSubmit(onSubmit)} variant="default" className="mt-4">

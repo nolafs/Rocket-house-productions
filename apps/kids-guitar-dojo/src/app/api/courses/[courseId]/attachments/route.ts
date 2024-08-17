@@ -25,8 +25,8 @@ export async function POST(req: Request, { params }: { params: { courseId: strin
       data: {
         url,
         name: name || url.split('/').pop(),
-        type: type,
         courseId: params.courseId,
+        attachmentTypeId: type,
       },
     });
 

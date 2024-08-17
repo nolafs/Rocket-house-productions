@@ -1,7 +1,6 @@
 import { asText, Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '../../components/Bounded';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { ContentBlockImage, SectionContentBlockList } from '@rocket-house-productions/features';
 
 /**

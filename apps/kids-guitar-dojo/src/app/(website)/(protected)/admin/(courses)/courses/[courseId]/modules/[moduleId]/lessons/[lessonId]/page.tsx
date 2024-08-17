@@ -13,6 +13,7 @@ import LessonVideoForm from './_components/lesson-video-form';
 import LessonActions from './_components/lesson-actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
+import LessonCategoryForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-category-form';
 
 const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId: string; lessonId: string } }) => {
   const { userId } = auth();
@@ -28,6 +29,7 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
     },
     include: {
       bunnyData: true,
+      category: true,
     },
   });
 
@@ -35,10 +37,18 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
     return redirect('/');
   }
 
+  // Query to database to load the seeded categories list
+  const categories = await db.categoryLesson.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+  });
+
   const requiredFields = [
     lesson.title,
     lesson.description,
-    //lesson.videoUrl
+    lesson.categoryId,
+    //(lessons).videoUrl
   ];
 
   const totalFields = requiredFields.length;
@@ -95,6 +105,17 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
                 courseId={params.courseId}
                 moduleId={params.moduleId}
                 lessonId={params.lessonId}
+              />
+
+              <LessonCategoryForm
+                initialData={lesson}
+                courseId={params.courseId}
+                moduleId={params.moduleId}
+                lessonId={params.lessonId}
+                options={categories.map(category => ({
+                  label: category.name,
+                  value: category.id,
+                }))}
               />
             </div>
             <div>
