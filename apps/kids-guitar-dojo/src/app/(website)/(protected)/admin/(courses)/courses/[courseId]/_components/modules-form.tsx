@@ -141,7 +141,12 @@ const ModulesForm = ({ initialData, courseId }: ModulesFormProps) => {
                 <FormItem>
                   <FormLabel>Slug</FormLabel>
                   <FormControl>
-                    <SlugFormControl disabled={isSubmitting} title={title} field={field} />
+                    <SlugFormControl
+                      disabled={isSubmitting}
+                      initialTitle={title}
+                      {...field}
+                      onSlugChange={newSlug => field.onChange(newSlug)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
