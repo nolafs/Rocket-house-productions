@@ -3,6 +3,8 @@ import { notFound, redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration';
 import { getLesson } from '@rocket-house-productions/actions/server';
 
+import LessonContent from './_components/lesson-content';
+
 interface PageProps {
   params: { slug: string; module_slug: string; lesson_slug: string };
 }
@@ -58,8 +60,9 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <div className={'prose prose-sm md:prose-md lg:prose-lg max-w-5xl'}>
-      <div>Video here</div>
-      <h1>{data?.lesson.title}</h1>
+      <LessonContent lesson={data?.lesson} />
+
+      <h1 className={'pt-10'}>{data?.lesson.title}</h1>
       {data?.lesson?.description && <div dangerouslySetInnerHTML={{ __html: data?.lesson?.description }}></div>}
     </div>
   );

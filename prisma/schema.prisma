@@ -96,7 +96,8 @@ model Lesson {
   title       String
   slug        String? @unique
   description String? @db.Text
-  videoUrl    String? @db.Text
+  videoId     String? @db.Text
+  videoLibId  String?
   position    Int
   isPublished Boolean @default(false)
   isFree      Boolean @default(false)
@@ -161,8 +162,9 @@ model Question {
 
 model BunnyData {
   id         String  @id @default(uuid())
-  assetId    String
-  playbackId String?
+  videoId    String
+  videoLibId String
+  title  String?
 
   lessonId String @unique
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)

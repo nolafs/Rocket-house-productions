@@ -1,3 +1,4 @@
+export * from './lib/components/video-library-list';
 export * from './lib/components/form/slug-form-control';
 export * from './lib/components/header/header';
 export * from './lib/components/avatar';
