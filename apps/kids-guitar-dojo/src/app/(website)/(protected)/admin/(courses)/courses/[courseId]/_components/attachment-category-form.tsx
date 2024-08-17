@@ -33,7 +33,7 @@ export function AttachmentCategoryForm({ types, field, form }: AttachmentCategor
             <Button
               variant="outline"
               role="combobox"
-              className={cn('w-[200px] justify-between', !field.value && 'text-muted-foreground')}>
+              className={cn('w-full justify-between', !field.value && 'text-muted-foreground')}>
               {field.value ? types.find(type => type.value === field.value)?.label : 'Select type'}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
