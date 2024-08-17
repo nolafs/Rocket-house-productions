@@ -11,8 +11,7 @@ import ModuleDescriptionForm from './_components/module-description-form';
 import ModuleActions from './_components/module-actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
-import { LessonList } from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/lesson-list';
-import LessonForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/lesson-form';
+import LessonForm from './_components/lesson-form';
 
 const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: string } }) => {
   const { userId } = auth();

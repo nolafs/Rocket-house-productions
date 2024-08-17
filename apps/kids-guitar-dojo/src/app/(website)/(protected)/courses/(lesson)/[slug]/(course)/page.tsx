@@ -1,6 +1,9 @@
 import { db } from '@rocket-house-productions/integration';
 import { notFound, redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
+import Link from 'next/link';
+import cn from 'classnames';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 
 interface PageProps {
   params: { slug: string };
@@ -55,9 +58,11 @@ export default async function Page({ params }: PageProps) {
               <ul className={'ml-10 text-sm'}>
                 {module.lessons.map((lesson, idx) => (
                   <li key={lesson.id}>
-                    <h3>
+                    <Link
+                      className={cn(buttonVariants({ variant: 'ghost' }))}
+                      href={`/courses/${course.slug}/modules/${module.slug}/lessons/${lesson.slug}`}>
                       Lesson {idx + 1}: {lesson.title}
-                    </h3>
+                    </Link>
                   </li>
                 ))}
               </ul>

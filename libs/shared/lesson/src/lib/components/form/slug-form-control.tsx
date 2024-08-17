@@ -1,11 +1,11 @@
 'use client';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { Input } from '@rocket-house-productions/shadcn-ui';
 
-interface SlugFormControlProps {
-  title: string;
-  disabled?: boolean;
-  field?: any;
+import { ChangeEvent, useEffect, useState } from 'react';
+import { Input, InputProps } from '@rocket-house-productions/shadcn-ui';
+import * as React from 'react';
+
+interface SlugFormControlProps extends InputProps {
+  initialTitle?: string;
   onSlugChange?: (slug: string) => void;
 }
 
@@ -17,22 +17,33 @@ const generateSlug = (title: string) => {
     .replace(/-+$/g, ''); // Remove any trailing dashes
 };
 
-export function SlugFormControl({ title, disabled, field, onSlugChange }: SlugFormControlProps) {
-  const [slug, setSlug] = useState(generateSlug(title));
+const SlugFormControl = React.forwardRef<HTMLInputElement, SlugFormControlProps>(
+  ({ className, initialTitle = '', value, onSlugChange, ...props }, ref) => {
+    const [slug, setSlug] = useState(generateSlug(initialTitle));
 
-  useEffect(() => {
-    setSlug(generateSlug(title));
-  }, [title]);
+    useEffect(() => {
+      // Regenerate the slug if the initialTitle changes
+      if (initialTitle) {
+        const newSlug = generateSlug(initialTitle);
+        setSlug(newSlug);
+        if (onSlugChange) {
+          onSlugChange(newSlug);
+        }
+      }
+    }, [initialTitle]);
 
-  const handleSlugChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newSlug = e.target.value;
-    setSlug(newSlug);
-    if (onSlugChange) {
-      onSlugChange(newSlug);
-    }
-  };
+    const handleSlugChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const newSlug = e.target.value;
+      setSlug(newSlug);
+      if (onSlugChange) {
+        onSlugChange(newSlug);
+      }
+    };
 
-  return <Input disabled={disabled} {...field} value={slug} onChange={handleSlugChange} />;
-}
+    return <Input ref={ref} {...props} value={slug} onChange={handleSlugChange} />;
+  },
+);
 
-export default SlugFormControl;
+SlugFormControl.displayName = 'SlugFormControl'; // Set a display name for the component
+
+export { SlugFormControl };

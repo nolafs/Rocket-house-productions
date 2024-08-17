@@ -26,7 +26,7 @@ import { SlugFormControl } from '@rocket-house-productions/lesson';
 interface ModuleTitleFormProps {
   initialData: {
     title: string;
-    slug: string;
+    slug?: string | null;
   };
   courseId: string;
   moduleId: string;
@@ -52,6 +52,8 @@ const ModuleTitleForm = ({ initialData, courseId, moduleId }: ModuleTitleFormPro
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log('values', values);
+
     try {
       const response = await axios.patch(`/api/courses/${courseId}/modules/${moduleId}`, values);
       if (response.status === 200) {
@@ -110,9 +112,9 @@ const ModuleTitleForm = ({ initialData, courseId, moduleId }: ModuleTitleFormPro
                   <FormControl>
                     <SlugFormControl
                       disabled={isSubmitting}
-                      title={title}
-                      field={field}
-                      onSlugChange={slug => console.log('slug', slug)} // Optional callback, only if needed
+                      initialTitle={title}
+                      {...field}
+                      onSlugChange={newSlug => field.onChange(newSlug)}
                     />
                   </FormControl>
                   <FormMessage />
