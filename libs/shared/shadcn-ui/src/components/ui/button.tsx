@@ -10,7 +10,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-primary text-primary-foreground  hover:bg-accent hover:text-primary',
-        lesson: 'font-lesson-body bg-pink-500 text-primary-foreground  hover:bg-accent hover:text-primary',
+        lesson: 'font-(lessons)-body bg-pink-500 text-primary-foreground  hover:bg-accent hover:text-primary',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
         outline: 'border border-primary text-primary bg-background hover:bg-primary hover:text-primary-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',

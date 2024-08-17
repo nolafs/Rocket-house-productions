@@ -1,3 +1,4 @@
+export * from './lib/components/form/slug-form-control';
 export * from './lib/components/header/header';
 export * from './lib/components/avatar';
 export * from './lib/components/dialog-layout/dialog-layout';

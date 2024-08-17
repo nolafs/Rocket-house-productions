@@ -2,7 +2,6 @@
 /* eslint-disable-next-line */
 import dynamic from 'next/dynamic';
 import { NotificationBlock } from '@rocket-house-productions/ui';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 
 export interface ContentVideoProps {
   id: string;

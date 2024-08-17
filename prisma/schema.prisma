@@ -62,12 +62,25 @@ model Category {
   courses Course[]
 }
 
+model CategoryLesson {
+  id      String   @id @default(uuid())
+  name    String   @unique
+  lesson  Lesson[]
+}
+
+model AttachmemtType {
+  id   String @id @default(uuid())
+  name String
+  attachments Attachment[]
+}
+
 model Attachment {
   id   String @id @default(uuid())
   name String
   url  String @db.Text
 
-  type String?
+  attachmentTypeId String?
+  attachmentType AttachmemtType? @relation(fields: [attachmentTypeId], references: [id])
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -88,6 +101,9 @@ model Lesson {
   isPublished Boolean @default(false)
   isFree      Boolean @default(false)
   prismaSlug  String?
+
+  categoryId String?
+  category   CategoryLesson? @relation(fields: [categoryId], references: [id])
 
   bunnyData BunnyData?
 

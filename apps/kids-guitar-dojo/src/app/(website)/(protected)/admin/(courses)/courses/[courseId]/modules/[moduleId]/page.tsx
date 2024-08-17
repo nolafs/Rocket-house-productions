@@ -42,7 +42,7 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
     moduleSection.title,
     moduleSection.description,
     //moduleSection.position,
-    //moduleSection.lessons.some(lesson => lesson.isPublished),
+    //moduleSection.lessons.some((lessons) => (lessons).isPublished),
   ];
 
   const totalFields = requiredFields.length;

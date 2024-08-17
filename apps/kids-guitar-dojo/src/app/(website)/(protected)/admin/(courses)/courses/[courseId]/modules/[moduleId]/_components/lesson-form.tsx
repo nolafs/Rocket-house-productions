@@ -70,11 +70,15 @@ const LessonForm = ({ initialData, moduleId, courseId }: LessonsFormProps) => {
     try {
       setIsUpdating(true);
 
-      await axios.put(`/api/courses/${courseId}/modules/${moduleId}/lessons/reorder`, {
+      const response = await axios.put(`/api/courses/${courseId}/modules/${moduleId}/lessons/reorder`, {
         list: updateData,
       });
-      toast.success('Lesson reordered');
-      router.refresh();
+      if (response.status === 200) {
+        toast.success('Lesson reordered');
+        router.refresh();
+      } else {
+        toast.error('Something went wrong');
+      }
     } catch (error) {
       toast.error('Something went wrong');
     } finally {

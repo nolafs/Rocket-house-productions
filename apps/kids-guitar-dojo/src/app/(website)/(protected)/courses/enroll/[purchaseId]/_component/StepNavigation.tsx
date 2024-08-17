@@ -34,7 +34,7 @@ export default function StepNavigation({ baseUrl }: StepNavigationProps) {
             prefetch={true}>
             <span
               className={cn(
-                'font-lesson-heading flex h-10 w-10 items-center justify-center rounded-full border text-sm transition-colors duration-200 lg:h-12 lg:w-12 lg:text-lg',
+                'font-(lessons)-heading flex h-10 w-10 items-center justify-center rounded-full border text-sm transition-colors duration-200 lg:h-12 lg:w-12 lg:text-lg',
                 {
                   'border-none bg-pink-500 text-white group-hover:border-none group-hover:text-white/75':
                     currentPath === step.route,

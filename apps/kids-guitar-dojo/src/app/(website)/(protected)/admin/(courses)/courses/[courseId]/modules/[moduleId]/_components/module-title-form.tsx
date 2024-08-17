@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import * as z from 'zod';
@@ -19,23 +19,28 @@ import {
   FormMessage,
   Input,
   Button,
+  FormLabel,
 } from '@rocket-house-productions/shadcn-ui';
+import { SlugFormControl } from '@rocket-house-productions/lesson';
 
 interface ModuleTitleFormProps {
   initialData: {
     title: string;
+    slug: string;
   };
   courseId: string;
   moduleId: string;
 }
 
 const formSchema = z.object({
-  title: z.string().min(1),
+  title: z.string().min(1, 'Title is required'),
+  slug: z.string().min(1, 'Slug is required').nullable(),
 });
 
 const ModuleTitleForm = ({ initialData, courseId, moduleId }: ModuleTitleFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(initialData.title);
 
   const toggleEdit = () => setIsEditing(current => !current);
 
@@ -48,10 +53,13 @@ const ModuleTitleForm = ({ initialData, courseId, moduleId }: ModuleTitleFormPro
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/module/${moduleId}`, values);
-      toast.success('Chapter updated');
-      toggleEdit();
-      router.refresh();
+      const response = await axios.patch(`/api/courses/${courseId}/modules/${moduleId}`, values);
+      if (response.status === 200) {
+        toast.success('Chapter updated');
+        toggleEdit();
+        router.refresh();
+      }
+      toast.error('Something went wrong');
     } catch (error) {
       toast.error('Something went wrong');
     }
@@ -82,7 +90,30 @@ const ModuleTitleForm = ({ initialData, courseId, moduleId }: ModuleTitleFormPro
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input disabled={isSubmitting} placeholder="ex. 'Introduction to the course'" {...field} />
+                    <Input
+                      disabled={isSubmitting}
+                      onChangeCapture={e => setTitle(e.currentTarget.value)}
+                      placeholder="ex. 'Introduction to the course'"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control as any}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Slug</FormLabel>
+                  <FormControl>
+                    <SlugFormControl
+                      disabled={isSubmitting}
+                      title={title}
+                      field={field}
+                      onSlugChange={slug => console.log('slug', slug)} // Optional callback, only if needed
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
