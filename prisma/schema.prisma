@@ -161,8 +161,9 @@ model Question {
 
 model BunnyData {
   id         String  @id @default(uuid())
-  assetId    String
-  playbackId String?
+  videoId    String
+  videoLibId String
+  title  String?
 
   lessonId String @unique
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)

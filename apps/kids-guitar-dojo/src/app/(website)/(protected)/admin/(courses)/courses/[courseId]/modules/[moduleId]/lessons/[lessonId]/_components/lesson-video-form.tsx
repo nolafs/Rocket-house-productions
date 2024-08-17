@@ -14,6 +14,7 @@ import toast from 'react-hot-toast';
 import { Lesson, BunnyData } from '@prisma/client';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { FileUpload } from '@rocket-house-productions/features';
+import LessonVideoListDialog from './lesson-video-list-dialog';
 
 interface ChapterVideoFormProps {
   initialData: Lesson & { muxData?: BunnyData | null };
@@ -41,6 +42,10 @@ const LessonVideoForm = ({ initialData, courseId, moduleId, lessonId }: ChapterV
     } catch (error) {
       toast.error('Something went wrong');
     }
+  };
+
+  const onVideoSelect = async (video: any) => {
+    console.log('[LessonVideoForm]', video);
   };
 
   return (
@@ -73,7 +78,7 @@ const LessonVideoForm = ({ initialData, courseId, moduleId, lessonId }: ChapterV
         ))}
       {isEditing && (
         <div>
-          file up load here
+          <LessonVideoListDialog onSelectVideo={onVideoSelect} />
           <div className="text-muted-foreground mt-4 text-xs">Upload this chapter&apos;s video</div>
         </div>
       )}
