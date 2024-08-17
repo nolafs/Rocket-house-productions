@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { getVideoList } from '@rocket-house-productions/actions/server';
 import { Button, Card, CardContent, CardFooter } from '@rocket-house-productions/shadcn-ui';
