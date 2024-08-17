@@ -96,7 +96,8 @@ model Lesson {
   title       String
   slug        String? @unique
   description String? @db.Text
-  videoUrl    String? @db.Text
+  videoId     String? @db.Text
+  videoLibId  String?
   position    Int
   isPublished Boolean @default(false)
   isFree      Boolean @default(false)

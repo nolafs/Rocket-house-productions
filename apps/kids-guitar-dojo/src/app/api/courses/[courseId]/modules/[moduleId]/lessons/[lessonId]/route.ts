@@ -46,7 +46,7 @@ export async function DELETE(
     }
 
     /*
-    if (chapter.videoUrl) {
+    if (lesson.videoUrl) {
       const existingMuxData = await db.muxData.findFirst({
         where: {
           chapterId: params.chapterId,
@@ -139,39 +139,31 @@ export async function PATCH(
       },
     });
 
-    /*
-    if (values.videoUrl) {
-      const existingMuxData = await db.muxData.findFirst({
+    if (values.videoId) {
+      const existingBunnyData = await db.bunnyData.findFirst({
         where: {
-          chapterId: params.chapterId,
+          lessonId: params.lessonId,
         },
       });
 
-      if (existingMuxData) {
-        await Video.Assets.del(existingMuxData.assetId);
-        await db.muxData.delete({
+      if (existingBunnyData) {
+        await db.bunnyData.delete({
           where: {
-            id: existingMuxData.id,
+            id: existingBunnyData.id,
           },
         });
       }
 
-      const asset = await Video.Assets.create({
-        input: values.videoUrl,
-        playback_policy: 'public',
-        test: false,
-      });
+      //load bunny.net data here
 
-      await db.muxData.create({
+      await db.bunnyData.create({
         data: {
-          chapterId: params.chapterId,
-          assetId: asset.id,
-          playbackId: asset.playback_ids?.[0].id,
+          lessonId: params.lessonId,
+          videoId: values.videoId,
+          videoLibId: values.videoLibId,
         },
       });
     }
-
-     */
 
     return NextResponse.json(lesson);
   } catch (error) {
