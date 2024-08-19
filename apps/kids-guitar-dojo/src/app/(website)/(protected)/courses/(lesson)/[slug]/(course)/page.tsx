@@ -65,6 +65,14 @@ export default async function Page({ params }: PageProps) {
             where: {
               isPublished: true,
             },
+            include: {
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+              questionaries: true,
+            },
             orderBy: {
               position: 'asc',
             },
@@ -118,7 +126,12 @@ export default async function Page({ params }: PageProps) {
                         {module.lessons.map((lesson, idx) => (
                           <li key={lesson.id}>
                             <Link
-                              className={cn(buttonVariants({ variant: 'default' }), 'w-full')}
+                              className={cn(
+                                buttonVariants({ variant: 'default' }),
+                                'w-full',
+                                lesson.category?.name === 'Dr Rhythm' && 'bg-pink-900',
+                                lesson.category?.name === 'Practice' && 'bg-gray-500',
+                              )}
                               href={`/courses/${course.slug}/modules/${module.slug}/lessons/${lesson.slug}`}>
                               Lesson {idx + 1}: {lesson.title}
                             </Link>
