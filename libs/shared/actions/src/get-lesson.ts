@@ -38,6 +38,24 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
         slug: moduleSlug,
         courseId: course.id,
       },
+      select: {
+        id: true,
+        title: true,
+        lessons: {
+          where: {
+            isPublished: true,
+          },
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            isPublished: true,
+          },
+          orderBy: {
+            position: 'asc',
+          },
+        },
+      },
     });
 
     if (!module) {
@@ -89,6 +107,7 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
     return {
       lesson,
       childProgress,
+      module,
     };
   } catch (error) {
     console.error('Error getting lesson', error);

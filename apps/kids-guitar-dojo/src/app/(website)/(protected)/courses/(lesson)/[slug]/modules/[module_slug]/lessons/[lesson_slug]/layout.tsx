@@ -49,17 +49,7 @@ export default async function Layout({ children, params }: LayoutProps) {
   return (
     <div className={'lesson'}>
       <Header avatar={child?.profilePicture} name={child?.name} />
-      <main className={'container mx-auto my-20 flex max-w-5xl flex-col space-y-5 px-5'}>
-        <div className={'flex justify-between'}>
-          <Link href={'/courses'} className={cn(buttonVariants({ variant: 'lesson' }))}>
-            <i>
-              <ArrowBigLeftIcon className={'h-4 w-4'} />{' '}
-            </i>{' '}
-            Back
-          </Link>
-        </div>
-        <div>{children}</div>
-      </main>
+      <main className={'container mx-auto my-20 flex max-w-5xl flex-col space-y-5 px-5'}>{children}</main>
     </div>
   );
 }
