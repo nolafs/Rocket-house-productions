@@ -4,6 +4,7 @@ import { db } from '@rocket-house-productions/integration';
 import { getLesson } from '@rocket-house-productions/actions/server';
 
 import LessonContent from './_components/lesson-content';
+import { Header } from '@rocket-house-productions/lesson';
 
 export type Section = {
   id?: string;
@@ -57,8 +58,6 @@ export default async function Page({ params }: PageProps) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }
 
-  console.log('child', child.id);
-
   const data = await getLesson({
     userId,
     childId: child.id,
@@ -69,5 +68,12 @@ export default async function Page({ params }: PageProps) {
 
   console.log('lesson', data);
 
-  return <LessonContent lesson={data?.lesson} module={data?.module as Section} />;
+  return (
+    <>
+      <Header avatar={child?.profilePicture} name={child?.name} background={data?.module?.color} />
+      <main className={'container mx-auto my-10 flex max-w-5xl flex-col space-y-5 px-5'}>
+        <LessonContent lesson={data?.lesson} module={data?.module as Section} child={child} />
+      </main>
+    </>
+  );
 }

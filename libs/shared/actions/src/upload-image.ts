@@ -10,8 +10,6 @@ export const uploadImageAction = async (formData: FormData) => {
   // zod validate
   const validated = UploadImageSchema.safeParse(formDataObject);
 
-  console.log('[uploadImageAction] validated', formDataObject);
-
   if (!validated.success) {
     console.log('[uploadImageAction] error', validated.error);
     return {
@@ -21,10 +19,7 @@ export const uploadImageAction = async (formData: FormData) => {
     };
   } else {
     try {
-      console.log('[uploadImageAction] success', validated);
-
       const data = validated.data;
-      console.log('[uploadImageAction] data', data);
       const imageArrayBuffer = await data.imageFiles.arrayBuffer();
       const processedFile = await sharp(imageArrayBuffer).webp().toBuffer();
       const path = `images/${nanoid()}.webp`;
