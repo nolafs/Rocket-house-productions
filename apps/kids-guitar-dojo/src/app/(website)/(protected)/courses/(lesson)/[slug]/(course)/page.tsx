@@ -34,6 +34,9 @@ export default async function Page({ params }: PageProps) {
             where: {
               isPublished: true,
             },
+            orderBy: {
+              position: 'asc',
+            },
           },
         },
       },

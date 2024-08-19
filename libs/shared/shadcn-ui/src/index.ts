@@ -23,3 +23,4 @@ export * from './components/ui/switch';
 export * from './components/ui/calendar';
 export * from './components/ui/datePicker';
 export * from './components/ui/avatar';
+export * from './components/ui/color-picker';

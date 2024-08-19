@@ -1,33 +1,36 @@
 'use client';
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-
-import * as z from 'zod';
-import axios from 'axios';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-
-import { Pencil } from 'lucide-react';
-import toast from 'react-hot-toast';
-
-import { Form, FormControl, FormField, FormItem, FormMessage, Button } from '@rocket-house-productions/shadcn-ui';
-import cn from 'classnames';
-
 import { Module } from '@prisma/client';
-import { Preview, Editor } from '@rocket-house-productions/features';
+import * as z from 'zod';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import toast from 'react-hot-toast';
+import {
+  Button,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  ColorPicker,
+} from '@rocket-house-productions/shadcn-ui';
+import { Pencil } from 'lucide-react';
+import cn from 'classnames';
+import { Preview } from '@rocket-house-productions/features';
 
-interface ModuleDescriptionFormProps {
+interface ModuleColorFormProps {
   initialData: Module;
   courseId: string;
   moduleId: string;
 }
 
 const formSchema = z.object({
-  description: z.string().min(1),
+  color: z.string().min(1),
 });
 
-const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescriptionFormProps) => {
+export function ModuleColorForm({ initialData, courseId, moduleId }: ModuleColorFormProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -36,7 +39,7 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || '',
+      color: initialData?.color || '#000000',
     },
   });
 
@@ -56,22 +59,26 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">
-        Module description
+        Module color
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit description
+              Edit Color
             </>
           )}
         </Button>
       </div>
       {!isEditing && (
-        <div className={cn('mt-2 text-sm', !initialData.description && 'italic text-slate-500')}>
-          {!initialData.description && 'No description'}
-          {initialData.description && <Preview value={initialData.description} />}
+        <div className={cn('mt-2 text-sm', !initialData.color && 'italic text-slate-500')}>
+          {!initialData.color && 'No color'}
+          {initialData.color && (
+            <div className={'w-full rounded-md p-4 text-white'} style={{ backgroundColor: initialData.color }}>
+              Color: {initialData.color}
+            </div>
+          )}
         </div>
       )}
       {isEditing && (
@@ -79,11 +86,11 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control as any}
-              name="description"
+              name="color"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Editor {...field} />
+                    <ColorPicker {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -99,6 +106,6 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
       )}
     </div>
   );
-};
+}
 
-export default ModuleDescriptionForm;
+export default ModuleColorForm;

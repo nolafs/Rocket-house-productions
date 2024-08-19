@@ -43,6 +43,7 @@ model Module {
   description String? @db.Text
   position    Int
   isPublished Boolean @default(false)
+  color       String?
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)

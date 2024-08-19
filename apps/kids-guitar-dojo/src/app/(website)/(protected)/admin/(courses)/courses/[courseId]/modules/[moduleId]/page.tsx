@@ -12,6 +12,7 @@ import ModuleActions from './_components/module-actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
 import LessonForm from './_components/lesson-form';
+import ModuleColorForm from './_components/module-color-form';
 
 const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: string } }) => {
   const { userId } = auth();
@@ -92,6 +93,7 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
                 courseId={params.courseId}
                 moduleId={params.moduleId}
               />
+              <ModuleColorForm initialData={moduleSection} courseId={params.courseId} moduleId={params.moduleId} />
             </div>
             <div></div>
           </div>

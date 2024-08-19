@@ -1,11 +1,6 @@
-import { Header, ParallaxScene } from '@rocket-house-productions/lesson';
 import { db } from '@rocket-house-productions/integration';
 import { ReactNode } from 'react';
 import { notFound, redirect } from 'next/navigation';
-import Link from 'next/link';
-import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
-import { ArrowBigLeftIcon } from 'lucide-react';
 
 interface LayoutProps {
   children: ReactNode;
@@ -46,10 +41,5 @@ export default async function Layout({ children, params }: LayoutProps) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }
 
-  return (
-    <div className={'lesson'}>
-      <Header avatar={child?.profilePicture} name={child?.name} />
-      <main className={'container mx-auto my-20 flex max-w-5xl flex-col space-y-5 px-5'}>{children}</main>
-    </div>
-  );
+  return <div className={'lesson'}>{children}</div>;
 }

@@ -41,6 +41,7 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
       select: {
         id: true,
         title: true,
+        color: true,
         lessons: {
           where: {
             isPublished: true,
