@@ -4942,6 +4942,7 @@ __metadata:
     next-slicezone: "npm:^0.2.6"
     nextjs-toploader: "npm:^1.6.12"
     nx: "npm:19.5.1"
+    player.js: "npm:^0.1.0"
     postcss: "npm:^8.4.40"
     prettier: "npm:^3.3.3"
     prettier-plugin-tailwindcss: "npm:^0.6.5"
@@ -15617,6 +15618,13 @@ __metadata:
   dependencies:
     find-up: "npm:^6.3.0"
   checksum: 10c0/1afb23d2efb1ec9d8b2c4a0c37bf146822ad2774f074cb05b853be5dca1b40815c5960dd126df30ab8908349262a266f31b771e877235870a3b8fd313beebec5
+  languageName: node
+  linkType: hard
+
+"player.js@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "player.js@npm:0.1.0"
+  checksum: 10c0/4832e0304c845ca453468055205c986850bec35930c5e30f3e7b13cc1b6eb74d2ca6b936e772c956d80e0d10fcd651d81070e8ce50e3c5fafe66f71566ed3357
   languageName: node
   linkType: hard
 
