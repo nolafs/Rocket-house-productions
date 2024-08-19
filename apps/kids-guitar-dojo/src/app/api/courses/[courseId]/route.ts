@@ -13,32 +13,12 @@ export async function DELETE(req: Request, { params }: { params: { courseId: str
     const course = await db.course.findUnique({
       where: {
         id: params.courseId,
-        userId,
-      },
-      include: {
-        /*
-        modules: {
-          include: {
-            muxData: true,
-          },
-        },
-
-         */
       },
     });
 
     if (!course) {
       return new NextResponse('Not found', { status: 404 });
     }
-
-    /*
-    for (const chapter of course.modules) {
-      if (chapter.muxData?.assetId) {
-        // await Video.Assets.del(chapter.muxData.assetId);
-      }
-    }
-
-     */
 
     const deletedCourse = await db.course.delete({
       where: {

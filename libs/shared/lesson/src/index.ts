@@ -1,3 +1,4 @@
+export * from './lib/components/button-download-pdf';
 export * from './lib/components/score-display';
 export * from './lib/components/lesson-progress-bar';
 export { VideoLibraryList } from './lib/components/video-library-list';

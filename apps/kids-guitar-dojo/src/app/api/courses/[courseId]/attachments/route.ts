@@ -5,7 +5,7 @@ import { db } from '@rocket-house-productions/integration';
 export async function POST(req: Request, { params }: { params: { courseId: string } }) {
   try {
     const { userId } = auth();
-    const { url, name, type } = await req.json();
+    const { url, name, attachmentType } = await req.json();
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -26,7 +26,7 @@ export async function POST(req: Request, { params }: { params: { courseId: strin
         url,
         name: name || url.split('/').pop(),
         courseId: params.courseId,
-        attachmentTypeId: type,
+        attachmentTypeId: attachmentType,
       },
     });
 
