@@ -13,6 +13,7 @@ import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
 import LessonForm from './_components/lesson-form';
 import ModuleColorForm from './_components/module-color-form';
+import ModuleAttachementForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-attachement-form';
 
 const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: string } }) => {
   const { userId } = auth();
@@ -26,6 +27,11 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
       id: params.moduleId,
     },
     include: {
+      attachments: {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
       lessons: {
         orderBy: {
           position: 'asc',
@@ -37,6 +43,12 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
   if (!moduleSection) {
     return redirect('/');
   }
+
+  const attachmentCategories = await db.moduleAttachmemtType.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+  });
 
   const requiredFields = [
     moduleSection.title,
@@ -103,6 +115,15 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
               <h2 className="text-xl">Modules Lesson</h2>
             </div>
             <LessonForm initialData={moduleSection} moduleId={moduleSection.id} courseId={params.courseId} />
+            <ModuleAttachementForm
+              initialData={moduleSection}
+              attachmentCategories={attachmentCategories.map(category => ({
+                label: category.name,
+                value: category.id,
+              }))}
+              courseId={params.courseId}
+              moduleId={moduleSection.id}
+            />
           </div>
         </div>
       </div>

@@ -51,6 +51,8 @@ model Module {
   lessons Lesson[]
   awards Award[]
 
+  attachments ModuleAttachment[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
@@ -73,6 +75,29 @@ model AttachmemtType {
   id   String @id @default(uuid())
   name String
   attachments Attachment[]
+}
+
+model ModuleAttachmemtType {
+  id          String       @id @default(uuid())
+  name        String
+  attachments ModuleAttachment[]
+}
+
+model ModuleAttachment {
+  id   String @id @default(uuid())
+  name String
+  url  String @db.Text
+
+  attachmentTypeId String?
+  attachmentType ModuleAttachmemtType? @relation(fields: [attachmentTypeId], references: [id])
+
+  moduleId String
+  module   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@index([moduleId])
 }
 
 model Attachment {
