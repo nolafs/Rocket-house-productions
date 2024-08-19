@@ -48,14 +48,19 @@ interface AvatarProps {
 
 export function Avatar({ avatar, width = 64, height = 64, classNames = '' }: AvatarProps) {
   return (
-    <div className={cn('rounded-full', classNames)}>
+    <div
+      className={cn(
+        'relative isolate flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white',
+        classNames,
+      )}>
       <Image
         src={avatarOptions.find(option => option.name === avatar)?.image || kimono}
         alt={avatar || 'kimono'}
-        width={64}
-        height={64}
-        quality={80}
+        width={60}
+        height={60}
+        quality={90}
         sizes={'(max-width: 600px) 220px, 100vw'}
+        className={'h-[60px] w-[60px] rounded-full object-cover object-center'}
         loading={'lazy'}
       />
     </div>

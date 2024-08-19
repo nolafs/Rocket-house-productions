@@ -1,12 +1,12 @@
 'use client';
 
-import { Lesson } from '@prisma/client';
+import { Child, Lesson } from '@prisma/client';
 
 import playerjs from 'player.js';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
-import { Button, buttonVariants, Progress } from '@rocket-house-productions/shadcn-ui';
+import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { ArrowBigLeftIcon } from 'lucide-react';
 import { LessonProgressBar } from '@rocket-house-productions/lesson';
 import { Section } from '../page';
@@ -14,9 +14,10 @@ import { Section } from '../page';
 interface LessonContentProps {
   lesson: Lesson | null | undefined;
   module: Section | null | undefined;
+  child: Child | null | undefined;
 }
 
-export function LessonContent({ lesson, module }: LessonContentProps) {
+export function LessonContent({ lesson, module, child }: LessonContentProps) {
   const videoId = lesson?.videoId;
   const videoLibId = lesson?.videoLibId;
   const ref = useRef<HTMLIFrameElement>(null);
@@ -26,6 +27,8 @@ export function LessonContent({ lesson, module }: LessonContentProps) {
   const [completed, setCompleted] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!ref.current) return;
+
     const player = new playerjs.Player(ref.current);
 
     player.on('ready', (video: any) => {
@@ -39,7 +42,6 @@ export function LessonContent({ lesson, module }: LessonContentProps) {
   }, [ref]);
 
   useEffect(() => {
-    console.log('video', video?.isReady);
     if (video !== null) {
       video.on('timeupdate', (progress: any) => {
         setCurrentProgress((progress.seconds / progress.duration) * 100);
@@ -81,7 +83,8 @@ export function LessonContent({ lesson, module }: LessonContentProps) {
           </div>
         )}
       </div>
-      <h1 className={'flex flex-col pt-10'}>
+
+      <h1 className={'heading flex flex-col pt-10 font-bold'}>
         <small className={'text-pink-500 lg:text-xl'}>Lesson {currentLessonNum + 1}</small>
         <span className={'text-2xl lg:text-4xl'}>{lesson?.title}</span>
       </h1>

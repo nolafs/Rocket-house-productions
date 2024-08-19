@@ -43,7 +43,9 @@ export default async function Layout({ children, params }: LayoutProps) {
   return (
     <div className={'lesson'}>
       <ParallaxScene>
-        <Header avatar={child?.profilePicture} name={child?.name} />
+        <div className={'fixed left-0 top-0 w-full'}>
+          <Header avatar={child?.profilePicture} name={child?.name} />
+        </div>
         {children}
       </ParallaxScene>
     </div>
