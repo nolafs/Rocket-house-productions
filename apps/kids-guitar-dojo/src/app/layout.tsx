@@ -30,6 +30,8 @@ const mochiyPopOne = Mochiy_Pop_One({
   variable: '--font-mochiy-pop-one',
 });
 
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'kidsguitardojo.com/';
+
 type Props = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
@@ -99,7 +101,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <PlausibleProvider domain={process.env.NEXT_PUBLIC_BASE_URL || ''}>
+    <PlausibleProvider domain={DOMAIN}>
       <ClerkProvider>
         <UIProvider>
           <html
