@@ -2,6 +2,7 @@ import { Header, ParallaxScene } from '@rocket-house-productions/lesson';
 import { db } from '@rocket-house-productions/integration';
 import { ReactNode } from 'react';
 import { notFound, redirect } from 'next/navigation';
+import { CourseProgressionProvider } from '@rocket-house-productions/providers';
 
 interface LayoutProps {
   children: ReactNode;
@@ -41,13 +42,15 @@ export default async function Layout({ children, params }: LayoutProps) {
   }
 
   return (
-    <div className={'lesson'}>
-      <ParallaxScene>
-        <div className={'fixed left-0 top-0 w-full'}>
-          <Header avatar={child?.profilePicture} name={child?.name} />
-        </div>
-        {children}
-      </ParallaxScene>
-    </div>
+    <CourseProgressionProvider>
+      <div className={'lesson'}>
+        <ParallaxScene>
+          <div className={'fixed left-0 top-0 w-full'}>
+            <Header avatar={child?.profilePicture} name={child?.name} />
+          </div>
+          {children}
+        </ParallaxScene>
+      </div>
+    </CourseProgressionProvider>
   );
 }

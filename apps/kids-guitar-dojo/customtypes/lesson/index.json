@@ -31,7 +31,7 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "rich_text_slice": {
+            "lesson_rick_text": {
               "type": "SharedSlice"
             }
           }

@@ -1,23 +1,30 @@
 import { createStore } from 'zustand';
 
-interface PointsState {
+type PointsState = {
   points: number;
+};
+
+type PointsAction = {
   addPoints: (points: number) => void;
   resetPoints: () => void;
   getPoints: () => number;
-}
+};
 
-export const usePointsStore = createStore<PointsState>((set, get) => ({
+export type PointsStore = PointsState & PointsAction;
+
+export const defaultInitState: PointsState = {
   points: 0,
+};
 
-  addPoints: points =>
-    set(state => ({
-      points: state.points + points,
-    })),
+export const createPointsStore = (initState: PointsState = defaultInitState) =>
+  createStore<PointsStore>((set, get) => ({
+    ...initState,
+    addPoints: (points: number) =>
+      set(state => ({
+        points: state.points + points,
+      })),
 
-  resetPoints: () => set({ points: 0 }),
+    resetPoints: () => set({ points: 0 }),
 
-  getPoints: () => get().points,
-}));
-
-//export default usePointsStore;
+    getPoints: () => get().points,
+  }));

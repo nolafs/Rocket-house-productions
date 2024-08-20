@@ -2,6 +2,7 @@
 
 export { usePurchaseStore } from './use-purchase-store';
 export { useCourseStore } from './use-course-progress-store';
-export * from './use-lesson-progress-store';
+
 export { useModuleStore } from './use-module-progress-store';
-export { usePointsStore } from './use-user-point-store';
+export { createPointsStore, PointsStore } from './use-user-point-store';
+export { createLessonStore, LessonProgressStore } from './use-lesson-progress-store';

@@ -10,7 +10,7 @@ import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { ArrowBigLeftIcon } from 'lucide-react';
 import { LessonProgressBar } from '@rocket-house-productions/lesson';
 import { SectionModule } from '@rocket-house-productions/types';
-import { useLessonProgressionStore } from '@rocket-house-productions/providers';
+import { useLessonProgressionStore, usePointsStore } from '@rocket-house-productions/providers';
 
 interface LessonContentProps {
   lesson: Lesson | null | undefined;
@@ -20,7 +20,7 @@ interface LessonContentProps {
 
 export function LessonVideo({ lesson, module }: LessonContentProps) {
   const { lessons, setLessonProgress } = useLessonProgressionStore(store => store);
-
+  const { addPoints } = usePointsStore(store => store);
   const videoId = lesson?.videoId;
   const videoLibId = lesson?.videoLibId;
   const ref = useRef<HTMLIFrameElement>(null);
@@ -56,6 +56,8 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
 
       video.on('ended', () => {
         setCompleted(true);
+        // set score via CMS
+        addPoints(100 || 0);
       });
     }
   }, [video]);
