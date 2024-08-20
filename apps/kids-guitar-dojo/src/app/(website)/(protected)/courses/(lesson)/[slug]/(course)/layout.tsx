@@ -2,6 +2,7 @@ import { Header, ParallaxScene } from '@rocket-house-productions/lesson';
 import { db } from '@rocket-house-productions/integration';
 import { ReactNode } from 'react';
 import { notFound, redirect } from 'next/navigation';
+import { CourseProgressionProvider } from '@rocket-house-productions/providers';
 
 interface LayoutProps {
   children: ReactNode;

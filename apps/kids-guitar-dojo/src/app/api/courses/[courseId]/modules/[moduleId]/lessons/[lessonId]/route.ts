@@ -45,26 +45,6 @@ export async function DELETE(
       return new NextResponse('Not found', { status: 404 });
     }
 
-    /*
-    if (lesson.videoUrl) {
-      const existingMuxData = await db.muxData.findFirst({
-        where: {
-          chapterId: params.chapterId,
-        },
-      });
-
-      if (existingMuxData) {
-        await Video.Assets.del(existingMuxData.assetId);
-        await db.muxData.delete({
-          where: {
-            id: existingMuxData.id,
-          },
-        });
-      }
-    }
-
-     */
-
     const deletedChapter = await db.lesson.delete({
       where: {
         id: params.lessonId,
@@ -129,6 +109,8 @@ export async function PATCH(
       return new NextResponse('Not found', { status: 404 });
     }
 
+    console.log('[COURSES_COURSE-ID_MOLDULE_LESSON-ID] values', values);
+
     const lesson = await db.lesson.update({
       where: {
         id: params.lessonId,
@@ -167,7 +149,7 @@ export async function PATCH(
 
     return NextResponse.json(lesson);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID]', error);
+    console.log('[COURSES_COURSE-ID_MOLDULE_LESSON-ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

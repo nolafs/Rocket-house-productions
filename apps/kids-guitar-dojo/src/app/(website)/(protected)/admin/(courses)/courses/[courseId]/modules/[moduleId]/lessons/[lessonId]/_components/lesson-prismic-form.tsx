@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import * as z from 'zod';
@@ -31,13 +31,21 @@ interface LessonDescriptionFormProps {
   moduleId: string;
   lessonId: string;
   options: { label: string; value: string }[];
+  children?: ReactNode;
 }
 
 const formSchema = z.object({
   prismaSlug: z.string().min(1).nullable(),
 });
 
-const LessonDescriptionForm = ({ initialData, courseId, moduleId, lessonId, options }: LessonDescriptionFormProps) => {
+const LessonDescriptionForm = ({
+  initialData,
+  courseId,
+  moduleId,
+  lessonId,
+  options,
+  children,
+}: LessonDescriptionFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -53,6 +61,8 @@ const LessonDescriptionForm = ({ initialData, courseId, moduleId, lessonId, opti
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log('values', values);
+
     try {
       await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`, values);
       toast.success('Lesson updated');
@@ -66,22 +76,22 @@ const LessonDescriptionForm = ({ initialData, courseId, moduleId, lessonId, opti
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">
-        Lesson description
+        Lesson Prismic Content (optional)
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit description
+              Edit Prismic
             </>
           )}
         </Button>
       </div>
       {!isEditing && (
-        <div className={cn('mt-2 text-sm', !initialData.description && 'italic text-slate-500')}>
-          {!initialData.description && 'No description'}
-          {initialData.description && <Preview value={initialData.description} />}
+        <div className={cn('mt-2 text-sm', !initialData.prismaSlug && 'italic text-slate-500')}>
+          {!initialData.prismaSlug && 'No Prismic content connected'}
+          {initialData.prismaSlug && children}
         </div>
       )}
       {isEditing && (
@@ -89,7 +99,7 @@ const LessonDescriptionForm = ({ initialData, courseId, moduleId, lessonId, opti
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control as any}
-              name="description"
+              name="prismaSlug"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
