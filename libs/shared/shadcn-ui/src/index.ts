@@ -25,3 +25,4 @@ export * from './components/ui/datePicker';
 export * from './components/ui/avatar';
 export * from './components/ui/color-picker';
 export * from './components/ui/accordion';
+export * from './components/ui/drawer';
