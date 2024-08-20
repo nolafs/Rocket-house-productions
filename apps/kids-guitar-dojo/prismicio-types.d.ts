@@ -669,7 +669,7 @@ export type LegalDocument<Lang extends string = string> = prismic.PrismicDocumen
   Lang
 >;
 
-type LessonDocumentDataSlicesSlice = RichTextSliceSlice;
+type LessonDocumentDataSlicesSlice = LessonRickTextSlice;
 
 /**
  * Content for Lesson documents
@@ -2976,6 +2976,93 @@ type HeroSliceVariation = HeroSliceDefault | HeroSliceThunderDecoration | HeroSl
 export type HeroSlice = prismic.SharedSlice<'hero', HeroSliceVariation>;
 
 /**
+ * Primary content in *LessonRickText → Default → Primary*
+ */
+export interface LessonRickTextSliceDefaultPrimary {
+  /**
+   * Header field in *LessonRickText → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.default.primary.header
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  header: prismic.KeyTextField;
+
+  /**
+   * text field in *LessonRickText → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.default.primary.text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  text: prismic.RichTextField;
+
+  /**
+   * Header Alignment field in *LessonRickText → Default → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.default.primary.header_alignment
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  header_alignment: prismic.SelectField<'Center' | 'Right'>;
+}
+
+/**
+ * Default variation for LessonRickText Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type LessonRickTextSliceDefault = prismic.SharedSliceVariation<
+  'default',
+  Simplify<LessonRickTextSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Two columns with header variation for LessonRickText Slice
+ *
+ * - **API ID**: `twoColumnsWithHeader`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type LessonRickTextSliceTwoColumnsWithHeader = prismic.SharedSliceVariation<
+  'twoColumnsWithHeader',
+  Record<string, never>,
+  never
+>;
+
+/**
+ * Two columns variation for LessonRickText Slice
+ *
+ * - **API ID**: `twoColumns`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type LessonRickTextSliceTwoColumns = prismic.SharedSliceVariation<'twoColumns', Record<string, never>, never>;
+
+/**
+ * Slice variation for *LessonRickText*
+ */
+type LessonRickTextSliceVariation =
+  | LessonRickTextSliceDefault
+  | LessonRickTextSliceTwoColumnsWithHeader
+  | LessonRickTextSliceTwoColumns;
+
+/**
+ * LessonRickText Shared Slice
+ *
+ * - **API ID**: `lesson_rick_text`
+ * - **Description**: LessonRickText
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type LessonRickTextSlice = prismic.SharedSlice<'lesson_rick_text', LessonRickTextSliceVariation>;
+
+/**
  * Item in *PricingTable → Default → Primary → Tiers*
  */
 export interface PricingTableSliceDefaultPrimaryTiersItem {
@@ -3799,6 +3886,12 @@ declare module '@prismicio/client' {
       HeroSliceThunderDecoration,
       HeroSliceCentered,
       HeroSliceSimple,
+      LessonRickTextSlice,
+      LessonRickTextSliceDefaultPrimary,
+      LessonRickTextSliceVariation,
+      LessonRickTextSliceDefault,
+      LessonRickTextSliceTwoColumnsWithHeader,
+      LessonRickTextSliceTwoColumns,
       PricingTableSlice,
       PricingTableSliceDefaultPrimaryTiersItem,
       PricingTableSliceDefaultPrimary,

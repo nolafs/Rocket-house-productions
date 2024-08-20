@@ -9,15 +9,19 @@ import cn from 'classnames';
 import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { ArrowBigLeftIcon } from 'lucide-react';
 import { LessonProgressBar } from '@rocket-house-productions/lesson';
-import { Section } from '../page';
+import { SectionModule } from '@rocket-house-productions/types';
+import { useLessonProgressionStore, useModuleProgressStore, usePointsStore } from '@rocket-house-productions/providers';
 
 interface LessonContentProps {
   lesson: Lesson | null | undefined;
-  module: Section | null | undefined;
+  module: SectionModule | null | undefined;
   child: Child | null | undefined;
 }
 
-export function LessonContent({ lesson, module, child }: LessonContentProps) {
+export function LessonVideo({ lesson, module }: LessonContentProps) {
+  const { setLessonProgress } = useLessonProgressionStore(store => store);
+  const { addPoints } = usePointsStore(store => store);
+  const { calculateModuleProgress } = useModuleProgressStore(store => store);
   const videoId = lesson?.videoId;
   const videoLibId = lesson?.videoLibId;
   const ref = useRef<HTMLIFrameElement>(null);
@@ -44,18 +48,21 @@ export function LessonContent({ lesson, module, child }: LessonContentProps) {
   useEffect(() => {
     if (video !== null) {
       video.on('timeupdate', (progress: any) => {
-        setCurrentProgress((progress.seconds / progress.duration) * 100);
+        const currentTime = Math.round((progress.seconds / progress.duration) * 100);
+        setCurrentProgress(currentTime);
+        if (lesson?.id) {
+          setLessonProgress(lesson.id, currentTime);
+        }
       });
 
       video.on('ended', () => {
         setCompleted(true);
+        // set score via CMS
+        addPoints(100 || 0);
+        calculateModuleProgress(module?.id || '');
       });
     }
   }, [video]);
-
-  const currentLessonNum = lesson?.position || 0;
-  const nextLesson =
-    (module?.lessons?.length !== currentLessonNum + 1 && module?.lessons?.[currentLessonNum + 1]) || null;
 
   return (
     <>
@@ -83,30 +90,8 @@ export function LessonContent({ lesson, module, child }: LessonContentProps) {
           </div>
         )}
       </div>
-
-      <h1 className={'heading flex flex-col pt-10 font-bold'}>
-        <small className={'text-pink-500 lg:text-xl'}>Lesson {currentLessonNum + 1}</small>
-        <span className={'text-2xl lg:text-4xl'}>{lesson?.title}</span>
-      </h1>
-      <div className={'prose prose-sm md:prose-md lg:prose-lg max-w-5xl'}>
-        {lesson?.description && <div dangerouslySetInnerHTML={{ __html: lesson?.description }}></div>}
-      </div>
-      {nextLesson && (
-        <div
-          id={'continue'}
-          className="relative flex w-full items-center justify-between rounded-md border border-pink-500 p-10">
-          <div className={'font-bold'}>
-            <span className={'text-pink-500'}>Next Lesson:</span> <span>{nextLesson.title}</span>
-          </div>
-          <div>
-            <Button variant={'lesson'} size={'lg'}>
-              Continue
-            </Button>
-          </div>
-        </div>
-      )}
     </>
   );
 }
 
-export default LessonContent;
+export default LessonVideo;
