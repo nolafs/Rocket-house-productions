@@ -14,13 +14,12 @@ const progressVariants = cva('text-black', {
   },
 });
 
-export function LessonProgressBar({
-  currentProgress,
-  variation = 'default',
-}: {
+interface LessonProgressBarProps {
   currentProgress: number;
-  variation: 'default' | 'white';
-}) {
+  variation?: 'default' | 'white';
+}
+
+export function LessonProgressBar({ currentProgress, variation = 'default' }: LessonProgressBarProps) {
   return (
     <div className={'flex min-w-[300px] flex-col space-x-1.5'}>
       <div

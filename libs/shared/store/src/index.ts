@@ -2,7 +2,11 @@
 
 export { usePurchaseStore } from './use-purchase-store';
 
-export { createModuleStore, ModuleProgressStore } from './use-module-progress-store';
-export { createCourseStore, CourseProgressStore } from './use-course-progress-store';
-export { createPointsStore, PointsStore } from './use-user-point-store';
-export { createLessonStore, LessonProgressStore } from './use-lesson-progress-store';
+export type { ModuleProgressStore } from './use-module-progress-store';
+export { createModuleStore } from './use-module-progress-store';
+export type { CourseProgressStore } from './use-course-progress-store';
+export { createCourseStore } from './use-course-progress-store';
+export type { PointsStore } from './use-user-point-store';
+export { createPointsStore } from './use-user-point-store';
+export type { LessonProgressStore } from './use-lesson-progress-store';
+export { createLessonStore } from './use-lesson-progress-store';
