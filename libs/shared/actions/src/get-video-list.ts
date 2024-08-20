@@ -1,6 +1,6 @@
 'use server';
-export async function getVideoList(page = 0, itemsPerPage = 50, orderBy = 'date') {
-  const url = `https://video.bunnycdn.com/library/${process.env.BUNNYCDN_STREAM_LIB_ID}/videos?page=1&itemsPerPage=100&orderBy=date`;
+export async function getVideoList(page = 0, itemsPerPage = 50, search: string | null = null, orderBy = 'date') {
+  const url = `https://video.bunnycdn.com/library/${process.env.BUNNYCDN_STREAM_LIB_ID}/videos?page=${page}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}&search=${search}`;
   const options = {
     method: 'GET',
     headers: {

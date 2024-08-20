@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 import { ArrowLeft, Eye, LayoutDashboard, Video } from 'lucide-react';
 
@@ -14,6 +14,7 @@ import LessonActions from './_components/lesson-actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
 import LessonCategoryForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-category-form';
+import { createClient } from '@/prismicio';
 
 const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId: string; lessonId: string } }) => {
   const { userId } = auth();
@@ -44,6 +45,11 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
     },
   });
 
+  const client = createClient();
+  const page = await client.getAllByType('lesson').catch(() => {
+    return [];
+  });
+
   const requiredFields = [
     lesson.title,
     lesson.description,
@@ -61,7 +67,7 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
   return (
     <>
       {!lesson.isPublished && (
-        <Banner variant="warning" label="This chapter is unpublished. It will not be visible in the course" />
+        <Banner variant="warning" label="This lesson is unpublished. It will not be visible in the module" />
       )}
       <div className="p-6">
         <div className="flex items-center justify-between">
