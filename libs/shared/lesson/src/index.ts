@@ -1,3 +1,4 @@
+export * from './lib/components/lesson/lesson-course-progression';
 export * from './lib/components/lesson/lesson-next';
 export * from './lib/components/button-download-pdf';
 export * from './lib/components/score-display';

@@ -1,4 +1,5 @@
 import { createStore } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 type PointsState = {
   points: number;
@@ -17,14 +18,23 @@ export const defaultInitState: PointsState = {
 };
 
 export const createPointsStore = (initState: PointsState = defaultInitState) =>
-  createStore<PointsStore>((set, get) => ({
-    ...initState,
-    addPoints: (points: number) =>
-      set(state => ({
-        points: state.points + points,
-      })),
+  createStore<PointsStore>()(
+    persist(
+      (set, get) => ({
+        ...initState,
+        addPoints: (points: number) =>
+          set(state => ({
+            points: state.points + points,
+          })),
 
-    resetPoints: () => set({ points: 0 }),
+        resetPoints: () => set({ points: 0 }),
 
-    getPoints: () => get().points,
-  }));
+        getPoints: () => get().points,
+      }),
+      {
+        name: 'points-storage', // name of the item in storage (must be unique)
+        partialize: state => ({ points: state.points }), // Persist only the points part of the state
+        // You can also specify a storage engine here, like sessionStorage or any custom storage
+      },
+    ),
+  );

@@ -2,7 +2,7 @@ import { Progress } from '@rocket-house-productions/shadcn-ui';
 import { cva } from 'class-variance-authority';
 import { cn } from '@rocket-house-productions/util';
 
-const progressVariants = cva('', {
+const progressVariants = cva('text-black', {
   variants: {
     variant: {
       default: 'text-black',
@@ -16,14 +16,15 @@ const progressVariants = cva('', {
 
 export function LessonProgressBar({
   currentProgress,
-  variation,
+  variation = 'default',
 }: {
   currentProgress: number;
-  variation?: 'default' | 'white';
+  variation: 'default' | 'white';
 }) {
   return (
     <div className={'flex min-w-[300px] flex-col space-x-1.5'}>
-      <div className={cn('flex justify-between px-1.5 pb-2 text-sm font-bold', progressVariants)}>
+      <div
+        className={cn('flex justify-between px-1.5 pb-2 text-sm font-bold', progressVariants({ variant: variation }))}>
         <div>Your progress</div>
         <div className={'text-pink-500'}>{Math.round(currentProgress)}%</div>
       </div>

@@ -8,14 +8,17 @@ import {
   LessonProgressStore,
   createPointsStore,
   PointsStore,
+  createModuleStore,
+  ModuleProgressStore,
+  createCourseStore,
+  CourseProgressStore,
 } from '@rocket-house-productions/store';
 
 type CombinedStores = {
   lessonStore: ReturnType<typeof createLessonStore>;
   pointsStore: ReturnType<typeof createPointsStore>;
-  //moduleStore: ReturnType<typeof useModuleStore>;
-  //courseStore: ReturnType<typeof useCourseStore>;
-  //pointsStore: ReturnType<typeof usePointsStore>;
+  moduleStore: ReturnType<typeof createModuleStore>;
+  courseStore: ReturnType<typeof createCourseStore>;
 };
 
 const CourseProgressionContext = createContext<CombinedStores | undefined>(undefined);
@@ -23,9 +26,8 @@ const CourseProgressionContext = createContext<CombinedStores | undefined>(undef
 export const CourseProgressionProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const lessonStoreRef = useRef<CombinedStores['lessonStore']>();
   const pointsStoreRef = useRef<CombinedStores['pointsStore']>();
-  //const moduleStoreRef = useRef(useModuleStore);
-  //const courseStoreRef = useRef(useCourseStore);
-  //const pointsStoreRef = useRef(usePointsStore);
+  const moduleStoreRef = useRef<CombinedStores['moduleStore']>();
+  const courseStoreRef = useRef<CombinedStores['courseStore']>();
 
   if (!lessonStoreRef.current) {
     lessonStoreRef.current = createLessonStore();
@@ -35,13 +37,21 @@ export const CourseProgressionProvider: React.FC<{ children: ReactNode }> = ({ c
     pointsStoreRef.current = createPointsStore();
   }
 
+  if (!moduleStoreRef.current) {
+    moduleStoreRef.current = createModuleStore(lessonStoreRef.current);
+  }
+
+  if (!courseStoreRef.current) {
+    courseStoreRef.current = createCourseStore(moduleStoreRef.current);
+  }
+
   return (
     <CourseProgressionContext.Provider
       value={{
         lessonStore: lessonStoreRef.current,
         pointsStore: pointsStoreRef.current,
-        //moduleStore: moduleStoreRef.current,
-        //courseStore: courseStoreRef.current,
+        moduleStore: moduleStoreRef.current,
+        courseStore: courseStoreRef.current,
       }}>
       {children}
     </CourseProgressionContext.Provider>
@@ -64,24 +74,18 @@ export const usePointsStore = <T,>(selector: (store: PointsStore) => T): T => {
   return useZustandStore(context.pointsStore, selector);
 };
 
-/*
-
-export const useModuleProgressionStore = <T,>(selector: (store: ReturnType<typeof useModuleStore>) => T): T => {
+export const useModuleProgressStore = <T,>(selector: (store: ModuleProgressStore) => T): T => {
   const context = useContext(CourseProgressionContext);
   if (!context) {
-    throw new Error(`useModuleProgressionStore must be used within CourseProgressionProvider`);
+    throw new Error(`useModuleProgressStore must be used within CourseProgressionProvider`);
   }
   return useZustandStore(context.moduleStore, selector);
 };
 
-export const useCourseProgressionStore = <T,>(selector: (store: ReturnType<typeof useCourseStore>) => T): T => {
+export const useCourseProgressionStore = <T,>(selector: (store: CourseProgressStore) => T): T => {
   const context = useContext(CourseProgressionContext);
   if (!context) {
     throw new Error(`useCourseProgressionStore must be used within CourseProgressionProvider`);
   }
   return useZustandStore(context.courseStore, selector);
 };
-
-
-
- */
