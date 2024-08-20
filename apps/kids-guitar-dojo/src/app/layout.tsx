@@ -101,7 +101,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <PlausibleProvider domain={DOMAIN}>
+    <PlausibleProvider domain={DOMAIN} customDomain={'plausible.biffify.com'}>
       <ClerkProvider>
         <UIProvider>
           <html
