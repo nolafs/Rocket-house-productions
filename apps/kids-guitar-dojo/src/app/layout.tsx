@@ -1,15 +1,15 @@
 import '../styles/navbar.scss';
 import './global.scss';
 import { Raleway, Mochiy_Pop_One, Nunito } from 'next/font/google';
-import { Suspense } from 'react';
 
 import { UIProvider } from '@rocket-house-productions/hooks';
-import { GoogleAnalytics } from '@rocket-house-productions/util';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ConfettiProvider, ToastProvider } from '@rocket-house-productions/providers';
+import PlausibleProvider from 'next-plausible';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -99,25 +99,26 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
-      <UIProvider>
-        <html
-          lang="en"
-          className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
-          suppressHydrationWarning={true}>
-          <body className={'bg-background min-h-screen font-sans antialiased'}>
-            <ConfettiProvider />
-            <ToastProvider />
-            {children}
+    <PlausibleProvider domain={process.env.NEXT_PUBLIC_BASE_URL || ''}>
+      <ClerkProvider>
+        <UIProvider>
+          <html
+            lang="en"
+            className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
+            suppressHydrationWarning={true}>
+            <body className={'bg-background min-h-screen font-sans antialiased'}>
+              <ConfettiProvider />
+              <ToastProvider />
+              {children}
+
+              {/* Preview */}
+              <PrismicPreview repositoryName={repositoryName} />
+            </body>
             {/* Analytics */}
-            <Suspense>
-              <GoogleAnalytics GA_MEASUREMENT_ID={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
-            </Suspense>
-            {/* Preview */}
-            <PrismicPreview repositoryName={repositoryName} />
-          </body>
-        </html>
-      </UIProvider>
-    </ClerkProvider>
+            <GoogleAnalytics gaId={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
+          </html>
+        </UIProvider>
+      </ClerkProvider>
+    </PlausibleProvider>
   );
 }

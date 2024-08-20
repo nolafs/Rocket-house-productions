@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 
 import { Lesson, BunnyData } from '@prisma/client';
 import { Button } from '@rocket-house-productions/shadcn-ui';
-import { FileUpload } from '@rocket-house-productions/features';
+import { Banner, FileUpload } from '@rocket-house-productions/features';
 import LessonVideoListDialog from './lesson-video-list-dialog';
 import ReactPlayer from 'react-player';
 
@@ -90,7 +90,8 @@ const LessonVideoForm = ({ initialData, courseId, moduleId, lessonId }: LessonVi
       {isEditing && (
         <div>
           <LessonVideoListDialog onSelectVideo={onVideoSelect} />
-          <div className="text-muted-foreground mt-4 text-xs">Upload this chapter&apos;s video</div>
+          <div className="text-muted-foreground my-4 text-xs">Select Lessons&apos;s video</div>
+          <Banner variant="warning" label="Please upload and process videos on Bunny.net" />
         </div>
       )}
       {initialData.videoId && !isEditing && (
