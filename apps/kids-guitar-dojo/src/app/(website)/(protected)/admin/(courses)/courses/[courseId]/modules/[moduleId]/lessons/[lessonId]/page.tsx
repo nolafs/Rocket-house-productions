@@ -13,8 +13,10 @@ import LessonVideoForm from './_components/lesson-video-form';
 import LessonActions from './_components/lesson-actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
-import LessonCategoryForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-category-form';
+import LessonCategoryForm from './_components/lesson-category-form';
 import { createClient } from '@/prismicio';
+import LessonPrismicForm from './_components/lesson-prismic-form';
+import { PreviewPrismic } from '@rocket-house-productions/features/server';
 
 const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId: string; lessonId: string } }) => {
   const { userId } = auth();
@@ -50,12 +52,7 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
     return [];
   });
 
-  const requiredFields = [
-    lesson.title,
-    lesson.description,
-    lesson.categoryId,
-    //(lessons).videoUrl
-  ];
+  const requiredFields = [lesson.title, lesson.description || lesson.prismaSlug, lesson.categoryId, lesson.videoId];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -112,6 +109,18 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
                 moduleId={params.moduleId}
                 lessonId={params.lessonId}
               />
+
+              <LessonPrismicForm
+                initialData={lesson}
+                courseId={params.courseId}
+                moduleId={params.moduleId}
+                lessonId={params.lessonId}
+                options={page.map(page => ({
+                  label: page?.data.title || 'No title',
+                  value: page.uid,
+                }))}>
+                <PreviewPrismic value={lesson.prismaSlug} />
+              </LessonPrismicForm>
 
               <LessonCategoryForm
                 initialData={lesson}

@@ -86,6 +86,8 @@ export default async function Page({ params }: PageProps) {
     return notFound();
   }
 
+  console.log('course', course.modules);
+
   return (
     <div className={'fex-col flex items-center justify-center rounded-xl bg-white p-10'}>
       <div className={'flex flex-col space-y-6'}>

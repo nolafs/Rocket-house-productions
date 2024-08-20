@@ -10,10 +10,11 @@ interface PreviewProps {
 }
 
 export const Preview = ({ value }: PreviewProps) => {
-  const ReactQuill = useMemo(
-    () => dynamic(() => import('react-quill'), { ssr: false }),
-    []
-  );
+  const ReactQuill = useMemo(() => dynamic(() => import('react-quill'), { ssr: false }), []);
 
-  return <ReactQuill theme="bubble" value={value} readOnly />;
+  return (
+    <div className={'prose prose-sm md:prose-md lg:prose-lg'}>
+      <ReactQuill theme="bubble" value={value} readOnly />
+    </div>
+  );
 };

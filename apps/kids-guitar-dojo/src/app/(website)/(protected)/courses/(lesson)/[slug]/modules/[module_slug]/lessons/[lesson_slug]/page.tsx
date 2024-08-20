@@ -3,19 +3,13 @@ import { notFound, redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration';
 import { getLesson } from '@rocket-house-productions/actions/server';
 
-import LessonContent from './_components/lesson-content';
-import { Header } from '@rocket-house-productions/lesson';
-
-export type Section = {
-  id?: string;
-  title?: string;
-  lessons?: {
-    id: string;
-    title: string;
-    slug: string;
-    isPublished: boolean;
-  }[];
-};
+import { Header, LessonNext, LessonVideo } from '@rocket-house-productions/lesson';
+import { createClient } from '@/prismicio';
+import { SliceZone } from '@prismicio/react';
+import { components } from '@/slices';
+import { SectionModule } from '@rocket-house-productions/types';
+import { LessonContent } from '@rocket-house-productions/lesson/server';
+import { CourseProgressionProvider } from '@rocket-house-productions/providers';
 
 interface PageProps {
   params: { slug: string; module_slug: string; lesson_slug: string };
@@ -67,13 +61,23 @@ export default async function Page({ params }: PageProps) {
   });
 
   console.log('lesson', data);
+  let page = null;
+
+  if (data?.lesson.prismaSlug) {
+    const client = createClient();
+    page = await client.getByUID('lesson', data?.lesson.prismaSlug);
+  }
 
   return (
-    <>
-      <Header avatar={child?.profilePicture} name={child?.name} background={data?.module?.color} />
-      <main className={'container mx-auto my-10 flex max-w-5xl flex-col space-y-5 px-5'}>
-        <LessonContent lesson={data?.lesson} module={data?.module as Section} child={child} />
-      </main>
-    </>
+    <CourseProgressionProvider>
+      <>
+        <Header avatar={child?.profilePicture} name={child?.name} background={data?.module?.color} />
+        <main className={'container mx-auto my-10 flex max-w-5xl flex-col space-y-5 px-5'}>
+          <LessonVideo lesson={data?.lesson} module={data?.module as SectionModule} child={child} />
+          <LessonContent title={data?.lesson.title} page={page} description={data?.lesson.description} />
+          <LessonNext lesson={data?.lesson} module={data?.module as SectionModule} />
+        </main>
+      </>
+    </CourseProgressionProvider>
   );
 }
