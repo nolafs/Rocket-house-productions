@@ -1,8 +1,8 @@
-export * from './lib/components/lesson/lesson-course-progression';
-export * from './lib/components/lesson/lesson-next';
-export * from './lib/components/button-download-pdf';
-export * from './lib/components/score-display';
-export * from './lib/components/lesson-progress-bar';
+export { LessonCourseProgression } from './lib/components/lesson/lesson-course-progression';
+export { LessonNext } from './lib/components/lesson/lesson-next';
+export { ButtonDownloadPdf } from './lib/components/button-download-pdf';
+export { ScoreDisplay } from './lib/components/score-display';
+export { LessonProgressBar } from './lib/components/lesson-progress-bar';
 export { VideoLibraryList } from './lib/components/video-library-list';
 export * from './lib/components/form/slug-form-control';
 export * from './lib/components/header/header';

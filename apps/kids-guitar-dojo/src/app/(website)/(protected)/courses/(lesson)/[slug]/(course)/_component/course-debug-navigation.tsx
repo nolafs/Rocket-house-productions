@@ -16,8 +16,11 @@ interface CourseDebugNavigationProps {
 export function CourseDebugNavigation({ course }: CourseDebugNavigationProps) {
   return (
     <div className={'fex-col flex items-center justify-center rounded-xl bg-white p-10'}>
-      <div className={'flex flex-col space-y-6'}>
-        <h1 className={'text-primary text-2xl font-bold'}>Course: {course.title}</h1>
+      <div className={'flex flex-col space-y-3'}>
+        <h1 className={'text-primary flex flex-col text-2xl font-bold'}>
+          <small className={'text-sm text-black'}>Course Debug menu</small>
+          {course.title}
+        </h1>
         <div className={'grid grid-cols-2 gap-5'}>
           <div className={'prose prose-sm max-w-5xl rounded-md border p-5'}>
             {course.description && <div dangerouslySetInnerHTML={{ __html: course.description }}></div>}
