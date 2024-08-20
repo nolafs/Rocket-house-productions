@@ -8,6 +8,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
   Input,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
   Select,
   SelectContent,
   SelectGroup,
@@ -26,11 +31,20 @@ interface LessonVideoListDialogProps {
 export function LessonVideoListDialog({ onSelectVideo }: LessonVideoListDialogProps) {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const [itemsPerPage, setItemsPerPage] = useState(50);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalVideos, setTotalVideos] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handleSelectVideo = (video: any) => {
     onSelectVideo(video);
     setOpen(false);
+  };
+
+  const handlePagination = (pagination: any) => {
+    console.log('[LessonVideoListDialog] pagination', pagination);
+    setItemsPerPage(prevState => pagination.itemsPerPage);
+    setTotalVideos(prevState => pagination.totalItems);
+    setCurrentPage(prevState => pagination.currentPage);
   };
 
   return (
@@ -45,7 +59,10 @@ export function LessonVideoListDialog({ onSelectVideo }: LessonVideoListDialogPr
           <div className={'flex flex-row items-center justify-between'}>
             <div>
               <DrawerTitle>Video Library</DrawerTitle>
-              <DrawerDescription>Select an existing video to add to this lesson.</DrawerDescription>
+              <DrawerDescription>
+                Select an existing video to add to this lesson.{' '}
+                <span className={'text-sm font-bold'}>Total number videos: {totalVideos}</span>
+              </DrawerDescription>
             </div>
             <div>
               <div className="flex items-center justify-end">
@@ -66,6 +83,8 @@ export function LessonVideoListDialog({ onSelectVideo }: LessonVideoListDialogPr
             onSelectVideo={video => handleSelectVideo(video)}
             itemCount={itemsPerPage}
             search={search}
+            page={currentPage}
+            onUpdatePagination={handlePagination}
           />
         </div>
         <DrawerFooter>
@@ -77,6 +96,8 @@ export function LessonVideoListDialog({ onSelectVideo }: LessonVideoListDialogPr
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
+                    <SelectItem value="50">10</SelectItem>
+                    <SelectItem value="50">20</SelectItem>
                     <SelectItem value="50">50</SelectItem>
                     <SelectItem value="100">100</SelectItem>
                     <SelectItem value="200">200</SelectItem>
@@ -84,7 +105,28 @@ export function LessonVideoListDialog({ onSelectVideo }: LessonVideoListDialogPr
                 </SelectContent>
               </Select>
             </div>
-            <div></div>
+            <div>
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href="#"
+                      onClick={() => {
+                        setCurrentPage(currentPage - 1);
+                      }}
+                    />
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationNext
+                      href="#"
+                      onClick={() => {
+                        setCurrentPage(currentPage + 1);
+                      }}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            </div>
           </div>
         </DrawerFooter>
       </DrawerContent>

@@ -1,26 +1,41 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getVideoList } from '@rocket-house-productions/actions/server';
 import { Button, Card, CardContent, CardFooter } from '@rocket-house-productions/shadcn-ui';
 import { Loader2Icon } from 'lucide-react';
+
+type pagination = {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  itemsPerPage: number;
+};
 
 interface VideoLibraryListProps {
   onSelectVideo: (video: any) => void;
   search?: string;
   itemCount?: number;
+  page?: number;
+  onUpdatePagination?: (pagination: pagination) => void;
 }
 
-export function VideoLibraryList({ onSelectVideo, search, itemCount = 50 }: VideoLibraryListProps) {
+export function VideoLibraryList({
+  onSelectVideo,
+  search,
+  itemCount = 20,
+  page = 1,
+  onUpdatePagination,
+}: VideoLibraryListProps) {
   const [videoLibraryList, setVideoLibraryList] = useState([]);
   const [totalVideos, setTotalVideos] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(page);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
 
-      const videoLibraryList = await getVideoList(currentPage, itemCount, search);
+      const videoLibraryList = await getVideoList(page, itemCount, search);
 
       if (videoLibraryList?.items.length) {
         setVideoLibraryList(videoLibraryList.items);
@@ -32,10 +47,20 @@ export function VideoLibraryList({ onSelectVideo, search, itemCount = 50 }: Vide
     };
 
     fetchData();
-  }, [itemCount, search]);
+  }, [itemCount, page, search]);
+
+  useEffect(() => {
+    if (onUpdatePagination) {
+      onUpdatePagination({
+        currentPage,
+        totalPages: Math.ceil(totalVideos / itemCount),
+        totalItems: totalVideos,
+        itemsPerPage: itemCount,
+      });
+    }
+  }, [totalVideos, itemCount, currentPage]);
 
   const handleSelectVideo = (video: any) => {
-    console.log(video);
     onSelectVideo(video);
   };
 
