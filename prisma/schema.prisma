@@ -151,7 +151,6 @@ model Lesson {
 model Questionary {
   id          String  @id @default(uuid())
   title       String
-  description String? @db.Text
   position    Int
   isPublished Boolean @default(false)
 
@@ -159,6 +158,8 @@ model Questionary {
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
 
   questions Question[]
+
+  points Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
@@ -169,7 +170,6 @@ model Questionary {
 model Question {
   id          String  @id @default(uuid())
   title       String
-  description String? @db.Text
   position    Int
   isPublished Boolean @default(false)
 
@@ -177,8 +177,6 @@ model Question {
   questionary   Questionary @relation(fields: [questionaryId], references: [id], onDelete: Cascade)
 
   correctAnswer Boolean
-
-  points Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()

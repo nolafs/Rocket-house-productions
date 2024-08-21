@@ -4,7 +4,7 @@ import { db } from '@rocket-house-productions/integration';
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string; moduleId: string; lessonId: string } },
+  { params }: { params: { courseId: string; moduleId: string; lessonId: string; questionanaireId: string } },
 ) {
   try {
     const { userId } = auth();
@@ -20,7 +20,7 @@ export async function PATCH(
     });
 
     if (!course) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('course no found', { status: 401 });
     }
 
     const moduleSection = await db.module.findFirst({
@@ -30,40 +30,33 @@ export async function PATCH(
     });
 
     if (!moduleSection) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Module no found', { status: 401 });
     }
 
-    const unPublishedLesson = await db.lesson.update({
+    const lesson = await db.lesson.findFirst({
       where: {
         id: params.lessonId,
         moduleId: params.moduleId,
+      },
+    });
+
+    if (!lesson) {
+      return new NextResponse('Lesson not found ', { status: 401 });
+    }
+
+    const unPublishedQuestion = await db.questionary.update({
+      where: {
+        id: params.questionanaireId,
+        lessonId: params.lessonId,
       },
       data: {
         isPublished: false,
       },
     });
 
-    const publishedLessonInModule = await db.lesson.findMany({
-      where: {
-        moduleId: params.lessonId,
-        isPublished: true,
-      },
-    });
-
-    if (!publishedLessonInModule.length) {
-      await db.module.update({
-        where: {
-          id: params.moduleId,
-        },
-        data: {
-          isPublished: false,
-        },
-      });
-    }
-
-    return NextResponse.json(unPublishedLesson);
+    return NextResponse.json(unPublishedQuestion);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID_UNPUBLISH]', error);
+    console.log('[COURSES_COURSE-ID_MODULE-LESSON-ID-QUESTION_UNPUBLISH]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

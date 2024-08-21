@@ -62,7 +62,7 @@ const LessonVideoForm = ({ initialData, courseId, moduleId, lessonId }: LessonVi
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">
-        Chapter video
+        Lesson video
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing && <>Cancel</>}
           {!isEditing && !initialData.videoId && (

@@ -6,11 +6,16 @@ import playerjs from 'player.js';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
-import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { ArrowBigLeftIcon } from 'lucide-react';
 import { LessonProgressBar } from '@rocket-house-productions/lesson';
 import { SectionModule } from '@rocket-house-productions/types';
-import { useLessonProgressionStore, useModuleProgressStore, usePointsStore } from '@rocket-house-productions/providers';
+import {
+  useLessonProgressionStore,
+  useModuleProgressStore,
+  usePointsStore,
+  useScrollTo,
+} from '@rocket-house-productions/providers';
 
 interface LessonContentProps {
   lesson: Lesson | null | undefined;
@@ -19,6 +24,7 @@ interface LessonContentProps {
 }
 
 export function LessonVideo({ lesson, module }: LessonContentProps) {
+  const { scrollTo } = useScrollTo();
   const { setLessonProgress } = useLessonProgressionStore(store => store);
   const { addPoints } = usePointsStore(store => store);
   const { calculateModuleProgress } = useModuleProgressStore(store => store);
@@ -32,15 +38,12 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
 
   useEffect(() => {
     if (!ref.current) return;
-
     const player = new playerjs.Player(ref.current);
-
     player.on('ready', (video: any) => {
       player.play();
       setVideo(player);
       setTotalTime(player.getDuration());
     });
-
     player.on('play', () => console.log('play'));
     player.on('pause', () => console.log('pause'));
   }, [ref]);
@@ -60,6 +63,7 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
         // set score via CMS
         addPoints(100 || 0);
         calculateModuleProgress(module?.id || '');
+        scrollTo('continue');
       });
     }
   }, [video]);
