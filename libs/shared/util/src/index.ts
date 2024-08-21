@@ -7,3 +7,4 @@ export * from './lib/titleToSlug';
 export { cn } from './lib/cn';
 export * from './lib/format';
 export { CurrencyToSymbol } from './lib/currencyToSymbole';
+export { debounce } from './lib/debounce';

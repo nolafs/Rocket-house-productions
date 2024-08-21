@@ -17,8 +17,9 @@ import LessonCategoryForm from './_components/lesson-category-form';
 import { createClient } from '@/prismicio';
 import LessonPrismicForm from './_components/lesson-prismic-form';
 import { PreviewPrismic } from '@rocket-house-productions/features/server';
+import LessonQuestionanaireForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-questionanaire-form';
 
-const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId: string; lessonId: string } }) => {
+const LessonIdPage = async ({ params }: { params: { courseId: string; moduleId: string; lessonId: string } }) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -33,6 +34,7 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
     include: {
       bunnyData: true,
       category: true,
+      questionaries: true,
     },
   });
 
@@ -157,6 +159,13 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
               moduleId={params.moduleId}
               lessonId={params.lessonId}
             />
+
+            <LessonQuestionanaireForm
+              initialData={lesson}
+              courseId={params.courseId}
+              moduleId={params.moduleId}
+              lessonId={params.lessonId}
+            />
           </div>
         </div>
       </div>
@@ -164,4 +173,4 @@ const ChapterIdPage = async ({ params }: { params: { courseId: string; moduleId:
   );
 };
 
-export default ChapterIdPage;
+export default LessonIdPage;

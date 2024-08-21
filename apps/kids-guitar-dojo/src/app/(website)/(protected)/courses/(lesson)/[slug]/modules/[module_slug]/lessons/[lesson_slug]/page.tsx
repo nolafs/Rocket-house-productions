@@ -7,6 +7,7 @@ import { Header, LessonNext, LessonVideo } from '@rocket-house-productions/lesso
 import { createClient } from '@/prismicio';
 import { SectionModule } from '@rocket-house-productions/types';
 import { LessonContent } from '@rocket-house-productions/lesson/server';
+import { ScrollToProvider } from '@rocket-house-productions/providers';
 
 interface PageProps {
   params: { slug: string; module_slug: string; lesson_slug: string };
@@ -66,13 +67,13 @@ export default async function Page({ params }: PageProps) {
   }
 
   return (
-    <>
+    <ScrollToProvider>
       <Header avatar={child?.profilePicture} name={child?.name} background={data?.module?.color} />
       <main className={'container mx-auto my-10 flex max-w-5xl flex-col space-y-5 px-5'}>
         <LessonVideo lesson={data?.lesson} module={data?.module as SectionModule} child={child} />
         <LessonContent title={data?.lesson.title} page={page} description={data?.lesson.description} />
         <LessonNext lesson={data?.lesson} module={data?.module as SectionModule} />
       </main>
-    </>
+    </ScrollToProvider>
   );
 }
