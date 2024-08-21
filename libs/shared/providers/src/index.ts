@@ -4,3 +4,4 @@ export * from './course-progression-provider';
 export * from './confetti-provider';
 export * from './toaster-provider';
 export * from './course-progression-provider';
+export * from './scrollTo-provider';
