@@ -3,10 +3,10 @@
 import { Child, Lesson } from '@prisma/client';
 
 import playerjs from 'player.js';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
-import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { ArrowBigLeftIcon } from 'lucide-react';
 import { LessonProgressBar } from '@rocket-house-productions/lesson';
 import { SectionModule } from '@rocket-house-productions/types';

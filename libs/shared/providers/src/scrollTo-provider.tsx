@@ -13,7 +13,9 @@ export const ScrollToProviderContext = createContext<ScrollToProviderContextType
 
 export const ScrollToProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const scrollTo = (id: string) => {
-    gsap.to(window, { duration: 2, scrollTo: `#${id}` });
+    if (typeof window !== 'undefined') {
+      gsap.to(window, { duration: 2, scrollTo: `#${id}` });
+    }
   };
 
   return <ScrollToProviderContext.Provider value={{ scrollTo }}>{children}</ScrollToProviderContext.Provider>;

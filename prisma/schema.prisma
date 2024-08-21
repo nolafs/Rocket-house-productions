@@ -151,7 +151,6 @@ model Lesson {
 model Questionary {
   id          String  @id @default(uuid())
   title       String
-  description String? @db.Text
   position    Int
   isPublished Boolean @default(false)
 
@@ -169,7 +168,6 @@ model Questionary {
 model Question {
   id          String  @id @default(uuid())
   title       String
-  description String? @db.Text
   position    Int
   isPublished Boolean @default(false)
 
