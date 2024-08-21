@@ -159,6 +159,8 @@ model Questionary {
 
   questions Question[]
 
+  points Int?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
@@ -175,8 +177,6 @@ model Question {
   questionary   Questionary @relation(fields: [questionaryId], references: [id], onDelete: Cascade)
 
   correctAnswer Boolean
-
-  points Float
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()

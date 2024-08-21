@@ -38,15 +38,12 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
 
   useEffect(() => {
     if (!ref.current) return;
-
     const player = new playerjs.Player(ref.current);
-
     player.on('ready', (video: any) => {
       player.play();
       setVideo(player);
       setTotalTime(player.getDuration());
     });
-
     player.on('play', () => console.log('play'));
     player.on('pause', () => console.log('pause'));
   }, [ref]);

@@ -10,6 +10,7 @@ import QuestionTitleForm from './_components/question-title-form';
 import QuestionActions from './_components/question-actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
+import AnswersForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answers-form';
 
 const QuestionnaireIdPage = async ({
   params,
@@ -36,7 +37,7 @@ const QuestionnaireIdPage = async ({
     return redirect('/');
   }
 
-  const requiredFields = [questionary?.title || ''];
+  const requiredFields = [questionary?.title || '', questionary?.questions.length > 0];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -48,7 +49,7 @@ const QuestionnaireIdPage = async ({
   return (
     <>
       {!questionary.isPublished && (
-        <Banner variant="warning" label="This lesson is unpublished. It will not be visible in the module" />
+        <Banner variant="warning" label="This Question is unpublished. It will not be visible in the lesson" />
       )}
       <div className="p-6">
         <div className="flex items-center justify-between">
@@ -61,7 +62,7 @@ const QuestionnaireIdPage = async ({
             </Link>
             <div className="flex w-full items-center justify-between">
               <div className="flex flex-col gap-y-2">
-                <h1 className="text-2xl font-medium">Lesson Creation</h1>
+                <h1 className="text-2xl font-medium">Questionanaire Creation</h1>
                 <span className="text-sm text-slate-700">Complete all fields {completionText}</span>
               </div>
               <QuestionActions
@@ -94,8 +95,15 @@ const QuestionnaireIdPage = async ({
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={CircleHelpIcon} />
-              <h2 className="text-xl">Add a Questions</h2>
+              <h2 className="text-xl">Add a Answers</h2>
             </div>
+            <AnswersForm
+              initialData={questionary}
+              courseId={params.courseId}
+              moduleId={params.moduleId}
+              lessonId={params.lessonId}
+              questionanaireId={params.questionanaireId}
+            />
           </div>
         </div>
       </div>
