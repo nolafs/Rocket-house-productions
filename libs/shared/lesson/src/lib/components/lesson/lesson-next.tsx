@@ -18,15 +18,13 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const getLessonCompleted = useLessonProgressionStore(store => store.getLessonCompleted(lesson.id));
   const [active, setActive] = useState(false);
   const hasQuiz = lesson?.questionaries?.length > 0;
+
   const nextLesson =
     module.lessons?.length && lesson.position - 1 < module.lessons.length
       ? module?.lessons?.[lesson.position - 1]
       : null;
 
   const lastLessonInModule = (id: string) => {
-    console.log('[LessonNext] lessons', module?.lessons);
-    console.log('[LessonNext] lesson', lesson?.position);
-    console.log('[LessonNext] id', id);
     if (module.lessons?.length) {
       return module?.lessons[module.lessons.length - 1].id === id;
     }
@@ -53,12 +51,14 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   }
 
   const handleQuiz = () => {
-    console.log('handleQuiz');
     router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${lesson.slug}/quiz`);
   };
 
   const handleNext = () => {
     console.log('handleNext');
+    if (nextLesson) {
+      router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${nextLesson.slug}`);
+    }
   };
 
   if (hasQuiz) {
@@ -66,9 +66,10 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
       <div
         id={'continue'}
         className={cn(
-          'relative flex w-full items-center justify-between rounded-md border border-pink-500 p-10',
+          'relative mt-10 flex w-full items-center justify-between rounded-md border border-pink-500 p-10',
           !active && 'opacity-30',
-        )}>
+        )}
+        style={{ borderColor: module.color }}>
         <div className={'font-bold'}>
           <span className={'text-pink-500'}>Quiz time</span>
         </div>
@@ -88,7 +89,8 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
         className={cn(
           'relative flex w-full items-center justify-between rounded-md border border-pink-500 p-10',
           !active && 'opacity-30',
-        )}>
+        )}
+        style={{ borderColor: module.color }}>
         <div className={'font-bold'}>
           <span className={'text-pink-500'}>Congratulations!</span>
         </div>
@@ -109,7 +111,8 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
         className={cn(
           'relative flex w-full items-center justify-between rounded-md border border-pink-500 p-10',
           !active && 'opacity-30',
-        )}>
+        )}
+        style={{ borderColor: module.color }}>
         <div className={'font-bold'}>
           <span className={'text-pink-500'}>Next Lesson:</span> <span>{nextLesson.title}</span>
         </div>

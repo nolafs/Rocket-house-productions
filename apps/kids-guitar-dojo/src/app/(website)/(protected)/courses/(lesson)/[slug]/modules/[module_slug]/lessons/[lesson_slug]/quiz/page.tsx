@@ -4,7 +4,7 @@ import { Header, LessonHeader, Quiz } from '@rocket-house-productions/lesson';
 
 import { ScrollToProvider } from '@rocket-house-productions/providers';
 import { getChild, getQuiz } from '@rocket-house-productions/actions/server';
-import { SectionLesson, SectionModule } from '@rocket-house-productions/types';
+import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 
 interface PageProps {
   params: { slug: string; module_slug: string; lesson_slug: string };
@@ -36,6 +36,7 @@ export default async function Page({ params }: PageProps) {
       <LessonHeader lessonId={data.lesson.id} hasProgress={false} />
       <main className={'container mx-auto mb-20 flex max-w-5xl flex-col space-y-5 px-5'}>
         <Quiz
+          course={data.course as SectionCourse}
           lesson={data.lesson as SectionLesson}
           module={data.module as SectionModule}
           questionaries={data.questionaries}

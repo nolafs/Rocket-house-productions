@@ -98,6 +98,7 @@ export const getQuiz = async ({ userId, courseSlug, moduleSlug, lessonSlug, chil
       title: module.title,
       slug: module.slug,
       isPublished: module.isPublished,
+      lessons: module.lessons,
     },
     lesson: {
       id: module.lessons[0].id,

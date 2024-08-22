@@ -1,14 +1,21 @@
-import { SectionLesson, SectionModule } from '@rocket-house-productions/types';
-import * as module from 'node:module';
+import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 import QuizScoreDisplay from './quiz-score-display';
+import { Question, Questionary } from '@prisma/client';
+import QuizList from './quiz-list';
+import QuizNext from './quiz-next';
 
-interface QuizProps {
-  lesson: SectionLesson;
-  module: SectionModule;
-  questionaries: any[];
+export interface Quiz extends Questionary {
+  questions: Question[];
 }
 
-export function Quiz({ lesson, module, questionaries }: QuizProps) {
+interface QuizProps {
+  course: SectionCourse;
+  lesson: SectionLesson;
+  module: SectionModule;
+  questionaries: Quiz[];
+}
+
+export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
   console.log('[Quiz] questionaries', questionaries);
 
   return (
@@ -19,7 +26,10 @@ export function Quiz({ lesson, module, questionaries }: QuizProps) {
         </small>
         {lesson.title}
       </h1>
-      <QuizScoreDisplay module={module} questions={questionaries} />
+      <QuizScoreDisplay module={module} questionaries={questionaries} />
+      <QuizList questionaries={questionaries} />
+
+      <QuizNext module={module} lesson={lesson} course={course} />
     </div>
   );
 }
