@@ -19,6 +19,7 @@ type LessonAction = {
   setLessonProgress: (lessonId: string, progress: number) => void;
   setQuestionProgress: (lessonId: string, questionId: string, completed: boolean) => void;
   getLessonProgress: (lessonId: string) => number;
+  getLessonCompleted: (lessonId: string) => boolean;
 };
 
 export type LessonProgressStore = LessonState & LessonAction;
@@ -69,5 +70,7 @@ export const createLessonStore = (initState: LessonState = defaultInitState) => 
       })),
 
     getLessonProgress: lessonId => get().lessons[lessonId]?.progress || 0,
+
+    getLessonCompleted: lessonId => get().lessons[lessonId]?.completed || false,
   }));
 };

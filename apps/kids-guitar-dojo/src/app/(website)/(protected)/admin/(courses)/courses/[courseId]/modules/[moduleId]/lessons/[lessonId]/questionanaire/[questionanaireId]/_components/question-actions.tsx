@@ -18,7 +18,14 @@ interface ChapterActionsProps {
   isPublished: boolean;
 }
 
-const QuestionActions = ({ disabled, courseId, moduleId, lessonId, isPublished }: ChapterActionsProps) => {
+const QuestionActions = ({
+  disabled,
+  courseId,
+  moduleId,
+  lessonId,
+  questionnaireId,
+  isPublished,
+}: ChapterActionsProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,10 +34,14 @@ const QuestionActions = ({ disabled, courseId, moduleId, lessonId, isPublished }
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/unpublish`);
+        await axios.patch(
+          `/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire/${questionnaireId}/unpublish`,
+        );
         toast.success('Lesson unpublished');
       } else {
-        await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/publish`);
+        await axios.patch(
+          `/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire/${questionnaireId}/publish`,
+        );
         toast.success('Lesson published');
       }
 
@@ -46,11 +57,13 @@ const QuestionActions = ({ disabled, courseId, moduleId, lessonId, isPublished }
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`);
+      await axios.delete(
+        `/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire/${questionnaireId}`,
+      );
 
       toast.success('Lesson deleted');
       router.refresh();
-      router.push(`/admin/courses/${courseId}/modules/${moduleId}`);
+      router.push(`/admin/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`);
     } catch (error) {
       toast.error('Something went wrong');
     } finally {

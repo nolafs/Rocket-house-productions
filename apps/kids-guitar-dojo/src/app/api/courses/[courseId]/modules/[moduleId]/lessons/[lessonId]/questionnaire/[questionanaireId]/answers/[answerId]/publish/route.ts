@@ -12,7 +12,7 @@ export async function PATCH(
     const { userId } = auth();
 
     if (!userId) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Unauthorized', { status: 405 });
     }
 
     const course = await db.course.findUnique({
@@ -22,41 +22,23 @@ export async function PATCH(
     });
 
     if (!course) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Course Not found', { status: 401 });
     }
 
-    const moduleSection = await db.module.findUnique({
-      where: {
-        id: params.moduleId,
-        courseId: params.courseId,
-      },
-    });
-
-    if (!moduleSection) {
-      return new NextResponse('Not found', { status: 404 });
-    }
-
-    const lesson = await db.lesson.findUnique({
-      where: {
-        id: params.lessonId,
-        moduleId: params.moduleId,
-      },
-    });
-
-    if (!lesson) {
-      return new NextResponse('Not found', { status: 404 });
-    }
+    console.log('[PUBLISH ANSWER 0]', params);
 
     const questionanaire = await db.questionary.findUnique({
       where: {
-        id: params.answerId,
-        lessonId: params.questionanaireId,
+        id: params.questionanaireId,
+        lessonId: params.lessonId,
       },
     });
 
     if (!questionanaire) {
       return new NextResponse('Not found', { status: 404 });
     }
+
+    console.log('[PUBLISH ANSWER 1]', params);
 
     const answer = await db.question.findUnique({
       where: {
@@ -68,6 +50,8 @@ export async function PATCH(
     if (!answer) {
       return new NextResponse('Not found', { status: 404 });
     }
+
+    console.log('[PUBLISH ANSWER 2]', params);
 
     const publishedAnswer = await db.question.update({
       where: {

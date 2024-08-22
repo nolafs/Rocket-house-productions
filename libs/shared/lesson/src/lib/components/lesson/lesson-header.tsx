@@ -10,9 +10,10 @@ import { useIsScrolling } from '@rocket-house-productions/hooks';
 interface LessonHeaderProps {
   lessonId: string;
   url?: string;
+  hasProgress?: boolean;
 }
 
-export function LessonHeader({ lessonId, url = '/courses' }: LessonHeaderProps) {
+export function LessonHeader({ lessonId, url = '/courses', hasProgress = true }: LessonHeaderProps) {
   const { getLessonProgress } = useLessonProgressionStore(store => store);
   const { notAtTop } = useIsScrolling();
   return (
@@ -24,7 +25,7 @@ export function LessonHeader({ lessonId, url = '/courses' }: LessonHeaderProps) 
           </i>{' '}
           Back
         </Link>
-        <LessonProgressBar currentProgress={getLessonProgress(lessonId)} />
+        {hasProgress && <LessonProgressBar currentProgress={getLessonProgress(lessonId)} />}
       </div>
     </div>
   );

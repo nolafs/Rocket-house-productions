@@ -9,4 +9,4 @@ export type { TestimonialsType } from './lib/testimional.type';
 export type { IContactFormInput } from './lib/email.type';
 export type { OGImage } from './lib/ogimage.type';
 export type { Tier } from './lib/tier.type';
-export type { SectionModule } from './lib/section-module.type';
+export type { SectionModule, SectionLesson, SectionCourse } from './lib/section-module.type';

@@ -19,7 +19,6 @@ interface LessonContentProps {
 
 export function LessonVideo({ lesson, module }: LessonContentProps) {
   const isMounted = useIsMounted();
-  const { scrollTo } = useScrollTo();
   const { setLessonProgress, setLessonComplete } = useLessonProgressionStore(store => store);
   const { addPoints } = usePointsStore(store => store);
   const { calculateModuleProgress } = useModuleProgressStore(store => store);
@@ -47,8 +46,6 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
       setLessonComplete(lesson.id);
       addPoints(100 || 0);
       calculateModuleProgress(module?.id || '');
-      if (!isMounted.current) return;
-      scrollTo('continue');
     });
 
     return () => {
