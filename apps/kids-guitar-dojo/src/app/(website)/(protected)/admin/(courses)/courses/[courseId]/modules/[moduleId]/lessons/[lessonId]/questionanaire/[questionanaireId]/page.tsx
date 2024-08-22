@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 import { ArrowLeft, CircleHelpIcon, Eye, LayoutDashboard, Video } from 'lucide-react';
 
@@ -10,7 +10,8 @@ import QuestionTitleForm from './_components/question-title-form';
 import QuestionActions from './_components/question-actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
-import AnswersForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answers-form';
+import AnswersForm from './_components/answers-form';
+import QuestionPointsForm from './_components/question-points-form';
 
 const QuestionnaireIdPage = async ({
   params,
@@ -84,6 +85,13 @@ const QuestionnaireIdPage = async ({
                 <h2 className="text-xl">Customize your Questionanaire</h2>
               </div>
               <QuestionTitleForm
+                initialData={questionary}
+                courseId={params.courseId}
+                moduleId={params.moduleId}
+                lessonId={params.lessonId}
+                questionanaireId={params.questionanaireId}
+              />
+              <QuestionPointsForm
                 initialData={questionary}
                 courseId={params.courseId}
                 moduleId={params.moduleId}

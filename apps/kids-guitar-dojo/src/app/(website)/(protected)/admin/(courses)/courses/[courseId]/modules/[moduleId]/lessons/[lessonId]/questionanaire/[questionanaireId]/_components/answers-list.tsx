@@ -5,13 +5,17 @@ import { Question } from '@prisma/client';
 
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
-import { Grip, Pencil } from 'lucide-react';
+import { BookCheck, BookDashed, Grip, MoreHorizontal, Pencil } from 'lucide-react';
 
 import cn from 'classnames';
 import {
   Badge,
   Button,
   Checkbox,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Form,
   FormControl,
   FormField,
@@ -26,6 +30,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import AnswerInlineForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answer-inline-form';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface AnswersListProps {
   items: Question[];
@@ -47,6 +53,8 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
   const [question, setQuestion] = useState(items);
   const [editing, setEditing] = useState<boolean | null>(null);
   const [currentSelected, setCurrentSelected] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -84,6 +92,30 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
       setEditing(false);
     } catch (error) {
       toast.error('Something went wrong');
+    }
+  };
+
+  const onPublish = async (isPublished: boolean, questionId: string) => {
+    try {
+      setIsLoading(true);
+
+      if (isPublished) {
+        await axios.patch(
+          `/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire/${questionanaireId}/answers/${questionId}/unpublish`,
+        );
+        toast.success('Question unpublished');
+      } else {
+        await axios.patch(
+          `/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire/${questionanaireId}/answers/${questionId}/publish`,
+        );
+        toast.success('Question published');
+      }
+
+      router.refresh();
+    } catch (error) {
+      toast.error('Something went wrong');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -125,6 +157,7 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
                     className={cn(
                       'mb-4 flex items-center gap-x-2 rounded-md border border-slate-200 bg-slate-200 text-sm text-slate-700',
                       answer.isPublished && 'border-sky-200 bg-sky-100 text-sky-700',
+                      isLoading && 'opacity-50',
                     )}
                     ref={provided.innerRef}
                     {...provided.draggableProps}>
@@ -160,13 +193,41 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
                           <Badge className={cn('bg-slate-500', answer.isPublished && 'bg-sky-700')}>
                             {answer.isPublished ? 'Published' : 'Draft'}
                           </Badge>
-                          <Pencil
-                            onClick={() => {
-                              setCurrentSelected(answer.id);
-                              setEditing(true);
-                            }}
-                            className="h-4 w-4 cursor-pointer transition hover:opacity-75"
-                          />
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" className="h-4 w-8 p-0">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem
+                                onClick={() => {
+                                  setCurrentSelected(answer.id);
+                                  setEditing(true);
+                                }}>
+                                <Pencil className="mr-2 h-4 w-4" />
+                                Edit
+                              </DropdownMenuItem>
+                              {!answer.isPublished ? (
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    onPublish(answer.isPublished, answer.id);
+                                  }}>
+                                  <BookCheck className="mr-2 h-4 w-4" />
+                                  Publish
+                                </DropdownMenuItem>
+                              ) : (
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    onPublish(answer.isPublished, answer.id);
+                                  }}>
+                                  <BookDashed className="mr-2 h-4 w-4" />
+                                  Unpublish
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </>
                       ) : (
                         <div></div>

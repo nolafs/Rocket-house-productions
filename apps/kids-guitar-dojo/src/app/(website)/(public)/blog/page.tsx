@@ -56,8 +56,6 @@ export default async function Page({ searchParams }: { searchParams: { page: str
     return notFound();
   }
 
-  console.log('pages', pages.results);
-
   return (
     <main>
       {/* Header */}

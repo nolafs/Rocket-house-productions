@@ -153,7 +153,7 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
       )}
       {!isCreating && (
         <div className={cn('mt-2 text-sm', !initialData.questions.length && 'italic text-slate-500')}>
-          {!initialData.questions.length && 'No lessons questionanaire'}
+          {!initialData.questions.length && 'No lessons quiz'}
           <AnswersList
             onReorder={onReorder}
             items={initialData.questions || []}

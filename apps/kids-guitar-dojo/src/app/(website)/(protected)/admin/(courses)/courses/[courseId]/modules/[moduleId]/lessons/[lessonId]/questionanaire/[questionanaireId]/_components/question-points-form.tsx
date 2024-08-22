@@ -25,7 +25,7 @@ import { SlugFormControl } from '@rocket-house-productions/lesson';
 
 interface QuestionFormProps {
   initialData: {
-    points: number;
+    points: number | null;
   };
   courseId: string;
   moduleId: string;
@@ -34,19 +34,19 @@ interface QuestionFormProps {
 }
 
 const formSchema = z.object({
-  points: z.number().int().min(1),
+  points: z.number().int().min(1).nullable(),
 });
 
 const QuestionTitleForm = ({ initialData, courseId, moduleId, lessonId, questionanaireId }: QuestionFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
-  const [points, setPoints] = useState(initialData.points);
+  const [points, setPoints] = useState(initialData.points || 0);
 
   const toggleEdit = () => setIsEditing(current => !current);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: initialData || { points: 0 },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -86,14 +86,14 @@ const QuestionTitleForm = ({ initialData, courseId, moduleId, lessonId, question
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control as any}
-              name="title"
+              name="points"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Input
+                      type={'number'}
                       disabled={isSubmitting}
                       onChangeCapture={e => setPoints(Number(e.currentTarget.value))}
-                      placeholder="Set score for question successfully answered"
                       {...field}
                     />
                   </FormControl>
