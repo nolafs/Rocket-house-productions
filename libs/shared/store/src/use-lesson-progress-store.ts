@@ -6,6 +6,7 @@ interface QuestionProgress {
 
 interface Lesson {
   progress: number;
+  completed: boolean;
   questions: QuestionProgress;
 }
 
@@ -14,9 +15,11 @@ type LessonState = {
 };
 
 type LessonAction = {
+  setLessonComplete: (lessonId: string) => void;
   setLessonProgress: (lessonId: string, progress: number) => void;
   setQuestionProgress: (lessonId: string, questionId: string, completed: boolean) => void;
   getLessonProgress: (lessonId: string) => number;
+  getLessonCompleted: (lessonId: string) => boolean;
 };
 
 export type LessonProgressStore = LessonState & LessonAction;
@@ -28,6 +31,18 @@ export const defaultInitState: LessonState = {
 export const createLessonStore = (initState: LessonState = defaultInitState) => {
   return createStore<LessonProgressStore>((set, get) => ({
     ...initState,
+
+    setLessonComplete: lessonId =>
+      set(state => ({
+        lessons: {
+          ...state.lessons,
+          [lessonId]: {
+            ...state.lessons[lessonId],
+            progress: 100,
+            completed: true,
+          },
+        },
+      })),
 
     setLessonProgress: (lessonId, progress) =>
       set(state => ({
@@ -55,5 +70,7 @@ export const createLessonStore = (initState: LessonState = defaultInitState) => 
       })),
 
     getLessonProgress: lessonId => get().lessons[lessonId]?.progress || 0,
+
+    getLessonCompleted: lessonId => get().lessons[lessonId]?.completed || false,
   }));
 };

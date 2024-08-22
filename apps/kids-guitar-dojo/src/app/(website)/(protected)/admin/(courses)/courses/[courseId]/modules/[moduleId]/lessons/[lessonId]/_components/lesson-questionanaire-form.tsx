@@ -137,7 +137,7 @@ const LessonQuestionanaireForm = ({ initialData, moduleId, courseId, lessonId }:
       )}
       {!isCreating && (
         <div className={cn('mt-2 text-sm', !initialData.questionaries.length && 'italic text-slate-500')}>
-          {!initialData.questionaries.length && 'No lessons questionanaire'}
+          {!initialData.questionaries.length && 'No lessons quiz'}
           <LessonQuestionanaireList onEdit={onEdit} onReorder={onReorder} items={initialData.questionaries || []} />
         </div>
       )}

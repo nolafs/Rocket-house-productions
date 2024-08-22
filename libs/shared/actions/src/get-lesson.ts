@@ -42,6 +42,7 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
         id: true,
         title: true,
         color: true,
+        slug: true,
         lessons: {
           where: {
             isPublished: true,
@@ -83,6 +84,13 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
         moduleId: module.id,
         isPublished: true,
       },
+      include: {
+        questionaries: {
+          select: {
+            id: true,
+          },
+        },
+      },
     });
 
     if (!lesson) {
@@ -106,9 +114,10 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
     });
 
     return {
+      course,
       lesson,
-      childProgress,
       module,
+      childProgress,
     };
   } catch (error) {
     console.error('Error getting lesson', error);

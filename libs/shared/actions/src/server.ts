@@ -8,3 +8,5 @@ export { uploadFileAction } from './upload-file';
 export { getLesson } from './get-lesson';
 export { getVideoList } from './get-video-list';
 export { downloadPdf } from './downlod-pdf';
+export { getChild } from './get-child';
+export { getQuiz } from './get-quiz';

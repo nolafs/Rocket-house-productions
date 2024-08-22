@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import LessonNext from './lesson-next';
+import QuizNext from './quiz-next';
 
-describe('LessonNext', () => {
+describe('QuizNext', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<LessonNext />);
+    const { baseElement } = render(<QuizNext />);
     expect(baseElement).toBeTruthy();
   });
 });

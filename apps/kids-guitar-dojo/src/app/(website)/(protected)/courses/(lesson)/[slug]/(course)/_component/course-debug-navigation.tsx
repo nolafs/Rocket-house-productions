@@ -8,6 +8,7 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
 import cn from 'classnames';
+import { Lesson } from '@prisma/client';
 
 interface CourseDebugNavigationProps {
   course: any;
@@ -81,6 +82,20 @@ export function CourseDebugNavigation({ course }: CourseDebugNavigationProps) {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                    <div>
+                      <div>
+                        <div className={'mb-4 font-bold'}>Quiz</div>
+                        <ul>
+                          {module.lessons.map((item: any, idx: number) => {
+                            return (
+                              <li key={'quiz' + item.id}>
+                                {idx + 1} {item.title} - {item.questionaries.length ? 'yes' : 'no'}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </AccordionContent>
