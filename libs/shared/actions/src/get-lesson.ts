@@ -69,12 +69,13 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
         accountId_courseId_childId: {
           accountId: account.id,
           courseId: course.id,
-          childId: childId,
+          childId: account.children[0].id,
         },
       },
     });
 
     if (!purchase) {
+      console.log(account.id, course.id, childId);
       throw new Error('Purchase not found');
     }
 
