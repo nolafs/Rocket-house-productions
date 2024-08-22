@@ -4,8 +4,13 @@ import { Checkbox, Form, FormControl, FormField, FormItem, FormLabel } from '@ro
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import Timeline from '@/slices/Timeline';
+
+gsap.registerPlugin(useGSAP);
 
 interface QuizListItemProps {
   questionary: Questionary & { questions: Question[] };
@@ -19,10 +24,10 @@ const FormSchema = z.object({
 
 export function QuizListItem({ questionary }: QuizListItemProps) {
   const questions = questionary.questions;
-  const correctAnswers = questions.filter(question => question.correctAnswer);
   const [isSelected, setIsSelected] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(false);
   const [selectedAnswers, setSelectedAnswers] = useState<string | null>(null);
+  const ref = useRef<any>();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -31,28 +36,46 @@ export function QuizListItem({ questionary }: QuizListItemProps) {
     },
   });
 
-  const onSubmit = async (data: any) => {
-    setIsSelected(true);
-    setSelectedAnswers(prevState => data.items[0]);
-    console.log(data.items);
-    // check if selected answers are correct
-    questions.forEach(question => {
-      if (data.items.includes(question.id)) {
-        setIsCorrect(true);
-      }
-    });
-  };
-
   const correct = useMemo(() => {
     return isCorrect;
   }, [isCorrect]);
+
+  useGSAP(
+    () => {
+      console.log('useGSAP', isCorrect);
+
+      if (isCorrect) {
+        const correctTimeline = gsap.timeline({ paused: true });
+        correctTimeline.to('.correct', {
+          scale: 0.99,
+          duration: 0.1,
+          yoyo: true,
+          repeat: 3,
+        });
+        correctTimeline.play();
+      } else {
+        const inCorrectTimeline = gsap.timeline({ paused: true });
+        inCorrectTimeline.to('.incorrect', { x: 10, duration: 0.1, yoyo: true, repeat: 3 });
+        inCorrectTimeline.play();
+      }
+    },
+    { scope: ref, dependencies: [isCorrect] },
+  );
+
+  const onSubmit = async (data: any) => {
+    setIsSelected(true);
+    let answers = null;
+    answers = questions.find(item => item.id === data.items[0]) || null;
+    console.log('answers', answers);
+    setIsCorrect(answers?.correctAnswer || false);
+  };
 
   return (
     <div className={'item'}>
       <h2 className={'!font-lesson-body mb-5 text-xl font-bold'}>{questionary.title}</h2>
 
       <Form {...form}>
-        <form onChangeCapture={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form ref={ref} onChangeCapture={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
             disabled={isSelected}
@@ -71,8 +94,12 @@ export function QuizListItem({ questionary }: QuizListItemProps) {
                             key={item.id}
                             className={cn(
                               'flex flex-row items-start space-x-3 space-y-0 rounded-md p-3',
-                              isSelected && item.correctAnswer && selectedAnswers === item.id ? 'bg-green-100' : '',
-                              isSelected && !item.correctAnswer && selectedAnswers === item.id ? 'bg-red-100' : '',
+                              isSelected && item.correctAnswer && selectedAnswers === item.id
+                                ? 'correct bg-green-100'
+                                : '',
+                              isSelected && !item.correctAnswer && selectedAnswers === item.id
+                                ? 'incorrect bg-red-100'
+                                : '',
                             )}>
                             <FormControl>
                               <Checkbox
