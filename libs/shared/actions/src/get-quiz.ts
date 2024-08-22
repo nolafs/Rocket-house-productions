@@ -1,22 +1,23 @@
+'use server';
 import { db } from '@rocket-house-productions/integration';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import getAccount from './get-account';
 
 interface GetQuizProps {
-  userId: string;
-  childId: string;
   courseSlug: string;
   moduleSlug: string;
   lessonSlug: string;
 }
 
-export const getQuiz = async ({ userId, courseSlug, moduleSlug, lessonSlug, childId }: GetQuizProps) => {
-  const account = await db.account.findUnique({
-    where: {
-      userId: userId,
-    },
-    include: {
-      children: true,
-    },
-  });
+export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizProps) => {
+  const { userId } = auth();
+
+  if (!userId) {
+    return redirect('/');
+  }
+
+  const account = await getAccount(userId);
 
   if (!account) {
     throw new Error('User not found');

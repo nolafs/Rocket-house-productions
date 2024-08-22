@@ -22,9 +22,12 @@ export default async function Page({ params }: PageProps) {
   }
 
   const child = await getChild(params.slug);
+
+  if (!child) {
+    return redirect(`/courses/error?status=error&message=No%20child%20found`);
+  }
+
   const data = await getQuiz({
-    userId,
-    childId: child.id,
     courseSlug: params.slug,
     moduleSlug: params.module_slug,
     lessonSlug: params.lesson_slug,
