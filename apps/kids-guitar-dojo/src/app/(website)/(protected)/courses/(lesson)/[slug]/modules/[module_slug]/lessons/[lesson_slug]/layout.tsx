@@ -1,6 +1,7 @@
-import { db } from '@rocket-house-productions/integration';
 import { ReactNode } from 'react';
 import { notFound, redirect } from 'next/navigation';
+import { auth } from '@clerk/nextjs/server';
+import { getChild } from '@rocket-house-productions/actions/server';
 
 interface LayoutProps {
   children: ReactNode;
@@ -9,34 +10,13 @@ interface LayoutProps {
 
 export default async function Layout({ children, params }: LayoutProps) {
   // find purchase by course slug
-  console.log('[LESSON PAGE]', params);
+  const { userId } = auth();
 
-  const purchase = await db.purchase.findFirst({
-    where: {
-      course: {
-        slug: params.slug,
-      },
-    },
-  });
-
-  // When more than one purchase we have to look for many purchases and then allow child selection
-
-  console.log('[LESSON PAGE]', purchase);
-
-  if (!purchase) {
-    return notFound();
+  if (!userId) {
+    return redirect('/');
   }
 
-  if (!purchase.childId) {
-    return redirect(`/courses/error?status=error&message=No%20child%20found`);
-  }
-
-  const child = await db.child.findFirst({
-    where: {
-      id: purchase?.childId,
-    },
-  });
-
+  const child = await getChild(params.slug);
   if (!child) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }

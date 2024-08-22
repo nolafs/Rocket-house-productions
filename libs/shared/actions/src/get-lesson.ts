@@ -1,26 +1,27 @@
+'use server';
 import { db } from '@rocket-house-productions/integration';
+import getAccount from './get-account';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
 interface GetLessonProps {
-  userId: string;
-  childId: string;
   courseSlug: string;
   moduleSlug: string;
   lessonSlug: string;
 }
 
-export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, childId }: GetLessonProps) => {
+export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLessonProps) => {
   try {
-    const account = await db.account.findUnique({
-      where: {
-        userId: userId,
-      },
-      include: {
-        children: true,
-      },
-    });
+    const { userId } = auth();
+
+    if (!userId) {
+      redirect('/');
+    }
+
+    const account = await getAccount(userId);
 
     if (!account) {
-      throw new Error('User not found');
+      throw new Error('Account not found');
     }
 
     const course = await db.course.findUnique({
@@ -31,6 +32,20 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
 
     if (!course) {
       throw new Error('Course not found');
+    }
+
+    const purchase = await db.purchase.findUnique({
+      where: {
+        accountId_courseId_childId: {
+          accountId: account.id,
+          courseId: course.id,
+          childId: account.children[0].id,
+        },
+      },
+    });
+
+    if (!purchase) {
+      throw new Error('Purchase not found');
     }
 
     const module = await db.module.findUnique({
@@ -64,21 +79,6 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
       throw new Error('Module not found');
     }
 
-    const purchase = await db.purchase.findUnique({
-      where: {
-        accountId_courseId_childId: {
-          accountId: account.id,
-          courseId: course.id,
-          childId: account.children[0].id,
-        },
-      },
-    });
-
-    if (!purchase) {
-      console.log(account.id, course.id, childId);
-      throw new Error('Purchase not found');
-    }
-
     const lesson = await db.lesson.findUnique({
       where: {
         slug: lessonSlug,
@@ -98,17 +98,10 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
       throw new Error('Lesson not found');
     }
 
-    // Check is free lesson
-
-    // Get video
-    // Get quiz
-    // Get Awards
-
-    // Get user progress
     const childProgress = await db.childProgress.findUnique({
       where: {
         childId_lessonId: {
-          childId: childId,
+          childId: account.children[0].id,
           lessonId: lesson.id,
         },
       },

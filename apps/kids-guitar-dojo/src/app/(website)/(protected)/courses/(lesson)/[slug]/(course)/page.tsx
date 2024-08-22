@@ -78,8 +78,6 @@ export default async function Page({ params }: PageProps) {
     return notFound();
   }
 
-  console.log('course', course.modules);
-
   return (
     <>
       <CourseDebugNavigation course={course} />
