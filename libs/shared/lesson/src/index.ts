@@ -1,3 +1,4 @@
+export { LessonHeader } from './lib/components/lesson/lesson-header';
 export { LessonCourseProgression } from './lib/components/lesson/lesson-course-progression';
 export { LessonNext } from './lib/components/lesson/lesson-next';
 export { ButtonDownloadPdf } from './lib/components/button-download-pdf';
@@ -9,5 +10,5 @@ export * from './lib/components/header/header';
 export * from './lib/components/avatar';
 export * from './lib/components/dialog-layout/dialog-layout';
 export * from './lib/components/dialog-layout/dialog-layout';
-export * from './lib/components/parallax-scene';
-export * from './lib/components/lesson/lesson-video';
+export { ParallaxScene } from './lib/components/parallax-scene';
+export { LessonVideo } from './lib/components/lesson/lesson-video';

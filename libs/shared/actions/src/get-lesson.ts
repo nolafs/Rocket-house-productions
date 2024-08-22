@@ -83,6 +83,13 @@ export const getLesson = async ({ userId, courseSlug, moduleSlug, lessonSlug, ch
         moduleId: module.id,
         isPublished: true,
       },
+      include: {
+        questionaries: {
+          select: {
+            id: true,
+          },
+        },
+      },
     });
 
     if (!lesson) {

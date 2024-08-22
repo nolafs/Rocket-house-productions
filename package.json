@@ -53,6 +53,7 @@
     "framer-motion": "^11.3.17",
     "gsap": "./gsap-bonus.tgz",
     "iconsax-react": "^0.0.8",
+    "ismounted": "^0.1.8",
     "lucide-react": "^0.417.0",
     "micro": "^10.0.1",
     "nanoid": "^5.0.7",
