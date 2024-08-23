@@ -3,6 +3,7 @@ import { db } from '@rocket-house-productions/integration';
 import getAccount from './get-account';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import getAccountChildren from './get-account-children';
 
 interface GetLessonProps {
   courseSlug: string;
@@ -20,7 +21,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
     }
 
     const startAccount = Date.now();
-    const account = await getAccount(userId);
+    const account = await getAccountChildren(userId);
     console.log('Time taken for getAccount:', Date.now() - startAccount, 'ms');
 
     if (!account) {
