@@ -48,31 +48,12 @@ export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizPro
       lessons: {
         where: {
           isPublished: true,
-          slug: lessonSlug,
         },
         select: {
           id: true,
           title: true,
           slug: true,
           isPublished: true,
-          questionaries: {
-            where: {
-              isPublished: true,
-            },
-            orderBy: {
-              position: 'asc',
-            },
-            include: {
-              questions: {
-                where: {
-                  isPublished: true,
-                },
-                orderBy: {
-                  position: 'asc',
-                },
-              },
-            },
-          },
           position: true,
         },
         orderBy: {
@@ -84,6 +65,38 @@ export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizPro
 
   if (!module) {
     throw new Error('Module not found');
+  }
+
+  const lesson = await db.lesson.findUnique({
+    where: {
+      slug: lessonSlug,
+      moduleId: module.id,
+      isPublished: true,
+    },
+    include: {
+      questionaries: {
+        where: {
+          isPublished: true,
+        },
+        orderBy: {
+          position: 'asc',
+        },
+        include: {
+          questions: {
+            where: {
+              isPublished: true,
+            },
+            orderBy: {
+              position: 'asc',
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!lesson) {
+    throw new Error('Lesson not found');
   }
 
   return {
@@ -102,12 +115,12 @@ export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizPro
       lessons: module.lessons,
     },
     lesson: {
-      id: module.lessons[0].id,
-      title: module.lessons[0].title,
-      slug: module.lessons[0].slug,
-      position: module.lessons[0].position,
-      isPublished: module.lessons[0].isPublished,
+      id: lesson.id,
+      title: lesson.title,
+      slug: lesson.slug,
+      position: lesson.position,
+      isPublished: lesson.isPublished,
     },
-    questionaries: module.lessons[0].questionaries,
+    questionaries: lesson?.questionaries || null,
   };
 };

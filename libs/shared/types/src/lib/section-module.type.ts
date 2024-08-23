@@ -15,6 +15,7 @@ export type SectionModule = {
     title: string;
     slug: string;
     isPublished: boolean;
+    position: number;
   }[];
 };
 

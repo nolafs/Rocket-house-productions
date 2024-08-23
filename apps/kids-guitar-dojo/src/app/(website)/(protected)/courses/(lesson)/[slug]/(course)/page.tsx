@@ -1,82 +1,18 @@
-import { db } from '@rocket-house-productions/integration';
-import { notFound, redirect } from 'next/navigation';
-import { auth } from '@clerk/nextjs/server';
 import CourseDebugNavigation from './_component/course-debug-navigation';
 import { LessonCourseProgression } from '@rocket-house-productions/lesson';
+import { getCourse } from '@rocket-house-productions/actions/server';
+import { redirect } from 'next/navigation';
 
 interface PageProps {
   params: { slug: string };
 }
 
 export default async function Page({ params }: PageProps) {
-  const { userId } = auth();
-
-  if (!userId) {
-    return redirect('/');
+  if (!params.slug) {
+    redirect('/');
   }
 
-  const course = await db.course.findFirst({
-    where: {
-      slug: params.slug,
-      isPublished: true,
-    },
-    include: {
-      attachments: {
-        include: {
-          attachmentType: {
-            select: {
-              name: true,
-            },
-          },
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      },
-      modules: {
-        where: {
-          isPublished: true,
-        },
-        orderBy: {
-          position: 'asc',
-        },
-        include: {
-          attachments: {
-            include: {
-              attachmentType: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-            orderBy: {
-              createdAt: 'desc',
-            },
-          },
-          lessons: {
-            where: {
-              isPublished: true,
-            },
-            include: {
-              category: {
-                select: {
-                  name: true,
-                },
-              },
-              questionaries: true,
-            },
-            orderBy: {
-              position: 'asc',
-            },
-          },
-        },
-      },
-    },
-  });
-
-  if (!course) {
-    return notFound();
-  }
+  const course = await getCourse({ courseSlug: params.slug });
 
   return (
     <>

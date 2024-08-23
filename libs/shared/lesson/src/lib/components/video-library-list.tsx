@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getVideoList } from '@rocket-house-productions/actions/server';
 import { Button, Card, CardContent, CardFooter } from '@rocket-house-productions/shadcn-ui';
 import { Loader2Icon } from 'lucide-react';

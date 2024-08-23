@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import Quiz from './quiz';
+import QuizQuestionResult from './quiz-question-result';
 
 gsap.registerPlugin(useGSAP);
 
@@ -22,6 +23,7 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
   const [isCompleted, setIsCompleted] = useState(false);
   const [isLastQuestion, setIsLastQuestion] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
+  const [currentCorrect, setCurrentCorrect] = useState(false);
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
   const { contextSafe } = useGSAP({ scope: ref });
 
@@ -83,29 +85,33 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
       if (isLastQuestion) {
         setIsQuizCompleted(true);
       }
-    }, 1000);
+    }, 2000);
   };
 
   return (
     <>
-      <div ref={ref} className={'flex flex-1 overflow-hidden'}>
-        <div className={'inner relative h-full w-full overflow-hidden'}>
-          {questionaries.map(questionary => (
-            <div key={questionary.id} className={'slide absolute h-full w-full'}>
-              <QuizListItem
-                questionary={questionary}
-                onQuestionCompleted={onQuestionCompleted}
-                onUpdateScore={(correct, incorrect) => {
-                  console.log('onUpdateScore');
-                  setCorrectCount(prevState => prevState + correct);
-                }}
-              />
-            </div>
-          ))}
+      <div className={'relative isolate pb-20'}>
+        <div ref={ref} className={'relative flex flex-1 overflow-hidden'}>
+          <div className={'inner relative h-full w-full overflow-hidden'}>
+            {questionaries.map(questionary => (
+              <div key={questionary.id} className={'slide absolute h-full w-full'}>
+                <QuizListItem
+                  questionary={questionary}
+                  onQuestionCompleted={onQuestionCompleted}
+                  onUpdateScore={(correct, incorrect, current) => {
+                    console.log('onUpdateScore');
+                    setCurrentCorrect(current);
+                    setCorrectCount(prevState => prevState + correct);
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
+        <QuizQuestionResult show={isCompleted} isCorrect={currentCorrect} />
       </div>
       {!isLastQuestion && (
-        <div className={'mt-10 flex justify-end border-t border-gray-100 py-5'}>
+        <div className={'flex justify-end border-t border-gray-100 py-5'}>
           <Button variant={'default'} size={'lg'} onClick={onNext} disabled={!isCompleted}>
             Next Question
           </Button>
