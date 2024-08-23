@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { getChild } from '@rocket-house-productions/actions/server';
 
