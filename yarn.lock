@@ -5003,6 +5003,7 @@ __metadata:
     react-hot-toast: "npm:^2.4.1"
     react-player: "npm:^2.16.0"
     react-quill: "npm:^2.0.0"
+    react-timer-hook: "npm:^3.0.7"
     sass: "npm:1.62.1"
     server-only: "npm:^0.0.1"
     sharp: "npm:^0.33.4"
@@ -16876,6 +16877,15 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 10c0/6d66f3bdb65e1ec79089f80314da97c9a005087a04ee034255a5de129a4c0d9fd0bf99fa7bf642781ac2dc745ca687aae3de082bd8afdd0d117bc953241e15ad
+  languageName: node
+  linkType: hard
+
+"react-timer-hook@npm:^3.0.7":
+  version: 3.0.7
+  resolution: "react-timer-hook@npm:3.0.7"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 10c0/76a6419e8471be18023b907cb65c894566501305002186e9fa5ec42614ef21f0310f8ea0bed88b61efb75fc9bdc0430dcb92dc8f9a0a3c3a1956b6c27f6c8e2d
   languageName: node
   linkType: hard
 

@@ -3,15 +3,16 @@ import cn from 'classnames';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface QuizNextProps {
   module: SectionModule;
   lesson: SectionLesson;
   course: SectionCourse;
+  quizCompleted: boolean;
 }
 
-export function QuizNext({ lesson, module, course }: QuizNextProps) {
+export function QuizNext({ lesson, module, course, quizCompleted = false }: QuizNextProps) {
   const router = useRouter();
   const [active, setActive] = useState(false);
 
@@ -33,6 +34,12 @@ export function QuizNext({ lesson, module, course }: QuizNextProps) {
       router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${next.slug}`);
     }
   };
+
+  useEffect(() => {
+    if (quizCompleted) {
+      setActive(true);
+    }
+  }, [quizCompleted]);
 
   console.log('[QuizNext] next', next);
 
