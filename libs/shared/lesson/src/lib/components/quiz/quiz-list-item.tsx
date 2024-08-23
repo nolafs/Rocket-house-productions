@@ -8,8 +8,6 @@ import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import char from '../../assets/char.png';
-import Image from 'next/image';
 
 gsap.registerPlugin(useGSAP);
 
@@ -41,7 +39,6 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
 
   useGSAP(
     onQuizCompleted => {
-      console.log('useGSAP', isSelected);
       if (isSelected) {
         const runResults = () => {
           const timeline = gsap.timeline({

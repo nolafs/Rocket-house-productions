@@ -3,16 +3,18 @@ import { useEffect } from 'react';
 
 interface QuizTimerProps {
   runTimer: boolean;
+  onStopAt: (time: number) => void;
 }
 
-export function QuizTimer({ runTimer }: QuizTimerProps) {
-  const { seconds, minutes, hours, start, reset, pause } = useStopwatch({ autoStart: false });
+export function QuizTimer({ runTimer, onStopAt }: QuizTimerProps) {
+  const { seconds, minutes, hours, totalSeconds, start, reset, pause } = useStopwatch({ autoStart: false });
 
   useEffect(() => {
     if (runTimer) {
       start();
     } else {
       pause();
+      onStopAt(totalSeconds);
     }
 
     return () => {

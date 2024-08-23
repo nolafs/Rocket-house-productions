@@ -32,4 +32,44 @@
     }
   }
 
+
+  .speech-bubble {
+
+    &:after {
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      position: absolute;
+      top: 0px;
+
+    }
+
+    &.success{
+      &:after{
+        @apply border-green-500;
+      }
+    }
+
+    &.error{
+      &:after{
+        @apply border-red-500;
+      }
+    }
+
+    &.speech-bubble-bottom-right {
+
+      &:after {
+        border-width: 10px;
+        border-top-color: transparent !important;
+        border-left-color: transparent !important;
+        border-bottom-color: transparent !important;
+        top: auto;
+        right: 10px;
+        bottom: - 10px;
+      }
+    }
+  }
+
 }
