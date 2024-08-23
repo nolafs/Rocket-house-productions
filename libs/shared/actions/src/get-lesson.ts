@@ -67,6 +67,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
             title: true,
             slug: true,
             isPublished: true,
+            position: true,
           },
           orderBy: {
             position: 'asc',

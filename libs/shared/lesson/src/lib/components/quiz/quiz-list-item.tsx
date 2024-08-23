@@ -8,13 +8,15 @@ import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import char from '../../assets/char.png';
+import Image from 'next/image';
 
 gsap.registerPlugin(useGSAP);
 
 interface QuizListItemProps {
   questionary: Questionary & { questions: Question[] };
   onQuestionCompleted: () => void;
-  onUpdateScore: (correct: number, incorrect: number) => void;
+  onUpdateScore: (correct: number, incorrect: number, currentCorrect: boolean) => void;
 }
 
 const FormSchema = z.object({
@@ -42,7 +44,11 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
       console.log('useGSAP', isSelected);
       if (isSelected) {
         const runResults = () => {
-          const timeline = gsap.timeline();
+          const timeline = gsap.timeline({
+            onComplete: () => {
+              onQuestionCompleted();
+            },
+          });
           if (isSelected.correctAnswer) {
             timeline.to('.correct', {
               scale: 0.9,
@@ -56,16 +62,7 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
             timeline.to('.incorrect', { x: 30, duration: 0.1, yoyo: true, repeat: 3, ease: 'elastic.inOut' });
             timeline.to('.unselected', { opacity: 0, duration: 0.5 });
           }
-          timeline.set('.end-display', { opacity: 0, scale: 0.5, y: 100 });
-          timeline.to('.end-display', { opacity: 1, y: 0, scale: 1, duration: 0.5, delay: 0.3, ease: 'elastic.out' });
-          timeline.to('.end-display', {
-            opacity: 0,
-            duration: 0.5,
-            delay: 1,
-            onComplete: () => {
-              onQuestionCompleted();
-            },
-          });
+
           timeline.play();
         };
 
@@ -76,7 +73,7 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
   );
 
   useEffect(() => {
-    onUpdateScore(correctAnswerNumber, inCorrectAnswerNumber);
+    onUpdateScore(correctAnswerNumber, inCorrectAnswerNumber, isSelected?.correctAnswer || false);
   }, [correctAnswerNumber, inCorrectAnswerNumber]);
 
   const onSubmit = async (data: any) => {
@@ -93,24 +90,7 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
   return (
     <div ref={ref} className={'item relative isolate'}>
       <h2 className={'!font-lesson-body mb-5 text-xl font-bold'}>{questionary.title}</h2>
-      <div className={'end-display pointer-events-none absolute bottom-5 z-10 w-full opacity-0'}>
-        {isSelected &&
-          (isSelected.correctAnswer ? (
-            <div
-              className={
-                '!font-lesson-heading mx-auto w-fit rounded-xl bg-green-500 p-5 text-white shadow-sm shadow-black/20'
-              }>
-              Well done! Correct answer, you on way to be come a guitar master.
-            </div>
-          ) : (
-            <div
-              className={
-                '!font-lesson-heading mx-auto w-fit rounded-xl bg-red-500 p-5 text-white shadow-sm shadow-black/20'
-              }>
-              Sorry! Incorrect answer, better luck next itme
-            </div>
-          ))}
-      </div>
+
       <Form {...form}>
         <form onChangeCapture={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

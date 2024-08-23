@@ -33,6 +33,8 @@ export default async function Page({ params }: PageProps) {
     lessonSlug: params.lesson_slug,
   });
 
+  console.log('[QUIZ]', data);
+
   return (
     <ScrollToProvider>
       <Header avatar={child?.profilePicture} name={child?.name} background={data?.module?.color} />

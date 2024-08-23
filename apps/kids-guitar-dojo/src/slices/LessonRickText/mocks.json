@@ -14,15 +14,15 @@
 					}
 				]
 			},
-			"header": {
-				"__TYPE__": "FieldContent",
-				"value": "train",
-				"type": "Text"
-			},
 			"header_alignment": {
 				"__TYPE__": "FieldContent",
 				"value": "Right",
 				"type": "Select"
+			},
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"value": "recognize",
+				"type": "Text"
 			}
 		},
 		"items": []
@@ -30,7 +30,29 @@
 	{
 		"__TYPE__": "SharedSliceContent",
 		"variation": "twoColumnsWithHeader",
-		"primary": {},
+		"primary": {
+			"text": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Id adipisicing cillum quis incididunt ullamco exercitation."
+						}
+					}
+				]
+			},
+			"header_alignment": {
+				"__TYPE__": "FieldContent",
+				"value": "Left",
+				"type": "Select"
+			},
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"value": "came",
+				"type": "Text"
+			}
+		},
 		"items": [
 			{
 				"__TYPE__": "GroupItemContent",
@@ -42,6 +64,62 @@
 		"__TYPE__": "SharedSliceContent",
 		"variation": "twoColumns",
 		"primary": {},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "imageGrid",
+		"primary": {
+			"text": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Cupidatat ex nulla cillum qui quis reprehenderit dolore exercitation excepteur eu id dolore aliqua fugiat."
+						}
+					}
+				]
+			},
+			"header_alignment": {
+				"__TYPE__": "FieldContent",
+				"value": "Center",
+				"type": "Select"
+			},
+			"image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1591012911207-0dbac31f37da",
+					"width": 4000,
+					"height": 4000
+				},
+				"url": "https://images.unsplash.com/photo-1591012911207-0dbac31f37da",
+				"width": 4000,
+				"height": 4000,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			},
+			"direction": {
+				"__TYPE__": "FieldContent",
+				"type": "Select",
+				"value": "Left"
+			}
+		},
 		"items": [
 			{
 				"__TYPE__": "GroupItemContent",
