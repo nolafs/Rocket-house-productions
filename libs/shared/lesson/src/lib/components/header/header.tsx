@@ -29,7 +29,7 @@ export function Header({ name, avatar, background = 'transparent' }: HeaderProps
       style={{ backgroundColor: background || 'transparent' }}>
       <ScoreDisplay />
       <div className={'flex items-center justify-center space-x-3'}>
-        <div className={'font-bold text-white'}>{name}</div>
+        <div className={'hidden font-bold text-white md:block'}>{name}</div>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Avatar avatar={avatar} classNames={'border  border-3 border-white'} />

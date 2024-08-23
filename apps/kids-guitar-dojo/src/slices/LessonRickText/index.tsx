@@ -24,15 +24,15 @@ const LessonRickText = ({ slice }: LessonRickTextProps): JSX.Element => {
             {slice.primary.heading}
           </h2>
         )}
-        <div className="grid grid-cols-2 gap-6">
-          <div>
+        <div className={'grid grid-cols-1 gap-6 md:grid-cols-2'}>
+          <div className={slice.primary.direction === 'Left' ? 'order-2 md:order-1' : ''}>
             {slice.primary.direction === 'Left' ? (
               <PrismicRichText field={slice.primary.text} />
             ) : (
               <PrismicNextImage field={slice.primary.image} />
             )}
           </div>
-          <div>
+          <div className={slice.primary.direction === 'Left' ? 'order-1 md:order-2' : ''}>
             {slice.primary.direction === 'Left' ? (
               <PrismicNextImage field={slice.primary.image} />
             ) : (
