@@ -74,6 +74,7 @@
     "react-hot-toast": "^2.4.1",
     "react-player": "^2.16.0",
     "react-quill": "^2.0.0",
+    "react-timer-hook": "^3.0.7",
     "server-only": "^0.0.1",
     "sharp": "^0.33.4",
     "stripe": "^16.6.0",

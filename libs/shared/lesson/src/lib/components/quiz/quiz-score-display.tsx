@@ -1,13 +1,23 @@
 import { CircleCheck, CircleHelp, Timer } from 'lucide-react';
 import { SectionModule } from '@rocket-house-productions/types';
 import { Questionary } from '@prisma/client';
+import QuizTimer from './quiz-timer';
 
 interface QuizScoreDisplayProps {
   module: SectionModule;
   questionaries: Questionary[];
+  correctCount: number;
+  count?: number;
+  runTime: boolean;
 }
 
-export function QuizScoreDisplay({ module, questionaries }: QuizScoreDisplayProps) {
+export function QuizScoreDisplay({
+  module,
+  questionaries,
+  count = 1,
+  correctCount,
+  runTime = false,
+}: QuizScoreDisplayProps) {
   return (
     <div
       className={'my-8 rounded-md border bg-white p-4 shadow-sm shadow-black/20'}
@@ -20,7 +30,9 @@ export function QuizScoreDisplay({ module, questionaries }: QuizScoreDisplayProp
             </i>
             <span>Question</span>
           </div>
-          <div>1 of {questionaries.length}</div>
+          <div>
+            {count} of {questionaries.length}
+          </div>
         </div>
 
         <div className={'flex flex-row items-center justify-center gap-x-3 p-4'}>
@@ -30,7 +42,7 @@ export function QuizScoreDisplay({ module, questionaries }: QuizScoreDisplayProp
             </i>
             <span>Correct</span>
           </div>
-          <div>2</div>
+          <div>{correctCount}</div>
         </div>
 
         <div className={'flex flex-row items-center justify-center gap-x-3'}>
@@ -40,7 +52,9 @@ export function QuizScoreDisplay({ module, questionaries }: QuizScoreDisplayProp
             </i>
             <span>Time</span>
           </div>
-          <div>1 of {questionaries.length}</div>
+          <div>
+            <QuizTimer runTimer={runTime} />
+          </div>
         </div>
       </div>
     </div>

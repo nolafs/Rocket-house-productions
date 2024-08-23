@@ -4,16 +4,17 @@ import { Checkbox, Form, FormControl, FormField, FormItem, FormLabel } from '@ro
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import Timeline from '@/slices/Timeline';
 
 gsap.registerPlugin(useGSAP);
 
 interface QuizListItemProps {
   questionary: Questionary & { questions: Question[] };
+  onQuestionCompleted: () => void;
+  onUpdateScore: (correct: number, incorrect: number) => void;
 }
 
 const FormSchema = z.object({
@@ -22,11 +23,11 @@ const FormSchema = z.object({
   }),
 });
 
-export function QuizListItem({ questionary }: QuizListItemProps) {
+export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }: QuizListItemProps) {
   const questions = questionary.questions;
-  const [isSelected, setIsSelected] = useState(false);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(false);
-  const [selectedAnswers, setSelectedAnswers] = useState<string | null>(null);
+  const [isSelected, setIsSelected] = useState<Question | null>(null);
+  const [correctAnswerNumber, setCorrectAnswerNumber] = useState(0);
+  const [inCorrectAnswerNumber, setInCorrectAnswerNumber] = useState(0);
   const ref = useRef<any>();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -36,49 +37,85 @@ export function QuizListItem({ questionary }: QuizListItemProps) {
     },
   });
 
-  const correct = useMemo(() => {
-    return isCorrect;
-  }, [isCorrect]);
-
   useGSAP(
-    () => {
-      console.log('useGSAP', isCorrect);
+    onQuizCompleted => {
+      console.log('useGSAP', isSelected);
+      if (isSelected) {
+        const runResults = () => {
+          const timeline = gsap.timeline();
+          if (isSelected.correctAnswer) {
+            timeline.to('.correct', {
+              scale: 0.9,
+              duration: 0.1,
+              yoyo: true,
+              repeat: 1,
+              ease: 'elastic.inOut',
+            });
+            timeline.to('.unselected', { opacity: 0, xPercent: 10, duration: 0.5, stagger: 0.1 });
+          } else {
+            timeline.to('.incorrect', { x: 30, duration: 0.1, yoyo: true, repeat: 3, ease: 'elastic.inOut' });
+            timeline.to('.unselected', { opacity: 0, duration: 0.5 });
+          }
+          timeline.set('.end-display', { opacity: 0, scale: 0.5, y: 100 });
+          timeline.to('.end-display', { opacity: 1, y: 0, scale: 1, duration: 0.5, delay: 0.3, ease: 'elastic.out' });
+          timeline.to('.end-display', {
+            opacity: 0,
+            duration: 0.5,
+            delay: 1,
+            onComplete: () => {
+              onQuestionCompleted();
+            },
+          });
+          timeline.play();
+        };
 
-      if (isCorrect) {
-        const correctTimeline = gsap.timeline({ paused: true });
-        correctTimeline.to('.correct', {
-          scale: 0.99,
-          duration: 0.1,
-          yoyo: true,
-          repeat: 3,
-        });
-        correctTimeline.play();
-      } else {
-        const inCorrectTimeline = gsap.timeline({ paused: true });
-        inCorrectTimeline.to('.incorrect', { x: 10, duration: 0.1, yoyo: true, repeat: 3 });
-        inCorrectTimeline.play();
+        runResults();
       }
     },
-    { scope: ref, dependencies: [isCorrect] },
+    { scope: ref, dependencies: [isSelected] },
   );
 
+  useEffect(() => {
+    onUpdateScore(correctAnswerNumber, inCorrectAnswerNumber);
+  }, [correctAnswerNumber, inCorrectAnswerNumber]);
+
   const onSubmit = async (data: any) => {
-    setIsSelected(true);
     let answers = null;
     answers = questions.find(item => item.id === data.items[0]) || null;
-    console.log('answers', answers);
-    setIsCorrect(answers?.correctAnswer || false);
+    setIsSelected(answers || null);
+    if (answers?.correctAnswer) {
+      setCorrectAnswerNumber(prevState => prevState + 1);
+    } else {
+      setInCorrectAnswerNumber(prevState => prevState + 1);
+    }
   };
 
   return (
-    <div className={'item'}>
+    <div ref={ref} className={'item relative isolate'}>
       <h2 className={'!font-lesson-body mb-5 text-xl font-bold'}>{questionary.title}</h2>
-
+      <div className={'end-display pointer-events-none absolute bottom-5 z-10 w-full opacity-0'}>
+        {isSelected &&
+          (isSelected.correctAnswer ? (
+            <div
+              className={
+                '!font-lesson-heading mx-auto w-fit rounded-xl bg-green-500 p-5 text-white shadow-sm shadow-black/20'
+              }>
+              Well done! Correct answer, you on way to be come a guitar master.
+            </div>
+          ) : (
+            <div
+              className={
+                '!font-lesson-heading mx-auto w-fit rounded-xl bg-red-500 p-5 text-white shadow-sm shadow-black/20'
+              }>
+              Sorry! Incorrect answer, better luck next itme
+            </div>
+          ))}
+      </div>
       <Form {...form}>
-        <form ref={ref} onChangeCapture={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onChangeCapture={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            disabled={isSelected}
+            disabled={isSelected !== null}
             name="items"
             render={() => {
               return (
@@ -94,16 +131,17 @@ export function QuizListItem({ questionary }: QuizListItemProps) {
                             key={item.id}
                             className={cn(
                               'flex flex-row items-start space-x-3 space-y-0 rounded-md p-3',
-                              isSelected && item.correctAnswer && selectedAnswers === item.id
-                                ? 'correct bg-green-100'
+                              isSelected?.correctAnswer && isSelected?.id === item.id
+                                ? 'correct bg-green-600 text-white transition-all'
                                 : '',
-                              isSelected && !item.correctAnswer && selectedAnswers === item.id
-                                ? 'incorrect bg-red-100'
+                              !isSelected?.correctAnswer && isSelected?.id === item.id
+                                ? 'incorrect bg-red-600 text-white transition-all'
                                 : '',
+                              isSelected?.id !== item.id ? 'unselected' : '',
                             )}>
                             <FormControl>
                               <Checkbox
-                                disabled={isSelected}
+                                disabled={isSelected !== null}
                                 checked={field.value?.includes(item.id)}
                                 onCheckedChange={checked => {
                                   return checked
@@ -112,7 +150,7 @@ export function QuizListItem({ questionary }: QuizListItemProps) {
                                 }}
                               />
                             </FormControl>
-                            <FormLabel className="text-lg font-normal">{item.title}</FormLabel>
+                            <FormLabel className="text-lg !font-bold !opacity-100">{item.title}</FormLabel>
                           </FormItem>
                         );
                       }}
