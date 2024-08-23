@@ -1,9 +1,9 @@
 'use client';
-import { Question, Questionary } from '@prisma/client';
+
 import QuizListItem from './quiz-list-item';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import Quiz from './quiz';
 
@@ -11,11 +11,18 @@ gsap.registerPlugin(useGSAP);
 
 interface GetQuizProps {
   questionaries: Quiz[];
+  onSlideIndexChange: (index: number) => void;
+  onQuizCompleted: () => void;
+  onUpdateQuizScore: (correct: number) => void;
 }
 
-export function QuizList({ questionaries }: GetQuizProps) {
+export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, onSlideIndexChange }: GetQuizProps) {
   const ref = useRef<any>();
   const [slideIndex, setSlideIndex] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [isLastQuestion, setIsLastQuestion] = useState(false);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [isQuizCompleted, setIsQuizCompleted] = useState(false);
   const { contextSafe } = useGSAP({ scope: ref });
 
   useGSAP(
@@ -39,12 +46,45 @@ export function QuizList({ questionaries }: GetQuizProps) {
     { scope: ref },
   );
 
+  useEffect(() => {
+    onSlideIndexChange(slideIndex + 1);
+  }, [slideIndex]);
+
+  useEffect(() => {
+    onUpdateQuizScore(correctCount);
+  }, [correctCount]);
+
+  useEffect(() => {
+    if (isQuizCompleted) {
+      onQuizCompleted();
+    }
+  }, [isQuizCompleted]);
+
   const onNext = contextSafe(() => {
     if (slideIndex !== questionaries.length - 1) {
       setSlideIndex(prevState => prevState + 1);
-      gsap.to('.slide', { xPercent: '-=100', duration: 0.5 });
+      gsap.to('.slide', {
+        xPercent: '-=100',
+        duration: 0.4,
+        onComplete: () => {
+          if (slideIndex + 1 === questionaries.length - 1) {
+            setIsLastQuestion(true);
+          }
+        },
+      });
     }
   });
+
+  const onQuestionCompleted = () => {
+    setIsCompleted(true);
+    setTimeout(() => {
+      onNext();
+      setIsCompleted(false);
+      if (isLastQuestion) {
+        setIsQuizCompleted(true);
+      }
+    }, 1000);
+  };
 
   return (
     <>
@@ -52,17 +92,25 @@ export function QuizList({ questionaries }: GetQuizProps) {
         <div className={'inner relative h-full w-full overflow-hidden'}>
           {questionaries.map(questionary => (
             <div key={questionary.id} className={'slide absolute h-full w-full'}>
-              <QuizListItem questionary={questionary} />
+              <QuizListItem
+                questionary={questionary}
+                onQuestionCompleted={onQuestionCompleted}
+                onUpdateScore={(correct, incorrect) => {
+                  console.log('onUpdateScore');
+                  setCorrectCount(prevState => prevState + correct);
+                }}
+              />
             </div>
           ))}
         </div>
       </div>
-
-      <div className={'mt-10 flex justify-end border-t border-gray-100 py-5'}>
-        <Button variant={'default'} size={'lg'} onClick={onNext}>
-          Next Question
-        </Button>
-      </div>
+      {!isLastQuestion && (
+        <div className={'mt-10 flex justify-end border-t border-gray-100 py-5'}>
+          <Button variant={'default'} size={'lg'} onClick={onNext} disabled={!isCompleted}>
+            Next Question
+          </Button>
+        </div>
+      )}
     </>
   );
 }
