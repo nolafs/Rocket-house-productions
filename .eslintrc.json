@@ -13,6 +13,8 @@
         "@typescript-eslint/no-empty-interface": [
           "warn"
         ],
+        "@nx/enforce-module-boundaries": "off"
+        /*
         "@nx/enforce-module-boundaries": [
           "warn",
           {
@@ -25,8 +27,9 @@
               }
             ]
           }
-        ]
+        ]*/
       }
+
     },
     {
       "files": ["*.ts", "*.tsx"],
