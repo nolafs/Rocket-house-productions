@@ -2980,14 +2980,14 @@ export type HeroSlice = prismic.SharedSlice<'hero', HeroSliceVariation>;
  */
 export interface LessonRickTextSliceDefaultPrimary {
   /**
-   * Header field in *LessonRickText → Default → Primary*
+   * Heading field in *LessonRickText → Default → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
-   * - **API ID Path**: lesson_rick_text.default.primary.header
+   * - **API ID Path**: lesson_rick_text.default.primary.heading
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
-  header: prismic.KeyTextField;
+  heading: prismic.KeyTextField;
 
   /**
    * text field in *LessonRickText → Default → Primary*
@@ -3024,6 +3024,41 @@ export type LessonRickTextSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *LessonRickText → Two columns with header → Primary*
+ */
+export interface LessonRickTextSliceTwoColumnsWithHeaderPrimary {
+  /**
+   * Heading field in *LessonRickText → Two columns with header → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.twoColumnsWithHeader.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Text field in *LessonRickText → Two columns with header → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.twoColumnsWithHeader.primary.text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  text: prismic.RichTextField;
+
+  /**
+   * Alignment field in *LessonRickText → Two columns with header → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.twoColumnsWithHeader.primary.header_alignment
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  header_alignment: prismic.SelectField<'Left' | 'Center' | 'Right'>;
+}
+
+/**
  * Two columns with header variation for LessonRickText Slice
  *
  * - **API ID**: `twoColumnsWithHeader`
@@ -3032,7 +3067,7 @@ export type LessonRickTextSliceDefault = prismic.SharedSliceVariation<
  */
 export type LessonRickTextSliceTwoColumnsWithHeader = prismic.SharedSliceVariation<
   'twoColumnsWithHeader',
-  Record<string, never>,
+  Simplify<LessonRickTextSliceTwoColumnsWithHeaderPrimary>,
   never
 >;
 
@@ -3046,12 +3081,81 @@ export type LessonRickTextSliceTwoColumnsWithHeader = prismic.SharedSliceVariati
 export type LessonRickTextSliceTwoColumns = prismic.SharedSliceVariation<'twoColumns', Record<string, never>, never>;
 
 /**
+ * Primary content in *LessonRickText → Image Grid → Primary*
+ */
+export interface LessonRickTextSliceImageGridPrimary {
+  /**
+   * Heading field in *LessonRickText → Image Grid → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.imageGrid.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Text field in *LessonRickText → Image Grid → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.imageGrid.primary.text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  text: prismic.RichTextField;
+
+  /**
+   * Header Alignment field in *LessonRickText → Image Grid → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.imageGrid.primary.header_alignment
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  header_alignment: prismic.SelectField<'Center' | 'Right'>;
+
+  /**
+   * Image field in *LessonRickText → Image Grid → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.imageGrid.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Direction field in *LessonRickText → Image Grid → Primary*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.imageGrid.primary.direction
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  direction: prismic.SelectField<'Left' | 'Right'>;
+}
+
+/**
+ * Image Grid variation for LessonRickText Slice
+ *
+ * - **API ID**: `imageGrid`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type LessonRickTextSliceImageGrid = prismic.SharedSliceVariation<
+  'imageGrid',
+  Simplify<LessonRickTextSliceImageGridPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *LessonRickText*
  */
 type LessonRickTextSliceVariation =
   | LessonRickTextSliceDefault
   | LessonRickTextSliceTwoColumnsWithHeader
-  | LessonRickTextSliceTwoColumns;
+  | LessonRickTextSliceTwoColumns
+  | LessonRickTextSliceImageGrid;
 
 /**
  * LessonRickText Shared Slice
@@ -3888,10 +3992,13 @@ declare module '@prismicio/client' {
       HeroSliceSimple,
       LessonRickTextSlice,
       LessonRickTextSliceDefaultPrimary,
+      LessonRickTextSliceTwoColumnsWithHeaderPrimary,
+      LessonRickTextSliceImageGridPrimary,
       LessonRickTextSliceVariation,
       LessonRickTextSliceDefault,
       LessonRickTextSliceTwoColumnsWithHeader,
       LessonRickTextSliceTwoColumns,
+      LessonRickTextSliceImageGrid,
       PricingTableSlice,
       PricingTableSliceDefaultPrimaryTiersItem,
       PricingTableSliceDefaultPrimary,

@@ -27,7 +27,7 @@ export async function LessonContent({ title, page, description, no = 0 }: Lesson
         <span className={'text-2xl lg:text-4xl'}>{title}</span>
       </h1>
       <div className={'prose prose-sm md:prose-md lg:prose-lg max-w-5xl'}>
-        {description && <div dangerouslySetInnerHTML={{ __html: description }}></div>}
+        {(description || description?.length) && <div dangerouslySetInnerHTML={{ __html: description }}></div>}
         {page && <SliceZone slices={page.data.slices} components={components} />}
       </div>
     </>

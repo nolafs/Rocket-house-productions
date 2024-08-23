@@ -16,22 +16,22 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
   const router = useRouter();
   const [active, setActive] = useState(false);
 
-  const next =
-    module.lessons?.length && lesson.position - 1 < module.lessons.length
-      ? module?.lessons?.[lesson.position - 1]
-      : null;
+  console.log('[QuizNext] lesson', lesson.position);
+  console.log('[QuizNext] module lesson', module.lessons, module.lessons?.length);
 
-  const lastLessonInModule = (id: string) => {
-    if (module.lessons?.length) {
-      return module?.lessons[module.lessons.length - 1].id === id;
-    }
-    return null;
-  };
+  const next =
+    module.lessons?.length && lesson.position < module.lessons.length ? module?.lessons?.[lesson.position + 1] : null;
+
+  const lastLessonModule = module.lessons?.length === lesson.position;
 
   const handleNext = () => {
     console.log('handleNext');
-    if (next) {
-      router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${next.slug}`);
+    if (!lastLessonModule) {
+      if (next) {
+        router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${next.slug}`);
+      }
+    } else {
+      router.push(`/courses/${course.slug}`);
     }
   };
 

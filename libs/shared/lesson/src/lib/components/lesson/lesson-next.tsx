@@ -19,10 +19,13 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const [active, setActive] = useState(false);
   const hasQuiz = lesson?.questionaries?.length > 0;
 
+  console.log('[LessonNext] lesson', lesson.position);
+  console.log('[LessonNext] module lesson', module.lessons, module.lessons?.length);
+
   const nextLesson =
-    module.lessons?.length && lesson.position - 1 < module.lessons.length
-      ? module?.lessons?.[lesson.position - 1]
-      : null;
+    module.lessons?.length && lesson.position <= module.lessons.length ? module?.lessons?.[lesson.position] : null;
+
+  console.log('[LessonNext] nextLesson', nextLesson);
 
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {
@@ -56,8 +59,12 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
 
   const handleNext = () => {
     console.log('handleNext');
-    if (nextLesson) {
-      router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${nextLesson.slug}`);
+    if (!lastLessonInModule(lesson.id) && nextLesson) {
+      if (nextLesson) {
+        router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${nextLesson.slug}`);
+      }
+    } else {
+      router.push(`/courses/${course.slug}`);
     }
   };
 
