@@ -251,7 +251,7 @@ model Purchase {
   updatedAt DateTime @updatedAt()
 
   @@unique([accountId, courseId, childId])
-  @@index([courseId])
+  @@index([courseId, accountId, childId])
 }
 
 model Account {
