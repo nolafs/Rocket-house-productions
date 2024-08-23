@@ -17,9 +17,12 @@ export function LessonHeader({ lessonId, url = '/courses', hasProgress = true }:
   const { getLessonProgress } = useLessonProgressionStore(store => store);
   const { notAtTop } = useIsScrolling();
   return (
-    <div className={cn('sticky top-[95px] z-20 bg-white py-8', notAtTop ? 'shadow-sm shadow-black/20' : '')}>
-      <div className={'container mx-auto flex max-w-5xl items-center justify-between px-5'}>
-        <Link href={url} className={cn(buttonVariants({ variant: 'lesson' }))}>
+    <div className={cn('sticky top-[95px] z-20 bg-white py-4 md:py-8', notAtTop ? 'shadow-sm shadow-black/20' : '')}>
+      <div
+        className={
+          'container mx-auto flex max-w-5xl flex-col px-5 md:flex-row md:items-center md:justify-between md:space-y-0'
+        }>
+        <Link href={url} className={cn(buttonVariants({ variant: 'lesson' }), 'hidden md:block')}>
           <i>
             <ArrowBigLeftIcon className={'h-4 w-4'} />{' '}
           </i>{' '}
