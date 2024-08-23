@@ -11,7 +11,14 @@ type AccountWithPurchases = Prisma.AccountGetPayload<{
     };
     purchases: {
       include: {
-        course: true;
+        course: {
+          select: {
+            id: true;
+            title: true;
+            slug: true;
+            isPublished: true;
+          };
+        };
       };
     };
     children: true;
@@ -31,7 +38,14 @@ export async function getAccount(userId: string): Promise<AccountWithPurchases |
       },
       purchases: {
         include: {
-          course: true,
+          course: {
+            select: {
+              id: true,
+              title: true,
+              slug: true,
+              isPublished: true,
+            },
+          },
         },
       },
       children: true,
