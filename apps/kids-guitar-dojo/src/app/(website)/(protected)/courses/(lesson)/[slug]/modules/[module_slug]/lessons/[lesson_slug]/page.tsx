@@ -47,9 +47,8 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <ScrollToProvider>
-      <Header avatar={child?.profilePicture} name={child?.name} background={data?.module?.color} />
-      <LessonHeader lessonId={data.lesson.id} />
-      <main className={'container mx-auto mb-20 flex max-w-5xl flex-col space-y-5 px-5'}>
+      <LessonHeader lessonId={data.lesson.id} module={data.module} />
+      <main className={'container mx-auto mb-20 mt-[100px] flex max-w-5xl flex-col space-y-5 px-5'}>
         <LessonVideo lesson={data.lesson} module={data.module as SectionModule} child={child} />
         <LessonContent title={data.lesson.title} page={page} description={data.lesson.description} />
         <LessonNext
