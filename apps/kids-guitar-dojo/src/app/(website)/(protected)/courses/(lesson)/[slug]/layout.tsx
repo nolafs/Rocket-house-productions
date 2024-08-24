@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { Header } from '@rocket-house-productions/lesson';
 
 export const metadata = {
-  title: 'Welcome to Kids Guitar Dojo courses',
+  title: 'Kids Guitar Dojo course',
   description: 'Course pages for you to learn guitar with your kids.',
 };
 
