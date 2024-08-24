@@ -7,6 +7,7 @@ import QuizNext from './quiz-next';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { usePointsStore } from '@rocket-house-productions/providers';
 gsap.registerPlugin(useGSAP);
 
 export interface Quiz extends Questionary {
@@ -23,6 +24,9 @@ interface QuizProps {
 export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
   console.log('[Quiz] questionaries', questionaries);
   const [quizCompleted, setQuizCompleted] = useState(false);
+
+  const { addPoints } = usePointsStore(store => store);
+
   const [correct, setCorrect] = useState(0);
   const [timer, setTimer] = useState(true);
   const [count, setCount] = useState(1);
@@ -38,12 +42,24 @@ export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
     () => {
       if (quizCompleted) {
         gsap.set('.score', { opacity: 0, scale: 0 });
-        const timeline = gsap.timeline();
+        const timeline = gsap.timeline({ paused: true });
         timeline.to('.quiz', { opacity: 0, height: 0, duration: 0.5 });
         timeline.to('.score', { opacity: 1, scale: 1, duration: 0.5 });
+
+        timeline.to('.count', {
+          innerText: score,
+          duration: 1,
+          snap: {
+            innerText: 1,
+          },
+        });
+
+        timeline.play();
+
+        addPoints(score);
       }
     },
-    { scope: ref, dependencies: [quizCompleted] },
+    { scope: ref, dependencies: [quizCompleted, score] },
   );
 
   return (
@@ -87,8 +103,8 @@ export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
               {questionaries.length !== correct && correct !== 0 && 'Well done!!'}
               {questionaries.length !== correct && correct === 0 && 'Better luck next time!!'}
             </h2>
-            <div className={'font-lesson-heading text-4xl'}>{score}</div>
-            <div className={'ont-lesson-heading text-sm'}>Points</div>
+            <div className={'font-lesson-heading count text-4xl'}></div>
+            <div className={'font-lesson-heading text-sm'}>Points</div>
           </div>
         </div>
       )}
