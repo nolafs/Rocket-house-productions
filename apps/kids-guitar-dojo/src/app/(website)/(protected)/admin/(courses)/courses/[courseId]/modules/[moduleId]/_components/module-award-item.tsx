@@ -168,11 +168,18 @@ export function ModuleAwardItem({ award, courseId, moduleId }: ModuleAwardItemPr
                   </div>
                 ) : (
                   <div className="relative h-60 w-full rounded-md bg-slate-200">
+                    <Pencil
+                      onClick={() => {
+                        setTempImage(null);
+                        setIsEditingImage(true);
+                      }}
+                      className="absolute right-2 top-2 z-50 h-4 w-4 cursor-pointer transition hover:opacity-75"
+                    />
                     <Image
                       alt="Upload"
                       fill
                       className="rounded-md object-contain object-center"
-                      src={award.awardType.badgeUrl || tempImage || ''}
+                      src={tempImage || award.awardType.badgeUrl || ''}
                     />
                   </div>
                 ))}

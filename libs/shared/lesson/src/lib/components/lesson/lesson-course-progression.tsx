@@ -4,10 +4,11 @@ import { useEffect } from 'react';
 import LessonProgressBar from '../lesson-progress-bar';
 
 export function LessonCourseProgression() {
-  const { modules } = useModuleProgressStore(store => store);
+  const { modules, setCurrentModule } = useModuleProgressStore(store => store);
 
   useEffect(() => {
     console.log(modules);
+    setCurrentModule(null);
   }, []);
 
   return (

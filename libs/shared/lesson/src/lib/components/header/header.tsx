@@ -2,7 +2,6 @@
 import Avatar from '../avatar';
 import ScoreDisplay from '../score-display';
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -10,8 +9,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@rocket-house-productions/shadcn-ui';
-import { useClerk, UserButton, UserProfile } from '@clerk/nextjs';
-import { DotIcon } from 'lucide-react';
+import { useClerk } from '@clerk/nextjs';
+import { useModuleProgressStore } from '@rocket-house-productions/providers';
 
 interface HeaderProps {
   name: string | null | undefined;
@@ -22,11 +21,11 @@ interface HeaderProps {
 
 export function Header({ name, avatar, background = 'transparent' }: HeaderProps) {
   const { signOut, openUserProfile } = useClerk();
-
+  const { getCurrentModule } = useModuleProgressStore(store => store);
   return (
     <div
-      className={'sticky left-0 top-0 z-50 flex h-auto w-full flex-row justify-between p-4'}
-      style={{ backgroundColor: background || 'transparent' }}>
+      className={'fixed left-0 top-0 z-50 flex h-auto w-full flex-row justify-between p-4 transition-all'}
+      style={{ backgroundColor: getCurrentModule()?.color || background || 'transparent' }}>
       <ScoreDisplay />
       <div className={'flex items-center justify-center space-x-3'}>
         <div className={'hidden font-bold text-white md:block'}>{name}</div>

@@ -4,18 +4,27 @@ import cn from 'classnames';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { ArrowBigLeftIcon } from 'lucide-react';
 import LessonProgressBar from '../lesson-progress-bar';
-import { useLessonProgressionStore } from '@rocket-house-productions/providers';
+import { useLessonProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
 import { useIsScrolling } from '@rocket-house-productions/hooks';
+import { useEffect } from 'react';
 
 interface LessonHeaderProps {
   lessonId: string;
+  module?: any;
   url?: string;
   hasProgress?: boolean;
 }
 
-export function LessonHeader({ lessonId, url = '/courses', hasProgress = true }: LessonHeaderProps) {
+export function LessonHeader({ lessonId, module, url = '/courses', hasProgress = true }: LessonHeaderProps) {
+  const { setCurrentModule } = useModuleProgressStore(store => store);
   const { getLessonProgress } = useLessonProgressionStore(store => store);
+
   const { notAtTop } = useIsScrolling();
+
+  useEffect(() => {
+    setCurrentModule(module);
+  }, [module]);
+
   return (
     <div className={cn('sticky top-[95px] z-20 bg-white py-4 md:py-8', notAtTop ? 'shadow-sm shadow-black/20' : '')}>
       <div

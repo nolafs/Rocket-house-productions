@@ -8,7 +8,7 @@ import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { Loader2, Pencil, PlusCircle } from 'lucide-react';
+import { ImageIcon, Loader2, Pencil, PlusCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import {
@@ -33,6 +33,7 @@ import cn from 'classnames';
 import { AwardType, Module, ModuleAwardType } from '@prisma/client';
 import { Editor, FileImageUpload } from '@rocket-house-productions/features';
 import ModuleAwardItem from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-award-item';
+import Image from 'next/image';
 
 interface ModuleDescriptionFormProps {
   initialData: Module & { availableAwards: (ModuleAwardType & { awardType: { name: string } })[] };
@@ -50,6 +51,9 @@ const formSchema = z.object({
 
 const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescriptionFormProps) => {
   const router = useRouter();
+  const [isEditingImage, setIsEditingImage] = useState(false);
+  const [tempImage, setTempImage] = useState<string | null>(null);
+
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -164,27 +168,49 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
             />
 
             <div>
-              <FormField
-                control={form.control as any}
-                name="badgeUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Badge</FormLabel>
-                    <FormControl>
-                      <FileImageUpload
-                        onChange={file => {
-                          console.log('[IMAGE FORM]', file);
-                          if (file) {
-                            field.value = file;
-                            field.onChange();
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {!isEditingImage &&
+                (!tempImage ? (
+                  <div className="flex h-60 items-center justify-center rounded-md bg-slate-200">
+                    <ImageIcon className="h-10 w-10 text-slate-500" />
+                    <Button onClick={() => setIsEditingImage(true)} variant="ghost">
+                      Add an image
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="relative h-60 w-full rounded-md bg-slate-200">
+                    <Image
+                      alt="Upload"
+                      fill
+                      className="rounded-md object-contain object-center"
+                      src={tempImage || ''}
+                    />
+                  </div>
+                ))}
+              {isEditingImage && (
+                <FormField
+                  control={form.control as any}
+                  name="badgeUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Badge</FormLabel>
+                      <FormControl>
+                        <FileImageUpload
+                          onChange={file => {
+                            console.log('[IMAGE FORM]', file, field);
+                            if (file) {
+                              setIsEditingImage(false);
+                              setTempImage(file);
+
+                              field.onChange(file);
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
               <div className="text-muted-foreground mt-4 text-xs">16:9 aspect ratio recommended</div>
             </div>
             <div className="flex items-center gap-x-2">

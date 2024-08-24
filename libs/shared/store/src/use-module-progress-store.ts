@@ -1,25 +1,37 @@
 import { createStore, StoreApi } from 'zustand';
 import { LessonProgressStore } from './use-lesson-progress-store';
 
-type Module = {
+type ModuleProgression = {
   progress: number;
+  color: string;
   lessons: string[]; // Array of lesson IDs
 };
 
+type Module = {
+  id: string;
+  title: string;
+  color: string;
+  description: string;
+};
+
 type ModuleState = {
-  modules: { [moduleId: string]: Module };
+  modules: { [moduleId: string]: ModuleProgression };
+  currentModule?: Module | null;
 };
 
 type ModuleAction = {
+  setCurrentModule: (module: Module | null) => void;
   setModuleProgress: (moduleId: string, progress: number) => void;
   calculateModuleProgress: (moduleId: string) => void;
   getModuleProgress: (moduleId: string) => number;
+  getCurrentModule: () => Module | null;
 };
 
 export type ModuleProgressStore = ModuleState & ModuleAction;
 
 export const defaultInitState: ModuleState = {
   modules: {},
+  currentModule: null,
 };
 
 export const createModuleStore = (
@@ -28,6 +40,8 @@ export const createModuleStore = (
 ) =>
   createStore<ModuleProgressStore>((set, get) => ({
     ...initState,
+
+    setCurrentModule: module => set({ currentModule: module }),
 
     setModuleProgress: (moduleId, progress) =>
       set(state => ({
@@ -63,4 +77,5 @@ export const createModuleStore = (
       }));
     },
     getModuleProgress: moduleId => get().modules[moduleId]?.progress || 0,
+    getCurrentModule: () => get().currentModule || null,
   }));
