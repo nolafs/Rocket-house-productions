@@ -56,8 +56,6 @@ const ModuleAttachmentForm = ({ initialData, courseId, moduleId, attachmentCateg
   const toggleEdit = () => setIsEditing(current => !current);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('[ATTACHMENT FORM]', values);
-
     try {
       await axios.post(`/api/courses/${courseId}/modules/${moduleId}/attachments`, values);
       toast.success('Module updated');

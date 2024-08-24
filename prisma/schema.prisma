@@ -53,6 +53,8 @@ model Module {
 
   attachments ModuleAttachment[]
 
+  availableAwards ModuleAwardType[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
@@ -101,6 +103,34 @@ model ModuleAttachment {
   updatedAt DateTime @updatedAt()
 
   @@index([moduleId])
+}
+
+model AwardType {
+  id          String  @id @default(uuid())
+  name        String// The name of the award, e.g., "Completion Badge", "High Score"
+  description String?// A description of what the award is for
+  badgeUrl    String?// URL for the badge image
+  points      Int// Points awarded
+
+  condition String
+
+  modules ModuleAwardType[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model ModuleAwardType {
+  id          String    @id @default(uuid())
+  moduleId    String
+  module      Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  awardTypeId String
+  awardType   AwardType @relation(fields: [awardTypeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@unique([moduleId, awardTypeId])
 }
 
 model Attachment {
