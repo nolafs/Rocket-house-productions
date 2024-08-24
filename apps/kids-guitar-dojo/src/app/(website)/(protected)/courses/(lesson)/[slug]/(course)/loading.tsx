@@ -8,7 +8,7 @@ export const Loading = () => {
 
   return (
     <div
-      className={'flex h-svh w-full flex-col items-center justify-center bg-amber-600'}
+      className={'absolute inset-0 flex h-svh w-full flex-col items-center justify-center bg-amber-600'}
       style={{ backgroundColor: getCurrentModule()?.color || '#e8c996' }}>
       <Loader2 className={'h-12 w-12 animate-spin text-white'} />
     </div>

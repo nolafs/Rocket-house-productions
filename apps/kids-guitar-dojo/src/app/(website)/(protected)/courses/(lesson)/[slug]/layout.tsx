@@ -1,4 +1,4 @@
-import { CourseProgressionProvider, useModuleProgressStore } from '@rocket-house-productions/providers';
+import { CourseProgressionProvider } from '@rocket-house-productions/providers';
 import { getChild } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
