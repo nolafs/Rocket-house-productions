@@ -8,7 +8,7 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
 import cn from 'classnames';
-import { Lesson } from '@prisma/client';
+import Image from 'next/image';
 
 interface CourseDebugNavigationProps {
   course: any;
@@ -82,6 +82,23 @@ export function CourseDebugNavigation({ course }: CourseDebugNavigationProps) {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                    <div>
+                      <div>
+                        <div className={'mb-4 font-bold'}>Awards</div>
+                        <ul>
+                          {module.availableAwards.map((item: any, idx: number) => {
+                            return (
+                              <li key={'award' + item.awardType.id} className={'flex space-x-1.5'}>
+                                {item.awardType.badgeUrl && (
+                                  <Image src={item.awardType.badgeUrl} width={70} height={70} alt={'badge'} />
+                                )}{' '}
+                                <span>{item.awardType.name}</span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
                     </div>
                     <div>
                       <div>

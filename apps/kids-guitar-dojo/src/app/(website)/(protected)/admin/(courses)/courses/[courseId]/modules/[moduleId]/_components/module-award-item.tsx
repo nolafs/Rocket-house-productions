@@ -66,7 +66,7 @@ export function ModuleAwardItem({ award, courseId, moduleId }: ModuleAwardItemPr
     console.log('[ModuleAwardItem]', values);
 
     try {
-      //await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/awards/${award.awardType.id}`, values);
+      await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/awards/${award.awardType.id}`, values);
       toast.success('Award created');
       toggleEdit();
       router.refresh();
@@ -190,6 +190,8 @@ export function ModuleAwardItem({ award, courseId, moduleId }: ModuleAwardItemPr
                             if (file) {
                               setIsEditingImage(false);
                               setTempImage(file);
+
+                              field.onChange(file);
                             }
                           }}
                         />

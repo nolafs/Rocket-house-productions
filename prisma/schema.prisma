@@ -112,7 +112,6 @@ model AwardType {
   badgeUrl    String?// URL for the badge image
   points      Int// Points awarded
 
-  // The condition under which this award is given, e.g., "completion", "high_score"
   condition String
 
   modules ModuleAwardType[]
