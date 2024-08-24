@@ -33,13 +33,13 @@ model Course {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
-  @@index([categoryId, slug])
+  @@index([slug])
 }
 
 model Module {
   id          String  @id @default(uuid())
   title       String
-  slug String? @unique
+  slug        String? @unique
   description String? @db.Text
   position    Int
   isPublished Boolean @default(false)
@@ -56,6 +56,9 @@ model Module {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
+  @@unique([courseId, slug])
+  @@index([courseId])
+  @@index([slug])
   @@index([courseId, slug])
 }
 
@@ -145,7 +148,10 @@ model Lesson {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
+  @@unique([slug, moduleId, isPublished])
   @@index([moduleId, slug])
+  @@index([moduleId, slug, isPublished])
+  @@index([slug])
 }
 
 model Questionary {

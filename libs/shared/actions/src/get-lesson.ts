@@ -65,8 +65,10 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
     const startModule = Date.now();
     const module = await db.module.findUnique({
       where: {
-        slug: moduleSlug,
-        courseId: course.id,
+        courseId_slug: {
+          courseId: course.id,
+          slug: moduleSlug,
+        },
       },
       select: {
         id: true,
@@ -99,9 +101,11 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
     const startLesson = Date.now();
     const lesson = await db.lesson.findUnique({
       where: {
-        slug: lessonSlug,
-        moduleId: module.id,
-        isPublished: true,
+        slug_moduleId_isPublished: {
+          slug: lessonSlug,
+          moduleId: module.id,
+          isPublished: true,
+        },
       },
       include: {
         questionaries: {
