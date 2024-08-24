@@ -198,6 +198,9 @@ model BunnyData {
 
   lessonId String @unique
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([videoId])
+  @@index([lessonId])
 }
 
 model ChildProgress {
