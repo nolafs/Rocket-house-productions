@@ -14,6 +14,7 @@ import { auth } from '@clerk/nextjs/server';
 import LessonForm from './_components/lesson-form';
 import ModuleColorForm from './_components/module-color-form';
 import ModuleAttachementForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-attachement-form';
+import ModuleAwardForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-award-form';
 
 const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: string } }) => {
   const { userId } = auth();
@@ -27,6 +28,11 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
       id: params.moduleId,
     },
     include: {
+      availableAwards: {
+        select: {
+          awardType: true,
+        },
+      },
       attachments: {
         orderBy: {
           createdAt: 'desc',
@@ -106,6 +112,11 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
                 moduleId={params.moduleId}
               />
               <ModuleColorForm initialData={moduleSection} courseId={params.courseId} moduleId={params.moduleId} />
+              <ModuleAwardForm
+                initialData={moduleSection as any}
+                courseId={params.courseId}
+                moduleId={params.moduleId}
+              />
             </div>
             <div></div>
           </div>

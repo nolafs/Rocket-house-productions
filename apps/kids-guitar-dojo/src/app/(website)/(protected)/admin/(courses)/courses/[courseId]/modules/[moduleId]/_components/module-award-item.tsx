@@ -1,41 +1,34 @@
-'use client';
-
+import { AwardType, ModuleAwardType } from '@prisma/client';
+import { ImageIcon, Pencil } from 'lucide-react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-
 import * as z from 'zod';
-import axios from 'axios';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-
-import { Loader2, Pencil, PlusCircle } from 'lucide-react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import toast from 'react-hot-toast';
-
+import { useRouter } from 'next/navigation';
 import {
+  Button,
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
-  Button,
   Input,
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectGroup,
-  SelectLabel,
   SelectItem,
-  FormLabel,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
 } from '@rocket-house-productions/shadcn-ui';
-import cn from 'classnames';
-
-import { AwardType, Module, ModuleAwardType } from '@prisma/client';
 import { Editor, FileImageUpload } from '@rocket-house-productions/features';
-import ModuleAwardItem from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-award-item';
+import Image from 'next/image';
 
-interface ModuleDescriptionFormProps {
-  initialData: Module & { availableAwards: (ModuleAwardType & { awardType: { name: string } })[] };
+interface ModuleAwardItemProps {
+  award: ModuleAwardType & { awardType: AwardType };
   courseId: string;
   moduleId: string;
 }
@@ -48,29 +41,34 @@ const formSchema = z.object({
   badgeUrl: z.string().optional(),
 });
 
-const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescriptionFormProps) => {
+export function ModuleAwardItem({ award, courseId, moduleId }: ModuleAwardItemProps) {
   const router = useRouter();
-  const [isCreating, setIsCreating] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingImage, setIsEditingImage] = useState(false);
+  const [tempImage, setTempImage] = useState<string | null>(null);
 
-  const toggleCreating = () => {
-    setIsCreating(current => !current);
-  };
+  const toggleEdit = () => setIsEditing(current => !current);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: '',
+      name: award.awardType.name,
+      description: award.awardType.description || '',
+      points: award.awardType.points || 0,
+      condition: award.awardType.condition || '',
+      badgeUrl: award.awardType.badgeUrl || '',
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log('[ModuleAwardItem]', values);
+
     try {
-      await axios.post(`/api/courses/${courseId}/modules/${moduleId}/awards`, values);
+      await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/awards/${award.awardType.id}`, values);
       toast.success('Award created');
-      toggleCreating();
+      toggleEdit();
       router.refresh();
     } catch (error) {
       toast.error('Something went wrong');
@@ -78,28 +76,24 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
   };
 
   return (
-    <div className="relative mt-6 rounded-md border bg-slate-100 p-4">
-      {isUpdating && (
-        <div className="rounded-m absolute right-0 top-0 flex h-full w-full items-center justify-center bg-slate-500/20">
-          <Loader2 className="h-6 w-6 animate-spin text-sky-700" />
-        </div>
+    <div className="mb-4 flex items-center gap-x-2 rounded-md border-sky-200 bg-sky-100 p-4 text-sky-700">
+      {!isEditing && (
+        <>
+          <p className="line-clamp-1 text-xs">{award.awardType.name}</p>
+          <div className="ml-auto flex items-center gap-x-2 pr-2">
+            <Pencil onClick={toggleEdit} className="h-4 w-4 cursor-pointer transition hover:opacity-75" />
+          </div>
+        </>
       )}
-      <div className="flex items-center justify-between font-medium">
-        Module awards
-        <Button onClick={toggleCreating} variant="ghost">
-          {isCreating ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Add a Award
-            </>
-          )}
-        </Button>
-      </div>
-      {isCreating && (
+      {isEditing && (
         <Form {...(form as any)}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+            <div className={'mb-4 flex items-center justify-between'}>
+              <div className={'font-bold text-black'}>Edit </div>
+              <Button onClick={toggleEdit} variant="ghost">
+                Cancel
+              </Button>
+            </div>
             <FormField
               control={form.control as any}
               name="name"
@@ -164,27 +158,49 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
             />
 
             <div>
-              <FormField
-                control={form.control as any}
-                name="badgeUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Badge</FormLabel>
-                    <FormControl>
-                      <FileImageUpload
-                        onChange={file => {
-                          console.log('[IMAGE FORM]', file);
-                          if (file) {
-                            field.value = file;
-                            field.onChange();
-                          }
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              {!isEditingImage &&
+                (!award?.awardType?.badgeUrl && !tempImage ? (
+                  <div className="flex h-60 items-center justify-center rounded-md bg-slate-200">
+                    <ImageIcon className="h-10 w-10 text-slate-500" />
+                    <Button onClick={() => setIsEditingImage(true)} variant="ghost">
+                      Add an image
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="relative h-60 w-full rounded-md bg-slate-200">
+                    <Image
+                      alt="Upload"
+                      fill
+                      className="rounded-md object-contain object-center"
+                      src={award.awardType.badgeUrl || tempImage || ''}
+                    />
+                  </div>
+                ))}
+              {isEditingImage && (
+                <FormField
+                  control={form.control as any}
+                  name="badgeUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Badge</FormLabel>
+                      <FormControl>
+                        <FileImageUpload
+                          onChange={file => {
+                            console.log('[IMAGE FORM]', file, field);
+                            if (file) {
+                              setIsEditingImage(false);
+                              setTempImage(file);
+
+                              field.onChange(file);
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
               <div className="text-muted-foreground mt-4 text-xs">16:9 aspect ratio recommended</div>
             </div>
             <div className="flex items-center gap-x-2">
@@ -195,22 +211,8 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
           </form>
         </Form>
       )}
-      {!isCreating && (
-        <div className={cn('mt-2 text-sm', !initialData.availableAwards.length && 'italic text-slate-500')}>
-          {!initialData.availableAwards.length && 'No aviailable awards yet'}
-          {initialData.availableAwards.length && (
-            <div className="space-y-2">
-              {initialData.availableAwards.map((award: any) => (
-                <div key={award.id}>
-                  <ModuleAwardItem courseId={courseId} moduleId={moduleId} award={award} />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
-};
+}
 
-export default ModuleDescriptionForm;
+export default ModuleAwardItem;
