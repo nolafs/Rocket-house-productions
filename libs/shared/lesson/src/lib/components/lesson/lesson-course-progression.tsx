@@ -1,13 +1,19 @@
 'use client';
-import { useModuleProgressStore } from '@rocket-house-productions/providers';
+import { useCourseProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
 import { useEffect } from 'react';
 import LessonProgressBar from '../lesson-progress-bar';
 
-export function LessonCourseProgression() {
-  const { modules, setCurrentModule } = useModuleProgressStore(store => store);
+interface LessonCourseProgressionProps {
+  course: any;
+}
 
+export function LessonCourseProgression({ course }: LessonCourseProgressionProps) {
+  const { modules, setCurrentModule, calculateModuleProgress } = useModuleProgressStore(store => store);
+  const { calculateCourseProgress, courses, getCourseProgress } = useCourseProgressionStore(store => store);
   useEffect(() => {
-    console.log(modules);
+    console.log(['LESSON PROGRESSION'], modules);
+    calculateCourseProgress(course.id);
+    console.log(['COURSE PROGRESSION'], getCourseProgress(course.id));
     setCurrentModule(null);
   }, []);
 

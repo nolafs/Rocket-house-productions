@@ -16,9 +16,6 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
   const router = useRouter();
   const [active, setActive] = useState(false);
 
-  console.log('[QuizNext] lesson', lesson.position);
-  console.log('[QuizNext] module lesson', module.lessons, module.lessons?.length);
-
   const next =
     module.lessons?.length && lesson.position < module.lessons.length ? module?.lessons?.[lesson.position + 1] : null;
 
@@ -40,8 +37,6 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
       setActive(true);
     }
   }, [quizCompleted]);
-
-  console.log('[QuizNext] next', next);
 
   if (next) {
     return (

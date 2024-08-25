@@ -19,13 +19,8 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const [active, setActive] = useState(false);
   const hasQuiz = lesson?.questionaries?.length > 0;
 
-  console.log('[LessonNext] lesson', lesson.position);
-  console.log('[LessonNext] module lesson', module.lessons, module.lessons?.length);
-
   const nextLesson =
-    module.lessons?.length && lesson.position <= module.lessons.length ? module?.lessons?.[lesson.position] : null;
-
-  console.log('[LessonNext] nextLesson', nextLesson);
+    module.lessons?.length && lesson.position <= module.lessons.length ? module?.lessons?.[lesson.position + 1] : null;
 
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {
@@ -43,6 +38,8 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   }, [lesson?.id, getLessonCompleted]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     if (lesson?.id && lessonCompleted) {
       setActive(true);
       scrollTo('continue');

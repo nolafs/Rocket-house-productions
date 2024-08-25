@@ -1,3 +1,4 @@
+export * from './lib/components/lesson/lesson-data';
 export * from './lib/components/quiz/quiz';
 export * from './lib/components/quiz/quiz-list';
 export * from './lib/components/quiz/quiz-list';
