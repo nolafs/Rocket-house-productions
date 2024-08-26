@@ -18,9 +18,10 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const getLessonCompleted = useLessonProgressionStore(store => store.getLessonCompleted(lesson.id));
   const [active, setActive] = useState(false);
   const hasQuiz = lesson?.questionaries?.length > 0;
+  const position = lesson?.position - 1;
 
   const nextLesson =
-    module.lessons?.length && lesson.position <= module.lessons.length ? module?.lessons?.[lesson.position + 1] : null;
+    module.lessons?.length && lesson.position <= module.lessons.length ? module?.lessons?.[position + 1] : null;
 
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {
@@ -44,7 +45,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
       setActive(true);
       scrollTo('continue');
     }
-  }, [lessonCompleted, lesson?.id, scrollTo]);
+  }, [lessonCompleted]);
 
   if (!lesson || !module) {
     return null;
