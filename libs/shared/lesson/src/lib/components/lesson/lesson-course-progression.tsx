@@ -8,8 +8,8 @@ interface LessonCourseProgressionProps {
 }
 
 export function LessonCourseProgression({ course }: LessonCourseProgressionProps) {
-  const { modules, setCurrentModule, calculateModuleProgress } = useModuleProgressStore(store => store);
-  const { calculateCourseProgress, courses, getCourseProgress, addCourse } = useCourseProgressionStore(store => store);
+  const { setCurrentModule } = useModuleProgressStore(store => store);
+  const { calculateCourseProgress, getCourseProgress, addCourse } = useCourseProgressionStore(store => store);
   const [courseProgress, setCourseProgress] = useState(0);
   useMemo(() => {
     addCourse(course);
