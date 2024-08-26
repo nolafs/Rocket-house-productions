@@ -17,11 +17,13 @@ interface GetQuizProps {
   onUpdateQuizScore: (correct: number) => void;
 }
 
+let displayTimeout: ReturnType<typeof setTimeout>;
+
 export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, onSlideIndexChange }: GetQuizProps) {
   const ref = useRef<any>();
   const [slideIndex, setSlideIndex] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [isLastQuestion, setIsLastQuestion] = useState(false);
+  const [isLastQuestion, setIsLastQuestion] = useState(questionaries.length === 1 ? true : false);
   const [correctCount, setCorrectCount] = useState(0);
   const [currentCorrect, setCurrentCorrect] = useState(false);
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
@@ -58,13 +60,17 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
 
   useEffect(() => {
     if (isQuizCompleted) {
+      console.log('isQuizCompleted');
       onQuizCompleted();
     }
   }, [isQuizCompleted]);
 
   const onNext = contextSafe(() => {
+    console.log('onNext');
+    clearTimeout(displayTimeout);
     if (slideIndex !== questionaries.length - 1) {
       setSlideIndex(prevState => prevState + 1);
+      setIsCompleted(false);
       gsap.to('.slide', {
         xPercent: '-=100',
         duration: 0.4,
@@ -78,14 +84,19 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
   });
 
   const onQuestionCompleted = () => {
+    console.log('onQuestionCompleted');
+    clearTimeout(displayTimeout);
     setIsCompleted(true);
-    setTimeout(() => {
-      onNext();
-      setIsCompleted(false);
-      if (isLastQuestion) {
+    if (isLastQuestion) {
+      displayTimeout = setTimeout(() => {
+        setIsCompleted(false);
         setIsQuizCompleted(true);
-      }
-    }, 2000);
+      }, 2000);
+    } else {
+      displayTimeout = setTimeout(() => {
+        onNext();
+      }, 2000);
+    }
   };
 
   return (
