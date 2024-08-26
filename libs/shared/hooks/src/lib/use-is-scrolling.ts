@@ -7,10 +7,10 @@ export const useIsScrolling = () => {
   let timeoutId: NodeJS.Timeout;
 
   const handleScroll = () => {
-    if (typeof window === 'undefined') return;
-
     setIsScrolling(true);
-    setNotAtTop(window.scrollY > 0);
+    if (typeof window !== 'undefined') {
+      setNotAtTop(window.scrollY > 0);
+    }
 
     if (timeoutId) {
       clearTimeout(timeoutId);
@@ -22,8 +22,9 @@ export const useIsScrolling = () => {
   };
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    window.addEventListener('scroll', handleScroll);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll);
+    }
 
     return () => {
       window.removeEventListener('scroll', handleScroll);

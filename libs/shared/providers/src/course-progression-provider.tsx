@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, createContext, useRef, useContext } from 'react';
+import { type ReactNode, createContext, useRef, useContext, FC } from 'react';
 import { useStore as useZustandStore } from 'zustand';
 
 import {
@@ -28,7 +28,7 @@ interface CourseProgressionProviderProps {
 
 const CourseProgressionContext = createContext<CombinedStores | undefined>(undefined);
 
-export const CourseProgressionProvider: React.FC<CourseProgressionProviderProps> = ({ userId, children }) => {
+export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ userId, children }) => {
   const lessonStoreRef = useRef<CombinedStores['lessonStore']>();
   const pointsStoreRef = useRef<CombinedStores['pointsStore']>();
   const moduleStoreRef = useRef<CombinedStores['moduleStore']>();

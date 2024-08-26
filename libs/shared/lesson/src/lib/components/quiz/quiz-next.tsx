@@ -17,10 +17,6 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
   const [active, setActive] = useState(false);
   const position = lesson.position - 1;
 
-  console.log('[Quiz Next] module', module.lessons);
-  console.log('[Quiz Next] lesson', lesson);
-  console.log('[Quiz Next] position', position);
-
   const nextLesson =
     module.lessons?.length && lesson.position < module.lessons.length ? module?.lessons?.[position + 1] : null;
 

@@ -16,7 +16,7 @@ export const ScrollToProviderContext = createContext<ScrollToProviderContextType
 
 export const ScrollToProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const isMounted = useIsMounted();
-  const [_window, setWindowObject] = useState<null | Window>(null);
+
   const [scrollTo, setScrollTo] = useState<string | null>(null);
   const container = useRef<any>();
 
@@ -26,17 +26,11 @@ export const ScrollToProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setWindowObject(window);
-    }
-  }, []);
-
   useGSAP(
     () => {
-      if (isMounted.current && _window && scrollTo) {
-        if (typeof _window !== 'undefined') {
-          gsap.to(_window, { duration: 2, scrollTo: `#${scrollTo}` });
+      if (isMounted.current && scrollTo) {
+        if (typeof window !== 'undefined') {
+          gsap.to(window, { duration: 2, scrollTo: `#${scrollTo}` });
         }
       }
     },
