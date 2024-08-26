@@ -1,3 +1,4 @@
+'use client';
 import { CircleCheck, CircleHelp, Timer } from 'lucide-react';
 import { SectionModule } from '@rocket-house-productions/types';
 import { Questionary } from '@prisma/client';

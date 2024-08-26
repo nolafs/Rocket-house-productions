@@ -26,6 +26,7 @@ import { SlugFormControl } from '@rocket-house-productions/lesson';
 interface ChapterTitleFormProps {
   initialData: {
     title: string;
+    slug?: string | null;
   };
   courseId: string;
   moduleId: string;

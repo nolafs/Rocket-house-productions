@@ -4,10 +4,10 @@ import QuizScoreDisplay from './quiz-score-display';
 import { Question, Questionary } from '@prisma/client';
 import QuizList from './quiz-list';
 import QuizNext from './quiz-next';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+import { usePointsStore } from '@rocket-house-productions/providers';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { usePointsStore } from '@rocket-house-productions/providers';
 gsap.registerPlugin(useGSAP);
 
 export interface Quiz extends Questionary {
@@ -22,7 +22,6 @@ interface QuizProps {
 }
 
 export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
-  console.log('[Quiz] questionaries', questionaries);
   const [quizCompleted, setQuizCompleted] = useState(false);
 
   const { addPoints } = usePointsStore(store => store);

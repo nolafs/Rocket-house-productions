@@ -87,7 +87,6 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
   return (
     <div ref={ref} className={'item relative isolate'}>
       <h2 className={'!font-lesson-body mb-5 text-xl font-bold'}>{questionary.title}</h2>
-
       <Form {...form}>
         <form onChangeCapture={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

@@ -17,7 +17,7 @@ export default async function Page({ params }: PageProps) {
   return (
     <>
       <CourseDebugNavigation course={course} />
-      <LessonCourseProgression />
+      <LessonCourseProgression course={course} />
     </>
   );
 }

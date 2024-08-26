@@ -1,3 +1,4 @@
+'use client';
 import { useStopwatch } from 'react-timer-hook';
 import { useEffect } from 'react';
 

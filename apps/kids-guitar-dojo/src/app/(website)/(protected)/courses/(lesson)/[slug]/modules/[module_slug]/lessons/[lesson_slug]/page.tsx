@@ -2,11 +2,9 @@ import { auth } from '@clerk/nextjs/server';
 import { notFound, redirect } from 'next/navigation';
 import { getChild, getLesson } from '@rocket-house-productions/actions/server';
 import { LessonContent } from '@rocket-house-productions/lesson/server';
-import { Header, LessonHeader, LessonNext, LessonVideo } from '@rocket-house-productions/lesson';
+import { LessonHeader, LessonNext, LessonVideo } from '@rocket-house-productions/lesson';
 import { createClient } from '@/prismicio';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
-
-import { ScrollToProvider } from '@rocket-house-productions/providers';
 
 interface PageProps {
   params: { slug: string; module_slug: string; lesson_slug: string };
@@ -46,7 +44,7 @@ export default async function Page({ params }: PageProps) {
   }
 
   return (
-    <ScrollToProvider>
+    <>
       <LessonHeader lessonId={data.lesson.id} module={data.module} />
       <main className={'container mx-auto mb-20 mt-[100px] flex max-w-5xl flex-col space-y-5 px-5'}>
         <LessonVideo lesson={data.lesson} module={data.module as SectionModule} child={child} />
@@ -57,6 +55,6 @@ export default async function Page({ params }: PageProps) {
           course={data.course as SectionCourse}
         />
       </main>
-    </ScrollToProvider>
+    </>
   );
 }

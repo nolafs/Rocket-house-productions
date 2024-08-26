@@ -101,24 +101,6 @@ const QuestionTitleForm = ({ initialData, courseId, moduleId, lessonId, question
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control as any}
-              name="slug"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Slug</FormLabel>
-                  <FormControl>
-                    <SlugFormControl
-                      disabled={isSubmitting}
-                      initialTitle={title}
-                      {...field}
-                      onSlugChange={newSlug => field.onChange(newSlug)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
                 Save

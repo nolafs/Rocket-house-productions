@@ -58,7 +58,7 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
     <>
       <div>
         {videoId && (
-          <div className={'video aspect-w-16 aspect-h-9 bg-lesson-background relative'}>
+          <div className={'video aspect-w-16 aspect-h-9 bg-lesson-background relative bg-slate-300'}>
             <iframe
               ref={ref}
               src={`https://iframe.mediadelivery.net/embed/${videoLibId}/${videoId}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}

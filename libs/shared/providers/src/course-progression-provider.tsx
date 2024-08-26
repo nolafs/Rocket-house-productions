@@ -35,7 +35,7 @@ export const CourseProgressionProvider: React.FC<CourseProgressionProviderProps>
   const courseStoreRef = useRef<CombinedStores['courseStore']>();
 
   if (!lessonStoreRef.current) {
-    lessonStoreRef.current = createLessonStore();
+    lessonStoreRef.current = createLessonStore(userId);
   }
 
   if (!pointsStoreRef.current) {
@@ -43,11 +43,11 @@ export const CourseProgressionProvider: React.FC<CourseProgressionProviderProps>
   }
 
   if (!moduleStoreRef.current) {
-    moduleStoreRef.current = createModuleStore(lessonStoreRef.current);
+    moduleStoreRef.current = createModuleStore(userId, lessonStoreRef.current);
   }
 
   if (!courseStoreRef.current) {
-    courseStoreRef.current = createCourseStore(moduleStoreRef.current);
+    courseStoreRef.current = createCourseStore(userId, moduleStoreRef.current);
   }
 
   return (

@@ -15,20 +15,26 @@ interface QuizNextProps {
 export function QuizNext({ lesson, module, course, quizCompleted = false }: QuizNextProps) {
   const router = useRouter();
   const [active, setActive] = useState(false);
+  const position = lesson.position - 1;
 
-  console.log('[QuizNext] lesson', lesson.position);
-  console.log('[QuizNext] module lesson', module.lessons, module.lessons?.length);
+  console.log('[Quiz Next] module', module.lessons);
+  console.log('[Quiz Next] lesson', lesson);
+  console.log('[Quiz Next] position', position);
 
-  const next =
-    module.lessons?.length && lesson.position < module.lessons.length ? module?.lessons?.[lesson.position + 1] : null;
+  const nextLesson =
+    module.lessons?.length && lesson.position < module.lessons.length ? module?.lessons?.[position + 1] : null;
 
-  const lastLessonModule = module.lessons?.length === lesson.position;
+  const lastLessonInModule = (id: string) => {
+    if (module.lessons?.length) {
+      return module?.lessons[module.lessons.length - 1].id === id;
+    }
+    return null;
+  };
 
   const handleNext = () => {
-    console.log('handleNext');
-    if (!lastLessonModule) {
-      if (next) {
-        router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${next.slug}`);
+    if (!lastLessonInModule(lesson.id) && nextLesson) {
+      if (nextLesson) {
+        router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${nextLesson.slug}`);
       }
     } else {
       router.push(`/courses/${course.slug}`);
@@ -41,9 +47,7 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
     }
   }, [quizCompleted]);
 
-  console.log('[QuizNext] next', next);
-
-  if (next) {
+  if (nextLesson) {
     return (
       <div
         id={'continue'}
@@ -56,7 +60,7 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
           <span className={'text-pink-500'} style={{ color: module.color }}>
             Next Lesson:
           </span>{' '}
-          <span>{next.title}</span>
+          <span>{nextLesson.title}</span>
         </div>
         <div>
           <Button variant={'lesson'} size={'lg'} onClick={handleNext} disabled={!active}>

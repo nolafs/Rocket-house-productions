@@ -21,11 +21,15 @@ export const ScrollToProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const container = useRef<any>();
 
   const scrollToFunction = (id: string) => {
-    setScrollTo(id);
+    if (typeof window !== 'undefined') {
+      setScrollTo(id);
+    }
   };
 
   useEffect(() => {
-    setWindowObject(window);
+    if (typeof window !== 'undefined') {
+      setWindowObject(window);
+    }
   }, []);
 
   useGSAP(
