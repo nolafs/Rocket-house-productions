@@ -1,4 +1,5 @@
 import { createStore } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface QuestionProgress {
   [questionId: string]: boolean;
@@ -28,49 +29,62 @@ export const defaultInitState: LessonState = {
   lessons: {},
 };
 
-export const createLessonStore = (initState: LessonState = defaultInitState) => {
-  return createStore<LessonProgressStore>((set, get) => ({
-    ...initState,
+export const createLessonStore = (
+  userId: string,
+  initState: LessonState = defaultInitState,
+  // Pass userId or another unique identifier for persistence
+) => {
+  return createStore<LessonProgressStore>()(
+    persist(
+      (set, get) => ({
+        ...initState,
 
-    setLessonComplete: lessonId =>
-      set(state => ({
-        lessons: {
-          ...state.lessons,
-          [lessonId]: {
-            ...state.lessons[lessonId],
-            progress: 100,
-            completed: true,
-          },
-        },
-      })),
-
-    setLessonProgress: (lessonId, progress) =>
-      set(state => ({
-        lessons: {
-          ...state.lessons,
-          [lessonId]: {
-            ...state.lessons[lessonId],
-            progress,
-          },
-        },
-      })),
-
-    setQuestionProgress: (lessonId, questionId, completed) =>
-      set(state => ({
-        lessons: {
-          ...state.lessons,
-          [lessonId]: {
-            ...state.lessons[lessonId],
-            questions: {
-              ...state.lessons[lessonId].questions,
-              [questionId]: completed,
+        setLessonComplete: lessonId =>
+          set(state => ({
+            lessons: {
+              ...state.lessons,
+              [lessonId]: {
+                ...state.lessons[lessonId],
+                progress: 100,
+                completed: true,
+              },
             },
-          },
-        },
-      })),
+          })),
 
-    getLessonProgress: lessonId => get().lessons[lessonId]?.progress || 0,
+        setLessonProgress: (lessonId, progress) =>
+          set(state => ({
+            lessons: {
+              ...state.lessons,
+              [lessonId]: {
+                ...state.lessons[lessonId],
+                progress,
+              },
+            },
+          })),
 
-    getLessonCompleted: lessonId => get().lessons[lessonId]?.completed || false,
-  }));
+        setQuestionProgress: (lessonId, questionId, completed) =>
+          set(state => ({
+            lessons: {
+              ...state.lessons,
+              [lessonId]: {
+                ...state.lessons[lessonId],
+                questions: {
+                  ...state.lessons[lessonId].questions,
+                  [questionId]: completed,
+                },
+              },
+            },
+          })),
+
+        getLessonProgress: lessonId => get().lessons[lessonId]?.progress || 0,
+
+        getLessonCompleted: lessonId => get().lessons[lessonId]?.completed || false,
+      }),
+      {
+        name: `lesson-progress-store-${userId}`, // Unique storage key per user or context
+        partialize: state => ({ lessons: state.lessons }), // Persist only the lessons part of the state
+        // You can also specify a storage engine here, like sessionStorage or any custom storage
+      },
+    ),
+  );
 };

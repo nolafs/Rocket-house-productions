@@ -22,9 +22,11 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
   Input,
 } from '@rocket-house-productions/shadcn-ui';
+import { SlugFormControl } from '@rocket-house-productions/lesson';
 
 interface LessonsFormProps {
   initialData: Module & { lessons: Lesson[] };
@@ -34,10 +36,12 @@ interface LessonsFormProps {
 
 const formSchema = z.object({
   title: z.string().min(1),
+  slug: z.string().min(1, 'Slug is required').nullable(),
 });
 
 const LessonForm = ({ initialData, moduleId, courseId }: LessonsFormProps) => {
   const router = useRouter();
+  const [title, setTitle] = useState(initialData.title);
 
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -50,6 +54,7 @@ const LessonForm = ({ initialData, moduleId, courseId }: LessonsFormProps) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
+      slug: '',
     },
   });
 
@@ -119,7 +124,30 @@ const LessonForm = ({ initialData, moduleId, courseId }: LessonsFormProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input disabled={isSubmitting} placeholder="ex. 'Introduction to the course...'" {...field} />
+                    <Input
+                      disabled={isSubmitting}
+                      onChangeCapture={e => setTitle(e.currentTarget.value)}
+                      placeholder="ex. 'Introduction to the course...'"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control as any}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Slug</FormLabel>
+                  <FormControl>
+                    <SlugFormControl
+                      disabled={isSubmitting}
+                      {...field}
+                      initialTitle={title}
+                      onSlugChange={newSlug => field.onChange(newSlug)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,6 +1,6 @@
-export * from './lib/components/quiz/quiz';
-export * from './lib/components/quiz/quiz-list';
-export * from './lib/components/quiz/quiz-list';
+export { LessonData } from './lib/components/lesson/lesson-data';
+export { Quiz } from './lib/components/quiz/quiz';
+export { QuizList } from './lib/components/quiz/quiz-list';
 export { LessonHeader } from './lib/components/lesson/lesson-header';
 export { LessonCourseProgression } from './lib/components/lesson/lesson-course-progression';
 export { LessonNext } from './lib/components/lesson/lesson-next';

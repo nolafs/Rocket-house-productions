@@ -36,9 +36,8 @@ export default async function Page({ params }: PageProps) {
   console.log('[QUIZ]', data);
 
   return (
-    <ScrollToProvider>
-      <Header avatar={child?.profilePicture} name={child?.name} background={data?.module?.color} />
-      <LessonHeader lessonId={data.lesson.id} hasProgress={false} />
+    <>
+      <LessonHeader lessonId={data.lesson.id} module={data.module} hasProgress={false} />
       <main className={'container mx-auto mb-20 flex max-w-5xl flex-col space-y-5 px-5'}>
         <Quiz
           course={data.course as SectionCourse}
@@ -47,6 +46,6 @@ export default async function Page({ params }: PageProps) {
           questionaries={data.questionaries}
         />
       </main>
-    </ScrollToProvider>
+    </>
   );
 }

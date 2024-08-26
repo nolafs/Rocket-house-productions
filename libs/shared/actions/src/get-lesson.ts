@@ -75,6 +75,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
         title: true,
         color: true,
         slug: true,
+        availableAwards: true,
         lessons: {
           where: {
             isPublished: true,
