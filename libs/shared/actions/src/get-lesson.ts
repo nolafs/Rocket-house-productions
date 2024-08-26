@@ -112,6 +112,11 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
         },
       },
       include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
         questionaries: {
           select: {
             id: true,
