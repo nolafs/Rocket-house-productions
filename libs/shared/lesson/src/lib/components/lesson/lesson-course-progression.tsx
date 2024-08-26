@@ -1,6 +1,6 @@
 'use client';
 import { useCourseProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import LessonProgressBar from '../lesson-progress-bar';
 
 interface LessonCourseProgressionProps {
@@ -9,17 +9,21 @@ interface LessonCourseProgressionProps {
 
 export function LessonCourseProgression({ course }: LessonCourseProgressionProps) {
   const { modules, setCurrentModule, calculateModuleProgress } = useModuleProgressStore(store => store);
-  const { calculateCourseProgress, courses, getCourseProgress } = useCourseProgressionStore(store => store);
+  const { calculateCourseProgress, courses, getCourseProgress, addCourse } = useCourseProgressionStore(store => store);
+  const [courseProgress, setCourseProgress] = useState(0);
+  useMemo(() => {
+    addCourse(course);
+  }, [course]);
+
   useEffect(() => {
-    console.log(['LESSON PROGRESSION'], modules);
     calculateCourseProgress(course.id);
-    console.log(['COURSE PROGRESSION'], getCourseProgress(course.id));
+    setCourseProgress(prevState => getCourseProgress(course.id));
     setCurrentModule(null);
   }, []);
 
   return (
     <div className={'fixed bottom-5 left-5'}>
-      <LessonProgressBar currentProgress={50} variation={'white'} />
+      <LessonProgressBar currentProgress={courseProgress} variation={'white'} />
     </div>
   );
 }
