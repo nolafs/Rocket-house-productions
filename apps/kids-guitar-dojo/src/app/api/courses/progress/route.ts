@@ -24,8 +24,10 @@ export async function POST(req: NextRequest) {
     let response = {};
 
     if (progress) {
+      console.log('[COURSES PROGRESS] Updating progress');
       /// update progress
       if (!data.isCompleted) {
+        console.log('[COURSES PROGRESS] Updating progress is not completed');
         response = await db.childProgress.update({
           where: {
             childId_lessonId: {
@@ -36,10 +38,11 @@ export async function POST(req: NextRequest) {
           data: {
             isCompleted: data.isCompleted,
             currentProgress: data.currentProgress,
-            replayCount: data.replayCount++,
+            replayCount: data.replayCount ? data.replayCount++ : 1,
           },
         });
       } else {
+        console.log('[COURSES PROGRESS] Updating progress is completed');
         response = await db.childProgress.update({
           where: {
             childId_lessonId: {
@@ -50,12 +53,13 @@ export async function POST(req: NextRequest) {
           data: {
             isCompleted: data.isCompleted,
             currentProgress: 100,
-            replayCount: data.replayCount++,
+            replayCount: data.replayCount ? data.replayCount++ : 1,
           },
         });
       }
     } else {
       /// create progress
+      console.log('[COURSES PROGRESS] Creating new progress');
       response = await db.childProgress.create({
         data: {
           childId: data.childId,

@@ -1,5 +1,6 @@
 import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
+import axios from 'axios';
 
 type PointsState = {
   points: number;
@@ -17,15 +18,22 @@ export const defaultInitState: PointsState = {
   points: 0,
 };
 
-export const createPointsStore = (userId: string, initState: PointsState = defaultInitState) =>
+export const createPointsStore = (userId: string, courseId: string, initState: PointsState = defaultInitState) =>
   createStore<PointsStore>()(
     persist(
       (set, get) => ({
         ...initState,
-        addPoints: (points: number) =>
-          set(state => ({
+        addPoints: (points: number) => {
+          const score = set(state => ({
             points: state.points + points,
-          })),
+          }));
+
+          const updateScoreDB = get().points + points;
+
+          updateScore(courseId, userId, updateScoreDB);
+
+          return score;
+        },
 
         resetPoints: () => set({ points: 0 }),
 
@@ -38,3 +46,15 @@ export const createPointsStore = (userId: string, initState: PointsState = defau
       },
     ),
   );
+
+export async function updateScore(courseId: string, childId: string, score: number) {
+  try {
+    await axios.post('/api/courses/score', {
+      childId,
+      score,
+      courseId,
+    });
+  } catch (error) {
+    console.error('Error updating score:', error);
+  }
+}

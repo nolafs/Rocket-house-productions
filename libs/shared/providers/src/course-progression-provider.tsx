@@ -24,11 +24,12 @@ type CombinedStores = {
 interface CourseProgressionProviderProps {
   children: ReactNode;
   userId: string; // Add userId as a prop
+  courseId: string; // Add courseId as a prop
 }
 
 const CourseProgressionContext = createContext<CombinedStores | undefined>(undefined);
 
-export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ userId, children }) => {
+export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ userId, courseId, children }) => {
   const lessonStoreRef = useRef<CombinedStores['lessonStore']>();
   const pointsStoreRef = useRef<CombinedStores['pointsStore']>();
   const moduleStoreRef = useRef<CombinedStores['moduleStore']>();
@@ -39,7 +40,7 @@ export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ 
   }
 
   if (!pointsStoreRef.current) {
-    pointsStoreRef.current = createPointsStore(userId);
+    pointsStoreRef.current = createPointsStore(userId, courseId);
   }
 
   if (!moduleStoreRef.current) {

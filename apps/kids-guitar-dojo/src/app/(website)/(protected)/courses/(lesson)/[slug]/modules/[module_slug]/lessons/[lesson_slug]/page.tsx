@@ -48,7 +48,13 @@ export default async function Page({ params }: PageProps) {
       <LessonHeader lessonId={data.lesson.id} module={data.module} />
       <main className={'container mx-auto mb-20 mt-[100px] flex max-w-5xl flex-col space-y-5 px-5'}>
         <LessonVideo lesson={data.lesson} module={data.module as SectionModule} child={child} />
-        <LessonContent title={data.lesson.title} page={page} description={data.lesson.description} />
+        <LessonContent
+          title={data.lesson.title}
+          page={page}
+          description={data.lesson.description}
+          position={data.lesson.position}
+          category={data.lesson?.category?.name}
+        />
         <LessonNext
           lesson={data.lesson as SectionLesson}
           module={data.module as SectionModule}
