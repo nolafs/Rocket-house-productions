@@ -10,7 +10,9 @@ interface LessonDataProps {
 
 export function LessonData({ lesson, module }: LessonDataProps) {
   const { setCurrentModule, addModule, calculateModuleProgress } = useModuleProgressStore(store => store);
-  const { getLessonProgress, getLessonCompleted } = useLessonProgressionStore(store => store);
+  const { getLessonProgress, getLessonCompleted, setLessonComplete, updateCurrentState } = useLessonProgressionStore(
+    store => store,
+  );
 
   useEffect(() => {
     addModule(module);
@@ -26,7 +28,12 @@ export function LessonData({ lesson, module }: LessonDataProps) {
 
     if (getLessonCompleted(lesson)) {
       calculateModuleProgress(module.id);
+      setLessonComplete(lesson);
     }
+
+    return () => {
+      updateCurrentState(lesson);
+    };
   }, [getLessonCompleted(lesson)]);
 
   return null;
