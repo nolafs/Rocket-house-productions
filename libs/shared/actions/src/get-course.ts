@@ -76,6 +76,7 @@ export const getCourse = async ({ courseSlug }: GetCourseProps) => {
         },
       },
     },
+    cacheStrategy: { ttl: 60 },
   });
 
   if (!course) {

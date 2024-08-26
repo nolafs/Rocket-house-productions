@@ -1,8 +1,7 @@
-import { Header, ParallaxScene } from '@rocket-house-productions/lesson';
+import { ParallaxScene } from '@rocket-house-productions/lesson';
 import { ReactNode } from 'react';
-import { notFound, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { getChild } from '@rocket-house-productions/actions/server';
-import { useModuleProgressStore } from '@rocket-house-productions/providers';
 
 interface LayoutProps {
   children: ReactNode;

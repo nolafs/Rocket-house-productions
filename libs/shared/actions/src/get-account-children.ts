@@ -16,6 +16,7 @@ export async function getAccountChildren(userId: string): Promise<AccountWithChi
     include: {
       children: true,
     },
+    cacheStrategy: { ttl: 60 },
   });
 }
 
