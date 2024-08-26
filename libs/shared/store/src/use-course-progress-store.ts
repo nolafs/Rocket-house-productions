@@ -50,6 +50,8 @@ export const createCourseStore = (
           const course = get().courses[courseId];
           const moduleStore = moduleState.getState();
 
+          console.log(['COURSE PROGRESSION'], course, moduleStore);
+
           const modules = course?.modules || [];
           const totalModules = modules.length;
           const completedModules = modules.filter(moduleId => moduleStore.modules[moduleId]?.progress === 100).length;
