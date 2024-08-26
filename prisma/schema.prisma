@@ -242,6 +242,7 @@ model ChildProgress {
 
   isCompleted Boolean @default(false)
   currentProgress Float @default(0)
+  replayCount Int @default(0)
 
   awards Award[]
 

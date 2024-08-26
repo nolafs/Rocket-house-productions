@@ -1,5 +1,6 @@
 import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
+import axios from 'axios';
 
 interface QuestionProgress {
   [questionId: string]: boolean;
@@ -19,6 +20,7 @@ type LessonAction = {
   setLessonComplete: (lessonId: string) => void;
   setLessonProgress: (lessonId: string, progress: number) => void;
   setQuestionProgress: (lessonId: string, questionId: string, completed: boolean) => void;
+  updateCurrentState: (lessonId: string) => void;
   getLessonProgress: (lessonId: string) => number;
   getLessonCompleted: (lessonId: string) => boolean;
 };
@@ -39,8 +41,8 @@ export const createLessonStore = (
       (set, get) => ({
         ...initState,
 
-        setLessonComplete: lessonId =>
-          set(state => ({
+        setLessonComplete: lessonId => {
+          const updatedLessons = set(state => ({
             lessons: {
               ...state.lessons,
               [lessonId]: {
@@ -49,8 +51,18 @@ export const createLessonStore = (
                 completed: true,
               },
             },
-          })),
+          }));
 
+          updateDBLessonProgress(userId, lessonId, 100, true);
+
+          return updatedLessons;
+        },
+        updateCurrentState: lessonId => {
+          const progress = get().lessons[lessonId]?.progress || 0;
+          const completed = get().lessons[lessonId]?.completed || false;
+
+          updateDBLessonProgress(userId, lessonId, progress, completed);
+        },
         setLessonProgress: (lessonId, progress) =>
           set(state => ({
             lessons: {
@@ -77,7 +89,6 @@ export const createLessonStore = (
           })),
 
         getLessonProgress: lessonId => get().lessons[lessonId]?.progress || 0,
-
         getLessonCompleted: lessonId => get().lessons[lessonId]?.completed || false,
       }),
       {
@@ -87,4 +98,17 @@ export const createLessonStore = (
       },
     ),
   );
+};
+
+const updateDBLessonProgress = async (userId: string, lessonId: string, progress: number, completed: boolean) => {
+  try {
+    const response = await axios.post('/api/courses/progress', {
+      childId: userId,
+      lessonId,
+      isCompleted: completed,
+      currentProgress: progress,
+    });
+  } catch (error) {
+    console.error('Error updating lesson progress:', error);
+  }
 };

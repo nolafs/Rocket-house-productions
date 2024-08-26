@@ -6,6 +6,7 @@ import { ArrowBigLeftIcon } from 'lucide-react';
 import LessonProgressBar from '../lesson-progress-bar';
 import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { useIsScrolling } from '@rocket-house-productions/hooks';
+import { useRouter } from 'next/navigation';
 
 interface LessonHeaderProps {
   lessonId: string;
@@ -15,6 +16,7 @@ interface LessonHeaderProps {
 }
 
 export function LessonHeader({ lessonId, url = '/courses', hasProgress = true }: LessonHeaderProps) {
+  const router = useRouter();
   const { getLessonProgress } = useLessonProgressionStore(store => store);
 
   const { notAtTop } = useIsScrolling();
