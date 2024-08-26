@@ -26,6 +26,8 @@ model Course {
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
+  childScores ChildScore[]
+
   modules     Module[]
   attachments Attachment[]
   purchases   Purchase[]
@@ -251,6 +253,22 @@ model ChildProgress {
 
   @@unique([childId, lessonId])
   @@index([lessonId])
+}
+
+model ChildScore {
+  id     String @id @default(uuid())
+  childId String
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  score Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@unique([childId, courseId])
+  @@index([courseId])
 }
 
 model Award {

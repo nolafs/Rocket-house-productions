@@ -4,20 +4,21 @@ import { createClient } from '@/prismicio';
 import { components } from '@/slices';
 import { SliceZone } from '@prismicio/react';
 interface LessonContentProps {
+  position?: number | null | undefined;
   title?: string | null | undefined;
-  no?: number;
   page?: any;
   description?: string | null | undefined;
+  category?: string | null | undefined;
 }
 
-export async function LessonContent({ title, page, description, no = 0 }: LessonContentProps) {
+export async function LessonContent({ title, page, description, position, category }: LessonContentProps) {
   let subtitle = '';
 
   if (page) {
     title = page.data.title;
-    subtitle = page.data.subtitle;
+    subtitle = page.data.subtitle || `${category} ${position}`;
   } else {
-    subtitle = `Lesson ${no + 1}`;
+    subtitle = `${category} ${position}`;
   }
 
   return (
