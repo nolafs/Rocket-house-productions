@@ -18,6 +18,15 @@ export default async function Page() {
   const children = await db.child.findMany({
     include: {
       account: true,
+      childScores: {
+        select: {
+          score: true,
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+      },
+      childProgress: true,
     },
   });
 
