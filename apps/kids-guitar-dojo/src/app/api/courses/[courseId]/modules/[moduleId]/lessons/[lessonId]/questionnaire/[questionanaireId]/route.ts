@@ -127,7 +127,7 @@ export async function PATCH(
     const questionUpdate = await db.questionary.update({
       where: {
         id: params.questionanaireId,
-        lessonId: params.moduleId,
+        lessonId: params.lessonId,
       },
       data: {
         ...values,
