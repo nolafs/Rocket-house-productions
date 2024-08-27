@@ -235,41 +235,6 @@ model BunnyData {
   @@index([lessonId])
 }
 
-model ChildProgress {
-  id     String @id @default(uuid())
-  childId String
-
-  lessonId String
-  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-
-  isCompleted Boolean @default(false)
-  currentProgress Float @default(0)
-  replayCount Int @default(0)
-
-  awards Award[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-
-  @@unique([childId, lessonId])
-  @@index([lessonId])
-}
-
-model ChildScore {
-  id     String @id @default(uuid())
-  childId String
-
-  courseId String
-  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  score Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-
-  @@unique([childId, courseId])
-  @@index([courseId])
-}
 
 model Award {
   id          String       @id @default(uuid())
@@ -345,6 +310,10 @@ model Child {
   profilePicture String?
   birthday  DateTime
 
+  childProgress ChildProgress[]
+
+  childScores ChildScore[]
+
   parentConsent Boolean @default(false)
   notifications  Boolean @default(true)
 
@@ -352,4 +321,44 @@ model Child {
   updatedAt DateTime @updatedAt()
 
   @@unique([accountId])
+}
+
+model ChildProgress {
+  id      String @id @default(uuid())
+
+  childId String
+  child Child @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  lessonId String
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  isCompleted     Boolean @default(false)
+  currentProgress Float   @default(0)
+  replayCount     Int     @default(0)
+
+  awards Award[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@unique([childId, lessonId])
+  @@index([lessonId])
+}
+
+model ChildScore {
+  id      String @id @default(uuid())
+
+  childId String
+  child Child @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  score Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@unique([childId, courseId])
+  @@index([courseId])
 }

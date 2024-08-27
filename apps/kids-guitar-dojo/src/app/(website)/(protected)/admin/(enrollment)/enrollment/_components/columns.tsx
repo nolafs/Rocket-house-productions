@@ -122,6 +122,51 @@ export const columns: ColumnDef<Child>[] = [
     },
   },
   {
+    accessorKey: 'childScores',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Score
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const score = row.getValue('childScores') as Array<{ score: number }>;
+      return score[0]?.score || 0;
+    },
+  },
+  {
+    accessorKey: 'childProgress',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Completed Lessons
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const progress = row.getValue('childProgress') as Array<{ isCompleted: boolean }>;
+      return progress.filter(({ isCompleted }) => isCompleted).length;
+    },
+  },
+  {
+    accessorKey: 'childProgress_2',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Total Lessons
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const progress = row.getValue('childProgress') as Array<{ isCompleted: boolean }>;
+      return progress.length;
+    },
+  },
+  {
     accessorKey: 'createdAt',
     header: ({ column }) => {
       return (

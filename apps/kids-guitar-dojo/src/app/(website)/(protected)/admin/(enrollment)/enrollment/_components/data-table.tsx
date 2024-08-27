@@ -59,9 +59,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
     <div>
       <div className="flex items-center justify-between py-4">
         <Input
-          placeholder="Filter users email..."
-          value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
-          onChange={event => table.getColumn('email')?.setFilterValue(event.target.value)}
+          placeholder="Filter users name..."
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+          onChange={event => table.getColumn('name')?.setFilterValue(event.target.value)}
           className="max-w-sm"
         />
       </div>
