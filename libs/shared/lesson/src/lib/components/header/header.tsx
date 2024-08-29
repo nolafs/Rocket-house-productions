@@ -17,6 +17,7 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import { useClerk } from '@clerk/nextjs';
 import { useModuleProgressStore } from '@rocket-house-productions/providers';
+import ModuleProgressList from '../module/module-progress-list';
 
 interface HeaderProps {
   name: string | null | undefined;
@@ -62,6 +63,9 @@ export function Header({ name, avatar, background = 'transparent' }: HeaderProps
               <DialogHeader>
                 <DialogTitle>Your profile</DialogTitle>
                 <DialogDescription>Some information about your profile</DialogDescription>
+                <div className={'mt-5'}>
+                  <ModuleProgressList />
+                </div>
               </DialogHeader>
             </DialogContent>
           </Dialog>

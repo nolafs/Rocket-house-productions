@@ -2,7 +2,7 @@
 
 export { usePurchaseStore } from './use-purchase-store';
 
-export type { ModuleProgressStore } from './use-module-progress-store';
+export type { ModuleProgressStore, ModuleProgression } from './use-module-progress-store';
 export { createModuleStore } from './use-module-progress-store';
 export type { CourseProgressStore } from './use-course-progress-store';
 export { createCourseStore } from './use-course-progress-store';
