@@ -26,7 +26,7 @@ import { SlugFormControl } from '@rocket-house-productions/lesson';
 interface ChapterTitleFormProps {
   initialData: {
     title: string;
-    slug: string;
+    slug: string | null;
   };
   courseId: string;
   moduleId: string;
@@ -35,7 +35,7 @@ interface ChapterTitleFormProps {
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  slug: z.string().min(1, 'Slug is required'),
+  slug: z.string().min(1, 'Slug is required').nullable(),
 });
 
 const LessonTitleForm = ({ initialData, courseId, moduleId, lessonId }: ChapterTitleFormProps) => {
