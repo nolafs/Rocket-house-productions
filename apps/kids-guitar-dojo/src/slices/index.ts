@@ -9,6 +9,7 @@ export const components = {
   faqs: dynamic(() => import('./Faqs')),
   features: dynamic(() => import('./Features')),
   hero: dynamic(() => import('./Hero')),
+  image_grid: dynamic(() => import('./ImageGrid')),
   lesson_rick_text: dynamic(() => import('./LessonRickText')),
   pricing_table: dynamic(() => import('./PricingTable')),
   rich_text_slice: dynamic(() => import('./RichTextSlice')),
