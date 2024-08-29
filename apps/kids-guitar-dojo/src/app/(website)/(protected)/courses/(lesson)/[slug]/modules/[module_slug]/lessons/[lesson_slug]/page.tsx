@@ -44,7 +44,9 @@ export default async function Page({ params }: PageProps) {
       page = await client.getByUID('lesson', data?.lesson.prismaSlug);
     } catch (error) {
       console.error('Error fetching lesson page', error);
-      return redirect(`/courses/error?status=error&message=No%20Prismic%20Document%20found`);
+      return redirect(
+        `/courses/error?status=error&message=No%20Prismic%20Document%20${data?.lesson.prismaSlug}%20found`,
+      );
     }
   }
 

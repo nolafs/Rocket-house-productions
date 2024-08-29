@@ -38,7 +38,7 @@ const formSchema = z.object({
   prismaSlug: z.string().min(1).nullable(),
 });
 
-const LessonDescriptionForm = ({
+const LessonPrismicForm = ({
   initialData,
   courseId,
   moduleId,
@@ -121,4 +121,4 @@ const LessonDescriptionForm = ({
   );
 };
 
-export default LessonDescriptionForm;
+export default LessonPrismicForm;
