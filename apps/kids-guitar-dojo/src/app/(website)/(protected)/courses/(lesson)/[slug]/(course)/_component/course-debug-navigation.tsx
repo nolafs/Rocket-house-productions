@@ -39,7 +39,7 @@ export function CourseDebugNavigation({ course }: CourseDebugNavigationProps) {
               ))}
             </ul>
           </div>
-          <div className={'max-h-[342px] overflow-y-auto'}>
+          <div className={'max-h-[342px] w-full overflow-y-auto'}>
             <Accordion type="single" collapsible className="w-full">
               {course.modules.map((module: any, idx: number) => (
                 <AccordionItem value={module.id} key={module.id}>
