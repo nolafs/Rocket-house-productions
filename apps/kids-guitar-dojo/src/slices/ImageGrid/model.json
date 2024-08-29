@@ -1,0 +1,64 @@
+{
+  "id": "image_grid",
+  "type": "SharedSlice",
+  "name": "ImageGrid",
+  "description": "ImageGrid",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "no_columns_small": {
+          "type": "Number",
+          "config": {
+            "label": "No columns small",
+            "placeholder": ""
+          }
+        },
+        "no_columns_medium": {
+          "type": "Number",
+          "config": {
+            "label": "No columns medium",
+            "placeholder": ""
+          }
+        },
+        "no_columns_large": {
+          "type": "Number",
+          "config": {
+            "label": "No columns large",
+            "placeholder": ""
+          }
+        },
+        "items": {
+          "type": "Group",
+          "config": {
+            "label": "Items",
+            "repeat": true,
+            "fields": {
+              "image": {
+                "type": "Image",
+                "config": {
+                  "label": "Image",
+                  "constraint": {},
+                  "thumbnails": []
+                }
+              },
+              "caption": {
+                "type": "Text",
+                "config": {
+                  "label": "Caption",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

@@ -35,8 +35,8 @@ interface LessonsFormProps {
 }
 
 const formSchema = z.object({
-  title: z.string().min(1),
-  slug: z.string().min(1, 'Slug is required').nullable(),
+  title: z.string().min(1, 'Title is required'),
+  slug: z.string().min(1, 'Slug is required'),
 });
 
 const LessonForm = ({ initialData, moduleId, courseId }: LessonsFormProps) => {

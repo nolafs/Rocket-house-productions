@@ -5,7 +5,7 @@ import { db } from '@rocket-house-productions/integration';
 export async function POST(req: Request, { params }: { params: { courseId: string; moduleId: string } }) {
   try {
     const { userId } = auth();
-    const { title } = await req.json();
+    const { title, slug } = await req.json();
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -18,7 +18,7 @@ export async function POST(req: Request, { params }: { params: { courseId: strin
     });
 
     if (!course) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Course not found', { status: 404 });
     }
 
     const moduleSection = await db.module.findFirst({
@@ -28,7 +28,7 @@ export async function POST(req: Request, { params }: { params: { courseId: strin
     });
 
     if (!moduleSection) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Module not found', { status: 404 });
     }
 
     const lastLesson = await db.lesson.findFirst({
@@ -45,6 +45,7 @@ export async function POST(req: Request, { params }: { params: { courseId: strin
     const lesson = await db.lesson.create({
       data: {
         title,
+        slug,
         moduleId: params.moduleId,
         position: newPosition,
       },

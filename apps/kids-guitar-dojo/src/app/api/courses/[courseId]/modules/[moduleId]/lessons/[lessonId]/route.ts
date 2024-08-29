@@ -31,7 +31,7 @@ export async function DELETE(
     });
 
     if (!moduleSection) {
-      return new NextResponse('Not found', { status: 404 });
+      return new NextResponse('Not found module', { status: 404 });
     }
 
     const lesson = await db.lesson.findUnique({
@@ -42,10 +42,10 @@ export async function DELETE(
     });
 
     if (!lesson) {
-      return new NextResponse('Not found', { status: 404 });
+      return new NextResponse('Not found lesson', { status: 404 });
     }
 
-    const deletedChapter = await db.lesson.delete({
+    const deletedLesson = await db.lesson.delete({
       where: {
         id: params.lessonId,
       },
@@ -69,7 +69,7 @@ export async function DELETE(
       });
     }
 
-    return NextResponse.json(deletedChapter);
+    return NextResponse.json(deletedLesson);
   } catch (error) {
     console.log('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
