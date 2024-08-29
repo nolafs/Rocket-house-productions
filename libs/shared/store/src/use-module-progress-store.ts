@@ -8,7 +8,7 @@ type ModuleSection = ModuleDB & {
   availableAwards: ModuleAwardType[];
 };
 
-type ModuleProgression = {
+export type ModuleProgression = {
   title: string;
   description: string;
   progress: number;
@@ -29,6 +29,7 @@ type ModuleAction = {
   calculateModuleProgress: (moduleId: string) => void;
   getModuleProgress: (moduleId: string) => number;
   getCurrentModule: () => ModuleProgression | null;
+  getAllModules: () => { [moduleId: string]: ModuleProgression };
 };
 
 export type ModuleProgressStore = ModuleState & ModuleAction;
@@ -125,6 +126,7 @@ export const createModuleStore = (
         },
         getModuleProgress: moduleId => get().modules[moduleId]?.progress || 0,
         getCurrentModule: () => get().currentModule || null,
+        getAllModules: () => get().modules,
       }),
       {
         name: `module-progress-store-${userId}`, // Unique storage key per user or context
