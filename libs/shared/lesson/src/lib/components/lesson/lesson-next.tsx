@@ -18,7 +18,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const getLessonCompleted = useLessonProgressionStore(store => store.getLessonCompleted(lesson.id));
   const [active, setActive] = useState(false);
   const hasQuiz = lesson?.questionaries?.length > 0;
-  const position = lesson?.position - 1;
+  const position = module.lessons?.findIndex(l => l.id === lesson.id) || 0;
 
   const nextLesson =
     module.lessons?.length && lesson.position <= module.lessons.length ? module?.lessons?.[position + 1] : null;
