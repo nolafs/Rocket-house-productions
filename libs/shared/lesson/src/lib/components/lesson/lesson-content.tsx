@@ -1,6 +1,4 @@
 'use server';
-
-import { createClient } from '@/prismicio';
 import { components } from '@/slices';
 import { SliceZone } from '@prismicio/react';
 interface LessonContentProps {

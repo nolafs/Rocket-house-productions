@@ -22,7 +22,7 @@ export const PreviewPrismic = async ({ value }: PreviewPrismicProps) => {
     console.error('Error fetching lesson page', error);
     return (
       <div className={'prose prose-sm md:prose-md lg:prose-lg !text-red-500'}>
-        <p>Something went wrong loading requesting {value}</p>
+        <p>Something went wrong loading {value}</p>
       </div>
     );
   }

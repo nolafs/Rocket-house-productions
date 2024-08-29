@@ -15,10 +15,17 @@ interface LessonNextProps {
 export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const router = useRouter();
   const { scrollTo } = useScrollTo();
-  const getLessonCompleted = useLessonProgressionStore(store => store.getLessonCompleted(lesson.id));
+  const { getLessonCompleted, getLessonProgress } = useLessonProgressionStore(store => store);
   const [active, setActive] = useState(false);
   const hasQuiz = lesson?.questionaries?.length > 0;
   const position = module.lessons?.findIndex(l => l.id === lesson.id) || 0;
+  const [firstRender, setFirstRender] = useState(true);
+
+  useEffect(() => {
+    if (firstRender) {
+      setFirstRender(false);
+    }
+  }, []);
 
   const nextLesson =
     module.lessons?.length && lesson.position <= module.lessons.length ? module?.lessons?.[position + 1] : null;
@@ -31,21 +38,21 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   };
 
   const lessonCompleted = useMemo(() => {
-    // Check if lesson is defined and has an id before calling getLessonCompleted
     if (lesson?.id) {
-      return getLessonCompleted;
+      return getLessonCompleted(lesson.id);
     }
-    return false; // Or null/undefined based on what makes sense for your use case
-  }, [lesson?.id, getLessonCompleted]);
+    return false;
+  }, [lesson?.id, getLessonCompleted(lesson.id)]);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    if (lesson?.id && lessonCompleted) {
-      setActive(true);
-      scrollTo('continue');
+    setActive(prevState => lessonCompleted);
+    if (getLessonProgress(lesson.id) === 100) {
+      if (!firstRender) {
+        setActive(true);
+        scrollTo('continue');
+      }
     }
-  }, [lessonCompleted]);
+  }, [getLessonProgress(lesson.id), lessonCompleted]);
 
   if (!lesson || !module) {
     return null;
