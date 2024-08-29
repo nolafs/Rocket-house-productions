@@ -669,7 +669,7 @@ export type LegalDocument<Lang extends string = string> = prismic.PrismicDocumen
   Lang
 >;
 
-type LessonDocumentDataSlicesSlice = LessonRickTextSlice;
+type LessonDocumentDataSlicesSlice = ImageGridSlice | LessonRickTextSlice;
 
 /**
  * Content for Lesson documents
@@ -2976,6 +2976,103 @@ type HeroSliceVariation = HeroSliceDefault | HeroSliceThunderDecoration | HeroSl
 export type HeroSlice = prismic.SharedSlice<'hero', HeroSliceVariation>;
 
 /**
+ * Item in *ImageGrid → Default → Primary → Items*
+ */
+export interface ImageGridSliceDefaultPrimaryItemsItem {
+  /**
+   * Image field in *ImageGrid → Default → Primary → Items*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image_grid.default.primary.items[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * Caption field in *ImageGrid → Default → Primary → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image_grid.default.primary.items[].caption
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  caption: prismic.KeyTextField;
+}
+
+/**
+ * Primary content in *ImageGrid → Default → Primary*
+ */
+export interface ImageGridSliceDefaultPrimary {
+  /**
+   * No columns small field in *ImageGrid → Default → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image_grid.default.primary.no_columns_small
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  no_columns_small: prismic.NumberField;
+
+  /**
+   * No columns medium field in *ImageGrid → Default → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image_grid.default.primary.no_columns_medium
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  no_columns_medium: prismic.NumberField;
+
+  /**
+   * No columns large field in *ImageGrid → Default → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image_grid.default.primary.no_columns_large
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  no_columns_large: prismic.NumberField;
+
+  /**
+   * Items field in *ImageGrid → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image_grid.default.primary.items[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  items: prismic.GroupField<Simplify<ImageGridSliceDefaultPrimaryItemsItem>>;
+}
+
+/**
+ * Default variation for ImageGrid Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ImageGridSliceDefault = prismic.SharedSliceVariation<
+  'default',
+  Simplify<ImageGridSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *ImageGrid*
+ */
+type ImageGridSliceVariation = ImageGridSliceDefault;
+
+/**
+ * ImageGrid Shared Slice
+ *
+ * - **API ID**: `image_grid`
+ * - **Description**: ImageGrid
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ImageGridSlice = prismic.SharedSlice<'image_grid', ImageGridSliceVariation>;
+
+/**
  * Primary content in *LessonRickText → Default → Primary*
  */
 export interface LessonRickTextSliceDefaultPrimary {
@@ -3072,13 +3169,32 @@ export type LessonRickTextSliceTwoColumnsWithHeader = prismic.SharedSliceVariati
 >;
 
 /**
+ * Primary content in *LessonRickText → Two columns → Primary*
+ */
+export interface LessonRickTextSliceTwoColumnsPrimary {
+  /**
+   * text field in *LessonRickText → Two columns → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: lesson_rick_text.twoColumns.primary.text
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  text: prismic.RichTextField;
+}
+
+/**
  * Two columns variation for LessonRickText Slice
  *
  * - **API ID**: `twoColumns`
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slice
  */
-export type LessonRickTextSliceTwoColumns = prismic.SharedSliceVariation<'twoColumns', Record<string, never>, never>;
+export type LessonRickTextSliceTwoColumns = prismic.SharedSliceVariation<
+  'twoColumns',
+  Simplify<LessonRickTextSliceTwoColumnsPrimary>,
+  never
+>;
 
 /**
  * Primary content in *LessonRickText → Image Grid → Primary*
@@ -3990,9 +4106,15 @@ declare module '@prismicio/client' {
       HeroSliceThunderDecoration,
       HeroSliceCentered,
       HeroSliceSimple,
+      ImageGridSlice,
+      ImageGridSliceDefaultPrimaryItemsItem,
+      ImageGridSliceDefaultPrimary,
+      ImageGridSliceVariation,
+      ImageGridSliceDefault,
       LessonRickTextSlice,
       LessonRickTextSliceDefaultPrimary,
       LessonRickTextSliceTwoColumnsWithHeaderPrimary,
+      LessonRickTextSliceTwoColumnsPrimary,
       LessonRickTextSliceImageGridPrimary,
       LessonRickTextSliceVariation,
       LessonRickTextSliceDefault,

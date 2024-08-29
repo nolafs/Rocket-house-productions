@@ -31,6 +31,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "image_grid": {
+              "type": "SharedSlice"
+            },
             "lesson_rick_text": {
               "type": "SharedSlice"
             }

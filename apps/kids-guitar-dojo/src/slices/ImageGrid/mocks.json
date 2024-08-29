@@ -1,0 +1,130 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"no_columns_medium": {
+				"__TYPE__": "FieldContent",
+				"type": "Number",
+				"value": "2"
+			},
+			"no_columns_large": {
+				"__TYPE__": "FieldContent",
+				"type": "Number",
+				"value": "3"
+			},
+			"no_columns_small": {
+				"__TYPE__": "FieldContent",
+				"type": "Number",
+				"value": "1"
+			},
+			"items": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"image",
+								{
+									"origin": {
+										"id": "main",
+										"url": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+										"width": 5243,
+										"height": 3495
+									},
+									"url": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853",
+									"width": 5243,
+									"height": 3495,
+									"edit": {
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										},
+										"background": "transparent"
+									},
+									"credits": null,
+									"alt": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							],
+							[
+								"caption",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "cross",
+									"type": "Text"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"image",
+								{
+									"url": "https://images.unsplash.com/photo-1618381898514-2b6bcb4f8d40?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwxM3x8Y2l0cnVzJTIwZnJ1aXR8ZW58MHx8fHwxNzI0ODYzMjU3fDA&ixlib=rb-4.0.3&q=85",
+									"alt": "yellow fruit with blue background",
+									"origin": {
+										"id": "CFTFkR6ydu0",
+										"url": "https://images.unsplash.com/photo-1618381898514-2b6bcb4f8d40?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwxM3x8Y2l0cnVzJTIwZnJ1aXR8ZW58MHx8fHwxNzI0ODYzMjU3fDA&ixlib=rb-4.0.3&q=85",
+										"width": 4800,
+										"height": 6000
+									},
+									"width": 4800,
+									"height": 6000,
+									"edit": {
+										"background": "transparent",
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										}
+									},
+									"credits": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"image",
+								{
+									"url": "https://images.unsplash.com/photo-1597589022928-bb4002c099ec?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwyfHxjaXRydXMlMjBmcnVpdHxlbnwwfHx8fDE3MjQ4NjMyNTd8MA&ixlib=rb-4.0.3&q=85",
+									"alt": "yellow lemon fruit beside green leaves",
+									"origin": {
+										"id": "3t8rQ3LD2JI",
+										"url": "https://images.unsplash.com/photo-1597589022928-bb4002c099ec?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHwyfHxjaXRydXMlMjBmcnVpdHxlbnwwfHx8fDE3MjQ4NjMyNTd8MA&ixlib=rb-4.0.3&q=85",
+										"width": 3024,
+										"height": 3024
+									},
+									"width": 3024,
+									"height": 3024,
+									"edit": {
+										"background": "transparent",
+										"zoom": 1,
+										"crop": {
+											"x": 0,
+											"y": 0
+										}
+									},
+									"credits": null,
+									"__TYPE__": "ImageContent",
+									"thumbnails": {}
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

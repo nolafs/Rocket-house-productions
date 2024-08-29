@@ -63,7 +63,19 @@
 	{
 		"__TYPE__": "SharedSliceContent",
 		"variation": "twoColumns",
-		"primary": {},
+		"primary": {
+			"text": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Eiusmod cillum elit tempor esse esse Lorem ut id eu mollit incididunt culpa veniam dolore. Occaecat elit officia officia amet irure eiusmod consectetur exercitation id ea nostrud dolore occaecat. Non veniam ullamco pariatur eiusmod."
+						}
+					}
+				]
+			}
+		},
 		"items": [
 			{
 				"__TYPE__": "GroupItemContent",
