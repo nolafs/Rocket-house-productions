@@ -9,6 +9,8 @@ interface QuestionProgress {
 interface Lesson {
   progress: number;
   completed: boolean;
+  duration: number;
+  progressSeconds: number;
   questions: QuestionProgress;
 }
 
@@ -18,10 +20,11 @@ type LessonState = {
 
 type LessonAction = {
   setLessonComplete: (lessonId: string) => void;
-  setLessonProgress: (lessonId: string, progress: number) => void;
+  setLessonProgress: (lessonId: string, progress: number, progressSeconds: number, duration: number) => void;
   setQuestionProgress: (lessonId: string, questionId: string, completed: boolean) => void;
   updateCurrentState: (lessonId: string) => void;
   getLessonProgress: (lessonId: string) => number;
+  getLessonDuration: (lessonId: string) => { duration: number; progressSeconds: number };
   getLessonCompleted: (lessonId: string) => boolean;
 };
 
@@ -63,13 +66,15 @@ export const createLessonStore = (
 
           updateDBLessonProgress(userId, lessonId, progress, completed);
         },
-        setLessonProgress: (lessonId, progress) =>
+        setLessonProgress: (lessonId, progress, progressSeconds, duration) =>
           set(state => ({
             lessons: {
               ...state.lessons,
               [lessonId]: {
                 ...state.lessons[lessonId],
                 progress,
+                progressSeconds,
+                duration,
               },
             },
           })),
@@ -90,6 +95,10 @@ export const createLessonStore = (
 
         getLessonProgress: lessonId => get().lessons[lessonId]?.progress || 0,
         getLessonCompleted: lessonId => get().lessons[lessonId]?.completed || false,
+        getLessonDuration: lessonId => {
+          const lesson = get().lessons[lessonId];
+          return { duration: lesson?.duration || 0, progressSeconds: lesson?.progressSeconds || 0 };
+        },
       }),
       {
         name: `lesson-progress-store-${userId}`, // Unique storage key per user or context
