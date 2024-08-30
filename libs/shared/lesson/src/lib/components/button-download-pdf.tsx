@@ -28,7 +28,7 @@ export function ButtonDownloadPdf({ url, filename, label = 'Download' }: ButtonD
   };
 
   return (
-    <Button variant={'default'} size={'sm'} onClick={onHandleClick}>
+    <Button variant={'default'} size={'sm'} className={'bg-pink-500'} onClick={onHandleClick}>
       {label}
     </Button>
   );

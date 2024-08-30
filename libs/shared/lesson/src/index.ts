@@ -1,4 +1,6 @@
-export * from './lib/components/module/ModuleAttachments';
+export * from './lib/components/module/module-awards';
+export * from './lib/components/module/module-awards';
+export * from './lib/components/module/module-attachments';
 export { LessonData } from './lib/components/lesson/lesson-data';
 export { Quiz } from './lib/components/quiz/quiz';
 export { QuizList } from './lib/components/quiz/quiz-list';
