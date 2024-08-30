@@ -5,6 +5,7 @@ import { useLessonProgressionStore, useScrollTo } from '@rocket-house-production
 import { useEffect, useMemo, useState } from 'react';
 import cn from 'classnames';
 import { useRouter } from 'next/navigation';
+import { Loader2Icon } from 'lucide-react';
 
 interface LessonNextProps {
   module: SectionModule;
@@ -20,6 +21,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const hasQuiz = lesson?.questionaries?.length > 0;
   const position = module.lessons?.findIndex(l => l.id === lesson.id) || 0;
   const [firstRender, setFirstRender] = useState(true);
+  const [loadingNext, setLoadingNext] = useState(false);
 
   useEffect(() => {
     if (firstRender) {
@@ -59,11 +61,12 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   }
 
   const handleQuiz = () => {
+    setLoadingNext(true);
     router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${lesson.slug}/quiz`);
   };
 
   const handleNext = () => {
-    console.log('handleNext');
+    setLoadingNext(true);
     if (!lastLessonInModule(lesson.id) && nextLesson) {
       if (nextLesson) {
         router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${nextLesson.slug}`);
@@ -87,7 +90,14 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
         </div>
         <div>
           <Button variant={'lesson'} size={'lg'} onClick={handleQuiz} disabled={!active}>
-            Continue
+            {loadingNext ? (
+              <>
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait...
+              </>
+            ) : (
+              'Continue'
+            )}
           </Button>
         </div>
       </div>
@@ -108,7 +118,14 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
         </div>
         <div>
           <Button variant={'lesson'} size={'lg'} onClick={handleNext} disabled={!active}>
-            Continue
+            {loadingNext ? (
+              <>
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait...
+              </>
+            ) : (
+              'Continue'
+            )}
           </Button>
         </div>
       </div>
@@ -130,7 +147,14 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
         </div>
         <div>
           <Button variant={'lesson'} size={'lg'} onClick={handleNext} disabled={!active}>
-            Continue
+            {loadingNext ? (
+              <>
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait...
+              </>
+            ) : (
+              'Continue'
+            )}
           </Button>
         </div>
       </div>

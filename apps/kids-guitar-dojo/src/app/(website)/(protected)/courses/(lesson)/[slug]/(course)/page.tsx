@@ -1,5 +1,5 @@
 import CourseDebugNavigation from './_component/course-debug-navigation';
-import { LessonCourseProgression } from '@rocket-house-productions/lesson';
+import { LessonCourseProgression, ModuleAttachments } from '@rocket-house-productions/lesson';
 import { getCourse } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
 
@@ -18,6 +18,7 @@ export default async function Page({ params }: PageProps) {
     <>
       <CourseDebugNavigation course={course} />
       <LessonCourseProgression course={course} />
+      <ModuleAttachments course={course} />
     </>
   );
 }
