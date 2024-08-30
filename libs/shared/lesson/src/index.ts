@@ -1,3 +1,4 @@
+export * from './lib/components/module/ModuleAttachments';
 export { LessonData } from './lib/components/lesson/lesson-data';
 export { Quiz } from './lib/components/quiz/quiz';
 export { QuizList } from './lib/components/quiz/quiz-list';

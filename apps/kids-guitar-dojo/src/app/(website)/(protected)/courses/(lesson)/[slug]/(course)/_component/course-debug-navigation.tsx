@@ -25,29 +25,21 @@ export function CourseDebugNavigation({ course }: CourseDebugNavigationProps) {
           <small className={'text-sm text-black'}>Course Debug menu</small>
           {course.title}
         </h1>
+        {course.description && <div dangerouslySetInnerHTML={{ __html: course.description }}></div>}
         <div className={'flex max-h-[480px] w-full gap-5'}>
-          <div className={'prose prose-sm max-w-5xl shrink p-5'}>
-            {course.description && <div dangerouslySetInnerHTML={{ __html: course.description }}></div>}
-            <div className={'mb-4 font-bold'}>Attachments</div>
-            <ul className={'space-y-3 text-sm'}>
-              {course.attachments.map((attachment: any) => (
-                <li key={attachment.id}>
-                  <div>Type: {attachment.attachmentType?.name}</div>
-                  <div>Name: {attachment.name}</div>
-                  <ButtonDownloadPdf url={attachment.url} filename={attachment.name || 'download'} />
-                </li>
-              ))}
-            </ul>
-          </div>
           <div className={'max-h-[342px] w-full overflow-y-auto'}>
             <Accordion type="single" collapsible className="w-full">
               {course.modules.map((module: any, idx: number) => (
                 <AccordionItem value={module.id} key={module.id}>
                   <AccordionTrigger>
-                    {idx + 1} {module.title}{' '}
-                    <span
-                      className={'inline-block h-6 w-6 rounded-full'}
-                      style={{ backgroundColor: module.color || 'transparent' }}></span>
+                    <div className={'flex w-full justify-between'}>
+                      <span>
+                        {idx + 1} {module.title}{' '}
+                      </span>
+                      <span
+                        className={'inline-block h-6 w-6 rounded-full'}
+                        style={{ backgroundColor: module.color || 'transparent' }}></span>
+                    </div>
                   </AccordionTrigger>
                   <AccordionContent>
                     <div className={'flex flex-col space-y-3'}>
