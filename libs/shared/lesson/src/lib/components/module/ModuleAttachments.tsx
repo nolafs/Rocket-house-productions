@@ -1,4 +1,3 @@
-import { Course } from '@prisma/client';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import {
   Dialog,
@@ -12,14 +11,7 @@ import { CloudDownload } from 'lucide-react';
 import ButtonDownloadPdf from '../button-download-pdf';
 
 interface ModuleAttachmentsProps {
-  course: Course & {
-    attachments: {
-      id: string;
-      attachmentType: { name: string };
-      name: string;
-      url: string;
-    }[];
-  };
+  course: any;
 }
 
 type AttachmentType = {
@@ -38,7 +30,7 @@ export function ModuleAttachments({ course }: ModuleAttachmentsProps) {
 
   //create
   const attachmentsByType: { [key: string]: Attachment[] } = course.attachments.reduce(
-    (acc, attachment) => {
+    (acc: any, attachment: any) => {
       const typeName = attachment.attachmentType.name;
       if (!acc[typeName]) {
         acc[typeName] = [];
