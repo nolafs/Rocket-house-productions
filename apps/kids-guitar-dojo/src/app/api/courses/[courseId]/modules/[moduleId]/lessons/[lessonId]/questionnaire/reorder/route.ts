@@ -22,7 +22,7 @@ export async function PUT(
     });
 
     if (!course) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Course not found', { status: 404 });
     }
 
     const moduleSection = await db.module.findFirst({
@@ -32,7 +32,7 @@ export async function PUT(
     });
 
     if (!moduleSection) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Module not found', { status: 404 });
     }
 
     const lesson = await db.lesson.findUnique({
@@ -42,8 +42,10 @@ export async function PUT(
     });
 
     if (!lesson) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse('Lesson not found', { status: 401 });
     }
+
+    console.log('[COURSE list]', list);
 
     for (const item of list) {
       await db.questionary.update({
@@ -54,7 +56,7 @@ export async function PUT(
 
     return new NextResponse('Success', { status: 200 });
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_CHAPTERS_QUESTION_REORDER]', error);
+    console.log('[COURSES_COURSE-ID_LESSON_QUESTION_REORDER]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

@@ -79,7 +79,7 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
       setIsUpdating(true);
 
       const response = await axios.put(
-        `/api/courses/${courseId}/modules/${moduleId}/lessons//${lessonId}/questionanaire/${questionanaireId}/answers/reorder`,
+        `/api/courses/${courseId}/modules/${moduleId}/lessons//${lessonId}/questionnaire/${questionanaireId}/answers/reorder`,
         {
           list: updateData,
         },
