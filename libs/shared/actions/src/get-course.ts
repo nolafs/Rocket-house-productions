@@ -42,7 +42,14 @@ export const getCourse = async ({ courseSlug }: GetCourseProps) => {
         include: {
           availableAwards: {
             include: {
-              awardType: true,
+              awardType: {
+                select: {
+                  name: true,
+                  points: true,
+                  badgeUrl: true,
+                  condition: true,
+                },
+              },
             },
           },
           attachments: {

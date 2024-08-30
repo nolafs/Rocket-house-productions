@@ -52,7 +52,6 @@ model Module {
 
   lessons Lesson[]
   awards Award[]
-
   attachments ModuleAttachment[]
 
   availableAwards ModuleAwardType[]
@@ -126,6 +125,7 @@ model ModuleAwardType {
   id          String    @id @default(uuid())
   moduleId    String
   module      Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
   awardTypeId String
   awardType   AwardType @relation(fields: [awardTypeId], references: [id], onDelete: Cascade)
 

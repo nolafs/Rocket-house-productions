@@ -1,11 +1,19 @@
 import { createStore, StoreApi } from 'zustand';
 import { LessonProgressStore } from './use-lesson-progress-store';
 import { persist } from 'zustand/middleware';
-import { Lesson, Module as ModuleDB, ModuleAwardType } from '@prisma/client';
+import { AwardType, Lesson, Module as ModuleDB, ModuleAwardType } from '@prisma/client';
 
 type ModuleSection = ModuleDB & {
   lessons: Lesson[]; // Array of lesson IDs
-  availableAwards: ModuleAwardType[];
+  availableAwards: AvailableAward[];
+};
+
+type AvailableAward = ModuleAwardType & {
+  id: string;
+  awardType: AwardType;
+  moduleId: string;
+  awarded: boolean;
+  awardNotified: boolean;
 };
 
 export type ModuleProgression = {
@@ -14,7 +22,7 @@ export type ModuleProgression = {
   progress: number;
   color: string;
   lessons: Lesson[]; // Array of lesson IDs
-  availableAwards: ModuleAwardType[];
+  availableAwards: AvailableAward[];
 };
 
 type ModuleState = {
@@ -26,8 +34,10 @@ type ModuleAction = {
   addModule: (module: ModuleSection) => void;
   setCurrentModule: (moduleId: string | null) => void;
   setModuleProgress: (moduleId: string, progress: number) => void;
+  setAwardNotification: (moduleId: string, awardId: string) => void;
   calculateModuleProgress: (moduleId: string) => void;
   getModuleProgress: (moduleId: string) => number;
+  getModulesAwardNotification: () => AvailableAward[];
   getCurrentModule: () => ModuleProgression | null;
   getAllModules: () => { [moduleId: string]: ModuleProgression };
 };
@@ -67,7 +77,11 @@ export const createModuleStore = (
             progress: progress,
             color: module.color || 'transparent',
             lessons: module.lessons,
-            availableAwards: module.availableAwards,
+            availableAwards: module.availableAwards.map(award => ({
+              ...award,
+              awarded: false,
+              awardNotified: false,
+            })),
           };
 
           set(state => ({
@@ -114,12 +128,66 @@ export const createModuleStore = (
 
           const progress = (completedLessons.length / totalLessons) * 100;
 
+          if (progress === 100) {
+            const updatedAwards = module.availableAwards.map(award => {
+              if (!award.awarded) {
+                // Award the player for this specific award
+                console.log(`Player awarded: ${award.awardType} for completing module: ${module.title}`);
+                // Mark the award as granted
+                return {
+                  ...award,
+                  awarded: true,
+                  awardNotified: false,
+                };
+              }
+              return award;
+            });
+
+            set(state => ({
+              modules: {
+                ...state.modules,
+                [moduleId]: {
+                  ...state.modules[moduleId],
+                  progress,
+                  availableAwards: updatedAwards,
+                },
+              },
+            }));
+          } else {
+            set(state => ({
+              modules: {
+                ...state.modules,
+                [moduleId]: {
+                  ...state.modules[moduleId],
+                  progress,
+                },
+              },
+            }));
+          }
+        },
+        getModulesAwardNotification: () => {
+          const modules = get().modules;
+          const awards = Object.values(modules).reduce((acc, module) => {
+            const moduleAwards = module.availableAwards.filter(award => !award.awardNotified && award.awarded);
+            return [...acc, ...moduleAwards];
+          }, [] as AvailableAward[]);
+          return awards;
+        },
+        setAwardNotification: (moduleId, awardId) => {
           set(state => ({
             modules: {
               ...state.modules,
               [moduleId]: {
                 ...state.modules[moduleId],
-                progress,
+                availableAwards: state.modules[moduleId].availableAwards.map(award => {
+                  if (award.id === awardId) {
+                    return {
+                      ...award,
+                      awardNotified: true,
+                    };
+                  }
+                  return award;
+                }),
               },
             },
           }));
