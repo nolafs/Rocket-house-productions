@@ -41,8 +41,8 @@ module.exports = {
         'popover-foreground': 'hsl(var(--popover-foreground))',
         muted: 'hsl(var(--muted))',
         'muted-foreground': 'hsl(var(--muted-foreground))',
-        'lesson-background': 'var(--(lessons)-background)',
-        'lesson-foreground': 'var(--(lessons)-foreground)',
+        lesson: 'hsl(var(--lesson-background))',
+        'lesson-foreground': 'hsl(var(--lesson-foreground))',
         warning: 'hsl(var(--warning))',
         'warning-foreground': 'hsl(var(--warning-foreground))',
         body: '#404F65',
@@ -260,6 +260,7 @@ module.exports = {
         rotatePlane: 'rotatePlane 1.2s infinite ease-in-out',
       },
       backgroundImage: {
+        'dialog-lesson': "url('/images/dialog-heading.png')",
         darkGradient: 'linear-gradient(-180deg,transparent 0,rgba(0,0,0,.3) 100%)',
         lightGradient: 'linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%)',
         bodyGradient: 'linear-gradient(-180deg, rgba(51, 51, 51, 0) 0%, #000 80%)',

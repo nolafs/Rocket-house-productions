@@ -2,7 +2,7 @@ import { CourseProgressionProvider } from '@rocket-house-productions/providers';
 import { getChild } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
-import { Header } from '@rocket-house-productions/lesson';
+import { Header, ModuleAwards } from '@rocket-house-productions/lesson';
 import { db } from '@rocket-house-productions/integration';
 
 export const metadata = {
@@ -39,6 +39,7 @@ export default async function Layout({ children, params }: LayoutProps) {
     <div className={'lesson'}>
       <CourseProgressionProvider userId={child.id} courseId={course.id}>
         <Header avatar={child?.profilePicture} name={child?.name} />
+        <ModuleAwards />
         {children}
       </CourseProgressionProvider>
     </div>
