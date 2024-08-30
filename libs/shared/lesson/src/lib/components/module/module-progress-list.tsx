@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 import { ModuleProgression } from '@rocket-house-productions/store';
 
 export function ModuleProgressList() {
-  const { getAllModules, getModuleProgress } = useModuleProgressStore(store => store);
+  const { getAllModules } = useModuleProgressStore(store => store);
   const [moduleList, setModuleList] = useState<ModuleProgression[]>([]);
-  console.log('[ALL MODULE]', getAllModules());
 
   useEffect(() => {
     const modules = getAllModules();
@@ -16,8 +15,6 @@ export function ModuleProgressList() {
       const m = modules[module];
       list.push(m);
     }
-
-    console.log('[MODULE LIST]', list);
 
     if (list.length > 0) {
       setModuleList(list);
@@ -29,8 +26,10 @@ export function ModuleProgressList() {
       {moduleList.map(module => {
         return (
           <div className={'flex flex-row justify-between py-3'}>
-            <div>{module.title}</div>
-            <div>{Math.round(module.progress)}%</div>
+            <div className={'font-bold'} style={{ color: module.color }}>
+              {module.title}
+            </div>
+            <div className={'font-extrabold'}>{Math.round(module.progress)}%</div>
           </div>
         );
       })}

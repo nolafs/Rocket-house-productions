@@ -63,8 +63,15 @@ export function Header({ name, avatar, background = 'transparent' }: HeaderProps
               <DialogHeader>
                 <DialogTitle>Your profile</DialogTitle>
                 <DialogDescription>Some information about your profile</DialogDescription>
-                <div className={'mt-5'}>
-                  <ModuleProgressList />
+                <div className={'mt-8 flex flex-col gap-y-3 divide-y'}>
+                  <div>
+                    <h2 className={'font-bold'}>Awards</h2>
+                    Award list
+                  </div>
+                  <div>
+                    <h2 className={'mt-3 font-bold'}>Modules Completion</h2>
+                    <ModuleProgressList />
+                  </div>
                 </div>
               </DialogHeader>
             </DialogContent>
