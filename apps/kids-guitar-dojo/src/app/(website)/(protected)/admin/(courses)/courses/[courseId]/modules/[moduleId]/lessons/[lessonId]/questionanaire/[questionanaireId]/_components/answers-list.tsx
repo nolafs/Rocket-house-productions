@@ -11,26 +11,17 @@ import cn from 'classnames';
 import {
   Badge,
   Button,
-  Checkbox,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Input,
 } from '@rocket-house-productions/shadcn-ui';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import AnswerInlineForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answer-inline-form';
-import Link from 'next/link';
+import AnswerInlineForm from './answer-inline-form';
 import { useRouter } from 'next/navigation';
 
 interface AnswersListProps {
@@ -56,23 +47,6 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      id: '',
-      title: '',
-      correctAnswer: false,
-    },
-  });
-
-  const { isSubmitting, isValid } = form.formState;
-
-  const handleFormChange = (e: any) => {
-    form.getValues('title');
-    form.getValues('correctAnswer');
-    form.getValues('id');
-  };
-
   useEffect(() => {
     // To avoid hydration issues between server side rendering & client side
     setIsMounted(true);
@@ -81,19 +55,6 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
   useEffect(() => {
     setQuestion(items);
   }, [items]);
-
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      await axios.post(
-        `/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire/${questionanaireId}/answers/${values.id}`,
-        values,
-      );
-      toast.success('Answer created');
-      setEditing(false);
-    } catch (error) {
-      toast.error('Something went wrong');
-    }
-  };
 
   const onPublish = async (isPublished: boolean, questionId: string) => {
     try {
@@ -129,13 +90,13 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
     const startIndex = Math.min(result.source.index, result.destination.index);
     const endIndex = Math.max(result.source.index, result.destination.index);
 
-    const updatedChapters = items.slice(startIndex, endIndex + 1);
+    const updatedQuestion = items.slice(startIndex, endIndex + 1);
 
     setQuestion(items);
 
-    const bulkUpdateData = updatedChapters.map(chapter => ({
-      id: chapter.id,
-      position: items.findIndex(item => item.id === chapter.id),
+    const bulkUpdateData = updatedQuestion.map(question => ({
+      id: question.id,
+      position: items.findIndex(item => item.id === question.id),
     }));
 
     onReorder(bulkUpdateData);

@@ -73,6 +73,18 @@ const LessonPrismicForm = ({
     }
   };
 
+  const onDelete = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const values = { prismaSlug: null };
+      await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`, values);
+      toast.success('Lesson updated');
+      toggleEdit();
+      router.refresh();
+    } catch (error) {
+      toast.error('Something went wrong');
+    }
+  };
+
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">
@@ -110,6 +122,9 @@ const LessonPrismicForm = ({
               )}
             />
             <div className="flex items-center gap-x-2">
+              <Button disabled={isSubmitting} onClick={form.handleSubmit(onDelete)}>
+                Delete
+              </Button>
               <Button disabled={!isValid || isSubmitting} type="submit">
                 Save
               </Button>

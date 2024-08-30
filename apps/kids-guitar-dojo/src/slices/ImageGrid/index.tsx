@@ -18,7 +18,7 @@ const ImageGrid = ({ slice }: ImageGridProps): JSX.Element => {
         {slice.primary.items.map((item, index) => {
           return (
             <div key={index} className="relative overflow-hidden">
-              <PrismicNextImage field={item.image} className="h-full w-full object-cover" />
+              <PrismicNextImage field={item.image} className="h-full w-full object-contain object-center" />
               {item.caption && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
                   <p className="text-center text-white">{item.caption}</p>
