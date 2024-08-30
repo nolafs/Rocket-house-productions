@@ -77,7 +77,21 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
         title: true,
         color: true,
         slug: true,
-        availableAwards: true,
+        availableAwards: {
+          select: {
+            id: true,
+            moduleId: true,
+            awardType: {
+              select: {
+                name: true,
+                points: true,
+                description: true,
+                badgeUrl: true,
+                condition: true,
+              },
+            },
+          },
+        },
         lessons: {
           where: {
             isPublished: true,
