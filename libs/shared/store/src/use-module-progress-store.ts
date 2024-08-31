@@ -8,7 +8,7 @@ type ModuleSection = ModuleDB & {
   availableAwards: AvailableAward[];
 };
 
-type AvailableAward = ModuleAwardType & {
+export type AvailableAward = ModuleAwardType & {
   id: string;
   awardType: AwardType;
   moduleId: string;
@@ -38,6 +38,7 @@ type ModuleAction = {
   calculateModuleProgress: (moduleId: string) => void;
   getModuleProgress: (moduleId: string) => number;
   getModulesAwardNotification: () => AvailableAward[];
+  getAwards: () => AvailableAward[];
   getCurrentModule: () => ModuleProgression | null;
   getAllModules: () => { [moduleId: string]: ModuleProgression };
 };
@@ -191,6 +192,14 @@ export const createModuleStore = (
               },
             },
           }));
+        },
+        getAwards: () => {
+          const modules = get().modules;
+          const awards = Object.values(modules).reduce((acc, module) => {
+            const moduleAwards = module.availableAwards.filter(award => award.awarded && award.awardNotified);
+            return [...acc, ...moduleAwards];
+          }, [] as AvailableAward[]);
+          return awards;
         },
         getModuleProgress: moduleId => get().modules[moduleId]?.progress || 0,
         getCurrentModule: () => get().currentModule || null,

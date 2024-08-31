@@ -21,6 +21,7 @@ import {
 import { useClerk } from '@clerk/nextjs';
 import { useModuleProgressStore } from '@rocket-house-productions/providers';
 import ModuleProgressList from '../module/module-progress-list';
+import ModuleAwardList from '../module/ModuleAwardList';
 
 interface HeaderProps {
   name: string | null | undefined;
@@ -71,7 +72,7 @@ export function Header({ name, avatar, background = 'transparent' }: HeaderProps
                 <div className={'mt-8 flex flex-col gap-y-3 divide-y'}>
                   <div>
                     <h2 className={'font-lesson-heading mb-5 font-bold'}>Awards</h2>
-                    Award list
+                    <ModuleAwardList />
                   </div>
                   <div>
                     <h2 className={'font-lesson-heading my-5 font-bold'}>Modules Completion</h2>
