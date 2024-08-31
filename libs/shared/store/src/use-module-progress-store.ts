@@ -63,12 +63,28 @@ export const createModuleStore = (
         addModule: module => {
           const moduleId = module.id;
           let progress = 0;
+          let updatedAwards = module.availableAwards;
           const existingModule = get().modules[moduleId];
           // Check if the module already exists
           if (existingModule) {
             console.warn(`Module with ID ${moduleId} already exists.`);
             // merge the existing module with the new one
             progress = existingModule.progress;
+            // merge awards if they are not already awarded
+            updatedAwards = module.availableAwards.map(award => {
+              const existingAward = existingModule.availableAwards.find(a => a.id === award.id);
+              if (existingAward && existingAward.awarded) {
+                return existingAward;
+              }
+              return award;
+            });
+          } else {
+            // set awarded and awardNotified to false for all awards
+            updatedAwards = module.availableAwards.map(award => ({
+              ...award,
+              awarded: false,
+              awardNotified: false,
+            }));
           }
 
           // Cast the module to the ModuleProgression type
@@ -78,12 +94,10 @@ export const createModuleStore = (
             progress: progress,
             color: module.color || 'transparent',
             lessons: module.lessons,
-            availableAwards: module.availableAwards.map(award => ({
-              ...award,
-              awarded: false,
-              awardNotified: false,
-            })),
+            availableAwards: updatedAwards,
           };
+
+          console.log('moduleProgression', moduleProgression);
 
           set(state => ({
             modules: {
@@ -131,18 +145,19 @@ export const createModuleStore = (
 
           if (progress === 100) {
             const updatedAwards = module.availableAwards.map(award => {
-              if (!award.awarded) {
+              if (!award.awarded && !award.awardNotified) {
                 // Award the player for this specific award
                 console.log(`Player awarded: ${award.awardType} for completing module: ${module.title}`);
                 // Mark the award as granted
                 return {
                   ...award,
                   awarded: true,
-                  awardNotified: false,
                 };
               }
               return award;
             });
+
+            console.log('updatedAwards', updatedAwards);
 
             set(state => ({
               modules: {
@@ -175,6 +190,22 @@ export const createModuleStore = (
           return awards;
         },
         setAwardNotification: (moduleId, awardId) => {
+          const module = get().modules[moduleId];
+          if (!module) {
+            console.warn(`Module with ID ${moduleId} does not exist.`);
+            return;
+          }
+
+          const updateAward = module.availableAwards.find(award => award.id === awardId);
+
+          if (!updateAward) {
+            console.warn(`Award with ID ${awardId} does not exist in module ${moduleId}.`);
+            return;
+          }
+
+          //set the award as notified
+          updateAward.awardNotified = true;
+
           set(state => ({
             modules: {
               ...state.modules,
@@ -182,10 +213,7 @@ export const createModuleStore = (
                 ...state.modules[moduleId],
                 availableAwards: state.modules[moduleId].availableAwards.map(award => {
                   if (award.id === awardId) {
-                    return {
-                      ...award,
-                      awardNotified: true,
-                    };
+                    return updateAward;
                   }
                   return award;
                 }),
