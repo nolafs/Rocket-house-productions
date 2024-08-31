@@ -59,6 +59,9 @@ export function ModuleAwards() {
                 )}
               </div>
               <div>
+                <p>You got scored {award.awardType.points} bonus points</p>
+              </div>
+              <div>
                 <ButtonDownloadPdf url={''} filename={''} label={'Download your certificate!'} />
               </div>
             </div>
