@@ -1,3 +1,5 @@
+export { CourseLeaderboard } from './lib/components/course/course-leaderboard';
+export { CourseLeaderboardServer } from './lib/components/course/course-leaderboard.server';
 export { ModuleAwards } from './lib/components/module/module-awards';
 export { ModuleAttachments } from './lib/components/module/module-attachments';
 export { LessonData } from './lib/components/lesson/lesson-data';
