@@ -23,16 +23,18 @@ export function ModuleAwards() {
   useEffect(() => {
     const awards = getModulesAwardNotification();
     if (awards.length) {
-      setAwards(prevState => awards);
-      setOpen(true);
-
       awards.map(award => {
         if (!award.awardNotified) {
+          console.log('awards', award, award.awardNotified);
+          setAwards(prevState => awards);
+          setOpen(true);
           addPoints(award.awardType.points);
           setAwardNotification(award.moduleId, award.id);
         }
       });
     }
+
+    console.log('awards', awards);
   }, [modules]);
 
   return (
@@ -59,7 +61,7 @@ export function ModuleAwards() {
                 )}
               </div>
               <div>
-                <p>You got scored {award.awardType.points} bonus points</p>
+                <p>You scored {award.awardType.points} bonus points</p>
               </div>
               <div>
                 <ButtonDownloadPdf url={''} filename={''} label={'Download your certificate!'} />
