@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
           },
           data: {
             isCompleted: data.isCompleted,
+            courseId: data.courseId,
             currentProgress: data.currentProgress,
             replayCount: data.replayCount ? data.replayCount++ : 1,
           },
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
           },
           data: {
             isCompleted: data.isCompleted,
+            courseId: data.courseId,
             currentProgress: 100,
             replayCount: data.replayCount ? data.replayCount++ : 1,
           },
@@ -64,6 +66,7 @@ export async function POST(req: NextRequest) {
         data: {
           childId: data.childId,
           lessonId: data.lessonId,
+          courseId: data.courseId,
           isCompleted: data.isCompleted,
           currentProgress: data.currentProgress,
           replayCount: 0,
@@ -72,6 +75,53 @@ export async function POST(req: NextRequest) {
     }
 
     return new NextResponse(JSON.stringify(response), { status: 200 });
+  } catch (error) {
+    console.log('[COURSES PROGRESS]', error);
+    return new NextResponse('Internal Error', { status: 500 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const childId = req.nextUrl.searchParams.get('childId');
+    const courseId = req.nextUrl.searchParams.get('courseId');
+
+    if (!childId) {
+      return new NextResponse('Missing required child Id parameter', { status: 400 });
+    }
+
+    if (!courseId) {
+      return new NextResponse('Missing required course id parameter', { status: 400 });
+    }
+
+    const progress = await db.childProgress.findMany({
+      where: {
+        childId: childId,
+        courseId: courseId,
+      },
+      include: {
+        lesson: {
+          include: {
+            module: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+                color: true,
+                awards: {
+                  select: {
+                    id: true,
+                    awardTypeId: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return new NextResponse(JSON.stringify(progress), { status: 200 });
   } catch (error) {
     console.log('[COURSES PROGRESS]', error);
     return new NextResponse('Internal Error', { status: 500 });
