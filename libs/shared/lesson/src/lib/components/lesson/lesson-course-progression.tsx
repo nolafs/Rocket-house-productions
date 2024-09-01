@@ -1,5 +1,9 @@
 'use client';
-import { useCourseProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
+import {
+  useCourseProgressionStore,
+  useLessonProgressionStore,
+  useModuleProgressStore,
+} from '@rocket-house-productions/providers';
 import { useEffect, useMemo, useState } from 'react';
 import LessonProgressBar from '../lesson-progress-bar';
 
@@ -11,6 +15,7 @@ export function LessonCourseProgression({ course }: LessonCourseProgressionProps
   const { setCurrentModule } = useModuleProgressStore(store => store);
   const { calculateCourseProgress, getCourseProgress, addCourse } = useCourseProgressionStore(store => store);
   const [courseProgress, setCourseProgress] = useState(0);
+
   useMemo(() => {
     addCourse(course);
   }, [course]);

@@ -1,6 +1,7 @@
 import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
+import { Child, ChildProgress } from '@prisma/client';
 
 interface QuestionProgress {
   [questionId: string]: boolean;
@@ -11,6 +12,7 @@ interface Lesson {
   completed: boolean;
   duration: number;
   progressSeconds: number;
+  replayCount: number;
   questions: QuestionProgress;
 }
 
@@ -26,6 +28,7 @@ type LessonAction = {
   getLessonProgress: (lessonId: string) => number;
   getLessonDuration: (lessonId: string) => { duration: number; progressSeconds: number };
   getLessonCompleted: (lessonId: string) => boolean;
+  syncLessonProgressWithDB: (childId: string, courseId: string) => void;
 };
 
 export type LessonProgressStore = LessonState & LessonAction;
@@ -36,6 +39,7 @@ export const defaultInitState: LessonState = {
 
 export const createLessonStore = (
   userId: string,
+  courseId: string,
   initState: LessonState = defaultInitState,
   // Pass userId or another unique identifier for persistence
 ) => {
@@ -56,7 +60,7 @@ export const createLessonStore = (
             },
           }));
 
-          updateDBLessonProgress(userId, lessonId, 100, true);
+          updateDBLessonProgress(userId, lessonId, courseId, 100, true);
 
           return updatedLessons;
         },
@@ -64,7 +68,7 @@ export const createLessonStore = (
           const progress = get().lessons[lessonId]?.progress || 0;
           const completed = get().lessons[lessonId]?.completed || false;
 
-          updateDBLessonProgress(userId, lessonId, progress, completed);
+          updateDBLessonProgress(userId, lessonId, courseId, progress, completed);
         },
         setLessonProgress: (lessonId, progress, progressSeconds, duration) =>
           set(state => ({
@@ -99,21 +103,67 @@ export const createLessonStore = (
           const lesson = get().lessons[lessonId];
           return { duration: lesson?.duration || 0, progressSeconds: lesson?.progressSeconds || 0 };
         },
+        syncLessonProgressWithDB: async (childId, courseId) => {
+          try {
+            const lessons = get().lessons;
+            const lessonsProgress: ChildProgress[] = await getLessonsProgress(childId, courseId);
+
+            const updatedLessons = { ...lessons };
+
+            lessonsProgress.forEach(lessonProgress => {
+              const lessonId = lessonProgress.lessonId;
+              const lesson = lessons[lessonId];
+
+              if (lesson) {
+                updatedLessons[lessonId] = {
+                  ...lesson,
+                  progress: lessonProgress.currentProgress,
+                  completed: lessonProgress.isCompleted,
+                  replayCount: lessonProgress.replayCount,
+                };
+              } else {
+                updatedLessons[lessonId] = {
+                  progress: lessonProgress.currentProgress || 0,
+                  completed: lessonProgress.isCompleted || false,
+                  replayCount: lessonProgress.replayCount || 0,
+                  progressSeconds: 0,
+                  duration: 0,
+                  questions: {},
+                };
+              }
+            });
+
+            console.log('updatedLessons', updatedLessons);
+
+            set({ lessons: updatedLessons });
+          } catch (error) {
+            console.error('Error syncing lesson progress:', error);
+          }
+        },
       }),
       {
         name: `lesson-progress-store-${userId}`, // Unique storage key per user or context
         partialize: state => ({ lessons: state.lessons }), // Persist only the lessons part of the state
-        // You can also specify a storage engine here, like sessionStorage or any custom storage
+        onRehydrateStorage: () => async state => {
+          await state?.syncLessonProgressWithDB?.(userId, courseId); // Sync after rehydration
+        },
       },
     ),
   );
 };
 
-const updateDBLessonProgress = async (userId: string, lessonId: string, progress: number, completed: boolean) => {
+const updateDBLessonProgress = async (
+  userId: string,
+  lessonId: string,
+  courseId: string,
+  progress: number,
+  completed: boolean,
+) => {
   try {
     const response = await axios.post('/api/courses/progress', {
       childId: userId,
       lessonId,
+      courseId,
       isCompleted: completed,
       currentProgress: progress,
     });
@@ -122,15 +172,12 @@ const updateDBLessonProgress = async (userId: string, lessonId: string, progress
   }
 };
 
-const updateDBQuestionProgress = async (userId: string, lessonId: string, questionId: string, completed: boolean) => {
+const getLessonsProgress = async (childId: string, courseId: string) => {
   try {
-    const response = await axios.post('/api/courses/progress', {
-      childId: userId,
-      lessonId,
-      questionId,
-      isCompleted: completed,
-    });
+    const response = await axios.get(`/api/courses/progress?childId=${childId}&courseId=${courseId}`);
+    return response.data;
   } catch (error) {
-    console.error('Error updating question progress:', error);
+    console.error('Error getting lessons progress:', error);
+    return {};
   }
 };

@@ -18,6 +18,7 @@ export type AvailableAward = ModuleAwardType & {
 };
 
 export type ModuleProgression = {
+  id?: string;
   title: string;
   description: string;
   progress: number;
@@ -42,6 +43,7 @@ type ModuleAction = {
   getAwards: () => AvailableAward[];
   getCurrentModule: () => ModuleProgression | null;
   getAllModules: () => { [moduleId: string]: ModuleProgression };
+  syncModuleProgressWithDB: (childId: string, courseId: string) => void;
 };
 
 export type ModuleProgressStore = ModuleState & ModuleAction;
@@ -53,6 +55,7 @@ export const defaultInitState: ModuleState = {
 
 export const createModuleStore = (
   userId: string,
+  courseId: string,
   lessonState: StoreApi<LessonProgressStore>,
   initState: ModuleState = defaultInitState,
   // Pass userId or other unique identifier for the key
@@ -185,7 +188,7 @@ export const createModuleStore = (
         getModulesAwardNotification: () => {
           const modules = get().modules;
           const awards = Object.values(modules).reduce((acc, module) => {
-            const moduleAwards = module.availableAwards.filter(award => !award.awardNotified && award.awarded);
+            const moduleAwards = module.availableAwards?.filter(award => !award.awardNotified && award.awarded) || [];
             return [...acc, ...moduleAwards];
           }, [] as AvailableAward[]);
           return awards;
@@ -232,7 +235,7 @@ export const createModuleStore = (
         getAwards: () => {
           const modules = get().modules;
           const awards = Object.values(modules).reduce((acc, module) => {
-            const moduleAwards = module.availableAwards.filter(award => award.awarded && award.awardNotified);
+            const moduleAwards = module.availableAwards?.filter(award => award.awarded && award.awardNotified) || [];
             return [...acc, ...moduleAwards];
           }, [] as AvailableAward[]);
           return awards;
@@ -240,11 +243,94 @@ export const createModuleStore = (
         getModuleProgress: moduleId => get().modules[moduleId]?.progress || 0,
         getCurrentModule: () => get().currentModule || null,
         getAllModules: () => get().modules,
+        syncModuleProgressWithDB: async (childId, courseId) => {
+          try {
+            const modules = get().modules;
+            const moduleProgress = await getModuleProgress(childId, courseId);
+
+            console.log('moduleProgress', moduleProgress);
+
+            const updatedModules = { ...modules };
+
+            const moduleDb = moduleProgress.map((progress: any) => {
+              return {
+                lesson: {
+                  isCompleted: progress.isCompleted,
+                  currentProgress: progress.currentProgress,
+                },
+                moduleId: progress.lesson.module.id, // Add moduleId explicitly
+                ...progress.lesson.module,
+              };
+            });
+
+            // Reduce to accumulate and calculate progress per module
+            const updateModuleList = moduleDb.reduce((acc: any[], current: any) => {
+              const moduleId = current.moduleId;
+
+              // Find the module in the accumulator
+              let module = acc.find((mod: any) => mod.id === moduleId);
+
+              if (!module) {
+                // If the module doesn't exist in the accumulator, add it
+                module = {
+                  id: moduleId,
+                  title: current.title,
+                  description: current.description,
+                  color: current.color,
+                  totalProgress: 0, // Initialize total progress
+                  lessonCount: 0, // Initialize lesson count
+                  lessons: [], // Initialize lessons array if needed
+                };
+                acc.push(module);
+              }
+
+              // Accumulate progress and count lessons
+              module.totalProgress += current.lesson.currentProgress;
+              module.lessonCount += 1;
+
+              // Optional: Add the lesson to the lessons array
+              module.lessons.push(current.lesson);
+
+              return acc;
+            }, []);
+
+            updateModuleList.forEach((progression: any) => {
+              const module = modules[progression.id];
+
+              if (module) {
+                updatedModules[progression.id] = {
+                  ...module,
+                  title: progression.title,
+                  description: progression.description,
+                  color: progression.color,
+                  progress: progression.totalProgress / progression.lessonCount,
+                  lessons: progression.lessons,
+                  availableAwards: module.availableAwards,
+                };
+              } else {
+                updatedModules[progression.id] = {
+                  title: progression.title,
+                  description: progression.description,
+                  color: progression.color,
+                  progress: progression.totalProgress / progression.lessonCount,
+                  lessons: progression.lessons,
+                  availableAwards: [],
+                };
+              }
+            });
+
+            set({ modules: updatedModules });
+          } catch (error) {
+            console.error('Error syncing module progress:', error);
+          }
+        },
       }),
       {
         name: `module-progress-store-${userId}`, // Unique storage key per user or context
         partialize: state => ({ modules: state.modules }), // Persist only the modules part of the state
-        // You can also specify a storage engine here, like sessionStorage or any custom storage
+        onRehydrateStorage: () => async state => {
+          await state?.syncModuleProgressWithDB?.(userId, courseId); // Sync after rehydration
+        },
       },
     ),
   );
@@ -263,5 +349,15 @@ const updateDbChildAwards = async (
     });
   } catch (error) {
     console.error('Error updating child awards:', error);
+  }
+};
+
+const getModuleProgress = async (childId: string, courseId: string) => {
+  try {
+    const response = await axios.get(`/api/courses/progress?childId=${childId}&courseId=${courseId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting lessons progress:', error);
+    return {};
   }
 };
