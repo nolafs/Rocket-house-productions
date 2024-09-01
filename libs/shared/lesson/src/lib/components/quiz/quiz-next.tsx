@@ -4,6 +4,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { Loader2Icon } from 'lucide-react';
 
 interface QuizNextProps {
   module: SectionModule;
@@ -14,11 +15,23 @@ interface QuizNextProps {
 
 export function QuizNext({ lesson, module, course, quizCompleted = false }: QuizNextProps) {
   const router = useRouter();
+  const [loadingNext, setLoadingNext] = useState(false);
+
   const [active, setActive] = useState(false);
   const position = lesson.position - 1;
 
-  const nextLesson =
-    module.lessons?.length && lesson.position < module.lessons.length ? module?.lessons?.[position + 1] : null;
+  useEffect(() => {
+    if (quizCompleted) {
+      setActive(true);
+    }
+  }, [quizCompleted]);
+
+  if (!lesson || !module || !course) {
+    console.warn('LessonNext: Missing lesson, module or course');
+    return null;
+  }
+
+  const nextLesson = module?.lessons?.length ? module?.lessons?.[position + 1] : null;
 
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {
@@ -28,6 +41,7 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
   };
 
   const handleNext = () => {
+    setLoadingNext(true);
     if (!lastLessonInModule(lesson.id) && nextLesson) {
       if (nextLesson) {
         router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${nextLesson.slug}`);
@@ -36,12 +50,6 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
       router.push(`/courses/${course.slug}`);
     }
   };
-
-  useEffect(() => {
-    if (quizCompleted) {
-      setActive(true);
-    }
-  }, [quizCompleted]);
 
   if (nextLesson) {
     return (
@@ -60,7 +68,14 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
         </div>
         <div>
           <Button variant={'lesson'} size={'lg'} onClick={handleNext} disabled={!active}>
-            Continue
+            {loadingNext ? (
+              <>
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait...
+              </>
+            ) : (
+              'Continue'
+            )}
           </Button>
         </div>
       </div>

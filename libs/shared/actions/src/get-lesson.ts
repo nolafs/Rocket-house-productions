@@ -83,6 +83,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
             moduleId: true,
             awardType: {
               select: {
+                id: true,
                 name: true,
                 points: true,
                 description: true,

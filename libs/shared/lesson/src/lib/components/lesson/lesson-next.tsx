@@ -47,6 +47,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   }, [getLessonProgress(lesson.id), lessonCompleted]);
 
   if (!lesson || !module || !course) {
+    console.warn('LessonNext: Missing lesson, module or course');
     return null;
   }
 

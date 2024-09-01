@@ -116,6 +116,7 @@ model AwardType {
   condition String
 
   modules ModuleAwardType[]
+  awards  Award[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
@@ -238,11 +239,12 @@ model BunnyData {
 
 model Award {
   id          String       @id @default(uuid())
-  name        String
-  description String?
 
-  childProgressId String
-  childProgress ChildProgress @relation(fields: [childProgressId], references: [id], onDelete: Cascade)
+  childId String
+  child   Child  @relation(fields: [childId], references: [id], onDelete: Cascade)
+
+  awardTypeId String
+  awardType   AwardType @relation(fields: [awardTypeId], references: [id], onDelete: Cascade)
 
   module   Module? @relation(fields: [moduleId], references: [id])
   moduleId String?
@@ -251,6 +253,9 @@ model Award {
   lessonId String?
 
   awardedAt   DateTime     @default(now())
+
+  @@unique([childId, awardTypeId])
+  @@index([childId])
 }
 
 model Purchase {
@@ -311,6 +316,7 @@ model Child {
   birthday  DateTime
 
   childProgress ChildProgress[]
+  awards        Award[]
 
   childScores ChildScore[]
 
@@ -335,8 +341,6 @@ model ChildProgress {
   isCompleted     Boolean @default(false)
   currentProgress Float   @default(0)
   replayCount     Int     @default(0)
-
-  awards Award[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
