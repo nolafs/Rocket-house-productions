@@ -121,3 +121,16 @@ const updateDBLessonProgress = async (userId: string, lessonId: string, progress
     console.error('Error updating lesson progress:', error);
   }
 };
+
+const updateDBQuestionProgress = async (userId: string, lessonId: string, questionId: string, completed: boolean) => {
+  try {
+    const response = await axios.post('/api/courses/progress', {
+      childId: userId,
+      lessonId,
+      questionId,
+      isCompleted: completed,
+    });
+  } catch (error) {
+    console.error('Error updating question progress:', error);
+  }
+};
