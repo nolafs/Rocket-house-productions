@@ -29,16 +29,6 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
     }
   }, []);
 
-  const nextLesson =
-    module.lessons?.length && lesson.position <= module.lessons.length ? module?.lessons?.[position + 1] : null;
-
-  const lastLessonInModule = (id: string) => {
-    if (module.lessons?.length) {
-      return module?.lessons[module.lessons.length - 1].id === id;
-    }
-    return null;
-  };
-
   const lessonCompleted = useMemo(() => {
     if (lesson?.id) {
       return getLessonCompleted(lesson.id);
@@ -56,9 +46,18 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
     }
   }, [getLessonProgress(lesson.id), lessonCompleted]);
 
-  if (!lesson || !module) {
+  if (!lesson || !module || !course) {
     return null;
   }
+
+  const nextLesson = module?.lessons?.length ? module?.lessons?.[position + 1] : null;
+
+  const lastLessonInModule = (id: string) => {
+    if (module.lessons?.length) {
+      return module?.lessons[module.lessons.length - 1].id === id;
+    }
+    return null;
+  };
 
   const handleQuiz = () => {
     setLoadingNext(true);
