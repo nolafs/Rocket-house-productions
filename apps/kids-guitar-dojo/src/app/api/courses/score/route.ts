@@ -53,3 +53,28 @@ export async function POST(req: NextRequest) {
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
+
+export async function GET(req: NextRequest) {
+  try {
+    const courseId = req.nextUrl.searchParams.get('courseId');
+    const childId = req.nextUrl.searchParams.get('childId');
+
+    if (!courseId || !childId) {
+      return new NextResponse('Missing required parameters', { status: 400 });
+    }
+
+    const score = await db.childScore.findUnique({
+      where: {
+        childId_courseId: {
+          childId,
+          courseId,
+        },
+      },
+    });
+
+    return new NextResponse(JSON.stringify(score), { status: 200 });
+  } catch (error) {
+    console.log('[COURSES PROGRESS]', error);
+    return new NextResponse('Internal Error', { status: 500 });
+  }
+}

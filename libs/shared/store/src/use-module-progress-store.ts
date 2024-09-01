@@ -2,6 +2,7 @@ import { createStore, StoreApi } from 'zustand';
 import { LessonProgressStore } from './use-lesson-progress-store';
 import { persist } from 'zustand/middleware';
 import { AwardType, Lesson, Module as ModuleDB, ModuleAwardType } from '@prisma/client';
+import axios from 'axios';
 
 type ModuleSection = ModuleDB & {
   lessons: Lesson[]; // Array of lesson IDs
@@ -198,6 +199,8 @@ export const createModuleStore = (
 
           const updateAward = module.availableAwards.find(award => award.id === awardId);
 
+          console.log('updateAward', updateAward);
+
           if (!updateAward) {
             console.warn(`Award with ID ${awardId} does not exist in module ${moduleId}.`);
             return;
@@ -206,6 +209,11 @@ export const createModuleStore = (
           //set the award as notified
           updateAward.awardNotified = true;
 
+          // Update the award in the database
+
+          updateDbChildAwards(userId, updateAward.awardType.id, moduleId, null);
+
+          // Update the award in the store
           set(state => ({
             modules: {
               ...state.modules,
@@ -240,3 +248,20 @@ export const createModuleStore = (
       },
     ),
   );
+
+const updateDbChildAwards = async (
+  userId: string,
+  awardTypeId: string,
+  moduleId: string | null,
+  lesson: string | null,
+) => {
+  try {
+    const response = await axios.post(`/api/courses/awards`, {
+      childId: userId,
+      awardTypeId: awardTypeId,
+      moduleId: moduleId || null,
+    });
+  } catch (error) {
+    console.error('Error updating child awards:', error);
+  }
+};

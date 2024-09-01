@@ -22,6 +22,9 @@ export function ModuleAwards() {
 
   useEffect(() => {
     const awards = getModulesAwardNotification();
+
+    console.log('awards', modules);
+
     if (awards.length) {
       awards.map(award => {
         if (!award.awardNotified) {
