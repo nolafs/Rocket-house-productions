@@ -38,7 +38,7 @@ export default async function Layout({ children, params }: LayoutProps) {
   return (
     <div className={'lesson'}>
       <CourseProgressionProvider userId={child.id} courseId={course.id}>
-        <Header avatar={child?.profilePicture} name={child?.name} />
+        <Header childId={child.id} avatar={child?.profilePicture} name={child?.name} />
         <ModuleAwards />
         {children}
       </CourseProgressionProvider>

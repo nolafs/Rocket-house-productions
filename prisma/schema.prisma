@@ -255,7 +255,7 @@ model Award {
 
   awardedAt   DateTime     @default(now())
 
-  @@unique([childId, awardTypeId])
+  @@unique([awardTypeId, childId])
   @@index([childId])
 }
 

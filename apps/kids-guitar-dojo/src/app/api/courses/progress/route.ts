@@ -108,6 +108,7 @@ export async function GET(req: NextRequest) {
                 title: true,
                 description: true,
                 color: true,
+                availableAwards: true,
                 awards: {
                   select: {
                     id: true,

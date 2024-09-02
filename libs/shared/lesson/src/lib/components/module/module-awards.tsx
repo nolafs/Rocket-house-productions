@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useModuleProgressStore, usePointsStore } from '@rocket-house-productions/providers';
 import { AwardType, ModuleAwardType } from '@prisma/client';
 import Image from 'next/image';
+import { useConfettiStore } from '@rocket-house-productions/hooks';
 
 type AvailableAward = ModuleAwardType & {
   id: string;
@@ -19,11 +20,10 @@ export function ModuleAwards() {
   const { getModulesAwardNotification, modules, setAwardNotification } = useModuleProgressStore(store => store);
   const [awards, setAwards] = useState<AvailableAward[]>([]);
   const { addPoints } = usePointsStore(store => store);
+  const confetti = useConfettiStore();
 
   useEffect(() => {
     const awards = getModulesAwardNotification();
-
-    console.log('awards', modules);
 
     if (awards.length) {
       awards.map(award => {
@@ -33,6 +33,7 @@ export function ModuleAwards() {
           setOpen(true);
           addPoints(award.awardType.points);
           setAwardNotification(award.moduleId, award.id);
+          confetti.onOpen();
         }
       });
     }
