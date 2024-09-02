@@ -24,13 +24,14 @@ import ModuleProgressList from '../module/module-progress-list';
 import ModuleAwardList from '../module/ModuleAwardList';
 
 interface HeaderProps {
+  childId: string;
   name: string | null | undefined;
   avatar: 'kimono' | 'bonsai' | 'carpFish' | 'daruma' | 'samurai' | 'temple_1' | 'yukata' | string | null | undefined;
   background?: string | null | undefined;
   score?: number;
 }
 
-export function Header({ name, avatar, background = 'transparent' }: HeaderProps) {
+export function Header({ childId, name, avatar, background = 'transparent' }: HeaderProps) {
   const { signOut, openUserProfile } = useClerk();
   const { getCurrentModule } = useModuleProgressStore(store => store);
   return (
@@ -70,6 +71,10 @@ export function Header({ name, avatar, background = 'transparent' }: HeaderProps
               <DialogBody>
                 <DialogDescription>Some information about your profile</DialogDescription>
                 <div className={'mt-8 flex flex-col gap-y-3 divide-y'}>
+                  <div>
+                    <h2 className={'font-lesson-heading mb-5 font-bold'}>Your Id</h2>
+                    {childId}
+                  </div>
                   <div>
                     <h2 className={'font-lesson-heading mb-5 font-bold'}>Awards</h2>
                     <ModuleAwardList />
