@@ -247,6 +247,7 @@ export const createModuleStore = (
           try {
             const modules = get().modules;
             const moduleProgress = await getModuleProgress(childId, courseId);
+            const moduleAwards = await getModuleAwards(childId, courseId);
 
             console.log('moduleProgress', moduleProgress);
 
@@ -269,6 +270,20 @@ export const createModuleStore = (
 
               // Find the module in the accumulator
               let module = acc.find((mod: any) => mod.id === moduleId);
+              const awards = moduleAwards.filter((award: any) => award.moduleId === moduleId) || [];
+              let awardsList: AvailableAward[] = [];
+
+              if (awards.length) {
+                awardsList = awards.map((award: any) => {
+                  return {
+                    id: award.id,
+                    awardType: award.awardType,
+                    moduleId: award.moduleId,
+                    awarded: true,
+                    awardNotified: true,
+                  };
+                });
+              }
 
               if (!module) {
                 // If the module doesn't exist in the accumulator, add it
@@ -280,6 +295,7 @@ export const createModuleStore = (
                   totalProgress: 0, // Initialize total progress
                   lessonCount: 0, // Initialize lesson count
                   lessons: [], // Initialize lessons array if needed
+                  availableAwards: awardsList,
                 };
                 acc.push(module);
               }
@@ -314,7 +330,7 @@ export const createModuleStore = (
                   color: progression.color,
                   progress: progression.totalProgress / progression.lessonCount,
                   lessons: progression.lessons,
-                  availableAwards: [],
+                  availableAwards: progression.availableAwards || [],
                 };
               }
             });
@@ -342,6 +358,7 @@ const updateDbChildAwards = async (
   lesson: string | null,
 ) => {
   try {
+    console.log('updateDbChildAwards', userId, awardTypeId, moduleId, lesson);
     const response = await axios.post(`/api/courses/awards`, {
       childId: userId,
       awardTypeId: awardTypeId,
@@ -355,6 +372,16 @@ const updateDbChildAwards = async (
 const getModuleProgress = async (childId: string, courseId: string) => {
   try {
     const response = await axios.get(`/api/courses/progress?childId=${childId}&courseId=${courseId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting lessons progress:', error);
+    return {};
+  }
+};
+
+const getModuleAwards = async (childId: string, courseId: string) => {
+  try {
+    const response = await axios.get(`/api/courses/awards?childId=${childId}&courseId=${courseId}`);
     return response.data;
   } catch (error) {
     console.error('Error getting lessons progress:', error);

@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     const award = await db.award.findUnique({
       where: {
-        childId_awardTypeId: {
+        awardTypeId_childId: {
           childId: data.childId,
           awardTypeId: data.awardTypeId,
         },
@@ -36,6 +36,59 @@ export async function POST(req: NextRequest) {
     });
 
     return new NextResponse(JSON.stringify(response), { status: 200 });
+  } catch (error) {
+    console.log('[COURSES AWARDS]', error);
+    return new NextResponse('Internal Error', { status: 500 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    const childId = req.nextUrl.searchParams.get('childId');
+    const courseId = req.nextUrl.searchParams.get('courseId');
+
+    if (!childId) {
+      return new NextResponse('ChildId is required', { status: 400 });
+    }
+
+    if (!courseId) {
+      return new NextResponse('CourseId is required', { status: 400 });
+    }
+
+    const award = await db.award.findMany({
+      where: {
+        childId: childId,
+      },
+      include: {
+        awardType: {
+          select: {
+            id: true,
+            name: true,
+            badgeUrl: true,
+            points: true,
+          },
+        },
+        lesson: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+        module: {
+          where: {
+            courseId: courseId,
+          },
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            color: true,
+          },
+        },
+      },
+    });
+
+    return new NextResponse(JSON.stringify(award), { status: 200 });
   } catch (error) {
     console.log('[COURSES AWARDS]', error);
     return new NextResponse('Internal Error', { status: 500 });
