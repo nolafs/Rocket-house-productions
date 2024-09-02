@@ -24,10 +24,12 @@ type LessonAction = {
   setLessonComplete: (lessonId: string) => void;
   setLessonProgress: (lessonId: string, progress: number, progressSeconds: number, duration: number) => void;
   setQuestionProgress: (lessonId: string, questionId: string, completed: boolean) => void;
+  setReplayCount: (lessonId: string) => void;
   updateCurrentState: (lessonId: string) => void;
   getLessonProgress: (lessonId: string) => number;
   getLessonDuration: (lessonId: string) => { duration: number; progressSeconds: number };
   getLessonCompleted: (lessonId: string) => boolean;
+  getReplayCount: (lessonId: string) => number;
   syncLessonProgressWithDB: (childId: string, courseId: string) => void;
 };
 
@@ -60,15 +62,34 @@ export const createLessonStore = (
             },
           }));
 
-          updateDBLessonProgress(userId, lessonId, courseId, 100, true);
+          updateDBLessonProgress(userId, lessonId, courseId, 100, true, get().getReplayCount(lessonId));
 
           return updatedLessons;
+        },
+        setReplayCount: lessonId => {
+          const isCompleted = get().getLessonCompleted(lessonId);
+          let replayCount = get().getReplayCount(lessonId);
+
+          if (isCompleted) {
+            replayCount = replayCount + 1;
+          }
+
+          set(state => ({
+            lessons: {
+              ...state.lessons,
+              [lessonId]: {
+                ...state.lessons[lessonId],
+                replayCount,
+              },
+            },
+          }));
         },
         updateCurrentState: lessonId => {
           const progress = get().lessons[lessonId]?.progress || 0;
           const completed = get().lessons[lessonId]?.completed || false;
+          const replayCount = get().lessons[lessonId]?.replayCount || 0;
 
-          updateDBLessonProgress(userId, lessonId, courseId, progress, completed);
+          updateDBLessonProgress(userId, lessonId, courseId, progress, completed, replayCount);
         },
         setLessonProgress: (lessonId, progress, progressSeconds, duration) =>
           set(state => ({
@@ -96,7 +117,7 @@ export const createLessonStore = (
               },
             },
           })),
-
+        getReplayCount: lessonId => get().lessons[lessonId]?.replayCount || 0,
         getLessonProgress: lessonId => get().lessons[lessonId]?.progress || 0,
         getLessonCompleted: lessonId => get().lessons[lessonId]?.completed || false,
         getLessonDuration: lessonId => {
@@ -132,9 +153,6 @@ export const createLessonStore = (
                 };
               }
             });
-
-            console.log('updatedLessons', updatedLessons);
-
             set({ lessons: updatedLessons });
           } catch (error) {
             console.error('Error syncing lesson progress:', error);
@@ -153,19 +171,21 @@ export const createLessonStore = (
 };
 
 const updateDBLessonProgress = async (
-  userId: string,
+  childId: string,
   lessonId: string,
   courseId: string,
-  progress: number,
-  completed: boolean,
+  currentProgress: number,
+  isCompleted: boolean,
+  replayCount: number,
 ) => {
   try {
     const response = await axios.post('/api/courses/progress', {
-      childId: userId,
+      childId,
       lessonId,
       courseId,
-      isCompleted: completed,
-      currentProgress: progress,
+      isCompleted,
+      currentProgress,
+      replayCount,
     });
   } catch (error) {
     console.error('Error updating lesson progress:', error);
