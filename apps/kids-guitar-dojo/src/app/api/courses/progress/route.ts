@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
             isCompleted: data.isCompleted,
             courseId: data.courseId,
             currentProgress: data.currentProgress,
-            replayCount: data.replayCount ? data.replayCount++ : 1,
+            replayCount: data.replayCount,
           },
         });
       } else {
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
             isCompleted: data.isCompleted,
             courseId: data.courseId,
             currentProgress: 100,
-            replayCount: data.replayCount ? data.replayCount++ : 1,
+            replayCount: data.replayCount,
           },
         });
       }
