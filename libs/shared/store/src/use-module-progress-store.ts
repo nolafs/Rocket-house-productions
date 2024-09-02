@@ -101,8 +101,6 @@ export const createModuleStore = (
             availableAwards: updatedAwards,
           };
 
-          console.log('moduleProgression', moduleProgression);
-
           set(state => ({
             modules: {
               ...state.modules,
@@ -160,9 +158,6 @@ export const createModuleStore = (
               }
               return award;
             });
-
-            console.log('updatedAwards', updatedAwards);
-
             set(state => ({
               modules: {
                 ...state.modules,
@@ -201,9 +196,6 @@ export const createModuleStore = (
           }
 
           const updateAward = module.availableAwards.find(award => award.id === awardId);
-
-          console.log('updateAward', updateAward);
-
           if (!updateAward) {
             console.warn(`Award with ID ${awardId} does not exist in module ${moduleId}.`);
             return;
@@ -249,7 +241,7 @@ export const createModuleStore = (
             const moduleProgress = await getModuleProgress(childId, courseId);
             const moduleAwards = await getModuleAwards(childId, courseId);
 
-            console.log('moduleProgress', moduleProgress);
+            console.log('SYNC WITH DATABASE');
 
             const updatedModules = { ...modules };
 
@@ -358,7 +350,6 @@ const updateDbChildAwards = async (
   lesson: string | null,
 ) => {
   try {
-    console.log('updateDbChildAwards', userId, awardTypeId, moduleId, lesson);
     const response = await axios.post(`/api/courses/awards`, {
       childId: userId,
       awardTypeId: awardTypeId,

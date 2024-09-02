@@ -1,14 +1,25 @@
-import { ButtonDownloadPdf } from '@rocket-house-productions/lesson';
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../dialog-layout/dialog';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  Button,
   buttonVariants,
 } from '@rocket-house-productions/shadcn-ui';
+import { BugIcon } from 'lucide-react';
 import Link from 'next/link';
 import cn from 'classnames';
 import Image from 'next/image';
+import ButtonDownloadPdf from '../button-download-pdf';
 
 interface CourseDebugNavigationProps {
   course: any;
@@ -16,17 +27,19 @@ interface CourseDebugNavigationProps {
 
 export function CourseDebugNavigation({ course }: CourseDebugNavigationProps) {
   return (
-    <div
-      className={
-        'fex-col flex max-h-[500px] min-w-[640px] items-center justify-center overflow-hidden rounded-xl bg-white p-10'
-      }>
-      <div className={'flex w-full flex-col space-y-3'}>
-        <h1 className={'text-primary flex flex-col text-2xl font-bold'}>
-          <small className={'text-sm text-black'}>Course Debug menu</small>
-          {course.title}
-        </h1>
-        {course.description && <div dangerouslySetInnerHTML={{ __html: course.description }}></div>}
-        <div className={'flex max-h-[480px] w-full gap-5'}>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant={'default'} size={'sm'} className={'mb-4 border-2 border-white bg-pink-500'}>
+          <BugIcon className={'h-4 w-4'} />
+          <span className={'sr-only'}>Debug Navigation</span>
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Debug Navigation</DialogTitle>
+        </DialogHeader>
+
+        <DialogBody>
           <div className={'max-h-[342px] w-full overflow-y-auto'}>
             <Accordion type="single" collapsible className="w-full">
               {course.modules.map((module: any, idx: number) => (
@@ -115,9 +128,9 @@ export function CourseDebugNavigation({ course }: CourseDebugNavigationProps) {
               ))}
             </Accordion>
           </div>
-        </div>
-      </div>
-    </div>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }
 
