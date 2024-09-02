@@ -28,13 +28,18 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <>
-      <LessonCourseProgression course={course} />
-      <div className={'fixed bottom-2 right-3 z-50 flex gap-2'}>
-        <CourseLeaderboard>
-          <CourseLeaderboardServer slug={params.slug} />
-        </CourseLeaderboard>
-        <ModuleAttachments course={course} />
-        {sessionClaims?.metadata.role === 'admin' && <CourseDebugNavigation course={course} />}
+      <div
+        className={
+          'fixed bottom-2 left-0 z-50 flex w-full flex-col justify-center gap-y-5 px-3 md:flex-row md:justify-between'
+        }>
+        <LessonCourseProgression course={course} />
+        <div className={'flex items-center justify-center gap-x-2'}>
+          <CourseLeaderboard>
+            <CourseLeaderboardServer slug={params.slug} />
+          </CourseLeaderboard>
+          <ModuleAttachments course={course} />
+          {sessionClaims?.metadata.role === 'admin' && <CourseDebugNavigation course={course} />}
+        </div>
       </div>
     </>
   );

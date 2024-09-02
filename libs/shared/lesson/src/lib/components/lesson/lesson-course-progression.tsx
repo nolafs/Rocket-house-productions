@@ -24,9 +24,9 @@ export function LessonCourseProgression({ course }: LessonCourseProgressionProps
 
   if (courseProgress !== null) {
     return (
-      <div className={'fixed bottom-5 left-5'}>
+      <>
         <LessonProgressBar currentProgress={courseProgress} variation={'white'} />
-      </div>
+      </>
     );
   }
 }
