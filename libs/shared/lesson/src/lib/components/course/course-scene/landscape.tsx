@@ -27,7 +27,7 @@ export const Landscape = ({ ...props }) => {
     <group ref={ref} {...props}>
       <CloudCover position={[0, 5, -30]} />
 
-      <Plane args={[20, 17]} position={[0, 0, -25]} scale={2} rotation={[0, 0, 0]}>
+      <Plane args={[20, 17]} position={[0, 3, -25]} scale={2} rotation={[0, 0, 0]}>
         <meshStandardMaterial map={guitar} color={0xffffff} transparent={true} metalness={0.4} />
       </Plane>
       <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
