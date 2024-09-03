@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { Plane, useScroll, useTexture } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { CloudCover } from './cloud-cover';
+import { Button3d } from './button';
+import { CourseSection } from './course-section';
 
 export const Landscape = ({ ...props }) => {
   const ref = useRef<any>();
@@ -17,8 +19,8 @@ export const Landscape = ({ ...props }) => {
 
   useFrame((state, delta) => {
     ref.current.position.y = -(scroll.offset * (height * scroll.pages));
-    state.camera.position.z = 130 - scroll.range(0, 1 / 3) * 100;
-    console.log(100 - scroll.range(0, 1 / scroll.pages) * 100);
+    state.camera.position.z = 130 - scroll.range(0, 1 / (scroll.pages + 1)) * 60;
+    //state.camera.rotation.x = 0 + scroll.range(0, 1 / scroll.pages) * 0.3;
   });
 
   return (
@@ -34,6 +36,10 @@ export const Landscape = ({ ...props }) => {
       <Plane args={[17, 10]} position={[0, 2, 10]} scale={4} rotation={[0, 0, 0]}>
         <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
       </Plane>
+
+      <CourseSection position={[0, 0, -200]} />
+
+      <Button3d position={[0, 20, -24]} />
     </group>
   );
 };

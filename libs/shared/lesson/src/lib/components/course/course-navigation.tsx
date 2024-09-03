@@ -6,6 +6,7 @@ import { Preload, ScrollControls, Scroll, useScroll, Sky, StatsGl } from '@react
 import { GridPlane } from './course-scene/grid-plane';
 import { Landscape } from './course-scene/landscape';
 import { CameraController } from './course-scene/camera-control';
+import { Button3d } from './course-scene/button';
 
 interface CourseNavigationProps {
   course: any;
