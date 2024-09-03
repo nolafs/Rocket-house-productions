@@ -17,7 +17,7 @@ export function CourseNavigation({ course }: CourseNavigationProps) {
       <StatsGl />
       <Suspense fallback={null}>
         <ambientLight intensity={1} />
-        <directionalLight position={[10, 15, 100]} intensity={2} />
+        <directionalLight position={[0, 100, 100]} intensity={4} />
         <Sky distance={80} sunPosition={[-50, 2, -100]} inclination={0.25} azimuth={0.45} rayleigh={1} />
         <CameraController />
         <GridPlane />

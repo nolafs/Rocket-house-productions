@@ -2,40 +2,28 @@ import { useRef } from 'react';
 import { useControls } from 'leva';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { Cloud, Clouds } from '@react-three/drei';
+import { Cloud, Clouds, Gltf, useGLTF } from '@react-three/drei';
 
-export const CloudCover = () => {
-  const ref = useRef<any>();
-  const cloud0 = useRef<any>();
-  const { color, x, y, z, ...config } = useControls({
-    seed: { value: 1, min: 1, max: 100, step: 1 },
-    segments: { value: 20, min: 1, max: 80, step: 1 },
-    volume: { value: 6, min: 0, max: 100, step: 0.1 },
-    opacity: { value: 0.8, min: 0, max: 1, step: 0.01 },
-    fade: { value: 10, min: 0, max: 400, step: 1 },
-    growth: { value: 4, min: 0, max: 20, step: 1 },
-    speed: { value: 0.1, min: 0, max: 1, step: 0.01 },
-    x: { value: 6, min: 0, max: 100, step: 1 },
-    y: { value: 1, min: 0, max: 100, step: 1 },
-    z: { value: 1, min: 0, max: 100, step: 1 },
-    color: 'white',
-  });
-  useFrame((state, delta) => {
-    ref.current.rotation.y = Math.cos(state.clock.elapsedTime / 2) / 2;
-    ref.current.rotation.x = Math.sin(state.clock.elapsedTime / 2) / 2;
-    cloud0.current.rotation.y -= delta;
-  });
+export const CloudCover = ({ ...props }) => {
+  const ref = useRef<THREE.Group | any>();
+  const clouds = useGLTF('/images/course/cloud.glb');
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const object: THREE.BufferGeometry = clouds.nodes.cloud.geometry as THREE.BufferGeometry;
 
   return (
-    <group ref={ref}>
-      <Clouds material={THREE.MeshLambertMaterial} limit={400}>
-        <Cloud ref={cloud0} {...config} bounds={[x, y, z]} color={color} />
-        <Cloud {...config} bounds={[x, y, z]} color="#eed0d0" seed={2} position={[15, 0, 0]} />
-        <Cloud {...config} bounds={[x, y, z]} color="#d0e0d0" seed={3} position={[-15, 0, 0]} />
-        <Cloud {...config} bounds={[x, y, z]} color="#a0b0d0" seed={4} position={[0, 0, -12]} />
-        <Cloud {...config} bounds={[x, y, z]} color="#c0c0dd" seed={5} position={[0, 0, 12]} />
-        <Cloud concentrate="outside" growth={100} color="#ffccdd" opacity={1.25} seed={0.3} bounds={200} volume={200} />
-      </Clouds>
+    <group ref={ref} {...props}>
+      <mesh geometry={object} position={[25, 0, 0]} scale={0.1}>
+        <meshStandardMaterial color={'#ffffff'} metalness={0} roughness={0.4} transparent={true} opacity={0.7} />
+      </mesh>
+      <mesh geometry={object} scale={0.1} position={[-25, 0, 0]} rotation={[0, -90, -20]}>
+        <meshStandardMaterial color={'#ffffff'} metalness={0} roughness={0.4} transparent={true} opacity={0.7} />
+      </mesh>
+
+      <mesh geometry={object} scale={0.1} position={[0, -7, 0]} rotation={[0, -90, -20]}>
+        <meshStandardMaterial color={'#ffffff'} metalness={0} roughness={0.4} transparent={true} opacity={0.4} />
+      </mesh>
     </group>
   );
 };
