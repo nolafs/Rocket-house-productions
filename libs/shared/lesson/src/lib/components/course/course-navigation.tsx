@@ -22,9 +22,6 @@ export function CourseNavigation({ course }: CourseNavigationProps) {
         <ScrollControls damping={0.2} pages={5}>
           <Landscape postion={[0, 0, 0]} />
         </ScrollControls>
-
-        <StatsGl />
-
         <Preload />
       </Suspense>
     </Canvas>
