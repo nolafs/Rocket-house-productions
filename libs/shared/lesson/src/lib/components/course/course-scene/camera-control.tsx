@@ -95,7 +95,7 @@ export function CameraController() {
     ),
     saveState: button(() => cameraControlsRef.current?.saveState()),
     reset: button(() => cameraControlsRef.current?.reset(true)),
-    enabled: { value: true, label: 'controls on' },
+    enabled: { value: false, label: 'controls on' },
     verticalDragToForward: { value: false, label: 'vert. drag to move forward' },
     dollyToCursor: { value: false, label: 'dolly to cursor' },
     infinityDolly: { value: false, label: 'infinity dolly' },
