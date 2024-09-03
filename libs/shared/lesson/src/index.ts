@@ -1,3 +1,4 @@
+export * from './lib/components/course/course-navigation';
 export * from './lib/components/course/course-debug-navigation';
 export { CourseLeaderboard } from './lib/components/course/course-leaderboard';
 export { CourseLeaderboardServer } from './lib/components/course/course-leaderboard.server';
