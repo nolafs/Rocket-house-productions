@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Plane, useScroll, useTexture } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
+import { CloudCover } from './cloud-cover';
 
 export const Landscape = ({ ...props }) => {
   const ref = useRef<any>();
@@ -22,17 +23,16 @@ export const Landscape = ({ ...props }) => {
 
   return (
     <group ref={ref} {...props}>
-      <Plane args={[17, 10]} position={[0, 0, -30]} scale={4} rotation={[0, 0, 0]}>
-        <meshStandardMaterial map={bgGround} transparent={true} metalness={0} />
-      </Plane>
+      <CloudCover position={[0, 5, -30]} />
+
       <Plane args={[20, 17]} position={[0, 0, -25]} scale={2} rotation={[0, 0, 0]}>
-        <meshStandardMaterial map={guitar} color={0xffffff} transparent={true} metalness={0.1} />
+        <meshStandardMaterial map={guitar} color={0xffffff} transparent={true} metalness={0.4} />
       </Plane>
       <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
-        <meshStandardMaterial map={midGround} transparent={true} metalness={0} />
+        <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
       </Plane>
       <Plane args={[17, 10]} position={[0, 2, 10]} scale={4} rotation={[0, 0, 0]}>
-        <meshStandardMaterial map={foreGround} transparent={true} metalness={0.1} />
+        <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
       </Plane>
     </group>
   );
