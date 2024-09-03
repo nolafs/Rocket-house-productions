@@ -16,9 +16,5 @@ export default async function Layout({ children, params }: LayoutProps) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }
 
-  return (
-    <div className={'lesson'}>
-      <ParallaxScene>{children}</ParallaxScene>
-    </div>
-  );
+  return <div className={'lesson'}>{children}</div>;
 }

@@ -6,6 +6,7 @@ const { composePlugins, withNx } = require('@nx/next');
 //const headers = require('./config/headers');
 const pluginsExtends = require('./config/plugins');
 const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
+
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
@@ -22,6 +23,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
+  transpilePackages: ['three'],
   experimental: {
     taint: true,
   },

@@ -2,6 +2,7 @@ import {
   CourseDebugNavigation,
   CourseLeaderboard,
   CourseLeaderboardServer,
+  CourseNavigation,
   LessonCourseProgression,
   ModuleAttachments,
 } from '@rocket-house-productions/lesson';
@@ -28,6 +29,9 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <>
+      <div id="course-nav" className={'relative h-svh w-full'}>
+        <CourseNavigation course={course} />
+      </div>
       <div
         className={
           'fixed bottom-2 left-0 z-50 flex w-full flex-col justify-center gap-y-5 px-3 md:flex-row md:justify-between'
