@@ -15,7 +15,7 @@ export const CourseSection = ({ props }: any) => {
         <Plane
           key={index}
           args={[6.85, planeHeight]}
-          position={[0, 23 + offsetY * index, -25]}
+          position={[0, 20 + offsetY * index, -25]}
           scale={1}
           rotation={[0, 0, 0]}>
           <meshStandardMaterial map={fred} color={0xffffff} transparent={true} metalness={0.4} />
