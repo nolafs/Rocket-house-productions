@@ -5026,9 +5026,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-three/drei@npm:9.111.5":
-  version: 9.111.5
-  resolution: "@react-three/drei@npm:9.111.5"
+"@react-three/drei@npm:^9.112.0":
+  version: 9.112.0
+  resolution: "@react-three/drei@npm:9.112.0"
   dependencies:
     "@babel/runtime": "npm:^7.11.2"
     "@mediapipe/tasks-vision": "npm:0.10.8"
@@ -5061,13 +5061,13 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/80f33de194edb3ab8ba0a760e4d281ace11b6ea909a3eb5612f1b7b1be119a3a27a70a144a758cb14c7eb77ed8e2dc657ae9c518c85c342259cc03efd02dfbce
+  checksum: 10c0/a5f42b3f42f92c0828737df51dbe4abf5732ed3132cb2e5ebb165a8b6f196c05aac06326e0769b2c854d9bc87d37d559bde6d904e0e7b5c5ee5c92ce4b76cae9
   languageName: node
   linkType: hard
 
-"@react-three/fiber@npm:8.17.6":
-  version: 8.17.6
-  resolution: "@react-three/fiber@npm:8.17.6"
+"@react-three/fiber@npm:^8.17.6":
+  version: 8.17.7
+  resolution: "@react-three/fiber@npm:8.17.7"
   dependencies:
     "@babel/runtime": "npm:^7.17.8"
     "@types/debounce": "npm:^1.2.1"
@@ -5103,7 +5103,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: 10c0/529e0d546bd436d7f22096575783c84d656cc7b097758b9d136c5ee137cbbd5996d0bd9933d8dca987e683a8522afc02204cdbd8020a491c021ebf4e0ecf5c03
+  checksum: 10c0/05a60c18c278dfe45542263ef59177dea826fd3c768f25a3de23eda30b0ac71432a4b911535171d5f7317efb761618f82bfd9f826ecf7423526e9be9c8e7ec97
   languageName: node
   linkType: hard
 
@@ -5148,8 +5148,8 @@ __metadata:
     "@radix-ui/react-separator": "npm:^1.0.3"
     "@radix-ui/react-slot": "npm:^1.1.0"
     "@radix-ui/react-switch": "npm:^1.1.0"
-    "@react-three/drei": "npm:9.111.5"
-    "@react-three/fiber": "npm:8.17.6"
+    "@react-three/drei": "npm:^9.112.0"
+    "@react-three/fiber": "npm:^8.17.6"
     "@slicemachine/adapter-next": "npm:^0.3.45"
     "@stripe/stripe-js": "npm:^4.1.0"
     "@svgr/webpack": "npm:^8.1.0"
@@ -5168,7 +5168,7 @@ __metadata:
     "@types/node": "npm:18.16.9"
     "@types/react": "npm:18.3.1"
     "@types/react-dom": "npm:18.3.0"
-    "@types/three": "npm:^0"
+    "@types/three": "npm:^0.168.0"
     "@typescript-eslint/eslint-plugin": "npm:^7.16.0"
     "@typescript-eslint/parser": "npm:^7.16.0"
     autoprefixer: "npm:^10.4.19"
@@ -6610,20 +6610,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/three@npm:^0":
-  version: 0.168.0
-  resolution: "@types/three@npm:0.168.0"
-  dependencies:
-    "@tweenjs/tween.js": "npm:~23.1.3"
-    "@types/stats.js": "npm:*"
-    "@types/webxr": "npm:*"
-    "@webgpu/types": "npm:*"
-    fflate: "npm:~0.8.2"
-    meshoptimizer: "npm:~0.18.1"
-  checksum: 10c0/59c5a8985df9f296802653c5878d9f3926257da959bca12bf255eaa19dad5bf1244a7c81634a5773de9e1729aba13b185fcb334f46cb02a7b7d47582ae41600a
-  languageName: node
-  linkType: hard
-
 "@types/three@npm:^0.163.0":
   version: 0.163.0
   resolution: "@types/three@npm:0.163.0"
@@ -6634,6 +6620,20 @@ __metadata:
     fflate: "npm:~0.8.2"
     meshoptimizer: "npm:~0.18.1"
   checksum: 10c0/715406a709bdcf567ba844c598c73dac07b679df942f85c578e82a33d00ae3ac67e8f6a3e030ec75ba0f639d33c65fb7ec6237c11a4a501c98569d99bc67a5b6
+  languageName: node
+  linkType: hard
+
+"@types/three@npm:^0.168.0":
+  version: 0.168.0
+  resolution: "@types/three@npm:0.168.0"
+  dependencies:
+    "@tweenjs/tween.js": "npm:~23.1.3"
+    "@types/stats.js": "npm:*"
+    "@types/webxr": "npm:*"
+    "@webgpu/types": "npm:*"
+    fflate: "npm:~0.8.2"
+    meshoptimizer: "npm:~0.18.1"
+  checksum: 10c0/59c5a8985df9f296802653c5878d9f3926257da959bca12bf255eaa19dad5bf1244a7c81634a5773de9e1729aba13b185fcb334f46cb02a7b7d47582ae41600a
   languageName: node
   linkType: hard
 
