@@ -1,30 +1,42 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Plane, useScroll, useTexture } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { CloudCover } from './cloud-cover';
 import { Button3d } from './button';
-import { CourseSection } from './course-section';
+import { FredBoard } from './course-section';
+import { Lesson, Module } from '@prisma/client';
 
-export const Landscape = ({ ...props }) => {
-  const ref = useRef<any>();
+type ModuleSection = Module & { lessons: Lesson[] };
+
+interface LandscapeProps {
+  rotation?: [number, number, number];
+  position?: [number, number, number];
+  modules: ModuleSection[];
+  ref?: any;
+  lessonSpacing: number;
+}
+
+export const Landscape = ({ modules, lessonSpacing, rotation, position, ref, ...rest }: LandscapeProps) => {
   const { width, height } = useThree(state => state.viewport);
   const scroll = useScroll();
   const guitar = useTexture('/images/course/guitar.png');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
-  const bgGround = useTexture('/images/course/lessons-bg.webp');
 
-  //texture.encoding = THREE.sRGBEncoding;
-  //texture.anisotropy = 16;
+  // get number of lessons
+
+  const lessonNumber = useMemo(() => {
+    return modules.reduce((acc, item) => acc + item.lessons.length, 0);
+  }, modules);
 
   useFrame((state, delta) => {
-    ref.current.position.y = -(scroll.offset * (height * scroll.pages));
-    state.camera.position.z = 130 - scroll.range(0, 1 / (scroll.pages + 1)) * 60;
-    //state.camera.rotation.x = 0 + scroll.range(0, 1 / scroll.pages) * 0.3;
+    //ref.current.position.y = -(scroll.offset * (height * scroll.pages));
+    state.camera.position.z = 130 - scroll.range(0, 1 / scroll.pages) * 60;
+    state.camera.position.y = scroll.offset * (height * scroll.pages);
   });
 
   return (
-    <group ref={ref} {...props}>
+    <group ref={ref} position={position} rotation={rotation} {...rest}>
       <CloudCover position={[0, 5, -30]} />
 
       <Plane args={[20, 17]} position={[0, 3, -25]} scale={2} rotation={[0, 0, 0]}>
@@ -37,9 +49,47 @@ export const Landscape = ({ ...props }) => {
         <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
       </Plane>
 
-      <CourseSection position={[0, 0, -200]} />
+      <FredBoard position={[0, 0, 0]} lessonSpacing={lessonSpacing} lessonNumber={lessonNumber} />
 
-      <Button3d position={[0, 20, -24]} />
+      <ModuleButtons modulesSection={modules} lessonSpacing={lessonSpacing} />
+    </group>
+  );
+};
+
+export const ModuleButtons = ({
+  modulesSection,
+  lessonSpacing = 7,
+  position,
+  rotation,
+}: {
+  position?: [number, number, number];
+  rotation?: [number, number, number];
+  lessonSpacing?: number;
+  modulesSection?: ModuleSection[];
+}) => {
+  if (!modulesSection) return null;
+
+  console.log(modulesSection);
+  const lessonCount = 0;
+
+  return (
+    <group position={[0, 15, -25]}>
+      {modulesSection.reduce((acc: JSX.Element[], item, moduleIndex) => {
+        return [
+          ...acc,
+          ...item.lessons.map((lesson: Lesson, lessonIndex) => {
+            const count = acc.length + lessonIndex + 1;
+            return (
+              <Button3d
+                key={lesson.slug}
+                lessonName={lesson.title}
+                lessonUrl={`/courses/kgd-book-1/modules/${item.slug}/lessons/${lesson.slug}`}
+                position={[0, lessonSpacing * count, 0]}
+              />
+            );
+          }),
+        ];
+      }, [])}
     </group>
   );
 };
