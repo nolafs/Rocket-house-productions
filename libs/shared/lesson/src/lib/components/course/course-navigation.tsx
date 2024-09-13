@@ -55,10 +55,10 @@ export function CourseNavigation({ course }: CourseNavigationProps) {
   }, [viewportHeight, totalHeight]);
 
   return (
-    <Canvas ref={containerRef} camera={{ position: [0, 0, 130], fov: 15 }}>
+    <Canvas ref={containerRef} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
       <Suspense fallback={null}>
         <ambientLight intensity={1} />
-        <directionalLight position={[0, 100, 100]} intensity={4} />
+        <directionalLight position={[100, 200, 200]} intensity={4} castShadow />
         <Sky
           distance={3000}
           sunPosition={[0, 0, -100]}

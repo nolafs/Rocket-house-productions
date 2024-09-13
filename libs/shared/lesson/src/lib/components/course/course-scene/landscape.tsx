@@ -1,13 +1,19 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Plane, useScroll, useTexture } from '@react-three/drei';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame, useThree, extend } from '@react-three/fiber';
 import { CloudCover } from './cloud-cover';
 import { Button3d } from './button';
 import { FredBoard } from './course-section';
 import { Lesson, Module } from '@prisma/client';
 import Clouds from './cloud-scene';
+import { Vector3, Color, CatmullRomCurve3 } from 'three';
+import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
-type ModuleSection = Module & { lessons: Lesson[] };
+extend({ MeshLineGeometry, MeshLineMaterial });
+
+type LessonType = Lesson & { category: { name: string } };
+
+type ModuleSection = Module & { lessons: LessonType[] };
 
 interface LandscapeProps {
   rotation?: [number, number, number];
@@ -17,14 +23,23 @@ interface LandscapeProps {
   lessonSpacing: number;
 }
 
+interface Point {
+  x: number;
+  y: number;
+  z: number;
+}
+
 export const Landscape = ({ modules, lessonSpacing, rotation, position, ref, ...rest }: LandscapeProps) => {
   const { width, height } = useThree(state => state.viewport);
+  const [pathPoints, setPathPoints] = useState<Point[]>([]);
   const scroll = useScroll();
   const guitar = useTexture('/images/course/guitar.png');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
 
   // get number of lessons
+
+  console.log('modules:', modules);
 
   const lessonNumber = useMemo(() => {
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
@@ -34,6 +49,7 @@ export const Landscape = ({ modules, lessonSpacing, rotation, position, ref, ...
     //ref.current.position.y = -(scroll.offset * (height * scroll.pages));
     state.camera.position.z = 130 - scroll.range(0, 1 / scroll.pages) * 60;
     state.camera.position.y = scroll.offset * (height * scroll.pages);
+    //state.camera.rotation.x = 0.1;
   });
 
   return (
@@ -56,45 +72,92 @@ export const Landscape = ({ modules, lessonSpacing, rotation, position, ref, ...
 
       <FredBoard position={[0, 0, 0]} lessonSpacing={lessonSpacing} lessonNumber={lessonNumber} />
 
-      <ModuleButtons modulesSection={modules} lessonSpacing={lessonSpacing} />
+      <ModuleButtons modulesSection={modules} lessonSpacing={lessonSpacing} onButtonPositionsChange={setPathPoints} />
+      <group position={[0, 15, -24]}>
+        {/* Render the path based on button positions */}
+        {pathPoints.length > 0 && <Path points={pathPoints} />}
+      </group>
     </group>
   );
 };
 
-export const ModuleButtons = ({
-  modulesSection,
-  lessonSpacing = 7,
-  position,
-  rotation,
-}: {
-  position?: [number, number, number];
-  rotation?: [number, number, number];
+const ModuleButtons: React.FC<{
+  modulesSection: ModuleSection[];
   lessonSpacing?: number;
-  modulesSection?: ModuleSection[];
-}) => {
-  if (!modulesSection) return null;
+  onButtonPositionsChange: (positions: Point[]) => void;
+}> = ({ modulesSection, lessonSpacing = 7, onButtonPositionsChange }) => {
+  const [buttonPositions, setButtonPositions] = useState<Point[]>([]);
 
-  console.log(modulesSection);
-  const lessonCount = 0;
+  useEffect(() => {
+    // Update button positions when the modulesSection changes
+    const positions = modulesSection.reduce((acc: Point[], item, moduleIndex) => {
+      return [
+        ...acc,
+        ...item.lessons.map((lesson: Lesson, lessonIndex) => {
+          const count = acc.length + lessonIndex + 1;
+          return {
+            x: lessonIndex % 2 ? -1 : 1,
+            y: lessonSpacing * count,
+            z: 0,
+          };
+        }),
+      ];
+    }, []);
+    setButtonPositions(positions);
+    onButtonPositionsChange(positions);
+  }, [modulesSection, lessonSpacing, onButtonPositionsChange]);
 
   return (
-    <group position={[0, 15, -25]}>
+    <group position={[0, 15, -23.4]}>
       {modulesSection.reduce((acc: JSX.Element[], item, moduleIndex) => {
         return [
           ...acc,
-          ...item.lessons.map((lesson: Lesson, lessonIndex) => {
+          ...item.lessons.map((lesson: LessonType, lessonIndex) => {
             const count = acc.length + lessonIndex + 1;
             return (
               <Button3d
                 key={lesson.slug}
+                moduleColor={item.color || 'white'}
                 lessonName={lesson.title}
+                lessonType={lesson.category.name}
                 lessonUrl={`/courses/kgd-book-1/modules/${item.slug}/lessons/${lesson.slug}`}
-                position={[0, lessonSpacing * count, 0]}
+                position={[lessonIndex % 2 ? -1 : 1, lessonSpacing * count, 0]}
               />
             );
           }),
         ];
       }, [])}
     </group>
+  );
+};
+
+const Path: React.FC<{ points: Point[] }> = ({ points }) => {
+  // Ensure there are enough points to create a line
+  if (points.length < 2) return null;
+
+  // Convert points to Vector3 and create a curve
+  const curve = new CatmullRomCurve3(points.map(p => new Vector3(p.x, p.y, p.z)));
+
+  // Generate points along the curve
+  const curvePoints = curve.getPoints(300); // 300 segments for smoothness
+
+  // Convert curve points to flat array format
+  const flatPoints = curvePoints.flatMap(point => [point.x, point.y, point.z]);
+
+  console.log('curvePoints:', curvePoints);
+
+  return (
+    <mesh>
+      <meshLineGeometry points={curvePoints} />
+      <meshLineMaterial
+        transparent
+        lineWidth={2}
+        color={new Color('white')}
+        depthWrite={false}
+        dashArray={0.0025}
+        dashRatio={0.4}
+        toneMapped={false}
+      />
+    </mesh>
   );
 };

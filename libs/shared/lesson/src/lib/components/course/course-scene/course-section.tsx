@@ -1,5 +1,6 @@
 import { Plane, useTexture } from '@react-three/drei';
 import React, { useRef } from 'react';
+import { PlaneGeometry } from 'three';
 
 interface FredBoardProps {
   rotation?: [number, number, number];
@@ -24,14 +25,15 @@ export const FredBoard = ({ rotation, position, lessonSpacing, lessonNumber, ...
   return (
     <group ref={ref} rotation={rotation} position={position} {...rest}>
       {Array.from({ length: sectionNum }).map((_, index) => (
-        <Plane
+        <mesh
+          geometry={new PlaneGeometry(6.85, planeHeight)}
+          receiveShadow={true}
           key={index}
-          args={[6.85, planeHeight]}
           position={[0, 20 + offsetY * index, -25]}
           scale={1}
           rotation={[0, 0, 0]}>
           <meshStandardMaterial map={fred} color={0xffffff} transparent={true} metalness={0.4} />
-        </Plane>
+        </mesh>
       ))}
     </group>
   );

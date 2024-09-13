@@ -9,9 +9,19 @@ interface ButtonProps {
   position: [number, number, number];
   lessonName: string;
   lessonUrl: string;
+  lessonType: string;
+  moduleColor: string;
 }
 
-export const Button3d = ({ rotation, position, lessonName, lessonUrl, ...rest }: ButtonProps) => {
+export const Button3d = ({
+  rotation,
+  position,
+  lessonName,
+  lessonUrl,
+  lessonType,
+  moduleColor,
+  ...rest
+}: ButtonProps) => {
   const [hovered, hover] = useState(false);
 
   useCursor(hovered);
@@ -19,10 +29,32 @@ export const Button3d = ({ rotation, position, lessonName, lessonUrl, ...rest }:
   const router = useRouter();
   const { nodes } = useGLTF('/images/course/button.gltf');
 
+  let lessonTypeSize = 1;
+  let lessonTypeColor = '#c17e0c';
+
+  switch (lessonType) {
+    case 'Lesson':
+      lessonTypeSize = 1;
+      lessonTypeColor = moduleColor;
+      break;
+    case 'Dr Rhythm':
+      lessonTypeSize = 0.7;
+      lessonTypeColor = '#DE0BF5';
+      break;
+    case 'Practice':
+      lessonTypeSize = 0.5;
+      lessonTypeColor = moduleColor;
+      break;
+    default:
+      lessonTypeSize = 1;
+      lessonTypeColor = '#c17e0c';
+  }
+
   return (
     <group
       position={position}
       rotation={rotation || [0, 0, 0]}
+      scale={lessonTypeSize}
       {...rest}
       onClick={e => {
         router.push(lessonUrl);
@@ -38,8 +70,8 @@ export const Button3d = ({ rotation, position, lessonName, lessonUrl, ...rest }:
           position={[-0.45, 0.5, 0.65]}
           rotation={[Math.PI / 2, 0, 0]}
           scale={0.04}></Svg>
-        <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.009}>
-          <meshStandardMaterial color={!hovered ? '#c17e0c' : '#bd1368'} metalness={0} roughness={0.4} />
+        <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.009} castShadow={true}>
+          <meshStandardMaterial color={!hovered ? lessonTypeColor : '#bd1368'} metalness={0} roughness={0.4} />
         </mesh>
       </group>
     </group>
@@ -75,6 +107,7 @@ export const Tooltip = ({ children, position, rotation, scale, isVisible = true 
       </Text>
       {size && (
         <RoundedBox
+          receiveShadow={true}
           position={[0, 0, 0.5]}
           args={[size.width, size.height, 0.5]}
           radius={0.5}
