@@ -42,10 +42,8 @@ const DialogContent = React.forwardRef<
         className,
       )}
       {...props}>
-      <div className={'text-lessons-foreground bg-lesson flex h-full w-full flex-col overflow-hidden rounded-xl'}>
-        {children}
-      </div>
-      <DialogPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute right-4 top-9 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none">
+      <div className={'text-lessons-foreground bg-lesson flex h-full w-full flex-col sm:rounded-xl'}>{children}</div>
+      <DialogPrimitive.Close className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute right-4 top-9 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none sm:rounded-sm">
         <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
           <rect width="36" height="36" rx="5" fill="white" />
           <path
@@ -65,7 +63,7 @@ DialogContent.displayName = DialogPrimitive.Content.displayName;
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'text-shadow font-lesson-heading bg-dialog-lesson relative flex h-[100px] flex-col items-center justify-center space-y-1.5 rounded-t-xl bg-pink-500 bg-repeat',
+      'text-shadow font-lesson-heading bg-dialog-lesson relative flex h-[100px] flex-col items-center justify-center space-y-1.5 bg-pink-500 bg-repeat sm:rounded-t-xl',
       className,
     )}
     {...props}
