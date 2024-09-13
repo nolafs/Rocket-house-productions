@@ -5,6 +5,7 @@ import { CloudCover } from './cloud-cover';
 import { Button3d } from './button';
 import { FredBoard } from './course-section';
 import { Lesson, Module } from '@prisma/client';
+import Clouds from './cloud-scene';
 
 type ModuleSection = Module & { lessons: Lesson[] };
 
@@ -48,6 +49,10 @@ export const Landscape = ({ modules, lessonSpacing, rotation, position, ref, ...
       <Plane args={[17, 10]} position={[0, 2, 10]} scale={4} rotation={[0, 0, 0]}>
         <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
       </Plane>
+
+      <group position={[0, 0, -300]}>
+        <Clouds width={80} height={300} depth={300} numClouds={100} />
+      </group>
 
       <FredBoard position={[0, 0, 0]} lessonSpacing={lessonSpacing} lessonNumber={lessonNumber} />
 
