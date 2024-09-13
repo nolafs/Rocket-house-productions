@@ -1,13 +1,13 @@
+import * as THREE from 'three';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Plane, useScroll, useTexture } from '@react-three/drei';
-import { useFrame, useThree, extend } from '@react-three/fiber';
+import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
+import { useFrame, useThree, extend, ReactThreeFiber } from '@react-three/fiber';
 import { CloudCover } from './cloud-cover';
 import { Button3d } from './button';
 import { FredBoard } from './course-section';
 import { Lesson, Module } from '@prisma/client';
 import Clouds from './cloud-scene';
-import { Vector3, Color, CatmullRomCurve3 } from 'three';
-import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -136,7 +136,7 @@ const Path: React.FC<{ points: Point[] }> = ({ points }) => {
   if (points.length < 2) return null;
 
   // Convert points to Vector3 and create a curve
-  const curve = new CatmullRomCurve3(points.map(p => new Vector3(p.x, p.y, p.z)));
+  const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(p.x, p.y, p.z)));
 
   // Generate points along the curve
   const curvePoints = curve.getPoints(300); // 300 segments for smoothness
@@ -152,7 +152,7 @@ const Path: React.FC<{ points: Point[] }> = ({ points }) => {
       <meshLineMaterial
         transparent
         lineWidth={2}
-        color={new Color('white')}
+        color={new THREE.Color('white')}
         depthWrite={false}
         dashArray={0.0025}
         dashRatio={0.4}
