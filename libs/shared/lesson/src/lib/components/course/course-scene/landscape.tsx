@@ -141,9 +141,6 @@ const Path: React.FC<{ points: Point[] }> = ({ points }) => {
   // Generate points along the curve
   const curvePoints = curve.getPoints(300); // 300 segments for smoothness
 
-  // Convert curve points to flat array format
-  const flatPoints = curvePoints.flatMap(point => [point.x, point.y, point.z]);
-
   console.log('curvePoints:', curvePoints);
 
   return (
