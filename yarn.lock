@@ -5201,6 +5201,7 @@ __metadata:
     leva: "npm:^0.9.35"
     lucide-react: "npm:^0.417.0"
     maath: "npm:^0.10.8"
+    meshline: "npm:^3.3.1"
     micro: "npm:^10.0.1"
     nanoid: "npm:^5.0.7"
     next: "npm:14.2.5"
@@ -5236,7 +5237,8 @@ __metadata:
     tailwind-merge: "npm:^2.4.0"
     tailwindcss: "npm:^3.4.7"
     tailwindcss-animate: "npm:^1.0.7"
-    three: "npm:0.168.0"
+    three: "npm:^0.168.0"
+    three.meshline: "npm:^1.4.0"
     ts-jest: "npm:^29.1.0"
     ts-node: "npm:10.9.1"
     tslib: "npm:^2.3.0"
@@ -14774,7 +14776,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"meshline@npm:^3.1.6":
+"meshline@npm:^3.1.6, meshline@npm:^3.3.1":
   version: 3.3.1
   resolution: "meshline@npm:3.3.1"
   peerDependencies:
@@ -19519,7 +19521,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:0.168.0":
+"three.meshline@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "three.meshline@npm:1.4.0"
+  checksum: 10c0/3a83dc0aba20cdd20ae3e923b485ffd24002c201b05bb6452b4e44532afe5b4c90008ebc81dd8e9567dac61299a78edf12e3e165585ba670aaf635990c21434b
+  languageName: node
+  linkType: hard
+
+"three@npm:^0.168.0":
   version: 0.168.0
   resolution: "three@npm:0.168.0"
   checksum: 10c0/04aa53e64a61f31edd9631e57fe697752c9d358bd96e1344206d05e981507a6dae5c9da4e3b8d9ec7c6c8fc49732fd3f23d3675d126fe9bc1936894bbee6cc98
