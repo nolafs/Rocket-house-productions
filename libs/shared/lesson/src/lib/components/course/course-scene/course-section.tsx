@@ -8,17 +8,15 @@ interface FredBoardProps {
   lessonSpacing: number;
 }
 
-const calculateFactor = (totalLessons: number, baseSpacing: number, lessonSpacing: number) =>
-  totalLessons / (baseSpacing * (lessonSpacing / baseSpacing));
-
 export const FredBoard = ({ rotation, position, lessonSpacing, lessonNumber, ...rest }: FredBoardProps) => {
   const ref = useRef<any>();
   const fred = useTexture('/images/course/fret.png');
-  const baseSpacing = 7; // The original spacing value
-  const factor = calculateFactor(lessonNumber, baseSpacing, lessonSpacing);
 
-  const sectionNum = lessonNumber / 1.8; // Number of sections
+  //todo this is not right
+
   const planeHeight = 13; // Height of each plane
+  const sectionNum = lessonNumber / (planeHeight / lessonSpacing); // Number of sections
+
   const offsetY = planeHeight;
 
   console.log('calculated sectionNum:', lessonNumber);
