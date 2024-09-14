@@ -2,10 +2,12 @@ import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text } from '@rea
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
+import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 
 interface ButtonProps {
   rotation?: [number, number, number];
   position: [number, number, number];
+  lessonId: string;
   lessonName: string;
   lessonUrl: string;
   lessonType: string;
@@ -15,6 +17,7 @@ interface ButtonProps {
 export const Button3d = ({
   rotation,
   position,
+  lessonId,
   lessonName,
   lessonUrl,
   lessonType,
@@ -27,6 +30,7 @@ export const Button3d = ({
 
   const router = useRouter();
   const { nodes } = useGLTF('/images/course/button.gltf');
+  const lessonProgress = useLessonProgressionStore(store => store.getLessonCompleted(lessonId));
 
   let lessonTypeSize = 1;
   let lessonTypeColor = '#c17e0c';
@@ -64,6 +68,7 @@ export const Button3d = ({
         {lessonName}
       </Tooltip>
       <group rotation={[Math.PI / 2, 0, 0]}>
+        {lessonProgress && <CompleteLessonIcon />}
         <Svg
           src={'/images/course/arrow.svg'}
           position={[-0.45, 0.5, 0.65]}
@@ -73,6 +78,24 @@ export const Button3d = ({
           <meshStandardMaterial color={!hovered ? lessonTypeColor : '#bd1368'} metalness={0} roughness={0.4} />
         </mesh>
       </group>
+    </group>
+  );
+};
+
+const CompleteLessonIcon = () => {
+  const { nodes } = useGLTF('/images/course/button.gltf');
+
+  return (
+    <group>
+      <Svg
+        src={'/images/course/complete.svg'}
+        scale={0.04}
+        position={[0.6, 1.2, -1.4]}
+        rotation={[-Math.PI / 2, 0, 0]}
+      />
+      <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.003} position={[1, 1, -1]} castShadow={true}>
+        <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} />
+      </mesh>
     </group>
   );
 };
