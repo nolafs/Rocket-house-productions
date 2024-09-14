@@ -9,6 +9,7 @@ import { FretBoard } from './fretboard';
 import { Lesson, Module } from '@prisma/client';
 import Clouds from './cloud-scene';
 import { FinalScene } from './finish-scene';
+import { ModuleLabel } from './module-label';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -69,9 +70,9 @@ export const Landscape = ({
     state.camera.position.z = 130 - scroll.range(0, 1 / scroll.pages) * 60;
     state.camera.position.y = scroll.offset * (height * scroll.pages);
 
-    state.camera.position.x = state.mouse.x * 0.7;
-    state.camera.rotation.y = state.mouse.x * 0.01;
-    state.camera.rotation.x = state.mouse.y * 0.01;
+    state.camera.position.x = state.mouse.x * 0.02;
+    state.camera.rotation.y = state.mouse.x * 0.02;
+    state.camera.rotation.x = state.mouse.y * 0.02;
 
     if (!camera.current) {
       camera.current = state.camera;
@@ -149,6 +150,8 @@ const ModuleButtons: React.FC<{
 }> = ({ modulesSection, lessonSpacing = 7, onButtonPositionsChange }) => {
   const [buttonPositions, setButtonPositions] = useState<Point[]>([]);
 
+  let currentModule: Module | null = null;
+
   useEffect(() => {
     // Update button positions when the modulesSection changes
     const positions = modulesSection.reduce((acc: Point[], item, moduleIndex) => {
@@ -175,6 +178,31 @@ const ModuleButtons: React.FC<{
           ...acc,
           ...item.lessons.map((lesson: LessonType, lessonIndex) => {
             const count = acc.length + lessonIndex + 1;
+
+            if (currentModule?.id !== item.id) {
+              currentModule = item;
+              console.log('currentModule:', currentModule);
+
+              return (
+                <>
+                  <ModuleLabel
+                    key={item.slug}
+                    position={[0, lessonSpacing * count - 3.5, 0]}
+                    rotation={[0, 0, 0]}
+                    module={item}
+                  />
+                  <Button3d
+                    key={lesson.slug}
+                    moduleColor={item.color || 'white'}
+                    lessonName={lesson.title}
+                    lessonType={lesson.category.name}
+                    lessonUrl={`/courses/kgd-book-1/modules/${item.slug}/lessons/${lesson.slug}`}
+                    position={[lessonIndex % 2 ? -1 : 1, lessonSpacing * count, 0]}
+                  />
+                </>
+              );
+            }
+
             return (
               <Button3d
                 key={lesson.slug}
