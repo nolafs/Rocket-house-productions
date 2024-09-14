@@ -56,10 +56,6 @@ export const Landscape = ({
   const ref = React.useRef<THREE.Group>(null);
   const camera = useRef<THREE.Camera | null>(null);
 
-  // get number of lessons
-
-  console.log('modules:', modules);
-
   const lessonNumber = useMemo(() => {
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
   }, modules);
@@ -183,8 +179,6 @@ const ModuleButtons: React.FC<{
 
             if (currentModule?.id !== item.id) {
               currentModule = item;
-              console.log('currentModule:', currentModule);
-
               return (
                 <>
                   <ModuleLabel
@@ -196,6 +190,7 @@ const ModuleButtons: React.FC<{
                   <Button3d
                     key={lesson.slug}
                     lessonId={lesson.id}
+                    lessonNum={count}
                     moduleColor={item.color || 'white'}
                     lessonName={lesson.title}
                     lessonType={lesson.category.name}
@@ -211,6 +206,7 @@ const ModuleButtons: React.FC<{
                 key={lesson.slug}
                 moduleColor={item.color || 'white'}
                 lessonId={lesson.id}
+                lessonNum={count}
                 lessonName={lesson.title}
                 lessonType={lesson.category.name}
                 lessonUrl={`/courses/kgd-book-1/modules/${item.slug}/lessons/${lesson.slug}`}
