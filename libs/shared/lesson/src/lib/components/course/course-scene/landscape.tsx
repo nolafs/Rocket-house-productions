@@ -54,7 +54,6 @@ export const Landscape = ({
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
   const ref = React.useRef<THREE.Group>(null);
-  const [cameraHeight, setCameraHeight] = useState(0);
   const camera = useRef<THREE.Camera | null>(null);
 
   // get number of lessons
@@ -70,9 +69,12 @@ export const Landscape = ({
     state.camera.position.z = 130 - scroll.range(0, 1 / scroll.pages) * 60;
     state.camera.position.y = scroll.offset * (height * scroll.pages);
 
+    /*
     state.camera.position.x = state.mouse.x * 0.02;
     state.camera.rotation.y = state.mouse.x * 0.02;
     state.camera.rotation.x = state.mouse.y * 0.02;
+
+     */
 
     if (!camera.current) {
       camera.current = state.camera;
@@ -193,6 +195,7 @@ const ModuleButtons: React.FC<{
                   />
                   <Button3d
                     key={lesson.slug}
+                    lessonId={lesson.id}
                     moduleColor={item.color || 'white'}
                     lessonName={lesson.title}
                     lessonType={lesson.category.name}
@@ -207,6 +210,7 @@ const ModuleButtons: React.FC<{
               <Button3d
                 key={lesson.slug}
                 moduleColor={item.color || 'white'}
+                lessonId={lesson.id}
                 lessonName={lesson.title}
                 lessonType={lesson.category.name}
                 lessonUrl={`/courses/kgd-book-1/modules/${item.slug}/lessons/${lesson.slug}`}
