@@ -2,7 +2,6 @@ import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text } from '@rea
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
-import { depth } from 'three/src/nodes/display/ViewportDepthNode';
 
 interface ButtonProps {
   rotation?: [number, number, number];
@@ -87,7 +86,7 @@ interface TooltipProps {
 }
 
 export const Tooltip = ({ children, position, rotation, scale, isVisible = true }: TooltipProps) => {
-  const textRef = useRef();
+  const textRef = useRef<THREE.Mesh>(null);
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
 
   useEffect(() => {
