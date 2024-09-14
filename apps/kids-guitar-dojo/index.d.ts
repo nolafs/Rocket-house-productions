@@ -7,5 +7,4 @@ declare module '*.svg' {
 }
 
 declare module 'server-only';
-
 declare module 'player.js';
