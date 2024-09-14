@@ -68,6 +68,11 @@ export const Landscape = ({
     //ref.current.position.y = -(scroll.offset * (height * scroll.pages));
     state.camera.position.z = 130 - scroll.range(0, 1 / scroll.pages) * 60;
     state.camera.position.y = scroll.offset * (height * scroll.pages);
+
+    state.camera.position.x = state.mouse.x * 0.7;
+    state.camera.rotation.y = state.mouse.x * 0.01;
+    state.camera.rotation.x = state.mouse.y * 0.01;
+
     if (!camera.current) {
       camera.current = state.camera;
     }
@@ -103,7 +108,7 @@ export const Landscape = ({
     <group ref={ref} position={position} rotation={rotation} {...rest}>
       <CloudCover position={[0, 5, -30]} />
 
-      <Plane args={[20, 17]} position={[0, 3, -25]} scale={2} rotation={[0, 0, 0]}>
+      <Plane args={[20, 17]} position={[0, 3, -25.2]} scale={2} rotation={[0, 0, 0]}>
         <meshStandardMaterial map={guitar} color={0xffffff} transparent={true} metalness={0.4} />
       </Plane>
       <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
