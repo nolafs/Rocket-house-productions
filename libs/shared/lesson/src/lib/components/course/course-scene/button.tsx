@@ -1,4 +1,4 @@
-import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text } from '@react-three/drei';
+import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text, useTexture } from '@react-three/drei';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
@@ -69,6 +69,7 @@ export const Button3d = ({
       </Tooltip>
       <group rotation={[Math.PI / 2, 0, 0]}>
         {lessonProgress && <CompleteLessonIcon />}
+        {lessonType === 'Dr Rhythm' && <DocIcon />}
         <Svg
           src={'/images/course/arrow.svg'}
           position={[-0.45, 0.5, 0.65]}
@@ -84,7 +85,6 @@ export const Button3d = ({
 
 const CompleteLessonIcon = () => {
   const { nodes } = useGLTF('/images/course/button.gltf');
-
   return (
     <group>
       <Svg
@@ -97,6 +97,17 @@ const CompleteLessonIcon = () => {
         <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} />
       </mesh>
     </group>
+  );
+};
+
+const DocIcon = () => {
+  const [docTexture] = useTexture(['/images/course/doc.png']);
+
+  return (
+    <mesh position={[-0.4, 1, 0]} rotation={[-Math.PI / 2, 0, 0]} scale={0.45}>
+      <planeGeometry args={[4, 4]} />
+      <meshBasicMaterial map={docTexture} transparent={true} />
+    </mesh>
   );
 };
 
