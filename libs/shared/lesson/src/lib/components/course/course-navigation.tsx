@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Preload, ScrollControls, Sky, StatsGl } from '@react-three/drei';
+import { Loader, Preload, ScrollControls, Sky, StatsGl } from '@react-three/drei';
 import { GridPlane } from './course-scene/grid-plane';
 import { Landscape } from './course-scene/landscape';
 import { CameraController } from './course-scene/camera-control';
@@ -22,40 +22,43 @@ export function CourseNavigation({ course }: CourseNavigationProps) {
   // Calculate number of pages when viewportHeight or totalHeight changes
   useEffect(() => {
     if (landscapeHeight > 0) {
-      console.log('landscapeHeight:', landscapeHeight);
+      //console.log('landscapeHeight:', landscapeHeight);
       setPages(landscapeHeight);
     }
   }, [landscapeHeight]);
 
   return (
-    <Canvas ref={containerRef} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
-      <Suspense fallback={null}>
-        <ambientLight intensity={1} />
-        <directionalLight position={[100, 200, 200]} intensity={4} castShadow />
-        <Sky
-          distance={3000}
-          sunPosition={[0, 0, -100]}
-          mieDirectionalG={0.022}
-          inclination={0.25}
-          azimuth={0.45}
-          turbidity={10}
-          rayleigh={4}
-        />
-
-        <ScrollControls damping={0.2} pages={pages}>
-          <Landscape
-            onLandscapeHeightChange={setLandscapeHeight}
-            lessonSpacing={LESSON_SPACING}
-            position={[0, 0, 0]}
-            modules={course.modules}
+    <>
+      <Canvas ref={containerRef} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
+        <Suspense fallback={null}>
+          <ambientLight intensity={1} />
+          <directionalLight position={[100, 200, 200]} intensity={4} castShadow />
+          <Sky
+            distance={3000}
+            sunPosition={[0, 0, -100]}
+            mieDirectionalG={0.022}
+            inclination={0.25}
+            azimuth={0.45}
+            turbidity={10}
+            rayleigh={4}
           />
-        </ScrollControls>
 
-        <StatsGl />
+          <ScrollControls damping={0.2} pages={pages}>
+            <Landscape
+              onLandscapeHeightChange={setLandscapeHeight}
+              lessonSpacing={LESSON_SPACING}
+              position={[0, 0, 0]}
+              modules={course.modules}
+            />
+          </ScrollControls>
 
-        <Preload />
-      </Suspense>
-    </Canvas>
+          <StatsGl />
+
+          <Preload />
+        </Suspense>
+      </Canvas>
+      <Loader />
+    </>
   );
 }
 
