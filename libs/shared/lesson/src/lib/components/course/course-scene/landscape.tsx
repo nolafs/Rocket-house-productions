@@ -1,13 +1,14 @@
 import * as THREE from 'three';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Plane, useScroll, useTexture } from '@react-three/drei';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { useFrame, useThree, extend, ReactThreeFiber } from '@react-three/fiber';
 import { CloudCover } from './cloud-cover';
 import { Button3d } from './button';
-import { FredBoard } from './course-section';
+import { FretBoard } from './fretboard';
 import { Lesson, Module } from '@prisma/client';
 import Clouds from './cloud-scene';
+import { FinalScene } from './finish-scene';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -19,8 +20,8 @@ interface LandscapeProps {
   rotation?: [number, number, number];
   position?: [number, number, number];
   modules: ModuleSection[];
-  ref?: any;
   lessonSpacing: number;
+  onLandscapeHeightChange?: (height: number) => void;
 }
 
 interface Point {
@@ -29,13 +30,31 @@ interface Point {
   z: number;
 }
 
-export const Landscape = ({ modules, lessonSpacing, rotation, position, ref, ...rest }: LandscapeProps) => {
+const calculateCameraHeight = (camera: any, aspectRatio: any) => {
+  const frustumHeight = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
+  return frustumHeight * aspectRatio;
+};
+
+export const Landscape = ({
+  modules,
+  lessonSpacing,
+  rotation,
+  position,
+  onLandscapeHeightChange,
+  ...rest
+}: LandscapeProps) => {
   const { width, height } = useThree(state => state.viewport);
   const [pathPoints, setPathPoints] = useState<Point[]>([]);
+  const [pathLength, setPathLength] = useState<number>(0);
+  const [completedPath, setCompletedPath] = useState<Point[]>([]);
+  const [currentLessonNumber, setCurrentLessonNumber] = useState(10);
   const scroll = useScroll();
   const guitar = useTexture('/images/course/guitar.png');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
+  const ref = React.useRef<THREE.Group>(null);
+  const [cameraHeight, setCameraHeight] = useState(0);
+  const camera = useRef<THREE.Camera | null>(null);
 
   // get number of lessons
 
@@ -49,8 +68,36 @@ export const Landscape = ({ modules, lessonSpacing, rotation, position, ref, ...
     //ref.current.position.y = -(scroll.offset * (height * scroll.pages));
     state.camera.position.z = 130 - scroll.range(0, 1 / scroll.pages) * 60;
     state.camera.position.y = scroll.offset * (height * scroll.pages);
+    if (!camera.current) {
+      camera.current = state.camera;
+    }
+
     //state.camera.rotation.x = 0.1;
   });
+
+  useEffect(() => {
+    if (pathPoints.length) {
+      const completedPath = pathPoints.slice(0, currentLessonNumber);
+      setCompletedPath(completedPath);
+    }
+  }, [pathPoints, currentLessonNumber]);
+
+  useEffect(() => {
+    if (ref.current) {
+      if (camera.current) {
+        const cameraHeight = calculateCameraHeight(camera.current, width / height);
+
+        const box = new THREE.Box3();
+        box.setFromObject(ref.current);
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        console.log('camera height:', Math.ceil(size.y / cameraHeight));
+        onLandscapeHeightChange && onLandscapeHeightChange(Math.ceil(size.y / cameraHeight));
+      } else {
+        onLandscapeHeightChange && onLandscapeHeightChange(12);
+      }
+    }
+  }, [camera]);
 
   return (
     <group ref={ref} position={position} rotation={rotation} {...rest}>
@@ -70,12 +117,21 @@ export const Landscape = ({ modules, lessonSpacing, rotation, position, ref, ...
         <Clouds width={80} height={300} depth={300} numClouds={100} />
       </group>
 
-      <FredBoard position={[0, 0, 0]} lessonSpacing={lessonSpacing} lessonNumber={lessonNumber} />
+      <FretBoard
+        position={[0, 0, 0]}
+        lessonSpacing={lessonSpacing}
+        lessonNumber={lessonNumber}
+        pathLength={pathLength}
+      />
+
+      <FinalScene pathLength={pathLength} />
 
       <ModuleButtons modulesSection={modules} lessonSpacing={lessonSpacing} onButtonPositionsChange={setPathPoints} />
+
       <group position={[0, 15, -24]}>
         {/* Render the path based on button positions */}
-        {pathPoints.length > 0 && <Path points={pathPoints} />}
+        {pathPoints.length > 0 && <Path points={pathPoints} opacity={0.5} onPathLength={setPathLength} />}
+        {completedPath.length > 0 && <Path points={completedPath} />}
       </group>
     </group>
   );
@@ -131,7 +187,11 @@ const ModuleButtons: React.FC<{
   );
 };
 
-const Path: React.FC<{ points: Point[] }> = ({ points }) => {
+const Path: React.FC<{ points: Point[]; opacity?: number; onPathLength?: (length: number) => void }> = ({
+  points,
+  opacity = 1,
+  onPathLength,
+}) => {
   // Ensure there are enough points to create a line
   if (points.length < 2) return null;
 
@@ -141,20 +201,26 @@ const Path: React.FC<{ points: Point[] }> = ({ points }) => {
   // Generate points along the curve
   const curvePoints = curve.getPoints(300); // 300 segments for smoothness
 
-  console.log('curvePoints:', curvePoints);
+  const pathLength = curve.getLength();
+  const dashArray = 1 / pathLength;
+
+  if (onPathLength) {
+    onPathLength(pathLength);
+  }
 
   return (
     <mesh>
       {/* @ts-expect-error type not register */}
-      <meshLineGeometry points={curvePoints} />
+      <meshLineGeometry points={curvePoints} castShadow={true} />
       {/* @ts-expect-error type not register */}
       <meshLineMaterial
         transparent
         lineWidth={2}
         color={new THREE.Color('white')}
         depthWrite={false}
-        dashArray={0.0025}
-        dashRatio={0.4}
+        dashArray={dashArray}
+        dashRatio={0.5}
+        opacity={opacity}
         toneMapped={false}
       />
     </mesh>

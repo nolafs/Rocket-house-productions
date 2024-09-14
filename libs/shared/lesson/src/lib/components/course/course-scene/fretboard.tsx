@@ -1,22 +1,21 @@
-import { Plane, useTexture } from '@react-three/drei';
+import { useTexture } from '@react-three/drei';
 import React, { useRef } from 'react';
 import { PlaneGeometry } from 'three';
 
 interface FredBoardProps {
   rotation?: [number, number, number];
   position?: [number, number, number];
+  pathLength?: number;
   lessonNumber: number;
   lessonSpacing: number;
 }
 
-export const FredBoard = ({ rotation, position, lessonSpacing, lessonNumber, ...rest }: FredBoardProps) => {
+export const FretBoard = ({ rotation, position, pathLength, lessonSpacing, lessonNumber, ...rest }: FredBoardProps) => {
   const ref = useRef<any>();
   const fred = useTexture('/images/course/fret.png');
 
-  //todo this is not right
-
   const planeHeight = 13; // Height of each plane
-  const sectionNum = lessonNumber / (planeHeight / lessonSpacing); // Number of sections
+  const sectionNum = pathLength ? pathLength / 13 : lessonNumber / (planeHeight / lessonSpacing); // Number of sections
 
   const offsetY = planeHeight;
 
