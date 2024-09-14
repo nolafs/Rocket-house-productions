@@ -8,6 +8,7 @@ interface ButtonProps {
   rotation?: [number, number, number];
   position: [number, number, number];
   lessonId: string;
+  lessonNum: number;
   lessonName: string;
   lessonUrl: string;
   lessonType: string;
@@ -17,6 +18,7 @@ interface ButtonProps {
 export const Button3d = ({
   rotation,
   position,
+  lessonNum,
   lessonId,
   lessonName,
   lessonUrl,
@@ -34,40 +36,44 @@ export const Button3d = ({
 
   let lessonTypeSize = 1;
   let lessonTypeColor = '#c17e0c';
+  let toolTipY = 2.3;
 
   switch (lessonType) {
     case 'Lesson':
       lessonTypeSize = 1;
       lessonTypeColor = moduleColor;
+      toolTipY = 2.3;
       break;
     case 'Dr Rhythm':
       lessonTypeSize = 0.7;
       lessonTypeColor = '#DE0BF5';
+      toolTipY = 1.9;
       break;
     case 'Practice':
       lessonTypeSize = 0.5;
       lessonTypeColor = moduleColor;
+      toolTipY = 1.6;
       break;
     default:
       lessonTypeSize = 1;
       lessonTypeColor = '#c17e0c';
+      toolTipY = 2.3;
   }
 
   return (
     <group
       position={position}
       rotation={rotation || [0, 0, 0]}
-      scale={lessonTypeSize}
       {...rest}
       onClick={e => {
         router.push(lessonUrl);
       }}
       onPointerOver={e => hover(true)}
       onPointerLeave={e => hover(false)}>
-      <Tooltip position={[0, 2.3, 0]} isVisible={hovered} rotation={[0, 0, 0]} scale={0.5}>
-        {lessonName}
+      <Tooltip position={[0, toolTipY, 0]} isVisible={hovered} rotation={[0, 0, 0]} scale={0.5}>
+        {lessonNum}. {lessonName}
       </Tooltip>
-      <group rotation={[Math.PI / 2, 0, 0]}>
+      <group rotation={[Math.PI / 2, 0, 0]} scale={lessonTypeSize}>
         {lessonProgress && <CompleteLessonIcon />}
         {lessonType === 'Dr Rhythm' && <DocIcon />}
         <Svg
@@ -133,9 +139,24 @@ export const Tooltip = ({ children, position, rotation, scale, isVisible = true 
     }
   }, [children, isVisible]);
 
+  const fontProps = {
+    font: '/images/course/font.ttf',
+    fontSize: 1,
+    letterSpacing: -0.05,
+    lineHeight: 1,
+    'material-toneMapped': false,
+  };
+
   return (
     <group position={position} rotation={rotation} scale={scale} visible={isVisible}>
-      <Text ref={textRef} color="black" anchorX="center" anchorY="middle" position={[0, 0, 1]} castShadow={true}>
+      <Text
+        ref={textRef}
+        {...fontProps}
+        color="black"
+        anchorX="center"
+        anchorY="middle"
+        position={[0, 0, 1]}
+        castShadow={true}>
         {children}
       </Text>
       {size && (
