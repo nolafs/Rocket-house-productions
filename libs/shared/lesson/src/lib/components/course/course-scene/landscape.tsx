@@ -145,7 +145,9 @@ const Path: React.FC<{ points: Point[] }> = ({ points }) => {
 
   return (
     <mesh>
+      {/* @ts-expect-error type not register */}
       <meshLineGeometry points={curvePoints} />
+      {/* @ts-expect-error type not register */}
       <meshLineMaterial
         transparent
         lineWidth={2}
