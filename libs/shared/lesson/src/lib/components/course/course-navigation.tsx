@@ -1,7 +1,7 @@
 'use client';
 import * as THREE from 'three';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { Html, Preload, ScrollControls, Sky, StatsGl, useProgress } from '@react-three/drei';
 import { GridPlane } from './course-scene/grid-plane';
 import { Landscape } from './course-scene/landscape';
@@ -21,6 +21,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
   const [pages, setPages] = useState(1); // Default to 1 page
   const containerRef = useRef<HTMLCanvasElement>(null);
   const [landscapeHeight, setLandscapeHeight] = useState(0);
+  const { active } = useProgress();
 
   // Calculate number of pages when viewportHeight or totalHeight changes
   useEffect(() => {
@@ -37,7 +38,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
   return (
     <>
       <Canvas ref={containerRef} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
-        <Suspense fallback={<Loader onCompleted={load => handleLoaded(load)} />}>
+        <Suspense fallback={<Loader />}>
           <ambientLight intensity={1} />
           <directionalLight position={[100, 200, 200]} intensity={4} castShadow />
           <Sky
@@ -56,6 +57,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
               lessonSpacing={LESSON_SPACING}
               position={[0, 0, 0]}
               modules={course.modules}
+              onReady={load => handleLoaded(load)}
             />
           </ScrollControls>
 
@@ -72,26 +74,8 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
   );
 }
 
-interface LoaderProps {
-  onCompleted: (loaded: boolean) => void;
-}
-
-function Loader({ onCompleted }: LoaderProps) {
+function Loader() {
   const { active, progress, errors, item, loaded, total } = useProgress();
-
-  useEffect(() => {
-    console.group('LOADER');
-    console.log('LOADER:', active);
-    console.log('LOADER PROGRESS:', progress);
-    console.log('LOADER ITEM:', item);
-    console.log('LOADER LOADED:', loaded);
-    console.log('LOADER TOTAL:', total);
-    console.groupEnd();
-
-    if (loaded === total) {
-      onCompleted(true);
-    }
-  }, [loaded, total]);
 
   return (
     <Html fullscreen>

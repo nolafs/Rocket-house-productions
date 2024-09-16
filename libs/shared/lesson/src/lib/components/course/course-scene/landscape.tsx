@@ -24,6 +24,7 @@ interface LandscapeProps {
   modules: ModuleSection[];
   lessonSpacing: number;
   onLandscapeHeightChange?: (height: number) => void;
+  onReady?: (ready: boolean) => void;
 }
 
 interface Point {
@@ -43,6 +44,7 @@ export const Landscape = ({
   rotation,
   position,
   onLandscapeHeightChange,
+  onReady,
   ...rest
 }: LandscapeProps) => {
   const { width, height } = useThree(state => state.viewport);
@@ -57,6 +59,7 @@ export const Landscape = ({
   const ref = React.useRef<THREE.Group>(null);
   const camera = useRef<THREE.Camera | null>(null);
   const [cameraMove, setCameraMove] = useState(false);
+  const [ready, setReady] = useState(false);
 
   console.log('LANDSCAPE MODULES:', modules);
 
@@ -79,6 +82,10 @@ export const Landscape = ({
     if (!camera.current) {
       camera.current = state.camera;
     }
+
+    if (!ready) {
+      setReady(true);
+    }
   });
 
   useEffect(() => {
@@ -87,6 +94,12 @@ export const Landscape = ({
       setCompletedPath(completedPath);
     }
   }, [pathPoints, currentLessonNumber]);
+
+  useEffect(() => {
+    if (ready) {
+      onReady && onReady(ready);
+    }
+  }, [ready]);
 
   useEffect(() => {
     if (ref.current) {
