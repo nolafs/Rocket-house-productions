@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
 import { useLessonProgressionStore } from '@rocket-house-productions/providers';
+import { useFrame } from '@react-three/fiber';
 
 interface ButtonProps {
   rotation?: [number, number, number];
@@ -13,6 +14,7 @@ interface ButtonProps {
   lessonUrl: string;
   lessonType: string;
   moduleColor: string;
+  cameraMove: boolean;
 }
 
 export const Button3d = ({
@@ -24,11 +26,15 @@ export const Button3d = ({
   lessonUrl,
   lessonType,
   moduleColor,
+  cameraMove,
   ...rest
 }: ButtonProps) => {
   const [hovered, hover] = useState(false);
+  const [mouseControl, setMouseControl] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   useCursor(hovered);
+  const button = useRef<THREE.Group>(null);
 
   const router = useRouter();
   const { nodes } = useGLTF('/images/course/button.gltf');
@@ -60,17 +66,49 @@ export const Button3d = ({
       toolTipY = 2.3;
   }
 
+  useFrame(state => {
+    if (!button.current) return;
+
+    if (mouseControl) return;
+
+    if (cameraMove) {
+      setShowTooltip(false);
+      return;
+    }
+
+    const threshold = 2;
+    const positionScreenSpace = button.current.position.clone().project(state.camera);
+
+    const isCloseToCenter =
+      positionScreenSpace.length() > threshold - 0.2 && positionScreenSpace.length() < threshold + 0.5;
+
+    if (isCloseToCenter) {
+      setShowTooltip(true);
+    } else {
+      setShowTooltip(false);
+    }
+  });
+
   return (
     <group
+      ref={button}
       position={position}
       rotation={rotation || [0, 0, 0]}
       {...rest}
       onClick={e => {
         router.push(lessonUrl);
       }}
-      onPointerOver={e => hover(true)}
-      onPointerLeave={e => hover(false)}>
-      <Tooltip position={[0, toolTipY, 0]} isVisible={hovered} rotation={[0, 0, 0]} scale={0.5}>
+      onPointerOver={e => {
+        setMouseControl(true);
+        hover(true);
+        setShowTooltip(true);
+      }}
+      onPointerLeave={e => {
+        setMouseControl(false);
+        hover(false);
+        setShowTooltip(false);
+      }}>
+      <Tooltip position={[0, toolTipY, 0]} isVisible={showTooltip} rotation={[0, 0, 0]} scale={0.5}>
         {lessonNum}. {lessonName}
       </Tooltip>
       <group rotation={[Math.PI / 2, 0, 0]} scale={lessonTypeSize}>

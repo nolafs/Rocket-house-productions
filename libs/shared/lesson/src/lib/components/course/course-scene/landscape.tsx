@@ -10,6 +10,7 @@ import { Lesson, Module } from '@prisma/client';
 import Clouds from './cloud-scene';
 import { FinalScene } from './finish-scene';
 import { ModuleLabel } from './module-label';
+import CameraMovementTracker from './camerMoveTracker';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -55,6 +56,9 @@ export const Landscape = ({
   const foreGround = useTexture('/images/course/lessons-fore.webp');
   const ref = React.useRef<THREE.Group>(null);
   const camera = useRef<THREE.Camera | null>(null);
+  const [cameraMove, setCameraMove] = useState(false);
+
+  console.log('LANDSCAPE MODULES:', modules);
 
   const lessonNumber = useMemo(() => {
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
@@ -75,8 +79,6 @@ export const Landscape = ({
     if (!camera.current) {
       camera.current = state.camera;
     }
-
-    //state.camera.rotation.x = 0.1;
   });
 
   useEffect(() => {
@@ -104,40 +106,43 @@ export const Landscape = ({
   }, [camera]);
 
   return (
-    <group ref={ref} position={position} rotation={rotation} {...rest}>
-      <CloudCover position={[0, 5, -30]} />
+    <>
+      <group ref={ref} position={position} rotation={rotation} {...rest}>
+        <CloudCover position={[0, 5, -30]} />
 
-      <Plane args={[20, 17]} position={[0, 3, -25.2]} scale={2} rotation={[0, 0, 0]}>
-        <meshStandardMaterial map={guitar} color={0xffffff} transparent={true} metalness={0.4} />
-      </Plane>
-      <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
-        <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
-      </Plane>
-      <Plane args={[17, 10]} position={[0, 2, 10]} scale={4} rotation={[0, 0, 0]}>
-        <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
-      </Plane>
+        <Plane args={[20, 17]} position={[0, 3, -25.2]} scale={2} rotation={[0, 0, 0]}>
+          <meshStandardMaterial map={guitar} color={0xffffff} transparent={true} metalness={0.4} />
+        </Plane>
+        <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
+          <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
+        </Plane>
+        <Plane args={[17, 10]} position={[0, 2, 10]} scale={4} rotation={[0, 0, 0]}>
+          <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
+        </Plane>
 
-      <group position={[0, 0, -300]}>
-        <Clouds width={80} height={300} depth={300} numClouds={100} />
+        <FretBoard
+          position={[0, 0, 0]}
+          lessonSpacing={lessonSpacing}
+          lessonNumber={lessonNumber}
+          pathLength={pathLength}
+        />
+
+        <FinalScene pathLength={pathLength} />
+
+        <ModuleButtons
+          cameraMove={cameraMove}
+          modulesSection={modules}
+          lessonSpacing={lessonSpacing}
+          onButtonPositionsChange={setPathPoints}
+        />
+
+        <group position={[0, 15, -24]}>
+          {/* Render the path based on button positions */}
+          {pathPoints.length > 0 && <Path points={pathPoints} opacity={0.5} onPathLength={setPathLength} />}
+          {completedPath.length > 0 && <Path points={completedPath} />}
+        </group>
       </group>
-
-      <FretBoard
-        position={[0, 0, 0]}
-        lessonSpacing={lessonSpacing}
-        lessonNumber={lessonNumber}
-        pathLength={pathLength}
-      />
-
-      <FinalScene pathLength={pathLength} />
-
-      <ModuleButtons modulesSection={modules} lessonSpacing={lessonSpacing} onButtonPositionsChange={setPathPoints} />
-
-      <group position={[0, 15, -24]}>
-        {/* Render the path based on button positions */}
-        {pathPoints.length > 0 && <Path points={pathPoints} opacity={0.5} onPathLength={setPathLength} />}
-        {completedPath.length > 0 && <Path points={completedPath} />}
-      </group>
-    </group>
+    </>
   );
 };
 
@@ -145,7 +150,8 @@ const ModuleButtons: React.FC<{
   modulesSection: ModuleSection[];
   lessonSpacing?: number;
   onButtonPositionsChange: (positions: Point[]) => void;
-}> = ({ modulesSection, lessonSpacing = 7, onButtonPositionsChange }) => {
+  cameraMove?: boolean;
+}> = ({ modulesSection, lessonSpacing = 7, onButtonPositionsChange, cameraMove }) => {
   const [buttonPositions, setButtonPositions] = useState<Point[]>([]);
 
   let currentModule: Module | null = null;
@@ -191,6 +197,7 @@ const ModuleButtons: React.FC<{
                     key={lesson.slug}
                     lessonId={lesson.id}
                     lessonNum={count}
+                    cameraMove={cameraMove || false}
                     moduleColor={item.color || 'white'}
                     lessonName={lesson.title}
                     lessonType={lesson.category.name}
@@ -205,6 +212,7 @@ const ModuleButtons: React.FC<{
               <Button3d
                 key={lesson.slug}
                 moduleColor={item.color || 'white'}
+                cameraMove={cameraMove || false}
                 lessonId={lesson.id}
                 lessonNum={count}
                 lessonName={lesson.title}
@@ -242,20 +250,22 @@ const Path: React.FC<{ points: Point[]; opacity?: number; onPathLength?: (length
   }
 
   return (
-    <mesh>
-      {/* @ts-expect-error type not register */}
-      <meshLineGeometry points={curvePoints} castShadow={true} />
-      {/* @ts-expect-error type not register */}
-      <meshLineMaterial
-        transparent
-        lineWidth={2}
-        color={new THREE.Color('white')}
-        depthWrite={false}
-        dashArray={dashArray}
-        dashRatio={0.5}
-        opacity={opacity}
-        toneMapped={false}
-      />
-    </mesh>
+    <>
+      <mesh>
+        {/* @ts-expect-error type not register */}
+        <meshLineGeometry points={curvePoints} castShadow={true} />
+        {/* @ts-expect-error type not register */}
+        <meshLineMaterial
+          transparent
+          lineWidth={2}
+          color={new THREE.Color('white')}
+          depthWrite={false}
+          dashArray={dashArray}
+          dashRatio={0.5}
+          opacity={opacity}
+          toneMapped={false}
+        />
+      </mesh>
+    </>
   );
 };
