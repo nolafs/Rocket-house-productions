@@ -152,6 +152,7 @@ type ModuleButtonPosition = {
   title: string;
   count: number;
   active?: boolean;
+  next?: boolean;
   module: Module | null;
   color: string;
   type: string;
@@ -208,6 +209,7 @@ const ModuleButtons: React.FC<{
               title: lesson.title,
               count,
               active: complete || next === count,
+              next: next === count,
               module: moduleSection,
               color: item.color || 'white',
               type: lesson.category.name,
@@ -257,6 +259,7 @@ const ModuleButtons: React.FC<{
               lessonId={button.id}
               lessonNum={button.count}
               active={button.active}
+              next={button.next}
               moduleColor={button.color || 'white'}
               lessonName={button.title}
               lessonType={button.type}
