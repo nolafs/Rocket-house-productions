@@ -5165,6 +5165,7 @@ __metadata:
     "@testing-library/react": "npm:15.0.6"
     "@types/file-saver": "npm:^2"
     "@types/jest": "npm:^29.4.0"
+    "@types/lodash": "npm:^4"
     "@types/node": "npm:18.16.9"
     "@types/react": "npm:18.3.1"
     "@types/react-dom": "npm:18.3.0"
@@ -5199,6 +5200,7 @@ __metadata:
     jest-environment-jsdom: "npm:^29.4.1"
     jest-environment-node: "npm:^29.4.1"
     leva: "npm:^0.9.35"
+    lodash: "npm:^4.17.21"
     lucide-react: "npm:^0.417.0"
     maath: "npm:^0.10.8"
     meshline: "npm:^3.3.1"
@@ -6389,6 +6391,13 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10c0/ff8f54fc49621210291f815fe5b15d809fd7d032941b3180743440bd507ecdf08b9e844625fa346af568c84bf34114eb378dcdc3e921a08ba1e2a08d7e3c809c
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4":
+  version: 4.17.7
+  resolution: "@types/lodash@npm:4.17.7"
+  checksum: 10c0/40c965b5ffdcf7ff5c9105307ee08b782da228c01b5c0529122c554c64f6b7168fc8f11dc79aa7bae4e67e17efafaba685dc3a47e294dbf52a65ed2b67100561
   languageName: node
   linkType: hard
 
