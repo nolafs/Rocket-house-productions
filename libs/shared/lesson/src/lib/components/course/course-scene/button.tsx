@@ -9,6 +9,7 @@ interface ButtonProps {
   rotation?: [number, number, number];
   position: [number, number, number];
   active?: boolean;
+  next?: boolean;
   lessonId: string;
   lessonNum: number;
   lessonName: string;
@@ -21,6 +22,7 @@ export const Button3d = ({
   rotation,
   position,
   active,
+  next,
   lessonNum,
   lessonId,
   lessonName,
@@ -67,7 +69,7 @@ export const Button3d = ({
   }
 
   if (!active) {
-    lessonTypeColor = '#8896ab';
+    lessonTypeColor = '#7182a1';
   }
 
   useFrame(state => {
@@ -112,6 +114,9 @@ export const Button3d = ({
       <Tooltip position={[0, toolTipY, 0]} isVisible={showTooltip} rotation={[0, 0, 0]} scale={0.5}>
         {lessonNum}. {lessonName}
       </Tooltip>
+
+      {next && <Svg src={'/images/course/next-msg-lesson.svg'} position={[5, 6, 0.6]} scale={0.04}></Svg>}
+
       <group rotation={[Math.PI / 2, 0, 0]} scale={lessonTypeSize}>
         {lessonProgress && <CompleteLessonIcon />}
         {lessonType === 'Dr Rhythm' && <DocIcon />}
