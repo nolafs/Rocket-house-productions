@@ -5,7 +5,6 @@ import * as THREE from 'three';
 import { Cloud, Clouds, Gltf, useGLTF } from '@react-three/drei';
 
 export const CloudCover = ({ ...props }) => {
-  const ref = useRef<THREE.Group | any>();
   const clouds = useGLTF('/images/course/cloud.glb');
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -13,7 +12,7 @@ export const CloudCover = ({ ...props }) => {
   const object: THREE.BufferGeometry = clouds.nodes.cloud.geometry as THREE.BufferGeometry;
 
   return (
-    <group ref={ref} {...props}>
+    <group {...props}>
       <mesh geometry={object} position={[25, 0, 0]} scale={0.1}>
         <meshStandardMaterial color={'#ffffff'} metalness={0} roughness={0.4} transparent={true} opacity={0.7} />
       </mesh>
