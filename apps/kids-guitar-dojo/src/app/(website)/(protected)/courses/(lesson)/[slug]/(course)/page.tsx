@@ -20,5 +20,5 @@ export default async function Page({ params }: PageProps) {
 
   const course = await getCourse({ courseSlug: params.slug });
 
-  return <CourseNavigationPage course={course} slug={params.slug} role={sessionClaims.role as string} />;
+  return <CourseNavigationPage course={course} slug={params.slug} role={sessionClaims.metadata.role as string} />;
 }

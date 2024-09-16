@@ -8,7 +8,6 @@ import { Landscape } from './course-scene/landscape';
 import { CameraController } from './course-scene/camera-control';
 import { Course } from '@prisma/client';
 import Clouds from './course-scene/cloud-scene';
-import { useModuleProgressStore } from '@rocket-house-productions/providers';
 import { Loader2 } from 'lucide-react';
 
 interface CourseNavigationProps {
@@ -32,8 +31,6 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
   }, [landscapeHeight]);
 
   const handleLoaded = (load: boolean) => {
-    //console.log('loaded');
-    console.log('loaded:', load);
     onLoaded && onLoaded(load);
   };
 
@@ -83,19 +80,28 @@ function Loader({ onCompleted }: LoaderProps) {
   const { active, progress, errors, item, loaded, total } = useProgress();
 
   useEffect(() => {
+    console.group('LOADER');
+    console.log('LOADER:', active);
+    console.log('LOADER PROGRESS:', progress);
+    console.log('LOADER ITEM:', item);
+    console.log('LOADER LOADED:', loaded);
+    console.log('LOADER TOTAL:', total);
+    console.groupEnd();
+
     if (loaded === total) {
       onCompleted(true);
-    } else {
-      ///onCompleted(false);
     }
   }, [loaded, total]);
 
   return (
     <Html fullscreen>
       <div className={'z-50 flex h-screen w-full flex-col items-center justify-center'}>
-        <div className={'flex flex-col justify-center'}>
+        <div className={'flex flex-col items-center justify-center'}>
           <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
-          <div className={'font-lesson-heading text-white'}>{Math.round(progress)} %</div>
+          <div className={'font-lesson-heading w-full text-center text-white'}>{Math.round(progress)} %</div>
+          <div className={'w-full text-center text-sm text-white'}>
+            Item: {loaded} / {total}
+          </div>
         </div>
       </div>
     </Html>
