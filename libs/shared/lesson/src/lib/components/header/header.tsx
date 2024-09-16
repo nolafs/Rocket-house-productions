@@ -37,9 +37,11 @@ export function Header({ childId, name, avatar, background = 'transparent' }: He
   return (
     <>
       <div
-        className={'fixed left-0 top-0 z-50 flex h-auto w-full flex-row justify-between p-4 transition-all'}
+        className={'fixed left-0 top-0 z-[99] flex h-auto w-full flex-row justify-between p-4 transition-all'}
         style={{ backgroundColor: getCurrentModule()?.color || background || 'transparent' }}>
-        <ScoreDisplay />
+        <div>
+          <ScoreDisplay />
+        </div>
         <div className={'flex items-center justify-center space-x-3'}>
           <div className={'hidden font-bold text-white md:block'}>{name}</div>
           <Dialog>
