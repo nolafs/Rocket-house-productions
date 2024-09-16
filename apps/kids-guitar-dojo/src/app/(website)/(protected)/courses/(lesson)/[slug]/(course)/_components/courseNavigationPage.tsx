@@ -1,6 +1,6 @@
 'use client';
 import {
-  CourseDebugNavigation,
+  CourseQuickNavigation,
   CourseLeaderboard,
   CourseLeaderboardServer,
   CourseNavigation,
@@ -39,7 +39,7 @@ export function CourseNavigationPage({ course, slug, role }: CourseNavigationPag
               <CourseLeaderboardServer slug={slug} />
             </CourseLeaderboard>
             <ModuleAttachments course={course} />
-            {role === 'admin' && <CourseDebugNavigation course={course} />}
+            <CourseQuickNavigation course={course} role={role} />
           </div>
         </div>
       )}
