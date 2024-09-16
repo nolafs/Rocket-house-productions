@@ -9,6 +9,7 @@ import { CameraController } from './course-scene/camera-control';
 import { Course } from '@prisma/client';
 import Clouds from './course-scene/cloud-scene';
 import { Loader2 } from 'lucide-react';
+import { CloudCover } from './course-scene/cloud-cover';
 
 interface CourseNavigationProps {
   course: Course & { modules: any[] };
@@ -64,6 +65,8 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
           <group position={[0, 0, -300]}>
             <Clouds width={80} height={300} depth={300} numClouds={100} />
           </group>
+
+          <CloudCover position={[0, 5, -30]} />
 
           <StatsGl />
 
