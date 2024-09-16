@@ -11,6 +11,7 @@ import Clouds from './cloud-scene';
 import { FinalScene } from './finish-scene';
 import { ModuleLabel } from './module-label';
 import CameraMovementTracker from './camerMoveTracker';
+import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -48,8 +49,7 @@ export const Landscape = ({
   ...rest
 }: LandscapeProps) => {
   const { width, height } = useThree(state => state.viewport);
-  const [pathPoints, setPathPoints] = useState<Point[]>([]);
-  const [pathLength, setPathLength] = useState<number>(0);
+  const [pathLength, setPathLength] = useState<number | null>(null);
   const [completedPath, setCompletedPath] = useState<Point[]>([]);
   const [currentLessonNumber, setCurrentLessonNumber] = useState(10);
   const scroll = useScroll();
@@ -61,7 +61,7 @@ export const Landscape = ({
   const [cameraMove, setCameraMove] = useState(false);
   const [ready, setReady] = useState(false);
 
-  console.log('LANDSCAPE MODULES:', modules);
+  console.log('LANDSCAPE MODULES: RENDER');
 
   const lessonNumber = useMemo(() => {
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
@@ -89,13 +89,6 @@ export const Landscape = ({
   });
 
   useEffect(() => {
-    if (pathPoints.length) {
-      const completedPath = pathPoints.slice(0, currentLessonNumber);
-      setCompletedPath(completedPath);
-    }
-  }, [pathPoints, currentLessonNumber]);
-
-  useEffect(() => {
     if (ready) {
       onReady && onReady(ready);
     }
@@ -121,8 +114,6 @@ export const Landscape = ({
   return (
     <>
       <group ref={ref} position={position} rotation={rotation} {...rest}>
-        <CloudCover position={[0, 5, -30]} />
-
         <Plane args={[20, 17]} position={[0, 3, -25.2]} scale={2} rotation={[0, 0, 0]}>
           <meshStandardMaterial map={guitar} color={0xffffff} transparent={true} metalness={0.4} />
         </Plane>
@@ -133,111 +124,154 @@ export const Landscape = ({
           <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
         </Plane>
 
-        <FretBoard
-          position={[0, 0, 0]}
-          lessonSpacing={lessonSpacing}
-          lessonNumber={lessonNumber}
-          pathLength={pathLength}
-        />
+        {pathLength && (
+          <>
+            <FretBoard
+              position={[0, 0, 0]}
+              lessonSpacing={lessonSpacing}
+              lessonNumber={lessonNumber}
+              pathLength={pathLength}
+            />
 
-        <FinalScene pathLength={pathLength} />
+            <FinalScene pathLength={pathLength} />
+          </>
+        )}
 
         <ModuleButtons
-          cameraMove={cameraMove}
           modulesSection={modules}
           lessonSpacing={lessonSpacing}
-          onButtonPositionsChange={setPathPoints}
+          onPathLength={length => setPathLength(length)}
         />
-
-        <group position={[0, 15, -24]}>
-          {/* Render the path based on button positions */}
-          {pathPoints.length > 0 && <Path points={pathPoints} opacity={0.5} onPathLength={setPathLength} />}
-          {completedPath.length > 0 && <Path points={completedPath} />}
-        </group>
       </group>
     </>
   );
 };
 
+type ModuleButtonPosition = {
+  id: string;
+  title: string;
+  count: number;
+  active?: boolean;
+  module: Module | null;
+  color: string;
+  type: string;
+  url: string;
+  position: Point;
+};
+
+type ModuleButtonDisplay = {
+  buttons: ModuleButtonPosition[];
+  total: number | null;
+  current: number | null;
+  next: number | null;
+};
+
 const ModuleButtons: React.FC<{
   modulesSection: ModuleSection[];
   lessonSpacing?: number;
-  onButtonPositionsChange: (positions: Point[]) => void;
-  cameraMove?: boolean;
-}> = ({ modulesSection, lessonSpacing = 7, onButtonPositionsChange, cameraMove }) => {
-  const [buttonPositions, setButtonPositions] = useState<Point[]>([]);
+  onPathLength: (length: number) => void;
+}> = ({ modulesSection, lessonSpacing = 7, onPathLength }) => {
+  const { getLessonCompleted, getLessonProgress } = useLessonProgressionStore(store => store);
 
-  let currentModule: Module | null = null;
+  const currentModule = useRef<Module | null>(null);
 
-  useEffect(() => {
-    // Update button positions when the modulesSection changes
-    const positions = modulesSection.reduce((acc: Point[], item, moduleIndex) => {
-      return [
-        ...acc,
-        ...item.lessons.map((lesson: Lesson, lessonIndex) => {
-          const count = acc.length + lessonIndex + 1;
-          return {
-            x: lessonIndex % 2 ? -1 : 1,
-            y: lessonSpacing * count,
-            z: 0,
-          };
-        }),
-      ];
-    }, []);
-    setButtonPositions(positions);
-    onButtonPositionsChange(positions);
-  }, [modulesSection, lessonSpacing, onButtonPositionsChange]);
+  const display = useMemo<ModuleButtonDisplay>(() => {
+    let current: number | null = null;
+    let next: number | null = null;
 
-  return (
-    <group position={[0, 15, -23.4]}>
-      {modulesSection.reduce((acc: JSX.Element[], item, moduleIndex) => {
+    const buttonList: ModuleButtonPosition[] = modulesSection.reduce(
+      (acc: ModuleButtonPosition[], item, moduleIndex) => {
         return [
           ...acc,
           ...item.lessons.map((lesson: LessonType, lessonIndex) => {
             const count = acc.length + lessonIndex + 1;
+            const complete = getLessonCompleted(lesson.id);
+            const progress = getLessonProgress(lesson.id);
+            let moduleSection = null;
 
-            if (currentModule?.id !== item.id) {
-              currentModule = item;
-              return (
-                <>
-                  <ModuleLabel
-                    key={item.slug}
-                    position={[0, lessonSpacing * count - 3.5, 0]}
-                    rotation={[0, 0, 0]}
-                    module={item}
-                  />
-                  <Button3d
-                    key={lesson.slug}
-                    lessonId={lesson.id}
-                    lessonNum={count}
-                    cameraMove={cameraMove || false}
-                    moduleColor={item.color || 'white'}
-                    lessonName={lesson.title}
-                    lessonType={lesson.category.name}
-                    lessonUrl={`/courses/kgd-book-1/modules/${item.slug}/lessons/${lesson.slug}`}
-                    position={[lessonIndex % 2 ? -1 : 1, lessonSpacing * count, 0]}
-                  />
-                </>
-              );
+            if (currentModule.current?.id !== item.id) {
+              currentModule.current = item;
+              moduleSection = item;
             }
 
-            return (
-              <Button3d
-                key={lesson.slug}
-                moduleColor={item.color || 'white'}
-                cameraMove={cameraMove || false}
-                lessonId={lesson.id}
-                lessonNum={count}
-                lessonName={lesson.title}
-                lessonType={lesson.category.name}
-                lessonUrl={`/courses/kgd-book-1/modules/${item.slug}/lessons/${lesson.slug}`}
-                position={[lessonIndex % 2 ? -1 : 1, lessonSpacing * count, 0]}
-              />
-            );
+            if (!complete) {
+              if (!current) {
+                current = count - 1;
+              }
+              if (!next) {
+                next = count;
+              }
+            }
+
+            return {
+              id: lesson.id,
+              title: lesson.title,
+              count,
+              active: complete || next === count,
+              module: moduleSection,
+              color: item.color || 'white',
+              type: lesson.category.name,
+              url: `/courses/kgd-book-1/modules/${item.slug}/lessons/${lesson.slug}`,
+              position: {
+                x: lessonIndex % 2 ? -1 : 1,
+                y: lessonSpacing * count,
+                z: 0,
+              },
+            };
           }),
         ];
-      }, [])}
-    </group>
+      },
+      [],
+    );
+
+    //console.log('MODULE BUTTONS POSITION:', buttonList);
+    return {
+      buttons: buttonList,
+      total: buttonList.length,
+      current,
+      next,
+    };
+  }, [modulesSection]);
+
+  if (display && display.buttons?.length === 0) {
+    return null;
+  }
+
+  const fullPath: Point[] = display.buttons?.map(p => p.position);
+  const completePath = fullPath.slice(0, display.current || 0);
+
+  return (
+    <>
+      <group position={[0, 15, -23.4]}>
+        {display.buttons?.map((button, index) => (
+          <group key={button.id}>
+            {button.module && (
+              <ModuleLabel
+                key={button.module.slug}
+                position={[0, lessonSpacing * button.count - 3.5, 0]}
+                rotation={[0, 0, 0]}
+                module={button.module}
+              />
+            )}
+            <Button3d
+              lessonId={button.id}
+              lessonNum={button.count}
+              active={button.active}
+              moduleColor={button.color || 'white'}
+              lessonName={button.title}
+              lessonType={button.type}
+              lessonUrl={button.url}
+              position={[button.position.x, button.position.y, button.position.x]}
+            />
+          </group>
+        ))}
+      </group>
+
+      <group position={[0, 15, -24.4]}>
+        {fullPath.length > 0 && <Path points={fullPath} opacity={0.5} onPathLength={length => onPathLength(length)} />}
+        {completePath.length > 0 && <Path points={completePath} />}
+      </group>
+    </>
   );
 };
 

@@ -8,25 +8,25 @@ import { useFrame } from '@react-three/fiber';
 interface ButtonProps {
   rotation?: [number, number, number];
   position: [number, number, number];
+  active?: boolean;
   lessonId: string;
   lessonNum: number;
   lessonName: string;
   lessonUrl: string;
   lessonType: string;
   moduleColor: string;
-  cameraMove: boolean;
 }
 
 export const Button3d = ({
   rotation,
   position,
+  active,
   lessonNum,
   lessonId,
   lessonName,
   lessonUrl,
   lessonType,
   moduleColor,
-  cameraMove,
   ...rest
 }: ButtonProps) => {
   const [hovered, hover] = useState(false);
@@ -66,15 +66,14 @@ export const Button3d = ({
       toolTipY = 2.3;
   }
 
+  if (!active) {
+    lessonTypeColor = '#8896ab';
+  }
+
   useFrame(state => {
     if (!button.current) return;
 
     if (mouseControl) return;
-
-    if (cameraMove) {
-      setShowTooltip(false);
-      return;
-    }
 
     const threshold = 2;
     const positionScreenSpace = button.current.position.clone().project(state.camera);
@@ -96,7 +95,9 @@ export const Button3d = ({
       rotation={rotation || [0, 0, 0]}
       {...rest}
       onClick={e => {
-        router.push(lessonUrl);
+        if (active) {
+          router.push(lessonUrl);
+        }
       }}
       onPointerOver={e => {
         setMouseControl(true);
@@ -114,11 +115,9 @@ export const Button3d = ({
       <group rotation={[Math.PI / 2, 0, 0]} scale={lessonTypeSize}>
         {lessonProgress && <CompleteLessonIcon />}
         {lessonType === 'Dr Rhythm' && <DocIcon />}
-        <Svg
-          src={'/images/course/arrow.svg'}
-          position={[-0.45, 0.5, 0.65]}
-          rotation={[Math.PI / 2, 0, 0]}
-          scale={0.04}></Svg>
+        <Svg src={'/images/course/arrow.svg'} position={[-0.45, 0.5, 0.65]} rotation={[Math.PI / 2, 0, 0]} scale={0.04}>
+          <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} opacity={!active ? 0.5 : 1} />
+        </Svg>
         <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.009} castShadow={true}>
           <meshStandardMaterial color={!hovered ? lessonTypeColor : '#bd1368'} metalness={0} roughness={0.4} />
         </mesh>
