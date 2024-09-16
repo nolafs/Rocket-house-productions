@@ -39,9 +39,11 @@ export default async function Layout({ children, params }: LayoutProps) {
   }
 
   return (
-    <ScrollToProvider>
-      <LessonData lesson={data.lesson.id} module={data.module} />
-      {children}
-    </ScrollToProvider>
+    <div className={'min-h-screen bg-white'}>
+      <ScrollToProvider>
+        <LessonData lesson={data.lesson.id} module={data.module} />
+        {children}
+      </ScrollToProvider>
+    </div>
   );
 }
