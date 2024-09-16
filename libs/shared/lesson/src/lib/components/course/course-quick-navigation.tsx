@@ -21,12 +21,12 @@ import cn from 'classnames';
 import Image from 'next/image';
 import ButtonDownloadPdf from '../button-download-pdf';
 
-interface CourseDebugNavigationProps {
+interface CourseQuickNavigationProps {
   course: any;
   role?: string;
 }
 
-export function CourseDebugNavigation({ course, role }: CourseDebugNavigationProps) {
+export function CourseQuickNavigation({ course, role }: CourseQuickNavigationProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -144,4 +144,4 @@ export function CourseDebugNavigation({ course, role }: CourseDebugNavigationPro
   );
 }
 
-export default CourseDebugNavigation;
+export default CourseQuickNavigation;
