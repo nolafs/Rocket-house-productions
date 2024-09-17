@@ -28,10 +28,10 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
-      <Canvas className={'fixed h-screen w-full'} shadows={'soft'} camera={{ position: [0, 0, 130], fov: 15 }}>
+      <Canvas className={'fixed h-screen w-full'} shadows camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[200, 500, 200]} intensity={4} castShadow={true}></directionalLight>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[200, 500, 200]} intensity={4} castShadow></directionalLight>
 
           <Box args={[5, 5, 5]} position={[200, 500, 200]} material-color="hotpink" />
 

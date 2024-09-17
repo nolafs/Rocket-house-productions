@@ -153,8 +153,8 @@ export const Landscape = ({
   return (
     <>
       <group ref={ref} position={position} rotation={rotation} {...rest}>
-        <Plane args={[20, 17]} position={[0, 3, -25.2]} scale={2} rotation={[0, 0, 0]}>
-          <meshStandardMaterial map={guitar} transparent={true} metalness={0.4} />
+        <Plane args={[20, 17]} position={[0, 3, -25.2]} scale={2} rotation={[0, 0, 0]} receiveShadow>
+          <meshPhongMaterial map={guitar} transparent={true} side={THREE.DoubleSide} />
         </Plane>
         <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
           <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
