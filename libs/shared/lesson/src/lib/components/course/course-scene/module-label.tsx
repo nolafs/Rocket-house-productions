@@ -10,10 +10,11 @@ interface ModuleLabelProps {
 export const ModuleLabel = ({ position, rotation, module, ...rest }: ModuleLabelProps) => {
   return (
     <group position={position} rotation={rotation} {...rest}>
-      <Center rotation={[-0.1, 0, 0]}>
-        <RoundedBox args={[8, 2, 1]} position={[0, 0, 0]} bevelSegments={4} radius={0.3}>
-          <Center rotation={[0, 0, 0]} position={[0, -0, 1]}>
+      <Center rotation={[0, 0, 0]}>
+        <RoundedBox args={[8, 2, 1]} position={[0, 0, 0]} bevelSegments={4} radius={0.3} castShadow receiveShadow>
+          <Center rotation={[0, 0, 0]} position={[0, 0, 0.4]}>
             <Text3D
+              castShadow={true}
               font={'/images/course/font.json'}
               curveSegments={32}
               bevelEnabled
