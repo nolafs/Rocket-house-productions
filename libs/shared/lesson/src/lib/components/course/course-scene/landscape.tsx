@@ -120,7 +120,7 @@ export const Landscape = ({
       const size = new THREE.Vector3();
       box.getSize(size);
 
-      console.log('CALCULATING PAGE HEIGHT:', cameraHeight, pathLength, size.y, size.y / cameraHeight);
+      console.log('CALCULATING PAGE HEIGHT:', size.y / cameraHeight);
 
       return Math.ceil(size.y / cameraHeight);
     }
