@@ -70,12 +70,14 @@ export const Landscape = ({
     state.camera.position.z = 130 - scroll.range(0, 1 / scroll.pages) * 60;
     state.camera.position.y = scroll.offset * (height * scroll.pages);
 
-    /*
-    state.camera.position.x = state.mouse.x * 0.02;
-    state.camera.rotation.y = state.mouse.x * 0.02;
-    state.camera.rotation.x = state.mouse.y * 0.02;
+    const { pointer } = state;
+    // Rotate the camera around its own center based on pointer movement
+    const rotationSpeed = 0.01; // Adjust this for sensitivity
+    state.camera.rotation.y = THREE.MathUtils.lerp(state.camera.rotation.y, pointer.x * rotationSpeed, 0.1); // Left/right rotation
+    state.camera.rotation.x = THREE.MathUtils.lerp(state.camera.rotation.x, pointer.y * rotationSpeed, 0.1); // Up/down rotation
 
-     */
+    // Ensure you don't rotate too far (optional, to avoid flipping the camera)
+    state.camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, state.camera.rotation.x)); // Clamp x-axis rotation to avoid flipping
 
     if (!camera.current) {
       camera.current = state.camera as THREE.PerspectiveCamera;
