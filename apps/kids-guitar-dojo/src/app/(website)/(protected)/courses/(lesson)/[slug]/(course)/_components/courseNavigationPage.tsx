@@ -3,12 +3,17 @@ import {
   CourseQuickNavigation,
   CourseLeaderboard,
   CourseLeaderboardServer,
-  CourseNavigation,
   LessonCourseProgression,
   ModuleAttachments,
 } from '@rocket-house-productions/lesson';
 import { Course } from '@prisma/client';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
+
+const CourseNavigation = dynamic(
+  () => import('@rocket-house-productions/lesson').then(module => module.CourseNavigation),
+  { ssr: false }, // Optional: Disable SSR if necessary
+);
 
 interface CourseNavigationPageProps {
   course: Course & { modules: any[] };
@@ -25,7 +30,7 @@ export function CourseNavigationPage({ course, slug, role }: CourseNavigationPag
 
   return (
     <>
-      <div id="course-nav" className={'relative h-svh w-full'}>
+      <div id="course-nav" className={'relative h-screen w-full'}>
         <CourseNavigation course={course} onLoaded={loaded => handleLoaded(loaded)} />
       </div>
       {ready && (

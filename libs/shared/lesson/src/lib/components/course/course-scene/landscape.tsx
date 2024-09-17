@@ -1,12 +1,21 @@
 import * as THREE from 'three';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Plane, useScroll, useTexture } from '@react-three/drei';
+import { Plane, useCamera, useScroll, useTexture } from '@react-three/drei';
 
 import { useFrame, useThree, extend } from '@react-three/fiber';
 import { FretBoard } from './fretboard';
 import { Lesson, Module } from '@prisma/client';
 import { FinalScene } from './finish-scene';
-import ModulePath from './module-path';
+import ModulePath, { ModuleButtonDisplay } from './module-path';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+gsap.registerPlugin(ScrollTrigger);
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+gsap.registerPlugin(useGSAP);
+
+gsap.registerPlugin(ScrollToPlugin);
 
 type LessonType = Lesson & { category: { name: string } };
 
@@ -19,18 +28,10 @@ interface LandscapeProps {
   lessonSpacing: number;
   onLandscapeHeightChange?: (height: number) => void;
   onReady?: (ready: boolean) => void;
+  container?: Element | null;
 }
 
-interface Point {
-  x: number;
-  y: number;
-  z: number;
-}
-
-const calculateCameraHeight = (camera: THREE.PerspectiveCamera) => {
-  const frustumHeight = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
-  return frustumHeight;
-};
+const SCROLL_FACTOR = 50;
 
 export const Landscape = ({
   modules,
@@ -39,13 +40,12 @@ export const Landscape = ({
   position,
   onLandscapeHeightChange,
   onReady,
+  container,
   ...rest
 }: LandscapeProps) => {
-  const { width, height } = useThree(state => state.viewport);
-  const [cameraHeight, setCameraHeight] = useState<number | null>(null);
   const [pathLength, setPathLength] = useState<number | null>(null);
+  const [currentLesson, setCurrentLesson] = useState<number>(0);
 
-  const scroll = useScroll();
   const guitar = useTexture('/images/course/guitar.png');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
@@ -59,6 +59,72 @@ export const Landscape = ({
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
   }, modules);
 
+  const { contextSafe } = useGSAP(
+    () => {
+      if (!container) {
+        return;
+      }
+
+      if (pathLength === null) {
+        return;
+      }
+
+      if (!camera.current) {
+        return;
+      }
+
+      ScrollTrigger.killAll();
+
+      const tl = gsap.timeline();
+      //const zoomTl = gsap.timeline();
+
+      tl.to(camera.current.position, {
+        z: 70,
+        y: 20,
+        duration: 0.2,
+        ease: 'none',
+      });
+
+      tl.to(camera.current.position, {
+        y: pathLength,
+        duration: 1,
+        ease: 'none',
+      });
+
+      ScrollTrigger.create({
+        animation: tl,
+        trigger: container,
+        pin: true,
+        scrub: 1,
+        end: `+=${pathLength * SCROLL_FACTOR} `,
+      });
+
+      // Calculate scrollto position using camera and currentLesson y position
+
+      if (typeof window !== 'undefined') {
+        gsap.to(window, {
+          duration: 3,
+          scrollTo: { y: (currentLesson + 10) * SCROLL_FACTOR },
+          delay: 3,
+          ease: 'Power2.inOut',
+        });
+      }
+
+      return () => {
+        ScrollTrigger.killAll();
+      };
+    },
+    { scope: container as Element, dependencies: [pathLength, currentLesson, camera] },
+  );
+
+  const handleUpdate = contextSafe((data: ModuleButtonDisplay) => {
+    if (!data.pathLength) {
+      return;
+    }
+    setPathLength(data?.pathLength);
+    setCurrentLesson(data.buttons[data.next || 0].position.y);
+  });
+
   useEffect(() => {
     if (ready) {
       onReady && onReady(ready);
@@ -66,10 +132,6 @@ export const Landscape = ({
   }, [ready]);
 
   useFrame((state, delta) => {
-    //ref.current.position.y = -(scroll.offset * (height * scroll.pages));
-    state.camera.position.z = 130 - scroll.range(0, 1 / scroll.pages) * 60;
-    state.camera.position.y = scroll.offset * (height * scroll.pages);
-
     const { pointer } = state;
     // Rotate the camera around its own center based on pointer movement
     const rotationSpeed = 0.01; // Adjust this for sensitivity
@@ -87,52 +149,6 @@ export const Landscape = ({
       setReady(true);
     }
   });
-
-  useEffect(() => {
-    if (!camera.current) return; // Ensure camera exists before adding listener
-
-    const handleResize = () => {
-      if (camera.current) {
-        if (camera.current) {
-          camera.current.aspect = width / height;
-          camera.current.updateProjectionMatrix(); // Always update projection matrix
-          const cameraHeight = calculateCameraHeight(camera.current);
-          setCameraHeight(cameraHeight);
-        }
-      }
-    };
-
-    // Initial call
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [camera.current, width, height]); // Ensure camera, width, and height are stable dependencies
-
-  const pageHeight = useMemo(() => {
-    if (pathLength !== null && cameraHeight && ref.current && camera.current) {
-      const box = new THREE.Box3();
-      box.setFromObject(ref.current);
-      const size = new THREE.Vector3();
-      box.getSize(size);
-
-      console.log('CALCULATING PAGE HEIGHT:', size.y / cameraHeight);
-
-      return Math.ceil(size.y / cameraHeight);
-    }
-    return null; // Return null if conditions are not met
-  }, [cameraHeight, ref.current, camera.current, pathLength]);
-
-  // Trigger callback if pageHeight exists
-  useEffect(() => {
-    if (pageHeight) {
-      onLandscapeHeightChange && onLandscapeHeightChange(pageHeight);
-    }
-  }, [pageHeight, onLandscapeHeightChange]);
 
   return (
     <>
@@ -160,11 +176,7 @@ export const Landscape = ({
           </>
         )}
 
-        <ModulePath
-          modulesSection={modules}
-          lessonSpacing={lessonSpacing}
-          onPathLength={length => setPathLength(length)}
-        />
+        <ModulePath modulesSection={modules} lessonSpacing={lessonSpacing} onUpdated={data => handleUpdate(data)} />
       </group>
     </>
   );

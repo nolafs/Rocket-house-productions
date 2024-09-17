@@ -19,26 +19,15 @@ interface CourseNavigationProps {
 const LESSON_SPACING = 7;
 
 export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
-  const [pages, setPages] = useState(1); // Default to 1 page
-  const containerRef = useRef<HTMLCanvasElement>(null);
-  const [landscapeHeight, setLandscapeHeight] = useState(0);
-  const { active } = useProgress();
-
-  // Calculate number of pages when viewportHeight or totalHeight changes
-  useEffect(() => {
-    if (landscapeHeight > 0) {
-      //console.log('landscapeHeight:', landscapeHeight);
-      setPages(landscapeHeight);
-    }
-  }, [landscapeHeight]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const handleLoaded = (load: boolean) => {
     onLoaded && onLoaded(load);
   };
 
   return (
-    <>
-      <Canvas ref={containerRef} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
+    <div ref={containerRef} className={'relative h-screen w-full'}>
+      <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={1} />
           <directionalLight position={[100, 200, 200]} intensity={4} castShadow />
@@ -52,15 +41,13 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
             rayleigh={4}
           />
 
-          <ScrollControls damping={0.2} pages={pages}>
-            <Landscape
-              onLandscapeHeightChange={setLandscapeHeight}
-              lessonSpacing={LESSON_SPACING}
-              position={[0, 0, 0]}
-              modules={course.modules}
-              onReady={load => handleLoaded(load)}
-            />
-          </ScrollControls>
+          <Landscape
+            lessonSpacing={LESSON_SPACING}
+            position={[0, 0, 0]}
+            container={containerRef?.current}
+            modules={course.modules}
+            onReady={load => handleLoaded(load)}
+          />
 
           <group position={[0, 0, -300]}>
             <Clouds width={80} height={300} depth={300} numClouds={100} />
@@ -73,7 +60,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
           <Preload />
         </Suspense>
       </Canvas>
-    </>
+    </div>
   );
 }
 
