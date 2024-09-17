@@ -188,7 +188,7 @@ const Path: React.FC<{
     if (points.length < 2) return null;
 
     const threePoints = points.map(p => new THREE.Vector3(p.x, p.y, p.z));
-    const curve = new THREE.CatmullRomCurve3(threePoints, false, 'catmullrom', 0.0001);
+    const curve = new THREE.CatmullRomCurve3(threePoints);
 
     // Generate points along the curve
     const curvePoints = curve.getPoints(300); // 300 segments for smoothness
