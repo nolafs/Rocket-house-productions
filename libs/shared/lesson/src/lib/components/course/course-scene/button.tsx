@@ -1,4 +1,4 @@
-import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text, useTexture } from '@react-three/drei';
+import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text, useTexture, Center } from '@react-three/drei';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
@@ -123,7 +123,7 @@ export const Button3d = ({
         <Svg src={'/images/course/arrow.svg'} position={[-0.45, 0.5, 0.65]} rotation={[Math.PI / 2, 0, 0]} scale={0.04}>
           <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} opacity={!active ? 0.5 : 1} />
         </Svg>
-        <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.009} castShadow={true}>
+        <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.009} castShadow>
           <meshStandardMaterial color={!hovered ? lessonTypeColor : '#bd1368'} metalness={0} roughness={0.4} />
         </mesh>
       </group>
@@ -141,7 +141,7 @@ const CompleteLessonIcon = () => {
         position={[0.6, 1.2, -1.4]}
         rotation={[-Math.PI / 2, 0, 0]}
       />
-      <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.003} position={[1, 1, -1]} castShadow={true}>
+      <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.003} position={[1, 1, -1]} castShadow>
         <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} />
       </mesh>
     </group>
