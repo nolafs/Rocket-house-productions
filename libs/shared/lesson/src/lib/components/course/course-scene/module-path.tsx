@@ -1,6 +1,6 @@
 import { Lesson, Module } from '@prisma/client';
 import * as THREE from 'three';
-import React, { useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
@@ -31,19 +31,21 @@ type ModuleButtonPosition = {
   position: Point;
 };
 
-type ModuleButtonDisplay = {
+export type ModuleButtonDisplay = {
   buttons: ModuleButtonPosition[];
   total: number | null;
   current: number | null;
   next: number | null;
+  pathLength?: number | null;
 };
 
 export const ModulePath: React.FC<{
   modulesSection: ModuleSection[];
   lessonSpacing?: number;
-  onPathLength: (length: number) => void;
-}> = ({ modulesSection, lessonSpacing = 7, onPathLength }) => {
+  onUpdated?: (data: ModuleButtonDisplay) => void;
+}> = ({ modulesSection, lessonSpacing = 7, onUpdated }) => {
   const { getLessonCompleted, getLessonProgress } = useLessonProgressionStore(store => store);
+  const [pathLength, setPathLength] = React.useState<number | null>(null);
 
   const currentModule = useRef<Module | null>(null);
 
@@ -106,6 +108,15 @@ export const ModulePath: React.FC<{
     };
   }, [modulesSection]);
 
+  useEffect(() => {
+    if (!display) return;
+    if (pathLength === null) return;
+
+    console.log('MODULE BUTTONS DISPLAY:', display, pathLength);
+
+    onUpdated && onUpdated({ ...display, pathLength });
+  }, [display, pathLength]);
+
   if (display && display.buttons?.length === 0) {
     return null;
   }
@@ -143,7 +154,7 @@ export const ModulePath: React.FC<{
 
       <group position={[0, 15, -24.4]}>
         {fullPath.length > 0 && (
-          <Path points={fullPath} opacity={0.8} color={'0x8896AB'} onPathLength={length => onPathLength(length)} />
+          <Path points={fullPath} opacity={0.8} color={'0x8896AB'} onPathLength={length => setPathLength(length)} />
         )}
         {completePath.length > 0 && <Path points={completePath} />}
       </group>
