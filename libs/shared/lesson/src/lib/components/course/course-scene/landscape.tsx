@@ -154,7 +154,7 @@ export const Landscape = ({
     <>
       <group ref={ref} position={position} rotation={rotation} {...rest}>
         <Plane args={[20, 17]} position={[0, 3, -25.2]} scale={2} rotation={[0, 0, 0]}>
-          <meshStandardMaterial map={guitar} color={0xffffff} transparent={true} metalness={0.4} />
+          <meshStandardMaterial map={guitar} transparent={true} metalness={0.4} />
         </Plane>
         <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
           <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />

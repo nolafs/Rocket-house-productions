@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { Html, Preload, ScrollControls, Sky, StatsGl, useProgress } from '@react-three/drei';
+import { Box, Helper, Html, Plane, Preload, ScrollControls, Sky, StatsGl, useProgress } from '@react-three/drei';
 import { GridPlane } from './course-scene/grid-plane';
 import { Landscape } from './course-scene/landscape';
 import { CameraController } from './course-scene/camera-control';
@@ -10,6 +10,7 @@ import { Course } from '@prisma/client';
 import Clouds from './course-scene/cloud-scene';
 import { Loader2 } from 'lucide-react';
 import { CloudCover } from './course-scene/cloud-cover';
+import { BoxHelper } from 'three';
 
 interface CourseNavigationProps {
   course: Course & { modules: any[] };
@@ -27,18 +28,21 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
-      <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
+      <Canvas className={'fixed h-screen w-full'} shadows={'soft'} camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
-          <ambientLight intensity={1} />
-          <directionalLight position={[100, 200, 200]} intensity={4} castShadow />
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[200, 500, 200]} intensity={4} castShadow={true}></directionalLight>
+
+          <Box args={[5, 5, 5]} position={[200, 500, 200]} material-color="hotpink" />
+
           <Sky
             distance={3000}
-            sunPosition={[0, 0, -100]}
+            sunPosition={[0, 0, 100]}
             mieDirectionalG={0.022}
             inclination={0.25}
             azimuth={0.45}
             turbidity={10}
-            rayleigh={4}
+            rayleigh={1}
           />
 
           <Landscape
@@ -49,14 +53,14 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
             onReady={load => handleLoaded(load)}
           />
 
-          <group position={[0, 0, -300]}>
+          <group position={[0, 300, -300]}>
             <Clouds width={80} height={300} depth={300} numClouds={100} />
           </group>
 
           <CloudCover position={[0, 5, -30]} />
 
           <StatsGl />
-
+          <CameraController />
           <Preload />
         </Suspense>
       </Canvas>
