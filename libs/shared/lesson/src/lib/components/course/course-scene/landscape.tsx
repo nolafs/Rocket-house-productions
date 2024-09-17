@@ -118,14 +118,9 @@ export const Landscape = ({
   );
 
   const handleUpdate = contextSafe((data: ModuleButtonDisplay) => {
-    console.log('LANDSCAPE MODULES: UPDATED', data);
-
     if (!data.pathLength) {
       return;
     }
-
-    console.log('LANDSCAPE MODULES: UPDATED', data);
-
     setPathLength(data?.pathLength);
     setCurrentLesson(data.buttons[data.next || 0].position.y);
   });
