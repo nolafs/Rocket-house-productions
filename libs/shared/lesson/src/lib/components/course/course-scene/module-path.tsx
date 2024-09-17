@@ -5,9 +5,16 @@ import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
-import { extend } from '@react-three/fiber';
+import { extend, Object3DNode, MaterialNode } from '@react-three/fiber';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
+
+declare module '@react-three/fiber' {
+  interface ThreeElements {
+    meshLineGeometry: Object3DNode<MeshLineGeometry, typeof MeshLineGeometry>;
+    meshLineMaterial: MaterialNode<MeshLineMaterial, typeof MeshLineMaterial>;
+  }
+}
 
 type LessonType = Lesson & { category: { name: string } };
 type ModuleSection = Module & { lessons: LessonType[] };
@@ -126,13 +133,13 @@ export const ModulePath: React.FC<{
 
   return (
     <>
-      <group position={[0, 15, -23.4]}>
+      <group position={[0, 15, -24]}>
         {display.buttons?.map((button, index) => (
           <group key={button.id}>
             {button.module && (
               <ModuleLabel
                 key={button.module.slug}
-                position={[0, lessonSpacing * button.count - 3.5, 0]}
+                position={[0, lessonSpacing * button.count - 3.5, -0.7]}
                 rotation={[0, 0, 0]}
                 module={button.module}
               />
@@ -146,20 +153,25 @@ export const ModulePath: React.FC<{
               lessonName={button.title}
               lessonType={button.type}
               lessonUrl={button.url}
-              position={[button.position.x, button.position.y, button.position.x]}
+              position={[button.position.x, button.position.y, button.position.z]}
             />
           </group>
         ))}
       </group>
 
-      <group position={[0, 15, -24.4]}>
+      <group position={[0, 15, -24.6]}>
         {fullPath.length > 0 && (
-          <Path points={fullPath} opacity={0.8} color={'0x8896AB'} onPathLength={length => setPathLength(length)} />
+          <Path points={fullPath} opacity={0.8} color={'#8896AB'} onPathLength={length => setPathLength(length)} />
         )}
-        {completePath.length > 0 && <Path points={completePath} />}
       </group>
+      <group position={[0, 15, -24.5]}>{completePath.length > 0 && <Path points={completePath} />}</group>
     </>
   );
+};
+
+type CurvePath = {
+  curvePoints: THREE.Vector3[];
+  length: number;
 };
 
 const Path: React.FC<{
@@ -169,38 +181,53 @@ const Path: React.FC<{
   onPathLength?: (length: number) => void;
 }> = ({ points, opacity = 1, color = 'white', onPathLength }) => {
   // Ensure there are enough points to create a line
-  if (points.length < 2) return null;
 
-  // Convert points to Vector3 and create a curve
-  const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(p.x, p.y, p.z)));
+  const [pathLength, setPathLength] = React.useState<number | null>(null);
 
-  // Generate points along the curve
-  const curvePoints = curve.getPoints(300); // 300 segments for smoothness
+  const curvePath: CurvePath | null = useMemo(() => {
+    if (points.length < 2) return null;
 
-  const pathLength = curve.getLength();
-  const dashArray = 1 / pathLength;
+    const threePoints = points.map(p => new THREE.Vector3(p.x, p.y, p.z));
+    const curve = new THREE.CatmullRomCurve3(threePoints, false, 'catmullrom', 0.0001);
 
-  if (onPathLength) {
-    onPathLength(pathLength);
-  }
+    // Generate points along the curve
+    const curvePoints = curve.getPoints(300); // 300 segments for smoothness
+
+    console.log('CURVE POINTS:', curvePoints.length);
+    console.log('curve:', curve.getLength());
+
+    return {
+      curvePoints,
+      length: curve.getLength(),
+    };
+  }, [points]);
+
+  useEffect(() => {
+    if (!curvePath) return;
+    setPathLength(curvePath.length);
+    onPathLength && onPathLength(curvePath.length);
+  }, [curvePath]);
 
   return (
     <>
-      <mesh>
-        {/* @ts-expect-error type not register */}
-        <meshLineGeometry points={curvePoints} castShadow={true} />
-        {/* @ts-expect-error type not register */}
-        <meshLineMaterial
-          transparent
-          lineWidth={2}
-          color={new THREE.Color(color)}
-          depthWrite={false}
-          dashArray={dashArray}
-          dashRatio={0.5}
-          opacity={opacity}
-          toneMapped={false}
-        />
-      </mesh>
+      {pathLength && (
+        <mesh>
+          {/* @ts-expect-error type not register */}
+          <meshLineGeometry points={curvePath.curvePoints} castShadow={true} />
+
+          <meshLineMaterial
+            transparent
+            lineWidth={1.5}
+            color={new THREE.Color(color)}
+            depthWrite={false}
+            dashArray={1 / pathLength}
+            dashRatio={0.4}
+            opacity={opacity}
+            sizeAttenuation={1}
+            toneMapped={false}
+          />
+        </mesh>
+      )}
     </>
   );
 };

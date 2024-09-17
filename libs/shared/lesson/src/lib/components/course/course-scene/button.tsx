@@ -1,4 +1,4 @@
-import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text, useTexture } from '@react-three/drei';
+import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text, useTexture, Center } from '@react-three/drei';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
