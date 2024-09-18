@@ -6,6 +6,7 @@ import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { extend, Object3DNode, MaterialNode } from '@react-three/fiber';
+import { LessonButton, LessonType, ModuleSection } from './course.types';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -16,9 +17,6 @@ declare module '@react-three/fiber' {
   }
 }
 
-type LessonType = Lesson & { category: { name: string } };
-type ModuleSection = Module & { lessons: LessonType[] };
-
 interface Point {
   x: number;
   y: number;
@@ -27,14 +25,15 @@ interface Point {
 
 type ModuleButtonPosition = {
   id: string;
-  title: string;
+  name: string;
   count: number;
   active?: boolean;
   next?: boolean;
   module: Module | null;
+  moduleSlug: string;
   color: string;
   type: string;
-  url: string;
+  slug: string;
   position: Point;
 };
 
@@ -50,7 +49,8 @@ export const ModulePath: React.FC<{
   modulesSection: ModuleSection[];
   lessonSpacing?: number;
   onUpdated?: (data: ModuleButtonDisplay) => void;
-}> = ({ modulesSection, lessonSpacing = 7, onUpdated }) => {
+  onOpenLesson?: (lesson: LessonButton) => void;
+}> = ({ modulesSection, lessonSpacing = 7, onUpdated, onOpenLesson }) => {
   const { getLessonCompleted, getLessonProgress } = useLessonProgressionStore(store => store);
   const [pathLength, setPathLength] = React.useState<number | null>(null);
 
@@ -67,7 +67,7 @@ export const ModulePath: React.FC<{
           ...item.lessons.map((lesson: LessonType, lessonIndex) => {
             const count = acc.length + lessonIndex + 1;
             const complete = getLessonCompleted(lesson.id);
-            const progress = getLessonProgress(lesson.id);
+
             let moduleSection = null;
 
             if (currentModule.current?.id !== item.id) {
@@ -86,14 +86,15 @@ export const ModulePath: React.FC<{
 
             return {
               id: lesson.id,
-              title: lesson.title,
+              name: lesson.title,
               count,
               active: complete || next === count,
               next: next === count,
               module: moduleSection,
               color: item.color || 'white',
               type: lesson.category.name,
-              url: `/courses/kgd-book-1/modules/${item.slug}/lessons/${lesson.slug}`,
+              slug: lesson.slug || '',
+              moduleSlug: item.slug || '',
               position: {
                 x: lessonIndex % 2 ? -1 : 1,
                 y: lessonSpacing * count,
@@ -128,8 +129,11 @@ export const ModulePath: React.FC<{
     return null;
   }
 
+  const lessonCurrent = display.current || 0;
+
   const fullPath: Point[] = display.buttons?.map(p => p.position);
-  const completePath = fullPath.slice(0, display.current || 0);
+  const unCompletePath = fullPath.slice(lessonCurrent - 1 || 0);
+  const completePath = fullPath.slice(0, lessonCurrent);
 
   return (
     <>
@@ -145,14 +149,18 @@ export const ModulePath: React.FC<{
               />
             )}
             <Button3d
-              lessonId={button.id}
-              lessonNum={button.count}
+              onOpenLesson={lesson => onOpenLesson && onOpenLesson(lesson)}
+              lesson={{
+                id: button.id,
+                num: button.count,
+                name: button.name,
+                type: button.type,
+                slug: button.slug,
+                moduleSlug: button.moduleSlug,
+                color: button.color,
+              }}
               active={button.active}
               next={button.next}
-              moduleColor={button.color || 'white'}
-              lessonName={button.title}
-              lessonType={button.type}
-              lessonUrl={button.url}
               position={[button.position.x, button.position.y, button.position.z]}
             />
           </group>
@@ -161,10 +169,13 @@ export const ModulePath: React.FC<{
 
       <group position={[0, 15, -24.6]}>
         {fullPath.length > 0 && (
-          <Path points={fullPath} opacity={0.8} color={'#8896AB'} onPathLength={length => setPathLength(length)} />
+          <Path points={fullPath} opacity={0.0} color={'#8896AB'} onPathLength={length => setPathLength(length)} />
         )}
       </group>
       <group position={[0, 15, -24.5]}>{completePath.length > 0 && <Path points={completePath} />}</group>
+      <group position={[0, 15, -24.5]}>
+        {unCompletePath.length > 0 && <Path points={unCompletePath} color={'#8896AB'} />}
+      </group>
     </>
   );
 };

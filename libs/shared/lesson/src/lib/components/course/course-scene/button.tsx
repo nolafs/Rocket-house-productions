@@ -1,55 +1,37 @@
 import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text, useTexture, Center } from '@react-three/drei';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import * as THREE from 'three';
 import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { useFrame } from '@react-three/fiber';
+import { LessonButton, LessonType } from './course.types';
 
 interface ButtonProps {
   rotation?: [number, number, number];
   position: [number, number, number];
   active?: boolean;
   next?: boolean;
-  lessonId: string;
-  lessonNum: number;
-  lessonName: string;
-  lessonUrl: string;
-  lessonType: string;
-  moduleColor: string;
+  lesson: LessonButton;
+  onOpenLesson: (lesson: LessonButton) => void;
 }
 
-export const Button3d = ({
-  rotation,
-  position,
-  active,
-  next,
-  lessonNum,
-  lessonId,
-  lessonName,
-  lessonUrl,
-  lessonType,
-  moduleColor,
-  ...rest
-}: ButtonProps) => {
+export const Button3d = ({ rotation, position, active, next, lesson, onOpenLesson, ...rest }: ButtonProps) => {
   const [hovered, hover] = useState(false);
   const [mouseControl, setMouseControl] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
   useCursor(hovered);
   const button = useRef<THREE.Group>(null);
-
-  const router = useRouter();
   const { nodes } = useGLTF('/images/course/button.gltf');
-  const lessonProgress = useLessonProgressionStore(store => store.getLessonCompleted(lessonId));
+  const lessonProgress = useLessonProgressionStore(store => store.getLessonCompleted(lesson.id));
 
   let lessonTypeSize = 1;
   let lessonTypeColor = '#c17e0c';
   let toolTipY = 2.3;
 
-  switch (lessonType) {
+  switch (lesson.type) {
     case 'Lesson':
       lessonTypeSize = 1;
-      lessonTypeColor = moduleColor;
+      lessonTypeColor = lesson.color;
       toolTipY = 2.3;
       break;
     case 'Dr Rhythm':
@@ -59,7 +41,7 @@ export const Button3d = ({
       break;
     case 'Practice':
       lessonTypeSize = 0.5;
-      lessonTypeColor = moduleColor;
+      lessonTypeColor = lesson.color;
       toolTipY = 1.6;
       break;
     default:
@@ -98,7 +80,8 @@ export const Button3d = ({
       {...rest}
       onClick={e => {
         if (active) {
-          router.push(lessonUrl);
+          //router.push(lessonUrl);
+          onOpenLesson(lesson);
         }
       }}
       onPointerOver={e => {
@@ -112,14 +95,14 @@ export const Button3d = ({
         setShowTooltip(false);
       }}>
       <Tooltip position={[0, toolTipY, 0]} isVisible={showTooltip} rotation={[0, 0, 0]} scale={0.5}>
-        {lessonNum}. {lessonName}
+        {lesson.num}. {lesson.name}
       </Tooltip>
 
       {next && <Svg src={'/images/course/next-msg-lesson.svg'} position={[5, 6, 0.6]} scale={0.04}></Svg>}
 
       <group rotation={[Math.PI / 2, 0, 0]} scale={lessonTypeSize}>
         {lessonProgress && <CompleteLessonIcon />}
-        {lessonType === 'Dr Rhythm' && <DocIcon />}
+        {lesson.type === 'Dr Rhythm' && <DocIcon />}
         <Svg src={'/images/course/arrow.svg'} position={[-0.45, 0.5, 0.65]} rotation={[Math.PI / 2, 0, 0]} scale={0.04}>
           <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} opacity={!active ? 0.5 : 1} />
         </Svg>

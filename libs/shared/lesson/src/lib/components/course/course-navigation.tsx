@@ -1,16 +1,21 @@
 'use client';
 import * as THREE from 'three';
-import React, { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { Box, Helper, Html, Plane, Preload, ScrollControls, Sky, StatsGl, useProgress } from '@react-three/drei';
-import { GridPlane } from './course-scene/grid-plane';
+import React, { Suspense, useRef } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { Html, Preload, Sky, StatsGl, useProgress } from '@react-three/drei';
 import { Landscape } from './course-scene/landscape';
 import { CameraController } from './course-scene/camera-control';
 import { Course } from '@prisma/client';
 import Clouds from './course-scene/cloud-scene';
 import { Loader2 } from 'lucide-react';
 import { CloudCover } from './course-scene/cloud-cover';
-import { BoxHelper } from 'three';
+import { useRouter } from 'next/navigation';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { SplitText } from 'gsap/SplitText';
+import { LessonButton } from './course-scene/course.types';
+
+gsap.registerPlugin(SplitText);
 
 interface CourseNavigationProps {
   course: Course & { modules: any[] };
@@ -21,19 +26,69 @@ const LESSON_SPACING = 7;
 
 export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [lesson, setLesson] = React.useState<LessonButton | null>(null);
+  const router = useRouter();
+
+  const { contextSafe } = useGSAP(
+    () => {
+      gsap.set('.lesson-load', { autoAlpha: 0 });
+
+      if (lesson !== null) {
+        const lessonName = new SplitText('.lesson-name', { type: 'chars' });
+        const chars = lessonName.chars;
+
+        const tl = gsap.timeline({
+          onComplete: () => {
+            router.push(`/courses/${course.slug}/modules/${lesson.moduleSlug}/lessons/${lesson.slug}`);
+          },
+        });
+        tl.fromTo('.lesson-load', { autoAlpha: 0 }, { autoAlpha: 1, duration: 1 });
+
+        tl.from(chars, {
+          duration: 0.8,
+          opacity: 0,
+          scale: 0,
+          y: 80,
+          rotationX: 180,
+          transformOrigin: '0% 50% -50',
+          ease: 'back',
+          stagger: 0.01,
+        });
+
+        tl.fromTo('.lesson-num', { autoAlpha: 0, y: -100 }, { autoAlpha: 1, y: 0, duration: 0.2 });
+        tl.fromTo('.lesson-loader', { autoAlpha: 0, y: 100 }, { autoAlpha: 1, y: 0, duration: 0.2 }, '-=0.2');
+      }
+    },
+    { scope: containerRef, dependencies: [lesson] },
+  );
 
   const handleLoaded = (load: boolean) => {
     onLoaded && onLoaded(load);
   };
 
+  const handleOpenLesson = (lesson: LessonButton) => {
+    console.log('OPEN LESSON:', lesson);
+
+    setLesson(lesson);
+  };
+
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
+      <div
+        className={
+          'lesson-load pointer-events-none fixed z-20 flex h-screen w-full flex-col items-center justify-center bg-amber-600 p-5 opacity-0'
+        }
+        style={{ backgroundColor: lesson?.color }}>
+        <div className={'lesson-num font-lesson-body text-xl font-bold text-white'}>Lesson {lesson?.num}</div>
+        <div className={'lesson-name font-lesson-heading text-2xl text-white lg:text-4xl'}>{lesson?.name}</div>
+        <div className={'lesson-loader mt-3'}>
+          <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
+        </div>
+      </div>
       <Canvas className={'fixed h-screen w-full'} shadows camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.5} />
           <directionalLight position={[200, 500, 200]} intensity={4} castShadow></directionalLight>
-
-          <Box args={[5, 5, 5]} position={[200, 500, 200]} material-color="hotpink" />
 
           <Sky
             distance={3000}
@@ -49,6 +104,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
             lessonSpacing={LESSON_SPACING}
             position={[0, 0, 0]}
             container={containerRef?.current}
+            onOpenLesson={handleOpenLesson}
             modules={course.modules}
             onReady={load => handleLoaded(load)}
           />
