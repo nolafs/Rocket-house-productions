@@ -1,53 +1,92 @@
-import { useGLTF, Svg, useCursor, Html, Billboard, RoundedBox, Text, useTexture, Center } from '@react-three/drei';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useGLTF, Svg, useCursor, RoundedBox, Text, useTexture, Center } from '@react-three/drei';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { useFrame } from '@react-three/fiber';
-import { LessonButton, LessonType } from './course.types';
+import { LessonButton } from './course.types';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
 
 interface ButtonProps {
   rotation?: [number, number, number];
   position: [number, number, number];
   active?: boolean;
   next?: boolean;
+  isScrolling?: boolean;
   lesson: LessonButton;
   onOpenLesson: (lesson: LessonButton) => void;
+  onBackToCurrentLesson?: () => void;
 }
 
-export const Button3d = ({ rotation, position, active, next, lesson, onOpenLesson, ...rest }: ButtonProps) => {
+interface TooltipProps {
+  children: any;
+  position: [number, number, number];
+  rotation: [number, number, number];
+  scale?: number;
+  isVisible?: boolean;
+}
+
+interface ScrollToButtonProps {
+  position: [number, number, number];
+  rotation: [number, number, number];
+  scale?: number;
+  isVisible?: boolean;
+  onScrollToCurrentLesson: () => void;
+}
+
+const fontProps = {
+  font: '/images/course/font.ttf',
+  fontSize: 1,
+  letterSpacing: -0.05,
+  lineHeight: 1,
+  'material-toneMapped': false,
+};
+
+export const Button3d = ({
+  rotation,
+  position,
+  active,
+  isScrolling,
+  next,
+  lesson,
+  onOpenLesson,
+  onBackToCurrentLesson,
+  ...rest
+}: ButtonProps) => {
   const [hovered, hover] = useState(false);
   const [mouseControl, setMouseControl] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
   useCursor(hovered);
+
   const button = useRef<THREE.Group>(null);
   const { nodes } = useGLTF('/images/course/button.gltf');
   const lessonProgress = useLessonProgressionStore(store => store.getLessonCompleted(lesson.id));
 
   let lessonTypeSize = 1;
   let lessonTypeColor = '#c17e0c';
-  let toolTipY = 2.3;
+  let toolTipY = 3;
 
   switch (lesson.type) {
     case 'Lesson':
       lessonTypeSize = 1;
       lessonTypeColor = lesson.color;
-      toolTipY = 2.3;
+      toolTipY = 2.6;
       break;
     case 'Dr Rhythm':
       lessonTypeSize = 0.7;
       lessonTypeColor = '#DE0BF5';
-      toolTipY = 1.9;
+      toolTipY = 2.1;
       break;
     case 'Practice':
       lessonTypeSize = 0.5;
       lessonTypeColor = lesson.color;
-      toolTipY = 1.6;
+      toolTipY = 1.9;
       break;
     default:
       lessonTypeSize = 1;
       lessonTypeColor = '#c17e0c';
-      toolTipY = 2.3;
+      toolTipY = 2.5;
   }
 
   if (!active) {
@@ -59,11 +98,16 @@ export const Button3d = ({ rotation, position, active, next, lesson, onOpenLesso
 
     if (mouseControl) return;
 
+    if (isScrolling) {
+      setShowTooltip(false);
+      return;
+    }
+
     const threshold = 2;
     const positionScreenSpace = button.current.position.clone().project(state.camera);
 
     const isCloseToCenter =
-      positionScreenSpace.length() > threshold - 0.2 && positionScreenSpace.length() < threshold + 0.5;
+      positionScreenSpace.length() > threshold - 0.3 && positionScreenSpace.length() < threshold + 0.3;
 
     if (isCloseToCenter) {
       setShowTooltip(true);
@@ -72,43 +116,61 @@ export const Button3d = ({ rotation, position, active, next, lesson, onOpenLesso
     }
   });
 
+  const handleScrollToCurrentLesson = () => {
+    console.log('scroll to current lesson');
+    onBackToCurrentLesson && onBackToCurrentLesson();
+  };
+
   return (
-    <group
-      ref={button}
-      position={position}
-      rotation={rotation || [0, 0, 0]}
-      {...rest}
-      onClick={e => {
-        if (active) {
-          //router.push(lessonUrl);
-          onOpenLesson(lesson);
-        }
-      }}
-      onPointerOver={e => {
-        setMouseControl(true);
-        hover(true);
-        setShowTooltip(true);
-      }}
-      onPointerLeave={e => {
-        setMouseControl(false);
-        hover(false);
-        setShowTooltip(false);
-      }}>
-      <Tooltip position={[0, toolTipY, 0]} isVisible={showTooltip} rotation={[0, 0, 0]} scale={0.5}>
-        {lesson.num}. {lesson.name}
-      </Tooltip>
+    <group ref={button} position={[0, position[1], 0]}>
+      {!next && showTooltip && (
+        <ScrollToCurrentLesson
+          position={[0, -3, -2]}
+          rotation={[0, 0, 0]}
+          onScrollToCurrentLesson={handleScrollToCurrentLesson}
+          isVisible={!isScrolling}
+        />
+      )}
 
       {next && <Svg src={'/images/course/next-msg-lesson.svg'} position={[5, 6, 0.6]} scale={0.04}></Svg>}
+      <group
+        position={[position[0], 0, position[2]]}
+        rotation={rotation || [0, 0, 0]}
+        {...rest}
+        onClick={e => {
+          if (active) {
+            //router.push(lessonUrl);
+            onOpenLesson(lesson);
+          }
+        }}
+        onPointerOver={e => {
+          setMouseControl(true);
+          hover(true);
+          setShowTooltip(true);
+        }}
+        onPointerLeave={e => {
+          setMouseControl(false);
+          hover(false);
+          setShowTooltip(false);
+        }}>
+        <Tooltip position={[0.2, toolTipY, 1]} isVisible={showTooltip} rotation={[0, 0, 0]} scale={0.5}>
+          {lesson.num}. {lesson.name}
+        </Tooltip>
 
-      <group rotation={[Math.PI / 2, 0, 0]} scale={lessonTypeSize}>
-        {lessonProgress && <CompleteLessonIcon />}
-        {lesson.type === 'Dr Rhythm' && <DocIcon />}
-        <Svg src={'/images/course/arrow.svg'} position={[-0.45, 0.5, 0.65]} rotation={[Math.PI / 2, 0, 0]} scale={0.04}>
-          <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} opacity={!active ? 0.5 : 1} />
-        </Svg>
-        <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.009} castShadow>
-          <meshStandardMaterial color={!hovered ? lessonTypeColor : '#bd1368'} metalness={0} roughness={0.4} />
-        </mesh>
+        <group rotation={[Math.PI / 2, 0, 0]} scale={lessonTypeSize}>
+          {lessonProgress && <CompleteLessonIcon />}
+          {lesson.type === 'Dr Rhythm' && <DocIcon />}
+          <Svg
+            src={'/images/course/arrow.svg'}
+            position={[-0.45, 0.2, 0.65]}
+            rotation={[Math.PI / 2, 0, 0]}
+            scale={0.04}>
+            <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} opacity={!active ? 0.5 : 1} />
+          </Svg>
+          <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.009} castShadow receiveShadow>
+            <meshStandardMaterial color={!hovered ? lessonTypeColor : '#bd1368'} metalness={0} roughness={0.4} />
+          </mesh>
+        </group>
       </group>
     </group>
   );
@@ -117,16 +179,18 @@ export const Button3d = ({ rotation, position, active, next, lesson, onOpenLesso
 const CompleteLessonIcon = () => {
   const { nodes } = useGLTF('/images/course/button.gltf');
   return (
-    <group>
-      <Svg
-        src={'/images/course/complete.svg'}
-        scale={0.04}
-        position={[0.6, 1.2, -1.4]}
-        rotation={[-Math.PI / 2, 0, 0]}
-      />
-      <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.003} position={[1, 1, -1]} castShadow>
-        <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} />
-      </mesh>
+    <group position={[1, 0.5, -1]}>
+      <Center>
+        <Svg
+          src={'/images/course/complete.svg'}
+          scale={0.038}
+          position={[-0.35, 0.05, -0.35]}
+          rotation={[-Math.PI / 2, 0, 0]}
+        />
+        <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.003} castShadow>
+          <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} />
+        </mesh>
+      </Center>
     </group>
   );
 };
@@ -142,15 +206,68 @@ const DocIcon = () => {
   );
 };
 
-interface TooltipProps {
-  children: any;
-  position: [number, number, number];
-  rotation: [number, number, number];
-  scale?: number;
-  isVisible?: boolean;
-}
+const ScrollToCurrentLesson = ({
+  position,
+  rotation,
+  scale,
+  isVisible,
+  onScrollToCurrentLesson,
+}: ScrollToButtonProps) => {
+  const [hovered, hover] = useState(false);
+  const button = useRef<THREE.Group>(null);
 
-export const Tooltip = ({ children, position, rotation, scale, isVisible = true }: TooltipProps) => {
+  useCursor(hovered);
+
+  useGSAP(
+    () => {
+      if (isVisible) {
+        gsap.fromTo(
+          button.current!.position,
+          { x: 0 },
+          {
+            x: -5,
+            duration: 1,
+            ease: 'power2.inOut',
+            delay: 1,
+          },
+        );
+      } else {
+        gsap.to(button.current!.position, { x: 0, duration: 0.5, ease: 'power2.inOut' });
+      }
+    },
+    { scope: button, dependencies: [isVisible] },
+  );
+
+  return (
+    <group
+      ref={button}
+      position={position}
+      rotation={rotation}
+      scale={scale}
+      onPointerOver={e => hover(true)}
+      onPointerLeave={e => hover(false)}
+      onClick={e => onScrollToCurrentLesson()}>
+      <Center>
+        <Text
+          {...fontProps}
+          color="white"
+          scale={0.3}
+          anchorX="center"
+          anchorY="middle"
+          position={[-0.1, 0, 0.3]}
+          castShadow={true}>
+          Back to next lesson
+        </Text>
+
+        <RoundedBox args={[4, 1, 0.4]} radius={0.2} bevelSegments={2} castShadow={true}>
+          <meshStandardMaterial color={!hovered ? '#bd1368' : 'green'} />
+        </RoundedBox>
+      </Center>
+    </group>
+  );
+};
+
+const Tooltip = ({ children, position, rotation, scale, isVisible = true }: TooltipProps) => {
   const textRef = useRef<THREE.Mesh>(null);
   const [size, setSize] = useState<{ width: number; height: number } | null>(null);
 
@@ -164,37 +281,35 @@ export const Tooltip = ({ children, position, rotation, scale, isVisible = true 
     }
   }, [children, isVisible]);
 
-  const fontProps = {
-    font: '/images/course/font.ttf',
-    fontSize: 1,
-    letterSpacing: -0.05,
-    lineHeight: 1,
-    'material-toneMapped': false,
-  };
-
   return (
     <group position={position} rotation={rotation} scale={scale} visible={isVisible}>
-      <Text
-        ref={textRef}
-        {...fontProps}
-        color="black"
-        anchorX="center"
-        anchorY="middle"
-        position={[0, 0, 1]}
-        castShadow={true}>
-        {children}
-      </Text>
-      {size && (
-        <RoundedBox
-          receiveShadow={true}
-          position={[0, 0, 0.5]}
-          args={[size.width, size.height, 0.5]}
-          radius={0.5}
-          bevelSegments={4}
+      <Center>
+        <Text
+          ref={textRef}
+          {...fontProps}
+          color="black"
+          anchorX="center"
+          anchorY="middle"
+          position={[0, 0, 0.3]}
           castShadow={true}>
-          <meshStandardMaterial color="white" transparent />
-        </RoundedBox>
-      )}
+          {children}
+        </Text>
+        {size && (
+          <group position={[0, 0, 0]}>
+            <RoundedBox args={[size.width, size.height, 0.5]} radius={0.3} bevelSegments={2} castShadow={true}>
+              <meshStandardMaterial color="white" />
+            </RoundedBox>
+            <RoundedBox
+              args={[1, 1, 0.5]}
+              radius={0.2}
+              bevelSegments={2}
+              rotation={[0, 0, Math.PI / 4]}
+              position={[0, -0.9, -0.019]}>
+              <meshStandardMaterial color="white" />
+            </RoundedBox>
+          </group>
+        )}
+      </Center>
     </group>
   );
 };
