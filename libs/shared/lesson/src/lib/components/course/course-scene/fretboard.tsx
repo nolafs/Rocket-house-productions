@@ -1,6 +1,6 @@
-import { useTexture } from '@react-three/drei';
+import { Plane, useTexture } from '@react-three/drei';
 import React, { useRef } from 'react';
-import { PlaneGeometry } from 'three';
+
 import * as THREE from 'three';
 
 interface FredBoardProps {
@@ -25,15 +25,15 @@ export const FretBoard = ({ rotation, position, pathLength, lessonSpacing, lesso
   return (
     <group ref={ref} rotation={rotation} position={position} {...rest}>
       {Array.from({ length: sectionNum }).map((_, index) => (
-        <mesh
-          geometry={new PlaneGeometry(6.85, planeHeight, 10, 10)}
+        <Plane
+          args={[6.85, planeHeight, 10, 10]}
           receiveShadow
           key={index}
           position={[0, 20 + offsetY * index, -25]}
           scale={1}
           rotation={[0, 0, 0]}>
           <meshPhongMaterial map={fred} color={0xffffff} alphaTest={0.1} />
-        </mesh>
+        </Plane>
       ))}
     </group>
   );
