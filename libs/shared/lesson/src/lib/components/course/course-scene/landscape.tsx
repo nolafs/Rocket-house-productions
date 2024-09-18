@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Plane, useCamera, useScroll, useTexture } from '@react-three/drei';
 
 import { useFrame, useThree, extend } from '@react-three/fiber';
@@ -11,7 +11,8 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { LessonButton } from './course.types';
+import { LessonButton, ModulePosition } from './course.types';
+import ModuleAwards from './module-awards';
 gsap.registerPlugin(ScrollTrigger);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 gsap.registerPlugin(useGSAP);
@@ -28,7 +29,7 @@ interface LandscapeProps {
   lessonSpacing: number;
   onOpenLesson?: (lesson: LessonButton) => void;
   onReady?: (ready: boolean) => void;
-  container?: Element | null;
+  container?: MutableRefObject<HTMLElement | null>;
 }
 
 const SCROLL_FACTOR = 50;
@@ -44,6 +45,7 @@ export const Landscape = ({
   ...rest
 }: LandscapeProps) => {
   const [pathLength, setPathLength] = useState<number | null>(null);
+  const [modulePosition, setModulePosition] = useState<ModulePosition[] | []>([]);
   const [currentLesson, setCurrentLesson] = useState<number>(0);
   const [isScrolling, setIsScrolling] = useState(false);
 
@@ -64,7 +66,9 @@ export const Landscape = ({
 
   const { contextSafe } = useGSAP(
     () => {
-      if (!container) {
+      console.log('LANDSCAPE MODULES: SCROLLTRIGGER', container, pathLength, camera, ready);
+
+      if (!container?.current) {
         return;
       }
 
@@ -100,7 +104,7 @@ export const Landscape = ({
 
       scrollTriggerRef.current = ScrollTrigger.create({
         animation: tl,
-        trigger: container,
+        trigger: container.current,
         pin: true,
         scrub: 1,
         end: `+=${pathLength * SCROLL_FACTOR} `,
@@ -124,15 +128,23 @@ export const Landscape = ({
         ScrollTrigger.removeEventListener('scrollStart', () => setIsScrolling(false));
       };
     },
-    { scope: container as Element, dependencies: [pathLength, currentLesson, camera] },
+    { scope: container, dependencies: [pathLength, currentLesson, camera, ready] },
   );
 
   const handleUpdate = (data: ModuleButtonDisplay) => {
+    console.log('LANDSCAPE MODULES: UPDATE', data);
+
     if (!data.pathLength) {
       return;
     }
+
     setPathLength(data?.pathLength);
     setCurrentLesson(data.buttons[data.next || 0].position.y);
+    setModulePosition(data.modulePosition);
+
+    if (!ready) {
+      setReady(true);
+    }
   };
 
   const handleOnLesson = contextSafe((lesson: LessonButton) => {
@@ -172,10 +184,6 @@ export const Landscape = ({
     if (!camera.current) {
       camera.current = state.camera as THREE.PerspectiveCamera;
     }
-
-    if (!ready) {
-      setReady(true);
-    }
   });
 
   return (
@@ -201,6 +209,8 @@ export const Landscape = ({
             />
 
             <FinalScene pathLength={pathLength} />
+
+            <ModuleAwards modulePosition={modulePosition} pathLength={new THREE.Vector3(0, pathLength, 0)} />
           </>
         )}
 
