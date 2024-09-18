@@ -48,9 +48,11 @@ export type ModuleButtonDisplay = {
 export const ModulePath: React.FC<{
   modulesSection: ModuleSection[];
   lessonSpacing?: number;
+  isScrolling?: boolean;
+  onBackToCurrentLesson: () => void;
   onUpdated?: (data: ModuleButtonDisplay) => void;
   onOpenLesson?: (lesson: LessonButton) => void;
-}> = ({ modulesSection, lessonSpacing = 7, onUpdated, onOpenLesson }) => {
+}> = ({ modulesSection, lessonSpacing = 7, isScrolling, onBackToCurrentLesson, onUpdated, onOpenLesson }) => {
   const { getLessonCompleted, getLessonProgress } = useLessonProgressionStore(store => store);
   const [pathLength, setPathLength] = React.useState<number | null>(null);
 
@@ -149,6 +151,7 @@ export const ModulePath: React.FC<{
               />
             )}
             <Button3d
+              onBackToCurrentLesson={onBackToCurrentLesson}
               onOpenLesson={lesson => onOpenLesson && onOpenLesson(lesson)}
               lesson={{
                 id: button.id,
@@ -161,6 +164,7 @@ export const ModulePath: React.FC<{
               }}
               active={button.active}
               next={button.next}
+              isScrolling={isScrolling}
               position={[button.position.x, button.position.y, button.position.z]}
             />
           </group>
