@@ -2,7 +2,16 @@
 import * as THREE from 'three';
 import React, { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Html, Preload, Sky, StatsGl, useProgress } from '@react-three/drei';
+import {
+  CameraControls,
+  Html,
+  PerformanceMonitor,
+  Preload,
+  Sky,
+  SoftShadows,
+  StatsGl,
+  useProgress,
+} from '@react-three/drei';
 import { Landscape } from './course-scene/landscape';
 import { CameraController } from './course-scene/camera-control';
 import { Course } from '@prisma/client';
@@ -67,8 +76,6 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
   };
 
   const handleOpenLesson = (lesson: LessonButton) => {
-    console.log('OPEN LESSON:', lesson);
-
     setLesson(lesson);
   };
 
@@ -85,10 +92,11 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
           <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
         </div>
       </div>
+
       <Canvas className={'fixed h-screen w-full'} shadows camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[200, 500, 200]} intensity={4} castShadow></directionalLight>
+          <ambientLight intensity={0.4} />
+          <directionalLight position={[2, 10, 8]} intensity={4} castShadow></directionalLight>
 
           <Sky
             distance={3000}
@@ -103,7 +111,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
           <Landscape
             lessonSpacing={LESSON_SPACING}
             position={[0, 0, 0]}
-            container={containerRef?.current}
+            container={containerRef}
             onOpenLesson={handleOpenLesson}
             modules={course.modules}
             onReady={load => handleLoaded(load)}
@@ -115,8 +123,6 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
 
           <CloudCover position={[0, 5, -30]} />
 
-          <StatsGl />
-          <CameraController />
           <Preload />
         </Suspense>
       </Canvas>

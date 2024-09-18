@@ -6,7 +6,7 @@ import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { extend, Object3DNode, MaterialNode } from '@react-three/fiber';
-import { LessonButton, LessonType, ModuleSection } from './course.types';
+import { LessonButton, LessonType, ModulePosition, ModuleSection } from './course.types';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -39,6 +39,7 @@ type ModuleButtonPosition = {
 
 export type ModuleButtonDisplay = {
   buttons: ModuleButtonPosition[];
+  modulePosition: ModulePosition[];
   total: number | null;
   current: number | null;
   next: number | null;
@@ -48,10 +49,12 @@ export type ModuleButtonDisplay = {
 export const ModulePath: React.FC<{
   modulesSection: ModuleSection[];
   lessonSpacing?: number;
+  isScrolling?: boolean;
+  onBackToCurrentLesson: () => void;
   onUpdated?: (data: ModuleButtonDisplay) => void;
   onOpenLesson?: (lesson: LessonButton) => void;
-}> = ({ modulesSection, lessonSpacing = 7, onUpdated, onOpenLesson }) => {
-  const { getLessonCompleted, getLessonProgress } = useLessonProgressionStore(store => store);
+}> = ({ modulesSection, lessonSpacing = 7, isScrolling, onBackToCurrentLesson, onUpdated, onOpenLesson }) => {
+  const { getLessonCompleted } = useLessonProgressionStore(store => store);
   const [pathLength, setPathLength] = React.useState<number | null>(null);
 
   const currentModule = useRef<Module | null>(null);
@@ -59,6 +62,7 @@ export const ModulePath: React.FC<{
   const display = useMemo<ModuleButtonDisplay>(() => {
     let current: number | null = null;
     let next: number | null = null;
+    const modulePosition: ModulePosition[] = [];
 
     const buttonList: ModuleButtonPosition[] = modulesSection.reduce(
       (acc: ModuleButtonPosition[], item, moduleIndex) => {
@@ -73,6 +77,11 @@ export const ModulePath: React.FC<{
             if (currentModule.current?.id !== item.id) {
               currentModule.current = item;
               moduleSection = item;
+              modulePosition.push({
+                id: item.id,
+                name: item.title,
+                position: new THREE.Vector3(0, lessonSpacing * count - 3.5, 0),
+              });
             }
 
             if (!complete) {
@@ -84,6 +93,7 @@ export const ModulePath: React.FC<{
               }
             }
 
+            // todo: change to three vector
             return {
               id: lesson.id,
               name: lesson.title,
@@ -111,6 +121,7 @@ export const ModulePath: React.FC<{
     return {
       buttons: buttonList,
       total: buttonList.length,
+      modulePosition: modulePosition,
       current,
       next,
     };
@@ -149,6 +160,7 @@ export const ModulePath: React.FC<{
               />
             )}
             <Button3d
+              onBackToCurrentLesson={onBackToCurrentLesson}
               onOpenLesson={lesson => onOpenLesson && onOpenLesson(lesson)}
               lesson={{
                 id: button.id,
@@ -161,6 +173,7 @@ export const ModulePath: React.FC<{
               }}
               active={button.active}
               next={button.next}
+              isScrolling={isScrolling}
               position={[button.position.x, button.position.y, button.position.z]}
             />
           </group>
