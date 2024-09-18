@@ -11,6 +11,7 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { LessonButton } from './course.types';
 gsap.registerPlugin(ScrollTrigger);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 gsap.registerPlugin(useGSAP);
@@ -18,7 +19,6 @@ gsap.registerPlugin(useGSAP);
 gsap.registerPlugin(ScrollToPlugin);
 
 type LessonType = Lesson & { category: { name: string } };
-
 type ModuleSection = Module & { lessons: LessonType[] };
 
 interface LandscapeProps {
@@ -26,7 +26,7 @@ interface LandscapeProps {
   position?: [number, number, number];
   modules: ModuleSection[];
   lessonSpacing: number;
-  onLandscapeHeightChange?: (height: number) => void;
+  onOpenLesson?: (lesson: LessonButton) => void;
   onReady?: (ready: boolean) => void;
   container?: Element | null;
 }
@@ -38,9 +38,9 @@ export const Landscape = ({
   lessonSpacing,
   rotation,
   position,
-  onLandscapeHeightChange,
   onReady,
   container,
+  onOpenLesson,
   ...rest
 }: LandscapeProps) => {
   const [pathLength, setPathLength] = useState<number | null>(null);
@@ -74,6 +74,8 @@ export const Landscape = ({
       }
 
       ScrollTrigger.killAll();
+
+      console.log('LANDSCAPE MODULES: SCROLLTRIGGER');
 
       const tl = gsap.timeline();
       //const zoomTl = gsap.timeline();
@@ -117,12 +119,20 @@ export const Landscape = ({
     { scope: container as Element, dependencies: [pathLength, currentLesson, camera] },
   );
 
-  const handleUpdate = contextSafe((data: ModuleButtonDisplay) => {
+  const handleUpdate = (data: ModuleButtonDisplay) => {
     if (!data.pathLength) {
       return;
     }
     setPathLength(data?.pathLength);
     setCurrentLesson(data.buttons[data.next || 0].position.y);
+  };
+
+  const handleOnLesson = contextSafe((lesson: LessonButton) => {
+    if (!camera.current) {
+      return;
+    }
+    gsap.to(camera.current?.position, { z: 100, duration: 1, ease: 'power2.in' });
+    onOpenLesson && onOpenLesson(lesson);
   });
 
   useEffect(() => {
@@ -176,7 +186,12 @@ export const Landscape = ({
           </>
         )}
 
-        <ModulePath modulesSection={modules} lessonSpacing={lessonSpacing} onUpdated={data => handleUpdate(data)} />
+        <ModulePath
+          modulesSection={modules}
+          lessonSpacing={lessonSpacing}
+          onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
+          onUpdated={data => handleUpdate(data)}
+        />
       </group>
     </>
   );
