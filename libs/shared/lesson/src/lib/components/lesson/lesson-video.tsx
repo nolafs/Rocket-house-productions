@@ -63,7 +63,9 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
     });
 
     return () => {
-      player.off('ready');
+      if (player) {
+        player.off('ready');
+      }
       player = null;
     };
   }, [ref]);

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Plane, useCamera, useScroll, useTexture } from '@react-three/drei';
 
 import { useFrame, useThree, extend } from '@react-three/fiber';
@@ -11,7 +11,8 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { LessonButton } from './course.types';
+import { LessonButton, ModulePosition } from './course.types';
+import ModuleAwards from './module-awards';
 gsap.registerPlugin(ScrollTrigger);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 gsap.registerPlugin(useGSAP);
@@ -28,7 +29,7 @@ interface LandscapeProps {
   lessonSpacing: number;
   onOpenLesson?: (lesson: LessonButton) => void;
   onReady?: (ready: boolean) => void;
-  container?: Element | null;
+  container?: MutableRefObject<HTMLElement | null>;
 }
 
 const SCROLL_FACTOR = 50;
@@ -44,7 +45,9 @@ export const Landscape = ({
   ...rest
 }: LandscapeProps) => {
   const [pathLength, setPathLength] = useState<number | null>(null);
+  const [modulePosition, setModulePosition] = useState<ModulePosition[] | []>([]);
   const [currentLesson, setCurrentLesson] = useState<number>(0);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const guitar = useTexture('/images/course/guitar.png');
   const midGround = useTexture('/images/course/lessons-mid.webp');
@@ -52,6 +55,8 @@ export const Landscape = ({
   const ref = React.useRef<THREE.Group>(null);
   const camera = useRef<THREE.PerspectiveCamera | null>(null);
   const [ready, setReady] = useState(false);
+
+  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   console.log('LANDSCAPE MODULES: RENDER');
 
@@ -61,7 +66,9 @@ export const Landscape = ({
 
   const { contextSafe } = useGSAP(
     () => {
-      if (!container) {
+      console.log('LANDSCAPE MODULES: SCROLLTRIGGER', container, pathLength, camera, ready);
+
+      if (!container?.current) {
         return;
       }
 
@@ -73,7 +80,9 @@ export const Landscape = ({
         return;
       }
 
-      ScrollTrigger.killAll();
+      if (scrollTriggerRef.current) {
+        scrollTriggerRef.current.kill();
+      }
 
       console.log('LANDSCAPE MODULES: SCROLLTRIGGER');
 
@@ -93,15 +102,13 @@ export const Landscape = ({
         ease: 'none',
       });
 
-      ScrollTrigger.create({
+      scrollTriggerRef.current = ScrollTrigger.create({
         animation: tl,
-        trigger: container,
+        trigger: container.current,
         pin: true,
         scrub: 1,
         end: `+=${pathLength * SCROLL_FACTOR} `,
       });
-
-      // Calculate scrollto position using camera and currentLesson y position
 
       if (typeof window !== 'undefined') {
         gsap.to(window, {
@@ -112,19 +119,32 @@ export const Landscape = ({
         });
       }
 
+      ScrollTrigger.addEventListener('scrollEnd', () => setIsScrolling(false));
+      ScrollTrigger.addEventListener('scrollStart', () => setIsScrolling(true));
+
       return () => {
         ScrollTrigger.killAll();
+        ScrollTrigger.removeEventListener('scrollEnd', () => setIsScrolling(false));
+        ScrollTrigger.removeEventListener('scrollStart', () => setIsScrolling(false));
       };
     },
-    { scope: container as Element, dependencies: [pathLength, currentLesson, camera] },
+    { scope: container, dependencies: [pathLength, currentLesson, camera, ready] },
   );
 
   const handleUpdate = (data: ModuleButtonDisplay) => {
+    console.log('LANDSCAPE MODULES: UPDATE', data);
+
     if (!data.pathLength) {
       return;
     }
+
     setPathLength(data?.pathLength);
     setCurrentLesson(data.buttons[data.next || 0].position.y);
+    setModulePosition(data.modulePosition);
+
+    if (!ready) {
+      setReady(true);
+    }
   };
 
   const handleOnLesson = contextSafe((lesson: LessonButton) => {
@@ -133,6 +153,16 @@ export const Landscape = ({
     }
     gsap.to(camera.current?.position, { z: 100, duration: 1, ease: 'power2.in' });
     onOpenLesson && onOpenLesson(lesson);
+  });
+
+  const handleOnBackToCurrentLesson = contextSafe(() => {
+    if (typeof window !== 'undefined') {
+      gsap.to(window, {
+        duration: 3,
+        scrollTo: { y: (currentLesson + 10) * SCROLL_FACTOR },
+        ease: 'Power2.inOut',
+      });
+    }
   });
 
   useEffect(() => {
@@ -154,16 +184,12 @@ export const Landscape = ({
     if (!camera.current) {
       camera.current = state.camera as THREE.PerspectiveCamera;
     }
-
-    if (!ready) {
-      setReady(true);
-    }
   });
 
   return (
     <>
       <group ref={ref} position={position} rotation={rotation} {...rest}>
-        <Plane args={[20, 17]} position={[0, 3, -25.2]} scale={2} rotation={[0, 0, 0]} receiveShadow>
+        <Plane args={[20, 17]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]} receiveShadow>
           <meshPhongMaterial map={guitar} transparent={true} side={THREE.DoubleSide} />
         </Plane>
         <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
@@ -183,12 +209,16 @@ export const Landscape = ({
             />
 
             <FinalScene pathLength={pathLength} />
+
+            <ModuleAwards modulePosition={modulePosition} pathLength={new THREE.Vector3(0, pathLength, 0)} />
           </>
         )}
 
         <ModulePath
           modulesSection={modules}
           lessonSpacing={lessonSpacing}
+          isScrolling={isScrolling}
+          onBackToCurrentLesson={handleOnBackToCurrentLesson}
           onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
           onUpdated={data => handleUpdate(data)}
         />
