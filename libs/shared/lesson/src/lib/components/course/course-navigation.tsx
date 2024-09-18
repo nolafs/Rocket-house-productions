@@ -92,6 +92,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
           <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
         </div>
       </div>
+
       <Canvas className={'fixed h-screen w-full'} shadows camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.4} />
@@ -110,7 +111,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
           <Landscape
             lessonSpacing={LESSON_SPACING}
             position={[0, 0, 0]}
-            container={containerRef?.current}
+            container={containerRef}
             onOpenLesson={handleOpenLesson}
             modules={course.modules}
             onReady={load => handleLoaded(load)}
