@@ -47,27 +47,22 @@ export const Landscape = ({
   const [pathLength, setPathLength] = useState<number | null>(null);
   const [modulePosition, setModulePosition] = useState<ModulePosition[] | []>([]);
   const [currentLesson, setCurrentLesson] = useState<number>(0);
-  const [isScrolling, setIsScrolling] = useState(false);
 
   const guitar = useTexture('/images/course/guitar.png');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
   const ref = React.useRef<THREE.Group>(null);
   const camera = useRef<THREE.PerspectiveCamera | null>(null);
-  const [ready, setReady] = useState(false);
 
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
-  console.log('LANDSCAPE MODULES: RENDER');
-
   const lessonNumber = useMemo(() => {
+    console.log('LANDSCAPE MODULES: lessonNumber');
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
   }, modules);
 
   const { contextSafe } = useGSAP(
     () => {
-      console.log('LANDSCAPE MODULES: SCROLLTRIGGER', container, pathLength, camera, ready);
-
       if (!container?.current) {
         return;
       }
@@ -119,31 +114,24 @@ export const Landscape = ({
         });
       }
 
-      ScrollTrigger.addEventListener('scrollEnd', () => setIsScrolling(false));
-      ScrollTrigger.addEventListener('scrollStart', () => setIsScrolling(true));
-
       return () => {
         ScrollTrigger.killAll();
-        ScrollTrigger.removeEventListener('scrollEnd', () => setIsScrolling(false));
-        ScrollTrigger.removeEventListener('scrollStart', () => setIsScrolling(false));
       };
     },
-    { scope: container, dependencies: [pathLength, currentLesson, camera, ready] },
+    { scope: container, dependencies: [pathLength, currentLesson, camera] },
   );
 
   const handleUpdate = (data: ModuleButtonDisplay) => {
-    console.log('LANDSCAPE MODULES: UPDATE', data);
-
     if (!data.pathLength) {
       return;
     }
 
-    setPathLength(data?.pathLength);
-    setCurrentLesson(data.buttons[data.next || 0].position.y);
-    setModulePosition(data.modulePosition);
-
-    if (!ready) {
-      setReady(true);
+    if (!pathLength) {
+      console.log('LANDSCAPE MODULES: handleUpdate', data);
+      setPathLength(data?.pathLength);
+      setCurrentLesson(data.buttons[data.next || 0].position.y);
+      setModulePosition(data.modulePosition);
+      onReady && onReady(true);
     }
   };
 
@@ -151,11 +139,14 @@ export const Landscape = ({
     if (!camera.current) {
       return;
     }
+
+    console.log('LANDSCAPE MODULES: handleOnLesson');
     gsap.to(camera.current?.position, { z: 100, duration: 1, ease: 'power2.in' });
     onOpenLesson && onOpenLesson(lesson);
   });
 
   const handleOnBackToCurrentLesson = contextSafe(() => {
+    console.log('LANDSCAPE MODULES: handleOnBackToCurrentLesson');
     if (typeof window !== 'undefined') {
       gsap.to(window, {
         duration: 3,
@@ -164,12 +155,6 @@ export const Landscape = ({
       });
     }
   });
-
-  useEffect(() => {
-    if (ready) {
-      onReady && onReady(ready);
-    }
-  }, [ready]);
 
   useFrame((state, delta) => {
     const { pointer } = state;
@@ -182,9 +167,12 @@ export const Landscape = ({
     state.camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, state.camera.rotation.x)); // Clamp x-axis rotation to avoid flipping
 
     if (!camera.current) {
+      console.log('LANDSCAPE MODULES: CAMERA NOT SET');
       camera.current = state.camera as THREE.PerspectiveCamera;
     }
   });
+
+  console.log('LANDSCAPE MODULES: RENDER');
 
   return (
     <>
@@ -217,7 +205,6 @@ export const Landscape = ({
         <ModulePath
           modulesSection={modules}
           lessonSpacing={lessonSpacing}
-          isScrolling={isScrolling}
           onBackToCurrentLesson={handleOnBackToCurrentLesson}
           onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
           onUpdated={data => handleUpdate(data)}
