@@ -1,4 +1,4 @@
-import { useGLTF, Svg, useCursor, RoundedBox, Text, useTexture, Center } from '@react-three/drei';
+import { useGLTF, Svg, useCursor, RoundedBox, Text, useTexture, Center, Ring } from '@react-three/drei';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useLessonProgressionStore } from '@rocket-house-productions/providers';
@@ -173,6 +173,13 @@ export const Button3d = ({
           {lesson.num}. {lesson.name}
         </Tooltip>
 
+        {next && (
+          <>
+            <CurrentIndicatorRings delay={0} />
+            <CurrentIndicatorRings delay={0.5} />
+          </>
+        )}
+
         <group rotation={[Math.PI / 2, 0, 0]} scale={lessonTypeSize}>
           {lessonProgress && <CompleteLessonIcon />}
           {lesson.type === 'Dr Rhythm' && <DocIcon />}
@@ -192,6 +199,80 @@ export const Button3d = ({
   );
 };
 
+const CurrentIndicatorRings = ({ delay = 0 }: { delay: number }) => {
+  const ringRef = useRef<THREE.Group>(null);
+  const ringMaterialRef = useRef<THREE.MeshStandardMaterial>(null);
+
+  useGSAP(() => {
+    if (!ringRef.current) return;
+    if (!ringMaterialRef.current) return;
+
+    const tl = gsap.timeline({ repeat: -1, delay: delay });
+    tl.timeScale(0.8);
+
+    tl.fromTo(
+      ringMaterialRef.current,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'none',
+      },
+      0,
+    );
+
+    tl.to(
+      ringMaterialRef.current,
+      {
+        opacity: 0,
+        duration: 0.5,
+        delay: 0.5,
+        ease: 'none',
+      },
+      '-=0.5',
+    );
+
+    tl.to(
+      ringRef.current.position,
+      {
+        z: 1,
+        duration: 1,
+        ease: 'none',
+      },
+      0,
+    );
+
+    tl.to(
+      ringRef.current.scale,
+      {
+        x: 1.5,
+        y: 1.5,
+        z: 1.5,
+        duration: 1,
+        ease: 'none',
+      },
+      0,
+    );
+  });
+
+  return (
+    <group ref={ringRef}>
+      <Center>
+        <Ring args={[1.6, 1.8, 40, 8, 0, 7]} position={[0, 0, 0]} rotation={[0, 0, 0]}>
+          <meshStandardMaterial
+            ref={ringMaterialRef}
+            color={'white'}
+            opacity={1}
+            transparent={true}
+            metalness={0}
+            roughness={0.4}
+          />
+        </Ring>
+      </Center>
+    </group>
+  );
+};
+
 const CompleteLessonIcon = () => {
   const { nodes } = useGLTF('/images/course/button.gltf');
   return (
@@ -204,7 +285,7 @@ const CompleteLessonIcon = () => {
           rotation={[-Math.PI / 2, 0, 0]}
         />
         <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.003} castShadow>
-          <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} />
+          <meshStandardMaterial color={'white'} metalness={0} opacity={1} roughness={0.4} />
         </mesh>
       </Center>
     </group>
