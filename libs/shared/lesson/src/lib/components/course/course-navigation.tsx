@@ -108,14 +108,16 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
             rayleigh={1}
           />
 
-          <Landscape
-            lessonSpacing={LESSON_SPACING}
-            position={[0, 0, 0]}
-            container={containerRef}
-            onOpenLesson={handleOpenLesson}
-            modules={course.modules}
-            onReady={load => handleLoaded(load)}
-          />
+          {containerRef && (
+            <Landscape
+              lessonSpacing={LESSON_SPACING}
+              position={[0, 0, 0]}
+              container={containerRef}
+              onOpenLesson={handleOpenLesson}
+              modules={course.modules}
+              onReady={load => handleLoaded(load)}
+            />
+          )}
 
           <group position={[0, 300, -300]}>
             <Clouds width={80} height={300} depth={300} numClouds={100} />
