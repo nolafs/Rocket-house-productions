@@ -6,6 +6,9 @@ import { useFrame } from '@react-three/fiber';
 import { LessonButton } from './course.types';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface ButtonProps {
   rotation?: [number, number, number];
@@ -46,7 +49,6 @@ export const Button3d = ({
   rotation,
   position,
   active,
-  isScrolling,
   next,
   lesson,
   onOpenLesson,
@@ -56,6 +58,7 @@ export const Button3d = ({
   const [hovered, hover] = useState(false);
   const [mouseControl, setMouseControl] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   useCursor(hovered);
 
@@ -66,6 +69,19 @@ export const Button3d = ({
   let lessonTypeSize = 1;
   let lessonTypeColor = '#c17e0c';
   let toolTipY = 3;
+
+  useGSAP(
+    () => {
+      ScrollTrigger.addEventListener('scrollEnd', () => setIsScrolling(false));
+      ScrollTrigger.addEventListener('scrollStart', () => setIsScrolling(true));
+
+      return () => {
+        ScrollTrigger.removeEventListener('scrollEnd', () => setIsScrolling(false));
+        ScrollTrigger.removeEventListener('scrollStart', () => setIsScrolling(true));
+      };
+    },
+    { scope: button },
+  );
 
   switch (lesson.type) {
     case 'Lesson':

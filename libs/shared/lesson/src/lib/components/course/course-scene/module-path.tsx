@@ -49,11 +49,10 @@ export type ModuleButtonDisplay = {
 export const ModulePath: React.FC<{
   modulesSection: ModuleSection[];
   lessonSpacing?: number;
-  isScrolling?: boolean;
   onBackToCurrentLesson: () => void;
   onUpdated?: (data: ModuleButtonDisplay) => void;
   onOpenLesson?: (lesson: LessonButton) => void;
-}> = ({ modulesSection, lessonSpacing = 7, isScrolling, onBackToCurrentLesson, onUpdated, onOpenLesson }) => {
+}> = ({ modulesSection, lessonSpacing = 7, onBackToCurrentLesson, onUpdated, onOpenLesson }) => {
   const { getLessonCompleted } = useLessonProgressionStore(store => store);
   const [pathLength, setPathLength] = React.useState<number | null>(null);
 
@@ -173,7 +172,6 @@ export const ModulePath: React.FC<{
               }}
               active={button.active}
               next={button.next}
-              isScrolling={isScrolling}
               position={[button.position.x, button.position.y, button.position.z]}
             />
           </group>
@@ -216,9 +214,6 @@ const Path: React.FC<{
 
     // Generate points along the curve
     const curvePoints = curve.getPoints(300); // 300 segments for smoothness
-
-    console.log('CURVE POINTS:', curvePoints.length);
-    console.log('curve:', curve.getLength());
 
     return {
       curvePoints,
