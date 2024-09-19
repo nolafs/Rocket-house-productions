@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { Plane, Text, useTexture } from '@react-three/drei';
 import { ModulePosition } from './course.types';
 import { useModuleProgressStore } from '@rocket-house-productions/providers';
+import { useEffect, useMemo, useState } from 'react';
+import { AvailableAward } from '@rocket-house-productions/store';
 
 interface ModuleAwardsProps {
   modulePosition: ModulePosition[];
@@ -20,26 +22,43 @@ const AwardPlane = ({ image }: { image: string }) => {
   }
 };
 
+type AwardCollection = AvailableAward & { position: THREE.Vector3 };
+
 export function ModuleAwards({ modulePosition, pathLength }: ModuleAwardsProps) {
   const awards = useModuleProgressStore(store => store.getAwards());
 
-  const getAwardImage = (moduleId: string) => {
-    const award = awards.find(award => award.moduleId === moduleId);
-    console.log('AWARD:', award?.awardType.badgeUrl);
-    console.log('AWARD: RENDER', awards);
-    try {
-      if (award?.awardType.badgeUrl) {
-        return <AwardPlane image={award.awardType.badgeUrl} />;
-      }
-    } catch (e) {
-      console.log('ERROR:', e);
-    }
-    return null;
-  };
+  const awardCollection = useMemo(() => {
+    if (!awards) return;
+    if (awards.length !== 0) {
+      const awardsList: AwardCollection[] = modulePosition.reduce((acc: AwardCollection[], item) => {
+        const award = awards.find(award => award.moduleId === item.id);
+        if (award) {
+          acc.push({
+            ...award,
+            position: item.position,
+          });
+        }
+        return acc;
+      }, []);
 
-  return modulePosition.map((item, idx) => (
-    <group position={modulePosition[idx + 1]?.position || pathLength}>{getAwardImage(item.id)}</group>
-  ));
+      return awardsList;
+    }
+    return [];
+  }, [awards]);
+
+  if (!awardCollection) return null;
+  if (!awardCollection?.length) return null;
+
+  console.log('AWARDS LIST:', awardCollection);
+
+  return awardCollection.map(
+    (item, idx) =>
+      item?.awardType.badgeUrl && (
+        <group key={item.id} position={awardCollection[idx + 1]?.position || pathLength}>
+          <AwardPlane image={item.awardType.badgeUrl} />;
+        </group>
+      ),
+  );
 }
 
 export default ModuleAwards;
