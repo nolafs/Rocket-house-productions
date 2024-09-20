@@ -236,7 +236,7 @@ const Path: React.FC<{
 
           <meshLineMaterial
             transparent
-            lineWidth={1.5}
+            lineWidth={2}
             color={new THREE.Color(color)}
             depthWrite={false}
             dashArray={1 / pathLength}
