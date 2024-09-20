@@ -93,14 +93,14 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
         </div>
       </div>
 
-      <Canvas className={'fixed h-screen w-full'} camera={{ position: [0, 0, 130], fov: 15 }}>
+      <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[2, 10, 8]} intensity={4} castShadow></directionalLight>
 
           <Sky
-            distance={3000}
-            sunPosition={[0, 0, 100]}
+            distance={900}
+            sunPosition={[100, 0, -100]}
             mieDirectionalG={0.022}
             inclination={0.25}
             azimuth={0.45}
