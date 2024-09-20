@@ -1,12 +1,20 @@
 import { createStore, StoreApi } from 'zustand';
 import { LessonProgressStore } from './use-lesson-progress-store';
 import { persist } from 'zustand/middleware';
-import { AwardType, Lesson, Module as ModuleDB, ModuleAwardType } from '@prisma/client';
+import { AwardType, Lesson, Module as ModuleDB, ModuleAttachmemtType, ModuleAwardType } from '@prisma/client';
 import axios from 'axios';
 
 type ModuleSection = ModuleDB & {
   lessons: Lesson[]; // Array of lesson IDs
   availableAwards: AvailableAward[];
+  attachments?: ModuleAttachment[];
+};
+
+type ModuleAttachment = {
+  id: string;
+  name: string;
+  url: string;
+  attachmentType: ModuleAttachmemtType;
 };
 
 export type AvailableAward = ModuleAwardType & {
@@ -15,6 +23,7 @@ export type AvailableAward = ModuleAwardType & {
   moduleId: string;
   awarded: boolean;
   awardNotified: boolean;
+  attachments?: ModuleAttachment[];
 };
 
 export type ModuleProgression = {
@@ -25,6 +34,7 @@ export type ModuleProgression = {
   color: string;
   lessons: Lesson[]; // Array of lesson IDs
   availableAwards: AvailableAward[];
+  attachments?: ModuleAttachment[];
 };
 
 type ModuleState = {
@@ -41,6 +51,7 @@ type ModuleAction = {
   getModuleProgress: (moduleId: string) => number;
   getModulesAwardNotification: () => AvailableAward[];
   getAwards: () => AvailableAward[];
+  getAttachment: (moduleId: string) => ModuleAttachment[];
   getCurrentModule: () => ModuleProgression | null;
   getAllModules: () => { [moduleId: string]: ModuleProgression };
   syncModuleProgressWithDB: (childId: string, courseId: string) => void;
@@ -66,6 +77,7 @@ export const createModuleStore = (
         ...initState,
         addModule: module => {
           const moduleId = module.id;
+
           let progress = 0;
           let updatedAwards = module.availableAwards;
           const existingModule = get().modules[moduleId];
@@ -99,6 +111,7 @@ export const createModuleStore = (
             color: module.color || 'transparent',
             lessons: module.lessons,
             availableAwards: updatedAwards,
+            attachments: module.attachments || [],
           };
 
           set(state => ({
@@ -226,11 +239,16 @@ export const createModuleStore = (
         },
         getAwards: () => {
           const modules = get().modules;
+
           const awards = Object.values(modules).reduce((acc, module) => {
             const moduleAwards = module.availableAwards?.filter(award => award.awarded && award.awardNotified) || [];
             return [...acc, ...moduleAwards];
           }, [] as AvailableAward[]);
           return awards;
+        },
+        getAttachment: (moduleId: string) => {
+          const module = get().modules[moduleId];
+          return module?.attachments || [];
         },
         getModuleProgress: moduleId => get().modules[moduleId]?.progress || 0,
         getCurrentModule: () => get().currentModule || null,
@@ -288,6 +306,7 @@ export const createModuleStore = (
                   lessonCount: 0, // Initialize lesson count
                   lessons: [], // Initialize lessons array if needed
                   availableAwards: awardsList,
+                  attachments: current.attachments || [],
                 };
                 acc.push(module);
               }
@@ -314,6 +333,7 @@ export const createModuleStore = (
                   progress: progression.totalProgress / progression.lessonCount,
                   lessons: progression.lessons,
                   availableAwards: module.availableAwards,
+                  attachments: module.attachments || [],
                 };
               } else {
                 updatedModules[progression.id] = {
@@ -323,6 +343,7 @@ export const createModuleStore = (
                   progress: progression.totalProgress / progression.lessonCount,
                   lessons: progression.lessons,
                   availableAwards: progression.availableAwards || [],
+                  attachments: progression.attachments || [],
                 };
               }
             });

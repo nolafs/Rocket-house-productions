@@ -93,7 +93,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
         </div>
       </div>
 
-      <Canvas className={'fixed h-screen w-full'} shadows camera={{ position: [0, 0, 130], fov: 15 }}>
+      <Canvas className={'fixed h-screen w-full'} camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.4} />
           <directionalLight position={[2, 10, 8]} intensity={4} castShadow></directionalLight>
