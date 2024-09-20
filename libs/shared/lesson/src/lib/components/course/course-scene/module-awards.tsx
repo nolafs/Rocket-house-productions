@@ -179,6 +179,7 @@ export function ModuleAwards({ modulePosition, pathLength }: ModuleAwardsProps) 
             <group key={item.id} position={awardCollection[idx + 1]?.position || awardCollection[idx]?.position}>
               {item.certificates.map((attachment, idx) => (
                 <DownloadPlane
+                  key={attachment.id}
                   url={attachment.url}
                   filename={attachment.name}
                   imageUrl={['/images/course/button_cert_1.png', '/images/course/button_cert_2.png']}
@@ -194,6 +195,7 @@ export function ModuleAwards({ modulePosition, pathLength }: ModuleAwardsProps) 
             <group key={item.id} position={awardCollection[idx]?.position}>
               {item.downloads.map((attachment, idx) => (
                 <DownloadPlane
+                  key={attachment.id}
                   url={attachment.url}
                   filename={attachment.name}
                   imageUrl={['/images/course/button_chart_1.png', '/images/course/button_chart_2.png']}

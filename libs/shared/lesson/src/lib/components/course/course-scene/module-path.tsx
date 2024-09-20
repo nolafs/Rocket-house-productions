@@ -183,7 +183,7 @@ export const ModulePath: React.FC<{
           <Path points={fullPath} opacity={0.0} color={'#8896AB'} onPathLength={length => setPathLength(length)} />
         )}
       </group>
-      <group position={[0, 15, -24.5]}>{completePath.length > 0 && <Path points={completePath} />}</group>
+      <group position={[0, 15, -24.2]}>{completePath.length > 0 && <Path points={completePath} />}</group>
       <group position={[0, 15, -24.5]}>
         {unCompletePath.length > 0 && <Path points={unCompletePath} color={'#8896AB'} />}
       </group>
@@ -232,7 +232,7 @@ const Path: React.FC<{
       {pathLength && (
         <mesh>
           {/* @ts-expect-error type not register */}
-          <meshLineGeometry points={curvePath.curvePoints} castShadow={true} />
+          <meshLineGeometry frustumCulled={false} points={curvePath.curvePoints} castShadow={true} />
 
           <meshLineMaterial
             transparent
