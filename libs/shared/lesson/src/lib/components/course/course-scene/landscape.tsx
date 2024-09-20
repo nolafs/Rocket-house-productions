@@ -79,13 +79,15 @@ export const Landscape = ({
         scrollTriggerRef.current.kill();
       }
 
+      //gsap.set(camera.current.rotation, { x: Math.PI / 5 });
+
       console.log('LANDSCAPE MODULES: SCROLLTRIGGER');
 
       const tl = gsap.timeline();
       //const zoomTl = gsap.timeline();
 
       tl.to(camera.current.position, {
-        z: 70,
+        z: 80,
         y: 20,
         duration: 0.2,
         ease: 'none',
@@ -198,7 +200,7 @@ export const Landscape = ({
 
             <FinalScene pathLength={pathLength} />
 
-            <ModuleAwards modulePosition={modulePosition} pathLength={new THREE.Vector3(0, pathLength, 0)} />
+            <ModuleAwards modulePosition={modulePosition} pathLength={new THREE.Vector3(0, pathLength, -25)} />
           </>
         )}
 

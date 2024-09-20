@@ -109,6 +109,14 @@ export async function GET(req: NextRequest) {
                 description: true,
                 color: true,
                 availableAwards: true,
+                attachments: {
+                  select: {
+                    id: true,
+                    name: true,
+                    url: true,
+                    attachmentType: true,
+                  },
+                },
                 awards: {
                   select: {
                     id: true,

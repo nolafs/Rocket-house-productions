@@ -1,4 +1,4 @@
-import { useGLTF, Svg, useCursor, RoundedBox, Text, useTexture, Center, Ring } from '@react-three/drei';
+import { useGLTF, Svg, useCursor, RoundedBox, Text, useTexture, Center, Ring, Text3D } from '@react-three/drei';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useLessonProgressionStore } from '@rocket-house-productions/providers';
@@ -141,7 +141,7 @@ export const Button3d = ({
     <group ref={button} position={[0, position[1], 0]}>
       {!next && showTooltip && (
         <ScrollToCurrentLesson
-          position={[0, -3, -2]}
+          position={[0, -0.5, -2]}
           rotation={[0, 0, 0]}
           onScrollToCurrentLesson={handleScrollToCurrentLesson}
           isVisible={!isScrolling}
@@ -310,6 +310,7 @@ const ScrollToCurrentLesson = ({
   isVisible,
   onScrollToCurrentLesson,
 }: ScrollToButtonProps) => {
+  const { nodes } = useGLTF('/images/course/bookmark.gltf');
   const [hovered, hover] = useState(false);
   const button = useRef<THREE.Group>(null);
 
@@ -344,22 +345,31 @@ const ScrollToCurrentLesson = ({
       onPointerOver={e => hover(true)}
       onPointerLeave={e => hover(false)}
       onClick={e => onScrollToCurrentLesson()}>
-      <Center>
-        <Text
-          {...fontProps}
-          color="white"
-          scale={0.3}
-          anchorX="center"
-          anchorY="middle"
-          position={[-0.1, 0, 0.3]}
-          castShadow={true}>
-          Back to next lesson
-        </Text>
+      <Text3D
+        castShadow={true}
+        font={'/images/course/font.json'}
+        curveSegments={32}
+        position={[-1.5, 0.7, 0.3]}
+        bevelEnabled
+        bevelSize={0.02}
+        bevelThickness={0.08}
+        height={0.5}
+        lineHeight={0.5}
+        letterSpacing={0.01}
+        size={0.35}>
+        Next lesson
+        <meshStandardMaterial color="white" />
+      </Text3D>
 
-        <RoundedBox args={[4, 1, 0.4]} radius={0.2} bevelSegments={2} castShadow={true}>
-          <meshStandardMaterial color={!hovered ? '#bd1368' : 'green'} />
-        </RoundedBox>
-      </Center>
+      <mesh
+        geometry={(nodes['bookmark'] as THREE.Mesh).geometry}
+        position={[2, 0, 0]}
+        rotation={[0, 0, Math.PI / 2]}
+        scale={0.015}
+        castShadow
+        receiveShadow>
+        <meshStandardMaterial color={!hovered ? '#bd1368' : 'green'} />
+      </mesh>
     </group>
   );
 };
