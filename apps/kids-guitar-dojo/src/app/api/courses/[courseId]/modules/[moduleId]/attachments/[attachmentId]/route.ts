@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration';
 
-export async function DELETE(req: Request, { params }: { params: { courseId: string; attachmentId: string } }) {
+export async function DELETE(req: Request, { params }: { params: { moduleId: string; attachmentId: string } }) {
   try {
     const { userId } = auth();
 
@@ -10,19 +10,19 @@ export async function DELETE(req: Request, { params }: { params: { courseId: str
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const course = await db.course.findUnique({
+    const moduleSection = await db.module.findUnique({
       where: {
-        id: params.courseId,
+        id: params.moduleId,
       },
     });
 
-    if (!course) {
+    if (!moduleSection) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    const attachment = await db.attachment.delete({
+    const attachment = await db.moduleAttachment.delete({
       where: {
-        courseId: params.courseId,
+        moduleId: params.moduleId,
         id: params.attachmentId,
       },
     });
