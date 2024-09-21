@@ -1,3 +1,4 @@
+'use client';
 import { Progress } from '@rocket-house-productions/shadcn-ui';
 import { cva } from 'class-variance-authority';
 import { cn } from '@rocket-house-productions/util';

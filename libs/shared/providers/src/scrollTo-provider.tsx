@@ -1,5 +1,5 @@
 'use client';
-import { createContext, FC, type ReactNode, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, FC, type ReactNode, useContext, useRef, useState } from 'react';
 import gsap from 'gsap';
 import scrollTo from 'gsap/ScrollToPlugin';
 import useIsMounted from 'ismounted';
@@ -21,9 +21,7 @@ export const ScrollToProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const container = useRef<any>();
 
   const scrollToFunction = (id: string) => {
-    if (typeof window !== 'undefined') {
-      setScrollTo(id);
-    }
+    setScrollTo(id);
   };
 
   useGSAP(

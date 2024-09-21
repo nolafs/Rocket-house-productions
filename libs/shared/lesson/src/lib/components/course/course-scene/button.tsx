@@ -1,7 +1,7 @@
 import { useGLTF, Svg, useCursor, RoundedBox, Text, useTexture, Center, Ring, Text3D } from '@react-three/drei';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { useLessonProgressionStore } from '@rocket-house-productions/providers';
+import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { useFrame } from '@react-three/fiber';
 import { LessonButton } from './course.types';
 import { gsap } from 'gsap';
@@ -17,6 +17,7 @@ interface ButtonProps {
   next?: boolean;
   isScrolling?: boolean;
   lesson: LessonButton;
+  courseCompleted?: boolean;
   onOpenLesson: (lesson: LessonButton) => void;
   onBackToCurrentLesson?: () => void;
 }
@@ -51,6 +52,7 @@ export const Button3d = ({
   active,
   next,
   lesson,
+  courseCompleted,
   onOpenLesson,
   onBackToCurrentLesson,
   ...rest
@@ -139,7 +141,7 @@ export const Button3d = ({
 
   return (
     <group ref={button} position={[0, position[1], 0]}>
-      {!next && showTooltip && (
+      {!courseCompleted && !next && showTooltip && (
         <ScrollToCurrentLesson
           position={[0, -0.5, -2]}
           rotation={[0, 0, 0]}
@@ -155,7 +157,6 @@ export const Button3d = ({
         {...rest}
         onClick={e => {
           if (active) {
-            //router.push(lessonUrl);
             onOpenLesson(lesson);
           }
         }}
