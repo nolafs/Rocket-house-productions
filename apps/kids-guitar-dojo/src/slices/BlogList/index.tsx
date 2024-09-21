@@ -1,4 +1,6 @@
+'use server';
 import { Content } from '@prismicio/client';
+
 import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
 import { SectionBlog } from '@rocket-house-productions/features';
@@ -14,7 +16,6 @@ export type BlogListProps = SliceComponentProps<Content.BlogListSlice>;
  */
 const BlogList = async ({ slice }: BlogListProps) => {
   const getBlogPosts = async () => {
-    'use server';
     const client = createClient();
     const pages = await client.getAllByType('blog_post', {
       limit: slice.primary?.limit || 3,
