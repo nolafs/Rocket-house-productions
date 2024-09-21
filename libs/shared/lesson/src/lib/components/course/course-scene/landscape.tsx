@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import React, { MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
-import { Plane, useCamera, useScroll, useTexture } from '@react-three/drei';
+import React, { MutableRefObject, useMemo, useRef, useState } from 'react';
+import { Plane, useTexture } from '@react-three/drei';
 
-import { useFrame, useThree, extend } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { FretBoard } from './fretboard';
 import { Lesson, Module } from '@prisma/client';
 import { FinalScene } from './finish-scene';
