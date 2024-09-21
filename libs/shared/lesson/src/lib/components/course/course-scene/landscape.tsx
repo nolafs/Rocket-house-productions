@@ -26,6 +26,7 @@ interface LandscapeProps {
   rotation?: [number, number, number];
   position?: [number, number, number];
   modules: ModuleSection[];
+  courseCompleted?: boolean;
   lessonSpacing: number;
   onOpenLesson?: (lesson: LessonButton) => void;
   onReady?: (ready: boolean) => void;
@@ -33,10 +34,12 @@ interface LandscapeProps {
 }
 
 const SCROLL_FACTOR = 50;
+const FINAL_SCENE = 30;
 
 export const Landscape = ({
   modules,
   lessonSpacing,
+  courseCompleted,
   rotation,
   position,
   onReady,
@@ -79,12 +82,7 @@ export const Landscape = ({
         scrollTriggerRef.current.kill();
       }
 
-      //gsap.set(camera.current.rotation, { x: Math.PI / 5 });
-
-      console.log('LANDSCAPE MODULES: SCROLLTRIGGER');
-
       const tl = gsap.timeline();
-      //const zoomTl = gsap.timeline();
 
       tl.to(camera.current.position, {
         z: 80,
@@ -93,27 +91,52 @@ export const Landscape = ({
         ease: 'none',
       });
 
-      tl.to(camera.current.position, {
-        y: pathLength,
-        duration: 1,
-        ease: 'none',
-      });
-
-      scrollTriggerRef.current = ScrollTrigger.create({
-        animation: tl,
-        trigger: container.current,
-        pin: true,
-        scrub: 1,
-        end: `+=${pathLength * SCROLL_FACTOR} `,
-      });
-
-      if (typeof window !== 'undefined') {
-        gsap.to(window, {
-          duration: 3,
-          scrollTo: { y: (currentLesson + 10) * SCROLL_FACTOR },
-          delay: 3,
-          ease: 'Power2.inOut',
+      if (!courseCompleted) {
+        tl.to(camera.current.position, {
+          y: pathLength,
+          duration: 1,
+          ease: 'none',
         });
+
+        scrollTriggerRef.current = ScrollTrigger.create({
+          animation: tl,
+          trigger: container.current,
+          pin: true,
+          scrub: 1,
+          end: `+=${pathLength * SCROLL_FACTOR} `,
+        });
+
+        if (typeof window !== 'undefined') {
+          gsap.to(window, {
+            duration: 3,
+            scrollTo: { y: (currentLesson + 10) * SCROLL_FACTOR },
+            delay: 3,
+            ease: 'Power2.inOut',
+          });
+        }
+      } else {
+        tl.to(camera.current.position, {
+          y: pathLength + FINAL_SCENE,
+          duration: 1,
+          ease: 'none',
+        });
+
+        scrollTriggerRef.current = ScrollTrigger.create({
+          animation: tl,
+          trigger: container.current,
+          pin: true,
+          scrub: 1,
+          end: `+=${(pathLength + FINAL_SCENE) * SCROLL_FACTOR} `,
+        });
+
+        if (typeof window !== 'undefined') {
+          gsap.to(window, {
+            duration: 5,
+            scrollTo: { y: (pathLength + FINAL_SCENE) * SCROLL_FACTOR },
+            delay: 0.5,
+            ease: 'Power2.inOut',
+          });
+        }
       }
 
       return () => {
@@ -174,7 +197,7 @@ export const Landscape = ({
     }
   });
 
-  console.log('LANDSCAPE MODULES: RENDER');
+  console.log('LANDSCAPE MODULES: RENDER - COMPLETE', courseCompleted);
 
   return (
     <>
@@ -198,7 +221,7 @@ export const Landscape = ({
               pathLength={pathLength}
             />
 
-            <FinalScene pathLength={pathLength} />
+            {<FinalScene pathLength={pathLength} courseCompleted={courseCompleted} />}
 
             <ModuleAwards modulePosition={modulePosition} pathLength={new THREE.Vector3(0, pathLength, -25)} />
           </>
@@ -207,6 +230,7 @@ export const Landscape = ({
         <ModulePath
           modulesSection={modules}
           lessonSpacing={lessonSpacing}
+          courseCompleted={courseCompleted}
           onBackToCurrentLesson={handleOnBackToCurrentLesson}
           onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
           onUpdated={data => handleUpdate(data)}

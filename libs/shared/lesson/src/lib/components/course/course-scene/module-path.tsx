@@ -1,7 +1,7 @@
 import { Lesson, Module } from '@prisma/client';
 import * as THREE from 'three';
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useLessonProgressionStore } from '@rocket-house-productions/providers';
+import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
@@ -50,10 +50,12 @@ export const ModulePath: React.FC<{
   modulesSection: ModuleSection[];
   lessonSpacing?: number;
   onBackToCurrentLesson: () => void;
+  courseCompleted?: boolean;
   onUpdated?: (data: ModuleButtonDisplay) => void;
   onOpenLesson?: (lesson: LessonButton) => void;
-}> = ({ modulesSection, lessonSpacing = 7, onBackToCurrentLesson, onUpdated, onOpenLesson }) => {
+}> = ({ modulesSection, lessonSpacing = 7, courseCompleted, onBackToCurrentLesson, onUpdated, onOpenLesson }) => {
   const { getLessonCompleted } = useLessonProgressionStore(store => store);
+
   const [pathLength, setPathLength] = React.useState<number | null>(null);
 
   const currentModule = useRef<Module | null>(null);
@@ -170,6 +172,7 @@ export const ModulePath: React.FC<{
                 moduleSlug: button.moduleSlug,
                 color: button.color,
               }}
+              courseCompleted={courseCompleted}
               active={button.active}
               next={button.next}
               position={[button.position.x, button.position.y, button.position.z]}
@@ -178,15 +181,23 @@ export const ModulePath: React.FC<{
         ))}
       </group>
 
-      <group position={[0, 15, -24.6]}>
-        {fullPath.length > 0 && (
-          <Path points={fullPath} opacity={0.0} color={'#8896AB'} onPathLength={length => setPathLength(length)} />
-        )}
-      </group>
-      <group position={[0, 15, -24.2]}>{completePath.length > 0 && <Path points={completePath} />}</group>
-      <group position={[0, 15, -24.5]}>
-        {unCompletePath.length > 0 && <Path points={unCompletePath} color={'#8896AB'} />}
-      </group>
+      {courseCompleted ? (
+        <group position={[0, 15, -24.6]}>
+          {fullPath.length > 0 && <Path points={fullPath} opacity={1} onPathLength={length => setPathLength(length)} />}
+        </group>
+      ) : (
+        <>
+          <group position={[0, 15, -24.6]}>
+            {fullPath.length > 0 && (
+              <Path points={fullPath} opacity={0.0} color={'#8896AB'} onPathLength={length => setPathLength(length)} />
+            )}
+          </group>
+          <group position={[0, 15, -24.2]}>{completePath.length > 0 && <Path points={completePath} />}</group>
+          <group position={[0, 15, -24.5]}>
+            {unCompletePath.length > 0 && <Path points={unCompletePath} color={'#8896AB'} />}
+          </group>
+        </>
+      )}
     </>
   );
 };

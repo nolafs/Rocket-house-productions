@@ -11,7 +11,7 @@ export const ModuleLabel = ({ position, rotation, module, ...rest }: ModuleLabel
   return (
     <group position={position} rotation={rotation} {...rest}>
       <Center rotation={[0, 0, 0]}>
-        <RoundedBox args={[8, 2, 1]} position={[0, 0, 0.2]} bevelSegments={4} radius={0.3} castShadow receiveShadow>
+        <RoundedBox args={[8, 2, 1]} position={[0, 0, 1]} bevelSegments={4} radius={0.3} castShadow receiveShadow>
           <Center rotation={[0, 0, 0]} position={[0, 0, 0.4]}>
             <Text3D
               castShadow={true}

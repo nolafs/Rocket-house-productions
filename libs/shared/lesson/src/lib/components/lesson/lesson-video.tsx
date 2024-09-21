@@ -1,7 +1,7 @@
 'use client';
 import { Child, Lesson } from '@prisma/client';
-import playerjs from 'player.js';
-import { useEffect, useRef, useState } from 'react';
+import playerJs from 'player.js';
+import { useEffect, useRef } from 'react';
 import { SectionModule } from '@rocket-house-productions/types';
 import { useLessonProgressionStore, useModuleProgressStore, usePointsStore } from '@rocket-house-productions/providers';
 import useIsMounted from 'ismounted';
@@ -16,8 +16,9 @@ interface LessonContentProps {
 
 export function LessonVideo({ lesson, module }: LessonContentProps) {
   const isMounted = useIsMounted();
-  const { setLessonProgress, setLessonComplete, getLessonProgress, getLessonDuration, getLessonCompleted } =
-    useLessonProgressionStore(store => store);
+  const { setLessonProgress, setLessonComplete, getLessonProgress, getLessonDuration } = useLessonProgressionStore(
+    store => store,
+  );
   const { addPoints } = usePointsStore(store => store);
   const { calculateModuleProgress } = useModuleProgressStore(store => store);
   const videoId = lesson?.videoId;
@@ -28,9 +29,7 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
   useEffect(() => {
     if (!ref.current && !isMounted.current) return;
 
-    if (typeof window === 'undefined') return;
-
-    let player = new playerjs.Player(ref.current);
+    let player = new playerJs.Player(ref.current);
 
     player.on('ready', () => {
       playerRef.current = player;

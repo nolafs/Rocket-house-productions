@@ -1,10 +1,16 @@
 import { auth } from '@clerk/nextjs/server';
 import { notFound, redirect } from 'next/navigation';
 import { getChild, getLesson } from '@rocket-house-productions/actions/server';
-import { LessonContent } from '@rocket-house-productions/lesson/server';
-import { LessonHeader, LessonNext, LessonVideo } from '@rocket-house-productions/lesson';
 import { createClient } from '@/prismicio';
-import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
+import dynamic from 'next/dynamic';
+
+const LessonComponent = dynamic(() => import('./_components/lessonComponent'), {
+  ssr: false,
+});
+
+const LessonHeader = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonHeader), {
+  ssr: false,
+});
 
 interface PageProps {
   params: { slug: string; module_slug: string; lesson_slug: string };
@@ -50,23 +56,15 @@ export default async function Page({ params }: PageProps) {
     }
   }
 
+  if (!data.module || !data.course || !data.lesson) {
+    return notFound();
+  }
+
   return (
     <>
       <LessonHeader lessonId={data.lesson.id} module={data.module} />
       <main className={'container mx-auto mb-20 mt-[100px] flex max-w-5xl flex-col space-y-5 px-5'}>
-        <LessonVideo lesson={data.lesson} module={data.module as SectionModule} child={child} />
-        <LessonContent
-          title={data.lesson.title}
-          page={page}
-          description={data.lesson.description}
-          position={data.lesson.position}
-          category={data.lesson?.category?.name}
-        />
-        <LessonNext
-          lesson={data.lesson as SectionLesson}
-          module={data.module as SectionModule}
-          course={data.course as SectionCourse}
-        />
+        <LessonComponent data={data} child={child} page={page} />
       </main>
     </>
   );

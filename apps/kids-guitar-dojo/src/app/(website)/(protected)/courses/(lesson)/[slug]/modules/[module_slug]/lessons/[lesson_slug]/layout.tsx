@@ -1,8 +1,8 @@
-import { CourseProgressionProvider, ScrollToProvider } from '@rocket-house-productions/providers';
+import { ScrollToProvider } from '@rocket-house-productions/providers';
 import { getChild, getLesson } from '@rocket-house-productions/actions/server';
 import { notFound, redirect } from 'next/navigation';
 import { ReactNode } from 'react';
-import { Header, LessonData, LessonHeader } from '@rocket-house-productions/lesson';
+import { LessonData } from '@rocket-house-productions/lesson';
 import { auth } from '@clerk/nextjs/server';
 
 export const metadata = {

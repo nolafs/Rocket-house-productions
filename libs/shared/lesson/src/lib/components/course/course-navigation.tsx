@@ -23,6 +23,7 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/SplitText';
 import { LessonButton } from './course-scene/course.types';
+import { useCourseProgressionStore } from '@rocket-house-productions/providers';
 
 gsap.registerPlugin(SplitText);
 
@@ -35,6 +36,7 @@ const LESSON_SPACING = 7;
 
 export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const courseProgression = useCourseProgressionStore(store => store.getCourseProgress(course.id));
   const [lesson, setLesson] = React.useState<LessonButton | null>(null);
   const router = useRouter();
 
@@ -111,6 +113,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
           {containerRef && (
             <Landscape
               lessonSpacing={LESSON_SPACING}
+              courseCompleted={courseProgression === 100}
               position={[0, 0, 0]}
               container={containerRef}
               onOpenLesson={handleOpenLesson}
