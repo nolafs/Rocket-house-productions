@@ -52,7 +52,6 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const position = module.lessons?.findIndex(l => l.id === lesson.id) || 0;
   const [firstRender, setFirstRender] = useState(true);
   const [loadingNext, setLoadingNext] = useState(false);
-  const component: Element | null = null;
 
   useEffect(() => {
     if (firstRender) {
@@ -76,11 +75,6 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
       }
     }
   }, [getLessonProgress(lesson.id), lessonCompleted]);
-
-  if (!lesson || !module || !course) {
-    console.warn('LessonNext: Missing lesson, module or course');
-    return null;
-  }
 
   const nextLesson = module?.lessons?.length ? module?.lessons?.[position + 1] : null;
 

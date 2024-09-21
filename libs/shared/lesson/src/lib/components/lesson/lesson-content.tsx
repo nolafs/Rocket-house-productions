@@ -1,4 +1,4 @@
-'use server';
+'use client';
 import { components } from '@/slices';
 import { SliceZone } from '@prismicio/react';
 interface LessonContentProps {
@@ -9,7 +9,7 @@ interface LessonContentProps {
   category?: string | null | undefined;
 }
 
-export async function LessonContent({ title, page, description, position, category }: LessonContentProps) {
+export function LessonContent({ title, page, description, position, category }: LessonContentProps) {
   let subtitle = '';
 
   if (page) {
