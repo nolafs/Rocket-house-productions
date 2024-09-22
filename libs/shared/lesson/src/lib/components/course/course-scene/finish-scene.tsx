@@ -37,7 +37,7 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
       if (courseCompleted) {
         gsap.to(confettiRef.current!.rotation, {
           y: `+=${Math.PI * 2}`,
-          duration: 5,
+          duration: 8,
           repeat: -1,
           ease: 'none',
         });
@@ -54,7 +54,7 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
           duration: 5,
           repeat: -1,
           ease: 'none',
-          delay: 0.5,
+          delay: 2,
         });
       }
     },
@@ -75,7 +75,7 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
             </Plane>
           </group>
 
-          <group ref={ninjaRef2} rotation={[-Math.PI / 8, 0, 0]}>
+          <group ref={ninjaRef2} rotation={[-Math.PI / 8, -Math.PI / 4, 0]}>
             <Plane args={[5, 5]} position={[0, 0, 20]} rotation={[0, 0, 0]}>
               <meshStandardMaterial side={THREE.DoubleSide} map={ninja} transparent={true} metalness={0} />
             </Plane>
