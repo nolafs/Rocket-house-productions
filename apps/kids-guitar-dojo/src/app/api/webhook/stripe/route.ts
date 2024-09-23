@@ -98,6 +98,7 @@ export async function POST(req: Request, res: Response) {
               courseId: data.metadata.courseId,
               stripeChargeId: data?.id,
               amount: data.amount,
+              type: 'charge',
               billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
             },
           });

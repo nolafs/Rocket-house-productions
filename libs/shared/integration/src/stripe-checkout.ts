@@ -26,6 +26,7 @@ export const stripeCheckout = async (productId: string) => {
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
       customer_email: sessionClaims?.email as string,
+      allow_promotion_codes: true,
       billing_address_collection: 'required',
       shipping_address_collection: {
         allowed_countries: ['US', 'AU', 'NZ', 'CA', 'GB', 'AE', 'DE', 'FR', 'SG'],
