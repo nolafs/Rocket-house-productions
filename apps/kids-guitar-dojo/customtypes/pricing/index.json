@@ -44,6 +44,22 @@
           "default_value": false
         }
       },
+      "free": {
+        "type": "Boolean",
+        "config": {
+          "label": "Free",
+          "default_value": false,
+          "placeholder_true": "true",
+          "placeholder_false": "false"
+        }
+      },
+      "course_id": {
+        "type": "Text",
+        "config": {
+          "label": "Course Id (Free account only)",
+          "placeholder": ""
+        }
+      },
       "features": {
         "type": "Group",
         "config": {

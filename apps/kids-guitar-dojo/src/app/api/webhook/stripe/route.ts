@@ -92,20 +92,59 @@ export async function POST(req: Request, res: Response) {
             },
           });
 
-          await db.purchase.create({
-            data: {
-              accountId: account?.id as string,
-              courseId: data.metadata.courseId,
-              stripeChargeId: data?.id,
-              amount: data.amount,
-              type: 'charge',
-              billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
-            },
-          });
+          if (data.metadata?.childId && data.metadata?.courseId && account) {
+            const purchase = await db.purchase.findUnique({
+              where: {
+                accountId_courseId_childId: {
+                  accountId: account.id,
+                  courseId: data.metadata.courseId,
+                  childId: data.metadata.childId,
+                },
+              },
+            });
+
+            if (purchase) {
+              await db.purchase.update({
+                where: {
+                  id: purchase?.id as string,
+                },
+                data: {
+                  stripeChargeId: data?.id,
+                  amount: data.amount,
+                  type: 'charge',
+                  billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
+                },
+              });
+            } else {
+              await db.purchase.create({
+                data: {
+                  accountId: account?.id as string,
+                  courseId: data.metadata.courseId,
+                  childId: data.metadata.childId,
+                  stripeChargeId: data?.id,
+                  amount: data.amount,
+                  type: 'charge',
+                  billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
+                },
+              });
+            }
+          } else {
+            await db.purchase.create({
+              data: {
+                accountId: account?.id as string,
+                courseId: data.metadata.courseId,
+                stripeChargeId: data?.id,
+                amount: data.amount,
+                type: 'charge',
+                billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
+              },
+            });
+          }
 
           await clerkClient.users.updateUserMetadata(data.metadata.userId, {
             publicMetadata: {
               status: 'active',
+              type: 'paid',
             },
           });
 

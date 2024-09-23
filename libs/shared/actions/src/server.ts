@@ -12,3 +12,4 @@ export { downloadPdf } from './downlod-pdf';
 export { getChild } from './get-child';
 export { getQuiz } from './get-quiz';
 export { getCourse } from './get-course';
+export { freeCheckout } from './free-checkout';
