@@ -8,6 +8,8 @@ export type Tier = {
     features: { feature: string }[];
     most_popular?: boolean;
     stripeProductId?: string;
+    course_id?: string;
     sales?: boolean;
+    free?: boolean;
   };
 };

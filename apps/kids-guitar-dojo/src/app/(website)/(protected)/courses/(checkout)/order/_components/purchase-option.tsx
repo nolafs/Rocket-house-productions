@@ -25,6 +25,11 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
 
   useEffect(() => {
     if (user && !isLoading && !isValidating && !isError) {
+      if (type === 'free') {
+        setState('ready');
+        return;
+      }
+
       if (productId) {
         //payment link to stripe
         const payment = async () => {
@@ -69,23 +74,6 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
               </div>
               <h1 className={'text-2xl font-bold lg:text-3xl'}>Please select from the following options:</h1>
               {children}
-              <Bounded as={'section'} yPadding={'sm'} className={'w-full max-w-3xl px-5'}>
-                <div className="w-full rounded-md bg-gray-200">
-                  <div className="grid px-6 py-16 sm:py-5 md:grid-cols-2 md:px-7 lg:items-center lg:justify-between lg:px-8">
-                    <div>
-                      <h2 className="text-xl font-bold tracking-tight text-gray-500">
-                        Not sure yet, you like to test drive it?
-                      </h2>
-                    </div>
-
-                    <div className="mt-10 flex items-center justify-end gap-x-5 lg:mt-0 lg:flex-shrink-0">
-                      <Button variant={'default'} size={'sm'}>
-                        Free Trial
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </Bounded>
             </>
           ) : (
             <div>

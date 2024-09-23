@@ -28,8 +28,8 @@ export function SectionFaqs({ data: { headings, text, body, faqs }, color = 'C' 
       </div>
       <div className="mt-10 lg:col-span-7 lg:mt-0">
         <dl className="space-y-5">
-          {faqs.map(faq => (
-            <FaqItem key={faq.id} heading={faq.data.heading} body={faq.data.body} />
+          {faqs.map((faq, idx) => (
+            <FaqItem key={`${faq.id}-${idx}`} heading={faq.data.heading} body={faq.data.body} />
           ))}
         </dl>
       </div>

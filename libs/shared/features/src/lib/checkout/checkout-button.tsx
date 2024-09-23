@@ -1,21 +1,31 @@
-'use client';
-
 import cn from 'classnames';
 import { Button } from '@rocket-house-productions/shadcn-ui';
-import { usePurchaseStore } from '@rocket-house-productions/store';
-import { redirect, useRouter } from 'next/navigation';
-import stripeCheckoutAction from '../../../../integration/src/stripe-checkout';
-import { auth } from '@clerk/nextjs/server';
+import { stripeCheckoutAction } from '@rocket-house-productions/integration';
 
 interface BuyButtonProps {
   productId?: string | null | undefined;
+  courseId?: string | null | undefined;
   type: 'payed' | 'free';
   mostPopular: boolean | undefined;
   sales?: boolean | undefined;
 }
 
-export function CheckoutButton({ productId, type, mostPopular = false, sales = false }: BuyButtonProps) {
+export function CheckoutButton({ productId, type, courseId, mostPopular = false, sales = false }: BuyButtonProps) {
+  if (type === 'free') {
+    if (!courseId) {
+      console.error('Course id is required for free course');
+      return null;
+    }
+
+    return (
+      <form action={stripeCheckoutAction}>
+        <input hidden={true} id="couseId" name="couseId" value={courseId} />
+      </form>
+    );
+  }
+
   if (!productId) {
+    console.error('Product id is required for paid course');
     return null;
   }
   return (
