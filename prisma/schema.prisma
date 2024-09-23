@@ -288,6 +288,7 @@ model Account {
   userId           String  @unique
 
   stripeCustomerId String?  @unique
+  recentStripeCheckoutId String? @unique
 
   children Child[]
   purchases Purchase[]

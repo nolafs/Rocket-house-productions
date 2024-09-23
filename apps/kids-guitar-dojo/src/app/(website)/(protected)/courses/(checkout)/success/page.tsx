@@ -1,11 +1,9 @@
-import Link from 'next/link';
-import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { DialogLayout, ParallaxScene } from '@rocket-house-productions/lesson';
 import { createClient } from '@/prismicio';
 import { PrismicRichText } from '@prismicio/react';
+import ButtonOnboarding from './_components/button-onboarding';
 
 export default async function Page() {
   const { userId } = auth();
@@ -17,6 +15,8 @@ export default async function Page() {
   const client = createClient();
   const content = await client.getSingle('onboarding');
 
+  //check if user
+
   return (
     <main className={'lesson'}>
       <ParallaxScene>
@@ -24,9 +24,7 @@ export default async function Page() {
           <div className={'prose max-w-full'}>
             <PrismicRichText field={content.data.success_page_body} />
           </div>
-          <Link href={'/courses'} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
-            Start Onboarding
-          </Link>
+          <ButtonOnboarding userId={userId} />
         </DialogLayout>
       </ParallaxScene>
     </main>
