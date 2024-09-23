@@ -17,6 +17,8 @@ export function SectionPricingTable({ tiers, checkout = false }: SectionPricingT
     return null;
   }
 
+  console.log('tiers', tiers);
+
   return (
     <div className="isolate mx-auto grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
       {tiers.map((tier, idx) => (
@@ -70,7 +72,7 @@ export function SectionPricingTable({ tiers, checkout = false }: SectionPricingT
                   courseId={tier.data.course_id}
                 />
               ) : (
-                <BuyButton type={'free'} mostPopular={tier.data.most_popular} productId={tier.data.stripeProductId} />
+                <BuyButton type={'free'} mostPopular={tier.data.most_popular} />
               )}
             </>
           )}
