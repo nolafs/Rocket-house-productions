@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, context: { params: { userId: string 
       },
     });
 
-    console.log('users', response);
+    console.log('[USERS]', response);
 
     return NextResponse.json(response);
   } catch (error) {
