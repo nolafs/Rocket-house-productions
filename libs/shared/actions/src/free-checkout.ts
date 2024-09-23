@@ -1,6 +1,6 @@
 'use server';
 import { db } from '@rocket-house-productions/integration';
-import { auth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 export const freeCheckout = async (data: FormData) => {
@@ -43,6 +43,13 @@ export const freeCheckout = async (data: FormData) => {
 
   // check if ok and redirect to success page
   if (purchase) {
+    await clerkClient.users.updateUserMetadata(userId, {
+      publicMetadata: {
+        status: 'active',
+        type: 'free',
+      },
+    });
+
     redirect('/courses/success');
   }
 };
