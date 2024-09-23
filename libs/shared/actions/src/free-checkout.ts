@@ -1,7 +1,9 @@
+'use server';
 import { db } from '@rocket-house-productions/integration';
 import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
-const freeCheckout = async (data: FormData) => {
+export const freeCheckout = async (data: FormData) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -28,7 +30,7 @@ const freeCheckout = async (data: FormData) => {
     },
   });
 
-  await db.purchase.create({
+  const purchase = await db.purchase.create({
     data: {
       accountId: account?.id as string,
       courseId: data.get('courseId') as string,
@@ -38,6 +40,11 @@ const freeCheckout = async (data: FormData) => {
       type: 'free',
     },
   });
+
+  // check if ok and redirect to success page
+  if (purchase) {
+    redirect('/courses/success');
+  }
 };
 
 export default freeCheckout;
