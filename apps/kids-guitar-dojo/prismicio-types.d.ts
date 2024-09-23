@@ -1094,6 +1094,29 @@ interface PricingDocumentData {
   sales: prismic.BooleanField;
 
   /**
+   * Free field in *Pricing*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: pricing.free
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  free: prismic.BooleanField;
+
+  /**
+   * Course Id (Free account only) field in *Pricing*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.course_id
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  course_id: prismic.KeyTextField;
+
+  /**
    * Features field in *Pricing*
    *
    * - **Field Type**: Group

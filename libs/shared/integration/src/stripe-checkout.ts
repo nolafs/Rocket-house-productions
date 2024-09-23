@@ -4,7 +4,7 @@ import { stripe } from './stripe';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 
-export const stripeCheckout = async (productId: string) => {
+export const stripeCheckout = async (productId: string, childId: string | null = null) => {
   const { userId, sessionClaims } = auth();
 
   if (!userId) {
@@ -43,6 +43,7 @@ export const stripeCheckout = async (productId: string) => {
         metadata: {
           userId: userId,
           courseId: metadata?.course_id,
+          childId: childId,
         },
       },
     });
