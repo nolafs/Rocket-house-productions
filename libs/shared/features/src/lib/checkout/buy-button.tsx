@@ -2,7 +2,7 @@
 import cn from 'classnames';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { usePurchaseStore } from '@rocket-house-productions/store';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface BuyButtonProps {
   productId?: string | null | undefined;
@@ -12,11 +12,11 @@ interface BuyButtonProps {
 
 export function BuyButton({ productId, type, mostPopular = false }: BuyButtonProps) {
   const router = useRouter();
-  const signupUrl = type === 'free' ? '/sign-up' : `/sign-up?product=${productId}`;
+  const signupUrl = type === 'free' ? '/sign-up?purchase=free' : `/sign-up?product=${productId}`;
   const { setProductId, setType } = usePurchaseStore();
 
   const handleBuy = () => {
-    setProductId(productId);
+    setProductId(productId || null);
     setType(type);
     router.push(signupUrl);
   };
