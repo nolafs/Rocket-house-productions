@@ -88,7 +88,7 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
               <div className="flex h-full w-full items-center justify-center">
                 <div className="mb-20 flex max-w-[492px] flex-col items-center justify-center space-y-10 text-center">
                   <div>
-                    <Image src={kidDojo} alt={'kiddojo'} />
+                    <Image src={kidDojo} priority={true} alt={'kiddojo'} />
                   </div>
                   <h1 className="text-4xl font-bold text-pink-500">Completed the Course!</h1>
                   <h2 className="text-2xl text-gray-600">You’re now officially a Guitar Ninja! 🤘</h2>
