@@ -17,8 +17,6 @@ export default async function Page() {
   const client = createClient();
   const content = await client.getSingle('onboarding');
 
-  console.log('ONBOARDING', content);
-
   return (
     <main className={'lesson'}>
       <ParallaxScene>

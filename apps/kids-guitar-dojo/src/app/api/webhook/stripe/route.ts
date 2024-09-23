@@ -92,7 +92,15 @@ export async function POST(req: Request, res: Response) {
             },
           });
 
-          if (data.metadata?.childId && data.metadata?.courseId && account) {
+          if (!account) {
+            throw new Error('Account not found');
+          }
+
+          if (!data.metadata.courseId) {
+            throw new Error('No Course ID found');
+          }
+
+          if (data.metadata?.childId) {
             const purchase = await db.purchase.findUnique({
               where: {
                 accountId_courseId_childId: {
