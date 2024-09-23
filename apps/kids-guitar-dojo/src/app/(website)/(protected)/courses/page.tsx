@@ -29,10 +29,20 @@ export default async function Page({ params }: { params: { product: string[] } }
       console.log('[COURSE] INACTIVE');
       return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
     }
+
+    if (userDb?.status === 'pending') {
+      console.log('[COURSE] PENDING');
+      redirect('/courses/success');
+    }
   } catch (error) {
     if (user?.publicMetadata.status === 'inactive') {
       console.log('[COURSE] INACTIVE');
       return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
+    }
+
+    if (user?.publicMetadata.status === 'pending') {
+      console.log('[COURSE] PENDING');
+      redirect('/courses/success');
     }
 
     console.error('User not found');

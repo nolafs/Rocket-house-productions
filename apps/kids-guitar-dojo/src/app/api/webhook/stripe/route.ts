@@ -76,6 +76,21 @@ export async function POST(req: Request, res: Response) {
           data = event.data.object as Stripe.Charge;
           console.log(`💰 Charge status: ${data.status}`);
           console.log('data', data);
+
+          const account = await db.account.findUnique({
+            where: {
+              userId: data.metadata.userId,
+            },
+          });
+
+          if (!account) {
+            throw new Error('Account not found');
+          }
+
+          if (!data.metadata.courseId) {
+            throw new Error('No Course ID found');
+          }
+
           await db.account.update({
             where: {
               userId: data.metadata.userId,
@@ -86,13 +101,7 @@ export async function POST(req: Request, res: Response) {
             },
           });
 
-          const account = await db.account.findUnique({
-            where: {
-              userId: data.metadata.userId,
-            },
-          });
-
-          if (data.metadata?.childId && data.metadata?.courseId && account) {
+          if (data.metadata?.childId) {
             const purchase = await db.purchase.findUnique({
               where: {
                 accountId_courseId_childId: {

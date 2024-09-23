@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { stripeCheckout } from '@rocket-house-productions/integration';
+import { db, stripeCheckout } from '@rocket-house-productions/integration';
+import { clerkClient } from '@clerk/nextjs/server';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
@@ -18,11 +19,29 @@ export async function POST(req: NextRequest) {
     throw new Error('Invalid email');
   }
 
+  await clerkClient.users.updateUserMetadata(data.metadata.userId, {
+    publicMetadata: {
+      status: 'pending',
+      type: 'paid',
+    },
+  });
+
   const checkoutSession = await stripeCheckout(productId);
 
   if (!checkoutSession?.url) {
     return new NextResponse('Invalid checkout session url', { status: 500 });
   }
+
+  // update db account status to pending
+  await db.account.update({
+    where: {
+      userId: userId,
+    },
+    data: {
+      status: 'pending',
+      recentStripeCheckoutId: checkoutSession.id || null,
+    },
+  });
 
   // Redirect to the checkout session URL
   console.log(`Redirecting to checkout session URL: ${checkoutSession.url}`);
