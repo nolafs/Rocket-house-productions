@@ -26,7 +26,6 @@ export { HeroColumns } from './lib/hero-header/hero-columns/hero-columns';
 export * from './lib/motto-text/motto-text';
 export * from './lib/section-title/section-title';
 export { ContentBlockImage } from './lib/content-block-image/content-block-image';
-export { Breadcrumb } from './lib/breadcumbs/Breadcrumb';
 export * from './lib/social-list/social-list';
 export { BlogList } from './lib/blog/blog-list';
 export { SocialList } from './lib/social-list/social-list';
