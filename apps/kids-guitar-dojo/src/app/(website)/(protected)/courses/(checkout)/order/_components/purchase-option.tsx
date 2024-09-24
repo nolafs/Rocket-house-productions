@@ -33,7 +33,7 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
         const payment = async () => {
           const redirectUrl = await axios.post('/api/stripe/checkurl', {
             productId,
-            userId: user.id,
+            userId: userId,
             email,
           });
           if (redirectUrl.data?.url) {

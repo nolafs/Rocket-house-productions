@@ -63,6 +63,18 @@ export const submitOnBoardingAction = async (
       return redirect('/course/error?status=unauthorized');
     }
 
+    //UPDATE ACCOUNT
+
+    await db.account.update({
+      where: {
+        id: account.id,
+      },
+      data: {
+        firstName: onboarding.firstName,
+        lastName: onboarding.lastName,
+      },
+    });
+
     const child = await db.child.create({
       data: {
         name: onboarding.name,

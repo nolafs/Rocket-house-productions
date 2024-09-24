@@ -2,12 +2,11 @@
 import {
   CourseQuickNavigation,
   CourseLeaderboard,
-  CourseLeaderboardServer,
   LessonCourseProgression,
   ModuleAttachments,
 } from '@rocket-house-productions/lesson';
 import { Course } from '@prisma/client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 const CourseNavigation = dynamic(
@@ -17,11 +16,11 @@ const CourseNavigation = dynamic(
 
 interface CourseNavigationPageProps {
   course: Course & { modules: any[] };
-  slug: string;
+  childId?: string | null;
   role: string;
 }
 
-export function CourseNavigationPage({ course, slug, role }: CourseNavigationPageProps) {
+export function CourseNavigationPage({ course, role, childId = null }: CourseNavigationPageProps) {
   const [ready, setReady] = useState(false);
 
   const handleLoaded = (loaded: boolean) => {
@@ -40,9 +39,7 @@ export function CourseNavigationPage({ course, slug, role }: CourseNavigationPag
           }>
           <LessonCourseProgression course={course} />
           <div className={'flex items-center justify-center gap-x-2'}>
-            <CourseLeaderboard>
-              <CourseLeaderboardServer slug={slug} />
-            </CourseLeaderboard>
+            <CourseLeaderboard courseId={course.id} childId={childId} />
             <ModuleAttachments course={course} />
             <CourseQuickNavigation course={course} role={role} />
           </div>

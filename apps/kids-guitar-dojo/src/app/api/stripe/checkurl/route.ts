@@ -4,7 +4,9 @@ import { clerkClient } from '@clerk/nextjs/server';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  console.log('[CHECK URL FOR PURCHASE]data', data);
+
+  console.log('[CHECK URL FOR PURCHASE]', data);
+
   const { productId, userId, email } = data;
 
   if (!productId) {
@@ -19,12 +21,16 @@ export async function POST(req: NextRequest) {
     throw new Error('Invalid email');
   }
 
-  await clerkClient.users.updateUserMetadata(data.metadata.userId, {
-    publicMetadata: {
-      status: 'pending',
-      type: 'paid',
-    },
-  });
+  try {
+    await clerkClient().users.updateUserMetadata(userId, {
+      publicMetadata: {
+        status: 'pending',
+        type: 'paid',
+      },
+    });
+  } catch (error) {
+    console.error('Failed to update user metadata', error);
+  }
 
   const checkoutSession = await stripeCheckout(productId);
 
