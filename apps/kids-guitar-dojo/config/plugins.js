@@ -10,7 +10,7 @@ const withPWA = require('@ducanh2912/next-pwa').default({
   },
 });
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.BUNDLE_ANALYZE === 'true',
+  enabled: process.env.ANALYZE === 'true',
   openAnalyzer: false,
 });
 
