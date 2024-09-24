@@ -1,4 +1,4 @@
-import { getCourse } from '@rocket-house-productions/actions/server';
+import { getChild, getCourse } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import CourseNavigationPage from './_components/courseNavigationPage';
@@ -18,7 +18,8 @@ export default async function Page({ params }: PageProps) {
     redirect('/');
   }
 
+  const child = await getChild(params.slug);
   const course = await getCourse({ courseSlug: params.slug });
 
-  return <CourseNavigationPage course={course} slug={params.slug} role={sessionClaims.metadata.role as string} />;
+  return <CourseNavigationPage course={course} childId={child.id} role={sessionClaims.metadata.role as string} />;
 }
