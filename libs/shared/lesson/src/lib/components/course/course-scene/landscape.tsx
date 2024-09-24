@@ -62,7 +62,7 @@ export const Landscape = ({
   const lessonNumber = useMemo(() => {
     console.log('LANDSCAPE MODULES: lessonNumber');
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
-  }, modules);
+  }, [modules]);
 
   const { contextSafe } = useGSAP(
     () => {
@@ -109,7 +109,7 @@ export const Landscape = ({
         if (typeof window !== 'undefined') {
           gsap.to(window, {
             duration: 3,
-            scrollTo: { y: (currentLesson + 10) * SCROLL_FACTOR },
+            scrollTo: { y: (currentLesson + 30) * SCROLL_FACTOR },
             delay: 3,
             ease: 'Power2.inOut',
           });
@@ -139,6 +139,8 @@ export const Landscape = ({
         }
       }
 
+      onReady && onReady(true);
+
       return () => {
         ScrollTrigger.killAll();
       };
@@ -156,7 +158,6 @@ export const Landscape = ({
       setPathLength(data?.pathLength);
       setCurrentLesson(data.buttons[data.next || 0].position.y);
       setModulePosition(data.modulePosition);
-      onReady && onReady(true);
     }
   };
 
@@ -175,7 +176,7 @@ export const Landscape = ({
     if (typeof window !== 'undefined') {
       gsap.to(window, {
         duration: 3,
-        scrollTo: { y: (currentLesson + 10) * SCROLL_FACTOR },
+        scrollTo: { y: (currentLesson + 30) * SCROLL_FACTOR },
         ease: 'Power2.inOut',
       });
     }

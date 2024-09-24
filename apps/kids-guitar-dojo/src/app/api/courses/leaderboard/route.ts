@@ -28,8 +28,6 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    console.log('[COURSES PROGRESS]', children);
-
     const leaderboard = children.filter(child => child.childScores[0]?.score);
     const orderByScore = leaderboard.sort((a, b) => b.childScores[0]?.score - a.childScores[0]?.score);
 
