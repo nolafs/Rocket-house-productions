@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { ArrowLeft, CircleHelpIcon, Eye, LayoutDashboard, Video } from 'lucide-react';
+import { ArrowLeft, CircleHelpIcon, LayoutDashboard } from 'lucide-react';
 
 import { db } from '@rocket-house-productions/integration';
 

@@ -8,7 +8,7 @@ import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
-import { ConfettiProvider, ToastProvider } from '@rocket-house-productions/providers';
+import { ConfettiProvider, ToastProvider, ThemeProvider } from '@rocket-house-productions/providers';
 import PlausibleProvider from 'next-plausible';
 
 const raleway = Raleway({
@@ -108,7 +108,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             lang="en"
             className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
             suppressHydrationWarning={true}>
-            <body className={'bg-background min-h-screen font-sans antialiased'}>
+            <body className={'bg-background min-h-screen font-sans antialiased'} suppressHydrationWarning>
               <ConfettiProvider />
               <ToastProvider />
               {children}
