@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { ReactNode } from 'react';
 
 /* eslint-disable-next-line */
-export interface LabelProps {
+interface LabelProps {
   children?: ReactNode;
   isDisabled?: boolean;
   size?: 'sm' | 'md' | 'lg';
@@ -20,8 +20,7 @@ export function Label({ children, size, hasIcon, isDisabled }: LabelProps) {
         size === 'md' && 'text-xl md:text-2xl lg:text-[26px]',
         size === 'lg' && 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl',
         styles['container'],
-      )}
-    >
+      )}>
       <div className={'flex flex-col'}>
         <span>{children}</span>
         <div
@@ -30,8 +29,7 @@ export function Label({ children, size, hasIcon, isDisabled }: LabelProps) {
             isDisabled ? 'bg-secondary' : styles.decorLine,
             size === 'lg' && 'h-3 lg:mt-1',
             size === 'lg' && styles.large,
-          )}
-        ></div>
+          )}></div>
       </div>
       {hasIcon && (
         <div className={cn('h-8 w-8 md:h-9 md:w-9', size === 'lg' && 'lg:h-12 lg:w-12')}>

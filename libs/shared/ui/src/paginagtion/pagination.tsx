@@ -1,6 +1,6 @@
+'use client';
 import cn from 'classnames';
 import Link from 'next/link';
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 
 export interface PageinationProps {
   total: number | undefined;

@@ -1,7 +1,7 @@
-import { AlertTriangle, CheckCircleIcon } from 'lucide-react';
-
+'use client';
 import { cva, type VariantProps } from 'class-variance-authority';
 import cn from 'classnames';
+import { AlertTriangle, CheckCircleIcon } from 'lucide-react';
 
 const bannerVariants = cva('border text-center p-4 text-sm flex items-center w-full', {
   variants: {

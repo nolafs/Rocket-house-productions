@@ -31,13 +31,16 @@
     "generate-types": {
       "command": "prisma generate"
     },
-    "prismic-studio": {
+    "generate-types-no-engine": {
+      "command": "prisma generate --no-engine"
+    },
+    "prisma-studio": {
       "command": "prisma studio"
     },
     "bundleAnalyzer": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "ANALYZE=true nx build kids-guitar-dojo"
+        "command": "ANALYZE=true nx dev kids-guitar-dojo"
       }
     },
     "build-with-types": {
@@ -45,7 +48,7 @@
       "options": {
         "commands": [
           {
-            "command": "nx run kids-guitar-dojo:generate-types"
+            "command": "nx run kids-guitar-dojo:generate-types-no-engine"
           },
           {
             "command": "nx build kids-guitar-dojo"
