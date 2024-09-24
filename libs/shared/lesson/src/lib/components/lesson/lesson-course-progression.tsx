@@ -17,17 +17,15 @@ export function LessonCourseProgression({ course }: LessonCourseProgressionProps
   }, [course]);
 
   useEffect(() => {
-    calculateCourseProgress(course.id);
-    setCourseProgress(prevState => getCourseProgress(course.id));
-    setCurrentModule(null);
-  }, [modules]);
+    if (course.id) {
+      calculateCourseProgress(course.id);
+      setCourseProgress(prevState => getCourseProgress(course.id));
+      setCurrentModule(null);
+    }
+  }, [modules, calculateCourseProgress, getCourseProgress, setCurrentModule, course.id]);
 
   if (courseProgress !== null) {
-    return (
-      <>
-        <LessonProgressBar currentProgress={courseProgress} variation={'white'} />
-      </>
-    );
+    return <LessonProgressBar currentProgress={courseProgress} variation={'white'} />;
   }
 }
 

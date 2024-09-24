@@ -1,7 +1,7 @@
 import { useGLTF, Svg, useCursor, RoundedBox, Text, useTexture, Center, Ring, Text3D } from '@react-three/drei';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
+import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { useFrame } from '@react-three/fiber';
 import { LessonButton } from './course.types';
 import { gsap } from 'gsap';
@@ -149,23 +149,24 @@ export const Button3d = ({
           isVisible={!isScrolling}
         />
       )}
-
-      {next && <Svg src={'/images/course/next-msg-lesson.svg'} position={[5, 6, 0.6]} scale={0.04}></Svg>}
+      {lesson.num !== 1 && next && (
+        <Svg src={'/images/course/next-msg-lesson.svg'} position={[5, 6, 0.6]} scale={0.04}></Svg>
+      )}
       <group
         position={[position[0], 0, position[2]]}
         rotation={rotation || [0, 0, 0]}
         {...rest}
-        onClick={e => {
+        onClick={() => {
           if (active) {
             onOpenLesson(lesson);
           }
         }}
-        onPointerOver={e => {
+        onPointerOver={() => {
           setMouseControl(true);
           hover(true);
           setShowTooltip(true);
         }}
-        onPointerLeave={e => {
+        onPointerLeave={() => {
           setMouseControl(false);
           hover(false);
           setShowTooltip(false);
@@ -319,9 +320,11 @@ const ScrollToCurrentLesson = ({
 
   useGSAP(
     () => {
+      if (!button?.current) return;
+
       if (isVisible) {
         gsap.fromTo(
-          button.current!.position,
+          button.current?.position,
           { x: 0 },
           {
             x: -5,
@@ -331,7 +334,7 @@ const ScrollToCurrentLesson = ({
           },
         );
       } else {
-        gsap.to(button.current!.position, { x: 0, duration: 0.5, ease: 'power2.inOut' });
+        gsap.to(button.current?.position, { x: 0, duration: 0.5, ease: 'power2.inOut' });
       }
     },
     { scope: button, dependencies: [isVisible] },
@@ -343,9 +346,9 @@ const ScrollToCurrentLesson = ({
       position={position}
       rotation={rotation}
       scale={scale}
-      onPointerOver={e => hover(true)}
-      onPointerLeave={e => hover(false)}
-      onClick={e => onScrollToCurrentLesson()}>
+      onPointerOver={() => hover(true)}
+      onPointerLeave={() => hover(false)}
+      onClick={() => onScrollToCurrentLesson()}>
       <Text3D
         castShadow={true}
         font={'/images/course/font.json'}
