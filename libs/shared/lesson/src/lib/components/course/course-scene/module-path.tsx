@@ -61,6 +61,9 @@ export const ModulePath: React.FC<{
   const currentModule = useRef<Module | null>(null);
 
   const display = useMemo<ModuleButtonDisplay>(() => {
+    if (getLessonCompleted === undefined)
+      return { buttons: [], modulePosition: [], total: null, current: null, next: null };
+
     let current: number | null = null;
     let next: number | null = null;
     const modulePosition: ModulePosition[] = [];
@@ -126,7 +129,7 @@ export const ModulePath: React.FC<{
       current,
       next,
     };
-  }, [modulesSection]);
+  }, [modulesSection, lessonSpacing, getLessonCompleted]);
 
   useEffect(() => {
     if (!display) return;
@@ -135,7 +138,7 @@ export const ModulePath: React.FC<{
     console.log('MODULE BUTTONS DISPLAY:', display, pathLength);
 
     onUpdated && onUpdated({ ...display, pathLength });
-  }, [display, pathLength]);
+  }, [display, pathLength, onUpdated]);
 
   if (display && display.buttons?.length === 0) {
     return null;

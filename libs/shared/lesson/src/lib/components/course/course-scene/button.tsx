@@ -1,7 +1,7 @@
 import { useGLTF, Svg, useCursor, RoundedBox, Text, useTexture, Center, Ring, Text3D } from '@react-three/drei';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
+import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { useFrame } from '@react-three/fiber';
 import { LessonButton } from './course.types';
 import { gsap } from 'gsap';
