@@ -1,7 +1,6 @@
 'use server';
 
 import { stripe } from './stripe';
-import { redirect } from 'next/navigation';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { db } from './db';
 import Stripe from 'stripe';
@@ -146,29 +145,3 @@ export const stripeCheckoutSessionStatus = async (sessionId: string, userId: str
 
   return checkoutSession;
 };
-
-export const stripeCheckoutAction = async (data: FormData) => {
-  const productId = data.get('productId');
-
-  if (typeof productId !== 'string' || !productId) {
-    throw new Error('Invalid product ID');
-  }
-
-  const { userId } = auth();
-
-  if (!userId) {
-    return null;
-  }
-
-  console.log('stripeCheckoutAction', userId);
-
-  const checkoutSession = await stripeCheckout(productId);
-
-  if (!checkoutSession?.url) {
-    throw new Error('Invalid checkout session url');
-  }
-
-  redirect(checkoutSession.url);
-};
-
-export default stripeCheckoutAction;
