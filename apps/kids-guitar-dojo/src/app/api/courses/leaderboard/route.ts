@@ -28,7 +28,10 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const orderByScore = children.sort((a, b) => b.childScores[0].score - a.childScores[0].score);
+    console.log('[COURSES PROGRESS]', children);
+
+    const leaderboard = children.filter(child => child.childScores[0]?.score);
+    const orderByScore = leaderboard.sort((a, b) => b.childScores[0]?.score - a.childScores[0]?.score);
 
     return new NextResponse(JSON.stringify(orderByScore), { status: 200 });
   } catch (error) {

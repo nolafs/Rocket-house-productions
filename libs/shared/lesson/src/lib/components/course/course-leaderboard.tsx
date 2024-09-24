@@ -22,11 +22,11 @@ export function CourseLeaderboard({ courseId, childId }: CourseLeaderboardProps)
   const { leaderboard, isError, isValidating } = useLeaderboard(courseId);
 
   if (isError) {
-    return <div>Error</div>;
+    return null;
   }
 
   if (isValidating) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (
@@ -41,24 +41,26 @@ export function CourseLeaderboard({ courseId, childId }: CourseLeaderboardProps)
         <DialogHeader>
           <DialogTitle>Leaderboard</DialogTitle>
         </DialogHeader>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[20px]">Rank</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead className="text-right">Score</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {leaderboard.map((child: any, index: number) => (
-              <TableRow key={child.id} className={cn(child.id === childId && 'font-bold text-pink-500')}>
-                <td>{index + 1}</td>
-                <td>{child.name}</td>
-                <td className="text-right">{child.childScores[0].score}</td>
+        <div className={'px-5'}>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[20px]">Rank</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead className="text-right">Score</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {leaderboard.map((child: any, index: number) => (
+                <TableRow key={child.id} className={cn(child.id === childId && 'font-bold text-pink-500')}>
+                  <td>{index + 1}</td>
+                  <td>{child.name}</td>
+                  <td className="text-right">{child.childScores[0].score}</td>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
         <DialogBody>
           <DialogDescription>Top 10 students in the course</DialogDescription>
         </DialogBody>
