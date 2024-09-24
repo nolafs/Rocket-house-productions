@@ -103,6 +103,8 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
                 ...formUpdate,
                 confirmTerms: formUpdate.confirmTerms === 'on' ? true : false,
                 parentConsent: formUpdate.parentConsent === 'on' ? true : false,
+                notify: formUpdate.notify === 'on' ? true : false,
+                newsletter: formUpdate.newsletter === 'on' ? true : false,
               });
             }}
             onSubmit={evt => {
@@ -199,7 +201,12 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
                 <FormItem>
                   <div className={'flex items-center space-x-2'}>
                     <FormControl>
-                      <Switch checked={field.value} onCheckedChange={checked => field.onChange(checked)} />
+                      <Switch
+                        checked={field.value}
+                        name={field.name}
+                        id={field.name}
+                        onCheckedChange={checked => field.onChange(checked)}
+                      />
                     </FormControl>
                     <FormLabel>Sign up to your newsletter</FormLabel>
                   </div>
@@ -214,7 +221,12 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
                 <FormItem>
                   <div className={'flex items-center space-x-2'}>
                     <FormControl>
-                      <Switch checked={field.value} onCheckedChange={checked => field.onChange(checked)} />
+                      <Switch
+                        checked={field.value}
+                        name={field.name}
+                        id={field.name}
+                        onCheckedChange={checked => field.onChange(checked)}
+                      />
                     </FormControl>
                     <FormLabel>Subscribe to notifications</FormLabel>
                   </div>
