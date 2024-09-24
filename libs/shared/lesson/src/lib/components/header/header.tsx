@@ -22,6 +22,7 @@ import { useClerk } from '@clerk/nextjs';
 import { useModuleProgressStore } from '@rocket-house-productions/providers';
 import ModuleProgressList from '../module/module-progress-list';
 import ModuleAwardList from '../module/ModuleAwardList';
+import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   childId: string;
@@ -34,6 +35,7 @@ interface HeaderProps {
 export function Header({ childId, name, avatar, background = 'transparent' }: HeaderProps) {
   const { signOut, openUserProfile } = useClerk();
   const { getCurrentModule } = useModuleProgressStore(store => store);
+
   return (
     <>
       <div
@@ -61,7 +63,7 @@ export function Header({ childId, name, avatar, background = 'transparent' }: He
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <button onClick={() => signOut()}>Sign Out</button>
+                  <button onClick={() => signOut({ redirectUrl: '/' })}>Sign Out</button>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
