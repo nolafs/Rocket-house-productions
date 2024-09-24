@@ -81,11 +81,19 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
           </div>
           <div className="flex space-x-3 py-3">
             <dt className={'font-bold'}>Newsletter:</dt>
-            <dd>{newsletter || 'off'}</dd>
+            <dd>
+              {newsletter ? (
+                <CheckIcon className={'text-success h-6 w-6'} />
+              ) : (
+                <XIcon className={'text-danger h-6 w-6'} />
+              )}
+            </dd>
           </div>
           <div className="flex space-x-3 py-3">
             <dt className={'font-bold'}>Notification:</dt>
-            <dd>{notify || 'off'}</dd>
+            <dd>
+              {notify ? <CheckIcon className={'text-success h-6 w-6'} /> : <XIcon className={'text-danger h-6 w-6'} />}
+            </dd>
           </div>
         </dl>
         <h2>Student profile</h2>

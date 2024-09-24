@@ -2,14 +2,12 @@
 import {
   CourseQuickNavigation,
   CourseLeaderboard,
-  CourseLeaderboardServer,
   LessonCourseProgression,
   ModuleAttachments,
 } from '@rocket-house-productions/lesson';
 import { Course } from '@prisma/client';
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
-import { Loader2 } from 'lucide-react';
 
 const CourseNavigation = dynamic(
   () => import('@rocket-house-productions/lesson').then(module => module.CourseNavigation),
@@ -18,11 +16,11 @@ const CourseNavigation = dynamic(
 
 interface CourseNavigationPageProps {
   course: Course & { modules: any[] };
-  slug: string;
+  childId?: string | null;
   role: string;
 }
 
-export function CourseNavigationPage({ course, slug, role }: CourseNavigationPageProps) {
+export function CourseNavigationPage({ course, role, childId = null }: CourseNavigationPageProps) {
   const [ready, setReady] = useState(false);
 
   const handleLoaded = (loaded: boolean) => {
@@ -41,16 +39,7 @@ export function CourseNavigationPage({ course, slug, role }: CourseNavigationPag
           }>
           <LessonCourseProgression course={course} />
           <div className={'flex items-center justify-center gap-x-2'}>
-            <CourseLeaderboard>
-              <Suspense
-                fallback={
-                  <div className={'my-10 flex w-full items-center justify-center'}>
-                    <Loader2 className={'text-primary h-12 w-12 animate-spin'} />
-                  </div>
-                }>
-                <CourseLeaderboardServer slug={slug} />
-              </Suspense>
-            </CourseLeaderboard>
+            <CourseLeaderboard courseId={course.id} childId={childId} />
             <ModuleAttachments course={course} />
             <CourseQuickNavigation course={course} role={role} />
           </div>
