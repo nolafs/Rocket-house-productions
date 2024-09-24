@@ -37,10 +37,14 @@ export const createPointsStore = (userId: string, courseId: string, initState: P
         syncPointsWithDB: async () => {
           try {
             const localPoints = get().points;
-            const { score: remotePoints } = await getScore(courseId, userId);
+            const dataDb = await getScore(courseId, userId);
 
-            if (localPoints !== remotePoints) {
-              set({ points: remotePoints }); // Sync local points with the database
+            if (!dataDb) {
+              set({ points: localPoints });
+            } else {
+              if (localPoints !== dataDb.score) {
+                set({ points: dataDb.score }); // Sync local points with the database
+              }
             }
           } catch (error) {
             console.error('Error syncing points:', error);
@@ -51,7 +55,6 @@ export const createPointsStore = (userId: string, courseId: string, initState: P
         name: `points-storage-${userId}`, // name of the item in storage (must be unique)
         partialize: state => ({ points: state.points }), // Persist only the points part of the state
         onRehydrateStorage: () => state => {
-          console.log('Rehydrated points store:', state);
           if (state) state.syncPointsWithDB?.(); // Sync after rehydration
         },
       },
@@ -74,6 +77,7 @@ export async function getScore(courseId: string, childId: string) {
   try {
     console.log('Getting score for:', courseId, childId);
     const response = await axios.get(`/api/courses/score?childId=${childId}&courseId=${courseId}`);
+    console.log('Score:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error getting score:', error);
