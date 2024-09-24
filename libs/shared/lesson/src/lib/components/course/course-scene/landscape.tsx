@@ -87,7 +87,7 @@ export const Landscape = ({
       tl.to(camera.current.position, {
         z: 80,
         y: 20,
-        duration: 0.2,
+        duration: 0.1,
         ease: 'none',
       });
 
