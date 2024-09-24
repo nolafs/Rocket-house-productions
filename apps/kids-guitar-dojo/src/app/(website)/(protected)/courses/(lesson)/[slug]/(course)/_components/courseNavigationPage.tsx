@@ -7,8 +7,9 @@ import {
   ModuleAttachments,
 } from '@rocket-house-productions/lesson';
 import { Course } from '@prisma/client';
-import { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { Loader2 } from 'lucide-react';
 
 const CourseNavigation = dynamic(
   () => import('@rocket-house-productions/lesson').then(module => module.CourseNavigation),
@@ -41,7 +42,14 @@ export function CourseNavigationPage({ course, slug, role }: CourseNavigationPag
           <LessonCourseProgression course={course} />
           <div className={'flex items-center justify-center gap-x-2'}>
             <CourseLeaderboard>
-              <CourseLeaderboardServer slug={slug} />
+              <Suspense
+                fallback={
+                  <div className={'my-10 flex w-full items-center justify-center'}>
+                    <Loader2 className={'text-primary h-12 w-12 animate-spin'} />
+                  </div>
+                }>
+                <CourseLeaderboardServer slug={slug} />
+              </Suspense>
             </CourseLeaderboard>
             <ModuleAttachments course={course} />
             <CourseQuickNavigation course={course} role={role} />
