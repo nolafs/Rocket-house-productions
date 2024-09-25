@@ -28,6 +28,8 @@ export default async function Page({ params }: { params: { product: string[] } }
   // CHECK USER IS ACTIVE
   userDb = await getAccount(userId);
 
+  console.log('[COURSE] USER', userDb);
+
   if (!userDb) {
     redirect('/courses/error?status=error&message=No%20user%20found%20in%20Database');
   }
