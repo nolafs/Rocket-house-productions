@@ -28,6 +28,7 @@ interface LandscapeProps {
   modules: ModuleSection[];
   courseCompleted?: boolean;
   lessonSpacing: number;
+  purchaseType?: string | null;
   onOpenLesson?: (lesson: LessonButton) => void;
   onReady?: (ready: boolean) => void;
   container?: MutableRefObject<HTMLElement | null>;
@@ -42,6 +43,7 @@ export const Landscape = ({
   courseCompleted,
   rotation,
   position,
+  purchaseType = null,
   onReady,
   container,
   onOpenLesson,
@@ -60,7 +62,7 @@ export const Landscape = ({
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   const lessonNumber = useMemo(() => {
-    console.log('LANDSCAPE MODULES: lessonNumber');
+    console.log('LANDSCAPE MODULES: lessonNumber', modules);
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
   }, [modules]);
 
@@ -232,6 +234,7 @@ export const Landscape = ({
           modulesSection={modules}
           lessonSpacing={lessonSpacing}
           courseCompleted={courseCompleted}
+          purchaseType={purchaseType}
           onBackToCurrentLesson={handleOnBackToCurrentLesson}
           onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
           onUpdated={data => handleUpdate(data)}

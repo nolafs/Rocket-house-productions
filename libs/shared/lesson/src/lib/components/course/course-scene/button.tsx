@@ -18,6 +18,7 @@ interface ButtonProps {
   isScrolling?: boolean;
   lesson: LessonButton;
   courseCompleted?: boolean;
+  purchaseType?: string | null;
   onOpenLesson: (lesson: LessonButton) => void;
   onBackToCurrentLesson?: () => void;
 }
@@ -53,6 +54,7 @@ export const Button3d = ({
   next,
   lesson,
   courseCompleted,
+  purchaseType = null,
   onOpenLesson,
   onBackToCurrentLesson,
   ...rest
@@ -61,6 +63,8 @@ export const Button3d = ({
   const [mouseControl, setMouseControl] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
+
+  //console.log('Button3d', lesson.isFree, purchaseType, lesson.name);
 
   useCursor(hovered);
 
@@ -185,6 +189,7 @@ export const Button3d = ({
         <group rotation={[Math.PI / 2, 0, 0]} scale={lessonTypeSize}>
           {lessonProgress && <CompleteLessonIcon />}
           {lesson.type === 'Dr Rhythm' && <DocIcon />}
+          {!lesson.isFree && purchaseType === 'free' && <PremiumIcon />}
           <Svg
             src={'/images/course/arrow.svg'}
             position={[-0.45, 0.2, 0.65]}
@@ -289,6 +294,21 @@ const CompleteLessonIcon = () => {
         <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.003} castShadow>
           <meshStandardMaterial color={'white'} metalness={0} opacity={1} roughness={0.4} />
         </mesh>
+      </Center>
+    </group>
+  );
+};
+
+const PremiumIcon = () => {
+  return (
+    <group position={[2, 1, 0]} rotation={[-Math.PI / 2, 0, 0]} scale={0.45}>
+      <Center>
+        <RoundedBox args={[5, 2, 0.5]} radius={0.2} bevelSegments={2} rotation={[0, 0, 0]} position={[0, 0, -0.019]}>
+          <meshStandardMaterial color="red" />
+        </RoundedBox>
+        <Text {...fontProps} color="white" anchorX="center" anchorY="middle" position={[0, 0, 0.3]} castShadow={true}>
+          Premium
+        </Text>
       </Center>
     </group>
   );

@@ -12,6 +12,7 @@ export type LessonButton = {
   moduleSlug: string;
   color: string;
   type: string;
+  isFree?: boolean;
 };
 
 export type ModulePosition = {

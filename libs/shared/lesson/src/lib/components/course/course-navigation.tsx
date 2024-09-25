@@ -29,18 +29,19 @@ gsap.registerPlugin(SplitText);
 
 interface CourseNavigationProps {
   course: Course & { modules: any[] };
+  purchaseType?: string | null;
   onLoaded?: (loaded: boolean) => void;
 }
 
 const LESSON_SPACING = 7;
 
-export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
+export function CourseNavigation({ course, onLoaded, purchaseType = null }: CourseNavigationProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const courseProgression = useCourseProgressionStore(store => store.getCourseProgress(course.id));
   const [lesson, setLesson] = React.useState<LessonButton | null>(null);
   const router = useRouter();
 
-  const { contextSafe } = useGSAP(
+  useGSAP(
     () => {
       gsap.set('.lesson-load', { autoAlpha: 0 });
 
@@ -116,6 +117,7 @@ export function CourseNavigation({ course, onLoaded }: CourseNavigationProps) {
               courseCompleted={courseProgression === 100}
               position={[0, 0, 0]}
               container={containerRef}
+              purchaseType={purchaseType}
               onOpenLesson={handleOpenLesson}
               modules={course.modules}
               onReady={load => handleLoaded(load)}

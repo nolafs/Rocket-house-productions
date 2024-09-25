@@ -39,10 +39,17 @@ export default async function Layout({ children, params }: LayoutProps) {
     return redirect(`/courses/error?status=error&message=No%20course%20found`);
   }
 
+  console.log('[LESSON]', child, course);
+
   return (
     <div className={'lesson min-h-screen w-full'} style={{ backgroundColor: '#e8c996' }}>
       <CourseProgressionProvider userId={child.id} courseId={course.id}>
-        <Header childId={child.id} avatar={child?.profilePicture} name={child?.name} />
+        <Header
+          childId={child.id}
+          avatar={child?.profilePicture}
+          name={child?.name}
+          purchaseType={child?.purchaseType}
+        />
         <ModuleAwards />
         {children}
       </CourseProgressionProvider>
