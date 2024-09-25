@@ -30,6 +30,13 @@ export async function freeCheckout(formData: FormData) {
     },
   });
 
+  const clerkUpdate = await clerkClient.users.updateUserMetadata(userId, {
+    publicMetadata: {
+      status: 'active',
+      type: 'free',
+    },
+  });
+
   const purchase = await db.purchase.create({
     data: {
       accountId: account?.id as string,
@@ -43,18 +50,8 @@ export async function freeCheckout(formData: FormData) {
 
   // check if ok and redirect to success page
   if (purchase) {
-    const clerkUpdate = await clerkClient.users.updateUserMetadata(userId, {
-      publicMetadata: {
-        status: 'active',
-        type: 'free',
-      },
-    });
-
     console.log('clerkUpdate', clerkUpdate);
-
-    if (!clerkUpdate) {
-      redirect('/courses/success');
-    }
+    redirect('/courses/success');
   }
 }
 
