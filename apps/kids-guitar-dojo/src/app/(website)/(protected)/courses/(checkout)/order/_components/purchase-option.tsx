@@ -65,6 +65,10 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
           setState('ready');
         }
       }
+
+      if (type === null) {
+        setState('ready');
+      }
     }
   }, [user, isLoading, isError, isValidating, productId, courseId, type]);
 
