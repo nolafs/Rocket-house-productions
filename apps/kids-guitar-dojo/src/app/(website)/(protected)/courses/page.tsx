@@ -59,7 +59,7 @@ export default async function Page({ params }: { params: { product: string[] } }
   if (userDb?._count?.purchases) {
     const unEnrolledPurchases = userDb.purchases.filter(purchase => !purchase.childId);
 
-    console.info('[COURSE] PURCHASES');
+    console.info('[COURSE] PURCHASES', unEnrolledPurchases);
 
     if (unEnrolledPurchases.length === 0) {
       // All purchases are enrolled
@@ -87,6 +87,7 @@ export default async function Page({ params }: { params: { product: string[] } }
       // More than one purchase is not enrolled
       console.info('[COURSE] PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
       // todo: select your purchase to [module_slug]
+      return redirect(`/courses/enroll/${unEnrolledPurchases[0].id}`);
     }
   } else {
     console.info('[COURSE] NO PURCHASES FOUND');
