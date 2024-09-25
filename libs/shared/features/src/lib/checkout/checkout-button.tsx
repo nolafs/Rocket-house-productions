@@ -2,15 +2,23 @@ import cn from 'classnames';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { freeCheckout, stripeCheckoutAction } from '@rocket-house-productions/actions/server';
 
-interface BuyButtonProps {
+interface CheckoutButtonProps {
   productId?: string | null | undefined;
   courseId?: string | null | undefined;
+  purchaseId?: string | null | undefined;
   type: 'payed' | 'free';
   mostPopular: boolean | undefined;
   sales?: boolean | undefined;
 }
 
-export function CheckoutButton({ productId, type, courseId, mostPopular = false, sales = false }: BuyButtonProps) {
+export function CheckoutButton({
+  productId,
+  type,
+  courseId,
+  purchaseId,
+  mostPopular = false,
+  sales = false,
+}: CheckoutButtonProps) {
   if (type === 'free') {
     if (!courseId) {
       console.error('Course id is required for free course');
@@ -37,6 +45,7 @@ export function CheckoutButton({ productId, type, courseId, mostPopular = false,
     return (
       <form action={stripeCheckoutAction}>
         <input hidden={true} id="productId" name="productId" value={productId} readOnly={true} />
+        {purchaseId && <input hidden={true} id="purchaseId" name="purchaseId" value={purchaseId} readOnly={true} />}
         <Button
           type={'submit'}
           variant={mostPopular ? 'default' : 'outline'}

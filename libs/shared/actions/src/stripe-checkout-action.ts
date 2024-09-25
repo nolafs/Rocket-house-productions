@@ -5,9 +5,14 @@ import { stripeCheckout } from '@rocket-house-productions/integration';
 
 export const stripeCheckoutAction = async (data: FormData) => {
   const productId = data.get('productId');
+  let purchaseId = data.get('purchaseId');
 
   if (typeof productId !== 'string' || !productId) {
     throw new Error('Invalid product ID');
+  }
+
+  if (typeof purchaseId !== 'string' || !purchaseId) {
+    purchaseId = null;
   }
 
   const { userId } = auth();
@@ -16,7 +21,7 @@ export const stripeCheckoutAction = async (data: FormData) => {
     return null;
   }
 
-  const checkoutSession = await stripeCheckout(productId);
+  const checkoutSession = await stripeCheckout(productId, purchaseId);
 
   if (!checkoutSession?.url) {
     throw new Error('Invalid checkout session url');
