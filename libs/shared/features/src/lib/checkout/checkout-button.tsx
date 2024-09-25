@@ -1,6 +1,8 @@
 import cn from 'classnames';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { freeCheckout, stripeCheckoutAction } from '@rocket-house-productions/actions/server';
+import Checkout from './forms/checkout';
+import FreeCheckout from './forms/free-checkout';
 
 interface CheckoutButtonProps {
   productId?: string | null | undefined;
@@ -25,36 +27,13 @@ export function CheckoutButton({
       return null;
     }
 
-    return (
-      <form action={freeCheckout}>
-        <input hidden={true} id="courseId" name="courseId" value={courseId} readOnly={true} />
-        <Button
-          type={'submit'}
-          variant={mostPopular ? 'default' : 'outline'}
-          className={cn('mt-6 w-full shadow-sm shadow-black/30')}
-          size={'lg'}>
-          Start now
-        </Button>
-      </form>
-    );
+    return <FreeCheckout courseId={courseId} mostPopular={mostPopular} />;
   } else {
     if (!productId) {
       console.error('Product id is required for paid course');
       return null;
     }
-    return (
-      <form action={stripeCheckoutAction}>
-        <input hidden={true} id="productId" name="productId" value={productId} readOnly={true} />
-        {purchaseId && <input hidden={true} id="purchaseId" name="purchaseId" value={purchaseId} readOnly={true} />}
-        <Button
-          type={'submit'}
-          variant={mostPopular ? 'default' : 'outline'}
-          className={cn('mt-6 w-full shadow-sm shadow-black/30')}
-          size={'lg'}>
-          Start now
-        </Button>
-      </form>
-    );
+    return <Checkout productId={productId} purchaseId={purchaseId} mostPopular={mostPopular} />;
   }
 }
 
