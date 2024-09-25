@@ -101,14 +101,10 @@ export async function POST(req: Request, res: Response) {
             },
           });
 
-          if (data.metadata?.childId) {
+          if (data.metadata?.purchaseId) {
             const purchase = await db.purchase.findUnique({
               where: {
-                accountId_courseId_childId: {
-                  accountId: account.id,
-                  courseId: data.metadata.courseId,
-                  childId: data.metadata.childId,
-                },
+                id: data.metadata.purchaseId,
               },
             });
 
