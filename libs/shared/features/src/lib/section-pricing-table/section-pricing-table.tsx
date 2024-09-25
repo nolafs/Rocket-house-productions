@@ -10,18 +10,33 @@ import StripePricing from './stripe-pricing';
 interface SectionPricingTableProps {
   tiers: Tier[];
   checkout?: boolean;
-  account?: any | null;
+  upgrade?: boolean;
+  courseId?: string | null;
+  purchaseId?: string | null;
 }
 
-export function SectionPricingTable({ tiers, checkout = false, account = null }: SectionPricingTableProps) {
+export function SectionPricingTable({
+  tiers,
+  checkout = false,
+  purchaseId = null,
+  courseId = null,
+  upgrade = false,
+}: SectionPricingTableProps) {
   if (tiers.length === 0) {
     return null;
   }
 
-  console.log('tiers', tiers);
+  if (upgrade) {
+    // remove free tier
+    tiers = tiers.filter(tier => !tier.data.free);
+  }
 
   return (
-    <div className="isolate mx-auto grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+    <div
+      className={cn(
+        'isolate mx-auto grid max-w-md grid-cols-1 justify-center gap-8 lg:mx-0 lg:max-w-none',
+        `lg:grid-cols-${tiers.length}`,
+      )}>
       {tiers.map((tier, idx) => (
         <div
           key={tier.id}
@@ -55,6 +70,8 @@ export function SectionPricingTable({ tiers, checkout = false, account = null }:
                   type={'payed'}
                   mostPopular={tier.data.most_popular}
                   productId={tier.data.stripeProductId}
+                  courseId={courseId}
+                  purchaseId={purchaseId}
                 />
               ) : (
                 <BuyButton

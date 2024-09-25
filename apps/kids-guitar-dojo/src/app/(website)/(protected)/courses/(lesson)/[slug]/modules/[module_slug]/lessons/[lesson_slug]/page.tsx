@@ -44,7 +44,9 @@ export default async function Page({ params }: PageProps) {
   }
 
   if (child.purchaseType === 'free' && !data.lesson.isFree) {
-    return redirect(`/courses/order?purchaseType=${child.purchaseType}&courseSlug=${params.slug}&childId=${child.id}`);
+    return redirect(
+      `/courses/upgrade?purchaseType=${child.purchaseType}&courseSlug=${params.slug}&childId=${child.id}`,
+    );
   }
 
   let page = null;
