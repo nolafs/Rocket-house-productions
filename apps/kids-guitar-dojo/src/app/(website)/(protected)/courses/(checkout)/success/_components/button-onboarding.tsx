@@ -34,6 +34,8 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
           if (user.purchases[0].childId) {
             router.push('/courses');
             setState('returning');
+          } else {
+            setState('active');
           }
         } else {
           setState(user.status);
