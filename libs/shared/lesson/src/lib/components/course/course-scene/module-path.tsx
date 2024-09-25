@@ -34,6 +34,7 @@ type ModuleButtonPosition = {
   color: string;
   type: string;
   slug: string;
+  isFree?: boolean;
   position: Point;
 };
 
@@ -51,9 +52,18 @@ export const ModulePath: React.FC<{
   lessonSpacing?: number;
   onBackToCurrentLesson: () => void;
   courseCompleted?: boolean;
+  purchaseType?: string | null;
   onUpdated?: (data: ModuleButtonDisplay) => void;
   onOpenLesson?: (lesson: LessonButton) => void;
-}> = ({ modulesSection, lessonSpacing = 7, courseCompleted, onBackToCurrentLesson, onUpdated, onOpenLesson }) => {
+}> = ({
+  modulesSection,
+  lessonSpacing = 7,
+  courseCompleted,
+  onBackToCurrentLesson,
+  onUpdated,
+  onOpenLesson,
+  purchaseType = null,
+}) => {
   const { getLessonCompleted } = useLessonProgressionStore(store => store);
 
   const [pathLength, setPathLength] = React.useState<number | null>(null);
@@ -108,6 +118,7 @@ export const ModulePath: React.FC<{
               color: item.color || 'white',
               type: lesson.category.name,
               slug: lesson.slug || '',
+              isFree: lesson.isFree || false,
               moduleSlug: item.slug || '',
               position: {
                 x: lessonIndex % 2 ? -1 : 1,
@@ -174,7 +185,9 @@ export const ModulePath: React.FC<{
                 slug: button.slug,
                 moduleSlug: button.moduleSlug,
                 color: button.color,
+                isFree: button.isFree,
               }}
+              purchaseType={purchaseType}
               courseCompleted={courseCompleted}
               active={button.active}
               next={button.next}
