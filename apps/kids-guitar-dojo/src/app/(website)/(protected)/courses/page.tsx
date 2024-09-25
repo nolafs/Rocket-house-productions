@@ -20,11 +20,6 @@ export default async function Page({ params }: { params: { product: string[] } }
     return redirect('/course/error?status=unauthorized');
   }
 
-  if (user?.publicMetadata.status === 'inactive') {
-    console.info('[COURSE] INACTIVE');
-    return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
-  }
-
   if (user?.publicMetadata.status === 'pending') {
     console.info('[COURSE] PENDING');
     return redirect('/courses/success');
