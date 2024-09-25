@@ -41,8 +41,6 @@ export async function POST(req: Request, res: Response) {
 
     switch (eventType) {
       case 'user.created': {
-        console.log('USER CREATE');
-
         const { id, first_name, last_name, email_addresses } = payload.data;
 
         await clerkClient().users.updateUserMetadata(id, {
@@ -61,17 +59,6 @@ export async function POST(req: Request, res: Response) {
             userId: id,
           },
         });
-
-        console.log('count', count);
-
-        const updateData = {
-          userId: id,
-          firstName: first_name,
-          lastName: last_name,
-          email: email_addresses[0].email_address,
-        };
-
-        console.log('updateData', updateData);
 
         if (count === 0) {
           await db.account.create({

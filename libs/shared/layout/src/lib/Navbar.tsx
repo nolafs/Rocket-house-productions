@@ -172,7 +172,7 @@ export function Navbar({ navigation, logo, isAdmin = false }: HeaderProps) {
                       </li>
                       <li>
                         <SignedOut>
-                          <Link href="/pricing" className={buttonVariants({ variant: 'outline' })}>
+                          <Link href="/sign-up" className={buttonVariants({ variant: 'outline' })}>
                             Buy now
                           </Link>
                         </SignedOut>
