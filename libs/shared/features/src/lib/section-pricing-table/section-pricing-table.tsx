@@ -10,9 +10,10 @@ import StripePricing from './stripe-pricing';
 interface SectionPricingTableProps {
   tiers: Tier[];
   checkout?: boolean;
+  account?: any | null;
 }
 
-export function SectionPricingTable({ tiers, checkout = false }: SectionPricingTableProps) {
+export function SectionPricingTable({ tiers, checkout = false, account = null }: SectionPricingTableProps) {
   if (tiers.length === 0) {
     return null;
   }
@@ -56,7 +57,12 @@ export function SectionPricingTable({ tiers, checkout = false }: SectionPricingT
                   productId={tier.data.stripeProductId}
                 />
               ) : (
-                <BuyButton type={'payed'} mostPopular={tier.data.most_popular} productId={tier.data.stripeProductId} />
+                <BuyButton
+                  type={'payed'}
+                  mostPopular={tier.data.most_popular}
+                  productId={tier.data.stripeProductId}
+                  courseId={null}
+                />
               )}
             </>
           ) : (
@@ -72,7 +78,7 @@ export function SectionPricingTable({ tiers, checkout = false }: SectionPricingT
                   courseId={tier.data.course_id}
                 />
               ) : (
-                <BuyButton type={'free'} mostPopular={tier.data.most_popular} />
+                <BuyButton type={'free'} mostPopular={tier.data.most_popular} courseId={tier.data.course_id} />
               )}
             </>
           )}
