@@ -13,6 +13,20 @@ export default async function Page({ params }: { params: { product: string[] } }
     return redirect('/');
   }
 
+  if (!sessionClaims) {
+    return redirect('/');
+  }
+
+  if (sessionClaims.metadata?.status === 'active') {
+    if (sessionClaims.metadata?.type === 'free') {
+      console.log('User is already active and has a free account');
+    }
+
+    if (sessionClaims.metadata?.type === 'paid') {
+      console.log('User is already active and has a paid account');
+    }
+  }
+
   const client = createClient();
   const tiers = await client.getAllByType('pricing', {
     orderings: [

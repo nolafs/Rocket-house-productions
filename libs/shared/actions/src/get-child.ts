@@ -42,5 +42,8 @@ export const getChild = async (slug: string) => {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }
 
-  return child;
+  return {
+    ...child,
+    purchaseType: purchase?.type,
+  };
 };
