@@ -20,10 +20,12 @@ export default async function Page({ params }: { params: { product: string[] } }
   if (sessionClaims.metadata?.status === 'active') {
     if (sessionClaims.metadata?.type === 'free') {
       console.log('User is already active and has a free account');
+      redirect('/courses/upgrade');
     }
 
     if (sessionClaims.metadata?.type === 'paid') {
       console.log('User is already active and has a paid account');
+      redirect('/courses');
     }
   }
 

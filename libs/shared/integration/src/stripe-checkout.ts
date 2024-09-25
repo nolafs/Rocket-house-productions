@@ -5,7 +5,7 @@ import { auth, clerkClient } from '@clerk/nextjs/server';
 import { db } from './db';
 import Stripe from 'stripe';
 
-export const stripeCheckout = async (productId: string, childId: string | null = null) => {
+export const stripeCheckout = async (productId: string, purchaseId: string | null = null) => {
   const { userId, sessionClaims } = auth();
 
   if (!userId) {
@@ -39,7 +39,7 @@ export const stripeCheckout = async (productId: string, childId: string | null =
         metadata: {
           userId: userId,
           courseId: metadata?.course_id,
-          childId: childId,
+          purchaseId: purchaseId,
         },
       },
     });

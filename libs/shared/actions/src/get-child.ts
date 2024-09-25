@@ -44,6 +44,7 @@ export const getChild = async (slug: string) => {
 
   return {
     ...child,
+    purchaseId: purchase?.id,
     purchaseType: purchase?.type,
   };
 };
