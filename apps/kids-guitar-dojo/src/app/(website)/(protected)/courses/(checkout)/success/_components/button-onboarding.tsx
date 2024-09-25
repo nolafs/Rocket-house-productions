@@ -60,7 +60,7 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
 
   if (state === 'active') {
     return (
-      <Link href={'/courses/enroll'} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
+      <Link href={'/courses'} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
         Start Onboarding
       </Link>
     );
