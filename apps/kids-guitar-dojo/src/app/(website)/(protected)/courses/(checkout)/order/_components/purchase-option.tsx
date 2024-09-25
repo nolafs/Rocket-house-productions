@@ -17,38 +17,52 @@ interface PurchaseOptionProps {
 
 export function PurchaseOption({ children, userId, email }: PurchaseOptionProps) {
   const { user, isLoading, isError, isValidating } = useUser(userId);
-  const { productId, type } = usePurchaseStore();
+  const { productId, courseId, type } = usePurchaseStore();
   const [state, setState] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     if (user && !isLoading && !isValidating && !isError) {
       if (type === 'free') {
-        setState('ready');
-        return;
-      }
-
-      if (productId) {
-        //payment link to stripe
-        const payment = async () => {
-          const redirectUrl = await axios.post('/api/stripe/checkurl', {
-            productId,
-            userId: userId,
-            email,
+        const createFreeAccount = async () => {
+          const res = await axios.post('/api/stripe/checkfree', {
+            courseId: courseId,
           });
-          if (redirectUrl.data?.url) {
-            router.push(redirectUrl.data.url);
+
+          console.log('[PurchaseOption]', res.data);
+
+          if (res.data) {
+            router.push('/courses/success');
           } else {
             setState('ready');
           }
         };
-        payment();
+
+        createFreeAccount();
         setState(null);
       } else {
-        setState('ready');
+        if (productId) {
+          //payment link to stripe
+          const payment = async () => {
+            const redirectUrl = await axios.post('/api/stripe/checkurl', {
+              productId,
+              userId: userId,
+              email,
+            });
+            if (redirectUrl.data?.url) {
+              router.push(redirectUrl.data.url);
+            } else {
+              setState('ready');
+            }
+          };
+          payment();
+          setState(null);
+        } else {
+          setState('ready');
+        }
       }
     }
-  }, [user, isLoading, isError, isValidating, productId, type]);
+  }, [user, isLoading, isError, isValidating, productId, courseId, type]);
 
   if (isLoading || isValidating) {
     return (
