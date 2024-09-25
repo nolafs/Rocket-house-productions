@@ -22,6 +22,8 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
   const router = useRouter();
 
   useEffect(() => {
+    console.log('[PurchaseOption]', user, isLoading, isError, isValidating, productId, courseId, type);
+
     if (user && !isLoading && !isValidating && !isError) {
       if (type === 'free') {
         const createFreeAccount = async () => {
@@ -40,7 +42,9 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
 
         createFreeAccount();
         setState(null);
-      } else {
+      }
+
+      if (type === 'payed') {
         if (productId) {
           //payment link to stripe
           const payment = async () => {

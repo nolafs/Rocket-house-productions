@@ -4,10 +4,10 @@ import { persist, createJSONStorage, PersistOptions } from 'zustand/middleware';
 interface PurchaseStore {
   productId: string | null | undefined;
   courseId: string | null | undefined;
-  type: 'payed' | 'free';
+  type: 'payed' | 'free' | null;
   setProductId: (productId: string | null | undefined) => void;
   setCourseId: (courseId: string | null | undefined) => void;
-  setType: (type: 'payed' | 'free') => void;
+  setType: (type: 'payed' | 'free' | null) => void;
 }
 
 type ProductPersist = (
@@ -19,7 +19,7 @@ export const usePurchaseStore = create<PurchaseStore>(
   (persist as ProductPersist)(
     (set, get): PurchaseStore => ({
       productId: null,
-      type: 'free',
+      type: null,
       courseId: null,
       setProductId: productId => set({ productId }),
       setCourseId: courseId => set({ courseId }),
