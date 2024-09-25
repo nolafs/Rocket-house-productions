@@ -3,7 +3,7 @@ import { db } from '@rocket-house-productions/integration';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
-export const freeCheckout = async (data: FormData) => {
+export async function freeCheckout(formData: FormData) {
   const { userId } = auth();
 
   if (!userId) {
@@ -33,8 +33,8 @@ export const freeCheckout = async (data: FormData) => {
   const purchase = await db.purchase.create({
     data: {
       accountId: account?.id as string,
-      courseId: data.get('courseId') as string,
-      childId: (data.get('childId') as string) || null,
+      courseId: formData.get('courseId') as string,
+      childId: (formData.get('childId') as string) || null,
       stripeChargeId: null,
       amount: 0,
       type: 'free',
@@ -52,6 +52,6 @@ export const freeCheckout = async (data: FormData) => {
 
     redirect('/courses/success');
   }
-};
+}
 
 export default freeCheckout;
