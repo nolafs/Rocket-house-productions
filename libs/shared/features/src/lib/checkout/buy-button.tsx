@@ -6,17 +6,20 @@ import { useRouter } from 'next/navigation';
 
 interface BuyButtonProps {
   productId?: string | null | undefined;
+  courseId?: string | null | undefined;
   type: 'payed' | 'free';
   mostPopular: boolean | undefined;
 }
 
-export function BuyButton({ productId, type, mostPopular = false }: BuyButtonProps) {
+export function BuyButton({ productId, courseId, type, mostPopular = false }: BuyButtonProps) {
   const router = useRouter();
   const signupUrl = type === 'free' ? '/sign-up?purchase=free' : `/sign-up?product=${productId}`;
-  const { setProductId, setType } = usePurchaseStore();
+  const { setProductId, setCourseId, setType } = usePurchaseStore();
 
   const handleBuy = () => {
+    console.log('[BuyButton]', productId, courseId, type);
     setProductId(productId || null);
+    setCourseId(courseId || null);
     setType(type);
     router.push(signupUrl);
   };

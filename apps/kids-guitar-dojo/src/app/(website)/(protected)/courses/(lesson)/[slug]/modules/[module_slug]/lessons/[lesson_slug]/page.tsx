@@ -43,6 +43,10 @@ export default async function Page({ params }: PageProps) {
     return notFound();
   }
 
+  if (child.purchaseType === 'free' && !data.lesson.isFree) {
+    return redirect(`/courses/order?purchaseType=${child.purchaseType}&courseSlug=${params.slug}&childId=${child.id}`);
+  }
+
   let page = null;
   if (data?.lesson.prismaSlug) {
     try {
@@ -59,6 +63,8 @@ export default async function Page({ params }: PageProps) {
   if (!data.module || !data.course || !data.lesson) {
     return notFound();
   }
+
+  console.log(['LESSON-PAGE'], child);
 
   return (
     <>
