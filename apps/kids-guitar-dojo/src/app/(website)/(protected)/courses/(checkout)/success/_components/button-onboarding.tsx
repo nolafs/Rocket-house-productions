@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { useUser } from '@rocket-house-productions/hooks';
 import { useEffect, useState } from 'react';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
 interface ButtonOnboardingProps {
@@ -16,8 +16,11 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
   const { user, isLoading, isError, isValidating } = useUser(userId);
   const [state, setState] = useState<string | null>(null);
   const [count, setCount] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
+    console.log('[ButtonOnboarding]', user, isLoading, isError, isValidating, state, count);
+
     if (state === 'active') {
       return;
     }
@@ -31,7 +34,11 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
     }
 
     if (user && !isLoading && !isValidating && !isError) {
-      setState(user.status);
+      if (user.purchases.length) {
+        if (user.purchases[0].childId) {
+          router.push('/courses');
+        }
+      }
 
       if (user.status === 'inactive' || user.status === 'pending') {
         setCount(count + 1);
