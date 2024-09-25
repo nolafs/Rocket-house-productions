@@ -43,14 +43,18 @@ export async function freeCheckout(formData: FormData) {
 
   // check if ok and redirect to success page
   if (purchase) {
-    await clerkClient.users.updateUserMetadata(userId, {
+    const clerkUpdate = await clerkClient.users.updateUserMetadata(userId, {
       publicMetadata: {
         status: 'active',
         type: 'free',
       },
     });
 
-    redirect('/courses/success');
+    console.log('clerkUpdate', clerkUpdate);
+
+    if (!clerkUpdate) {
+      redirect('/courses/success');
+    }
   }
 }
 
