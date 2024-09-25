@@ -5,10 +5,10 @@ import { getAccount } from '@rocket-house-productions/actions/server';
 import { db } from '@rocket-house-productions/integration';
 
 export default async function Page({ params }: { params: { product: string[] } }) {
-  const { userId } = auth();
+  const { userId, sessionClaims } = auth();
   let userDb = null;
 
-  console.log('[COURSE]');
+  console.log('[COURSE]', sessionClaims);
 
   if (!userId) {
     return redirect('/course/error?status=unauthorized');
@@ -16,24 +16,21 @@ export default async function Page({ params }: { params: { product: string[] } }
 
   const user = await clerkClient().users.getUser(userId);
 
-  if (user?.publicMetadata.status === 'inactive') {
-    console.log('[COURSE] INACTIVE');
-    return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
-  }
-
-  if (user?.publicMetadata.status === 'pending') {
-    console.log('[COURSE] PENDING');
-    return redirect('/courses/success');
-  }
-
   if (!user) {
     return redirect('/course/error?status=unauthorized');
   }
 
+  if (user?.publicMetadata.status === 'inactive') {
+    console.info('[COURSE] INACTIVE');
+    return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
+  }
+
+  if (user?.publicMetadata.status === 'pending') {
+    console.info('[COURSE] PENDING');
+    return redirect('/courses/success');
+  }
+
   // CHECK USER IS ACTIVE
-
-  console.log('[COURSE] User found in db');
-
   userDb = await getAccount(userId);
 
   if (!userDb) {
@@ -41,19 +38,19 @@ export default async function Page({ params }: { params: { product: string[] } }
   }
 
   if (userDb?.status === 'inactive') {
-    console.log('[COURSE] INACTIVE');
+    console.info('[COURSE] INACTIVE');
     return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
   }
 
   if (userDb?.status === 'pending') {
-    console.log('[COURSE] PENDING');
+    console.info('[COURSE] PENDING');
     return redirect('/courses/success');
   }
 
   // CHECK USER HAS PURCHASED COURSE
 
   if (!userDb?._count?.purchases) {
-    console.log('[COURSE] NO PURCHASES');
+    console.info('[COURSE] NO PURCHASES');
     return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
   }
 
@@ -62,7 +59,7 @@ export default async function Page({ params }: { params: { product: string[] } }
   if (userDb?._count?.purchases) {
     const unEnrolledPurchases = userDb.purchases.filter(purchase => !purchase.childId);
 
-    console.log('[COURSE] PURCHASES', unEnrolledPurchases.length);
+    console.info('[COURSE] PURCHASES');
 
     if (unEnrolledPurchases.length === 0) {
       // All purchases are enrolled
@@ -75,11 +72,11 @@ export default async function Page({ params }: { params: { product: string[] } }
           },
         });
 
-        console.log('[COURSE] SINGLE PURCHASE ENROLLED - GO TO LESSON', course);
+        console.info('[COURSE] SINGLE PURCHASE ENROLLED - GO TO LESSON');
 
         return redirect(`/courses/${course?.slug}`);
       } else {
-        console.log('[COURSE] ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
+        console.info('[COURSE] ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
         // todo: go to course selection
       }
     } else if (unEnrolledPurchases.length === 1) {
@@ -88,17 +85,17 @@ export default async function Page({ params }: { params: { product: string[] } }
       return redirect(`/courses/enroll/${unEnrolledPurchases[0].id}`);
     } else {
       // More than one purchase is not enrolled
-      console.log('[COURSE] PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
+      console.info('[COURSE] PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
       // todo: select your purchase to [module_slug]
     }
   } else {
-    console.log('[COURSE] NO PURCHASES FOUND');
+    console.info('[COURSE] NO PURCHASES FOUND');
     // Handle the case where there are no purchases
     return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
   }
   // check if count is more than one
 
-  console.log('[COURSE] WAITING DATA');
+  console.info('[COURSE] WAITING DATA');
 
   return (
     <div className={'mt-5 flex h-svh w-full flex-col items-center justify-center'}>

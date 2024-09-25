@@ -1,6 +1,6 @@
 import { DialogLayout } from '@rocket-house-productions/lesson';
 import NextButton from '../_component/button-next';
-import { BASE_URL } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/path-types';
+import { BASE_URL } from '../_component/path-types';
 import { createClient } from '@/prismicio';
 import { PrismicRichText } from '@prismicio/react';
 
