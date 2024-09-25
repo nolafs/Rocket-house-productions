@@ -50,7 +50,6 @@ export async function getAccount(userId: string): Promise<AccountWithPurchases |
       },
       children: true,
     },
-    cacheStrategy: { ttl: 60 },
   });
 }
 
