@@ -21,5 +21,12 @@ export default async function Page({ params }: PageProps) {
   const child = await getChild(params.slug);
   const course = await getCourse({ courseSlug: params.slug });
 
-  return <CourseNavigationPage course={course} childId={child.id} role={sessionClaims.metadata.role as string} />;
+  return (
+    <CourseNavigationPage
+      purchaseType={child.purchaseType}
+      course={course}
+      childId={child.id}
+      role={sessionClaims.metadata.role as string}
+    />
+  );
 }

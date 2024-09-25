@@ -17,10 +17,11 @@ const CourseNavigation = dynamic(
 interface CourseNavigationPageProps {
   course: Course & { modules: any[] };
   childId?: string | null;
+  purchaseType?: string | null;
   role: string;
 }
 
-export function CourseNavigationPage({ course, role, childId = null }: CourseNavigationPageProps) {
+export function CourseNavigationPage({ course, role, childId = null, purchaseType = null }: CourseNavigationPageProps) {
   const [ready, setReady] = useState(false);
 
   const handleLoaded = (loaded: boolean) => {
@@ -30,7 +31,7 @@ export function CourseNavigationPage({ course, role, childId = null }: CourseNav
   return (
     <>
       <div id="course-nav" className={'relative h-screen w-full'}>
-        <CourseNavigation course={course} onLoaded={loaded => handleLoaded(loaded)} />
+        <CourseNavigation purchaseType={purchaseType} course={course} onLoaded={loaded => handleLoaded(loaded)} />
       </div>
       {ready && (
         <div

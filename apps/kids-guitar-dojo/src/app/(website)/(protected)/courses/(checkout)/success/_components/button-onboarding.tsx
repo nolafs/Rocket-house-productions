@@ -20,30 +20,30 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
 
   useEffect(() => {
     console.log('[ButtonOnboarding]', user, isLoading, isError, isValidating, state, count);
-
-    if (state === 'active') {
-      return;
-    }
-
-    if (count < 6) {
-      setState('unverified');
-    }
-
-    if (isError) {
-      setState('error');
-    }
-
     if (user && !isLoading && !isValidating && !isError) {
-      if (user.purchases.length) {
-        if (user.purchases[0].childId) {
-          router.push('/courses');
-        }
+      if (count < 6) {
+        setState('unverified');
       }
 
-      setState(user.status);
+      if (isError) {
+        setState('error');
+      }
 
-      if (user.status === 'inactive' || user.status === 'pending') {
-        setCount(count + 1);
+      if (user && !isLoading && !isValidating && !isError) {
+        if (user.purchases.length) {
+          if (user.purchases[0].childId) {
+            router.push('/courses');
+            setState('returning');
+          } else {
+            setState('active');
+          }
+        } else {
+          setState(user.status);
+        }
+
+        if (user.status === 'inactive' || user.status === 'pending') {
+          setCount(count + 1);
+        }
       }
     }
   }, [user, isLoading, isError, isValidating]);
@@ -62,6 +62,14 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
     return (
       <Link href={'/courses'} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
         Start Onboarding
+      </Link>
+    );
+  }
+
+  if (state === 'returning') {
+    return (
+      <Link href={'/courses'} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
+        Return to Course
       </Link>
     );
   }

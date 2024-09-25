@@ -22,7 +22,7 @@ import { useClerk } from '@clerk/nextjs';
 import { useModuleProgressStore } from '@rocket-house-productions/providers';
 import ModuleProgressList from '../module/module-progress-list';
 import ModuleAwardList from '../module/ModuleAwardList';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface HeaderProps {
   childId: string;
@@ -30,9 +30,10 @@ interface HeaderProps {
   avatar: 'kimono' | 'bonsai' | 'carpFish' | 'daruma' | 'samurai' | 'temple_1' | 'yukata' | string | null | undefined;
   background?: string | null | undefined;
   score?: number;
+  purchaseType: string | null | undefined;
 }
 
-export function Header({ childId, name, avatar, background = 'transparent' }: HeaderProps) {
+export function Header({ childId, name, avatar, background = 'transparent', purchaseType = null }: HeaderProps) {
   const { signOut, openUserProfile } = useClerk();
   const { getCurrentModule } = useModuleProgressStore(store => store);
 
@@ -52,7 +53,7 @@ export function Header({ childId, name, avatar, background = 'transparent' }: He
                 <Avatar avatar={avatar} classNames={'border  border-3 border-white'} />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Account</DropdownMenuLabel>
+                <DropdownMenuLabel>Account {purchaseType === 'free' && '(FREE)'}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <DialogTrigger>Your profile</DialogTrigger>
@@ -62,6 +63,15 @@ export function Header({ childId, name, avatar, background = 'transparent' }: He
                   <button onClick={() => openUserProfile()}>Parent profile</button>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+
+                {purchaseType === 'free' && (
+                  <>
+                    <DropdownMenuItem>
+                      <Link href={'/courses/upgrade'}>Upgrade</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
                 <DropdownMenuItem>
                   <button onClick={() => signOut({ redirectUrl: '/' })}>Sign Out</button>
                 </DropdownMenuItem>
