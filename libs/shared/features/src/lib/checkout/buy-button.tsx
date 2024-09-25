@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 interface BuyButtonProps {
   productId?: string | null | undefined;
   courseId?: string | null | undefined;
-  type: 'payed' | 'free';
+  type: 'payed' | 'free' | null;
   mostPopular: boolean | undefined;
 }
 
