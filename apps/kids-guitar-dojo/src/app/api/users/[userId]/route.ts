@@ -16,6 +16,9 @@ export async function GET(req: NextRequest, context: { params: { userId: string 
       where: {
         userId: userId,
       },
+      include: {
+        purchases: true,
+      },
     });
 
     console.log('[USERS]', response);
