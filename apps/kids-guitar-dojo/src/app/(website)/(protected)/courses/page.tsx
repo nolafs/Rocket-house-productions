@@ -16,43 +16,41 @@ export default async function Page({ params }: { params: { product: string[] } }
 
   const user = await clerkClient().users.getUser(userId);
 
+  if (user?.publicMetadata.status === 'inactive') {
+    console.log('[COURSE] INACTIVE');
+    return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
+  }
+
+  if (user?.publicMetadata.status === 'pending') {
+    console.log('[COURSE] PENDING');
+    return redirect('/courses/success');
+  }
+
   if (!user) {
     return redirect('/course/error?status=unauthorized');
   }
 
   // CHECK USER IS ACTIVE
-  try {
-    console.log('[COURSE] User found in db');
-    userDb = await getAccount(userId);
 
-    if (userDb?.status === 'inactive') {
-      console.log('[COURSE] INACTIVE');
-      return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
-    }
+  console.log('[COURSE] User found in db');
 
-    if (userDb?.status === 'pending') {
-      console.log('[COURSE] PENDING');
-      redirect('/courses/success');
-    }
-  } catch (error) {
-    if (user?.publicMetadata.status === 'inactive') {
-      console.log('[COURSE] INACTIVE');
-      return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
-    }
+  userDb = await getAccount(userId);
 
-    if (user?.publicMetadata.status === 'pending') {
-      console.log('[COURSE] PENDING');
-      redirect('/courses/success');
-    }
+  if (!userDb) {
+    redirect('/courses/error?status=error&message=No%20user%20found%20in%20Database');
+  }
 
-    console.error('User not found');
+  if (userDb?.status === 'inactive') {
+    console.log('[COURSE] INACTIVE');
+    return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
+  }
+
+  if (userDb?.status === 'pending') {
+    console.log('[COURSE] PENDING');
+    return redirect('/courses/success');
   }
 
   // CHECK USER HAS PURCHASED COURSE
-
-  if (!userDb) {
-    redirect('/courses/error?status=error&message=No%20user%20found');
-  }
 
   if (!userDb?._count?.purchases) {
     console.log('[COURSE] NO PURCHASES');
@@ -87,7 +85,7 @@ export default async function Page({ params }: { params: { product: string[] } }
     } else if (unEnrolledPurchases.length === 1) {
       // Only one purchase is not enrolled
       console.log('[COURSE] PURCHASE SINGLE NOT ENROLLED - GO TO ENROLLMENT');
-      redirect(`/courses/enroll/${unEnrolledPurchases[0].id}`);
+      return redirect(`/courses/enroll/${unEnrolledPurchases[0].id}`);
     } else {
       // More than one purchase is not enrolled
       console.log('[COURSE] PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
@@ -98,7 +96,6 @@ export default async function Page({ params }: { params: { product: string[] } }
     // Handle the case where there are no purchases
     return redirect(params?.product ? `/courses/order?product=${params.product}` : '/courses/order');
   }
-
   // check if count is more than one
 
   console.log('[COURSE] WAITING DATA');
