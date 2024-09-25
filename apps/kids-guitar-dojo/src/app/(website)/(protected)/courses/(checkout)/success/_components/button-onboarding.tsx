@@ -40,6 +40,8 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
         }
       }
 
+      setState(user.status);
+
       if (user.status === 'inactive' || user.status === 'pending') {
         setCount(count + 1);
       }
