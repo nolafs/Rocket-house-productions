@@ -16,3 +16,5 @@ export { freeCheckout } from './free-checkout';
 export { stripeCheckoutAction } from './stripe-checkout-action';
 export { MailerList } from './mailer-lite';
 export type { MailerListType } from './mailer-lite';
+export { sendMail } from './send-mail';
+export { VerifyCaptcha } from './verifiy-captcha';
