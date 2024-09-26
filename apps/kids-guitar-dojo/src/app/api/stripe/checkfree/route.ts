@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration';
+import { MailerList } from '@rocket-house-productions/actions/server';
 
 export async function POST(req: NextRequest) {
   const { userId } = auth();
@@ -56,6 +57,20 @@ export async function POST(req: NextRequest) {
           type: 'free',
         },
       });
+
+      // update Mailer-lite
+
+      if (account.email) {
+        await MailerList({
+          email: account.email,
+          firstName: account?.firstName || '',
+          lastName: account?.lastName || '',
+          newsletterGroup: false,
+          membershipGroup: true,
+          memberType: 'free',
+          notify: false,
+        });
+      }
 
       return new NextResponse('Success', { status: 200 });
     } else {
