@@ -31,8 +31,6 @@ export function ContactForm({ items }: ContactFormInputProps) {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [isVerified, setIsVerified] = useState(false);
 
-  //const key: string = process.env.NEXT_PUBLIC_RECAP_SITE_KEY || '';
-
   const {
     register,
     handleSubmit,
@@ -53,9 +51,6 @@ export function ContactForm({ items }: ContactFormInputProps) {
       formData.append('agreeToTerms', data.agreeToTerms ? 'true' : 'false');
 
       const { data: success, errors } = await sendMail(null, formData);
-
-      console.log('success', success);
-      console.log('errors', errors);
 
       if (success) {
         setIsSubmitting(false);
