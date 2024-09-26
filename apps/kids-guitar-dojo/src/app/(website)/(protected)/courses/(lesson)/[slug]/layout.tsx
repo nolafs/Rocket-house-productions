@@ -1,5 +1,5 @@
 import { CourseProgressionProvider } from '@rocket-house-productions/providers';
-import { getChild } from '@rocket-house-productions/actions/server';
+import { getChild, getCourse } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 
@@ -26,14 +26,7 @@ export default async function Layout({ children, params }: LayoutProps) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }
 
-  const course = await db.course.findUnique({
-    where: {
-      slug: params.slug,
-    },
-    select: {
-      id: true,
-    },
-  });
+  const course = await getCourse({ courseSlug: params.slug });
 
   if (!course) {
     return redirect(`/courses/error?status=error&message=No%20course%20found`);

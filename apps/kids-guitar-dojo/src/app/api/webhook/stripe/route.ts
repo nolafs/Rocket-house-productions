@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { db, stripe } from '@rocket-house-productions/integration';
 import { clerkClient } from '@clerk/nextjs/server';
+import { MailerList } from '@rocket-house-productions/actions/server';
 
 export async function POST(req: Request, res: Response) {
   let event: Stripe.Event;
@@ -152,6 +153,19 @@ export async function POST(req: Request, res: Response) {
               type: 'paid',
             },
           });
+
+          if (account.email) {
+            const mailerList = await MailerList({
+              email: account.email,
+              firstName: account.firstName || null,
+              lastName: account.lastName || null,
+              membershipGroup: true,
+              memberType: 'paid',
+              newsletterGroup: account.newsletter || false,
+            });
+
+            console.log('[MAILER-LITE] response', mailerList);
+          }
 
           console.log(`💰 Charge status: ${data.status}`);
           break;

@@ -11,7 +11,7 @@ export async function handleSubscription(prevState: any, formData: FormData) {
 
   if (validation.success) {
     try {
-      //sign up with mailerlite
+      //sign up with mailer-lite
       const response = await fetch('https://api.mailerlite.com/api/v2/subscribers', {
         method: 'POST',
         headers: {
@@ -20,14 +20,17 @@ export async function handleSubscription(prevState: any, formData: FormData) {
         },
         body: JSON.stringify({
           email: subscriberEmail,
+          groups: ['133521141153137963'],
         }),
       });
 
       const rsp = await response.json();
 
+      console.log(rsp);
+
       return {
         status: 'success',
-        message: 'successfully subscribed',
+        message: 'Thank you for subscribing!',
         data: JSON.parse(JSON.stringify(response)),
       };
     } catch (error) {
