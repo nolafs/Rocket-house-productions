@@ -14,3 +14,5 @@ export { getQuiz } from './get-quiz';
 export { getCourse } from './get-course';
 export { freeCheckout } from './free-checkout';
 export { stripeCheckoutAction } from './stripe-checkout-action';
+export { MailerList } from './mailer-lite';
+export type { MailerListType } from './mailer-lite';

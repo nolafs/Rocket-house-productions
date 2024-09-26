@@ -4,6 +4,7 @@ import { OnBoardingRoutes } from '../_component/path-types';
 import { db } from '@rocket-house-productions/integration';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { MailerList } from '@rocket-house-productions/actions/server';
 
 interface SubmitDealActionReturnType {
   redirect?: OnBoardingRoutes;
@@ -74,6 +75,20 @@ export const submitOnBoardingAction = async (
         lastName: onboarding.lastName,
       },
     });
+
+    //Update MailerList
+    if (account.email) {
+      const mailerList = await MailerList({
+        email: account.email,
+        firstName: onboarding.firstName || '',
+        lastName: onboarding.lastName || '',
+        membershipGroup: true,
+        newsletterGroup: onboarding.newsletter || false,
+        notify: onboarding.notify || false,
+      });
+
+      console.log('[MAILER-LITE] response', mailerList);
+    }
 
     const child = await db.child.create({
       data: {
