@@ -10,7 +10,7 @@ type ModuleSection = ModuleDB & {
   attachments?: ModuleAttachment[];
 };
 
-type ModuleAttachment = {
+export type ModuleAttachment = {
   id: string;
   name: string;
   url: string;

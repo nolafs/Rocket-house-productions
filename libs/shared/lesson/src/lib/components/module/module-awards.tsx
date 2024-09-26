@@ -6,6 +6,7 @@ import { useModuleProgressStore, usePointsStore } from '@rocket-house-production
 import { AwardType, ModuleAwardType } from '@prisma/client';
 import Image from 'next/image';
 import { useConfettiStore } from '@rocket-house-productions/hooks';
+import { ModuleAttachment } from '@rocket-house-productions/store';
 
 type AvailableAward = ModuleAwardType & {
   id: string;
@@ -17,8 +18,11 @@ type AvailableAward = ModuleAwardType & {
 
 export function ModuleAwards() {
   const [open, setOpen] = useState(false);
-  const { getModulesAwardNotification, modules, setAwardNotification } = useModuleProgressStore(store => store);
+  const { getModulesAwardNotification, modules, setAwardNotification, getAttachment } = useModuleProgressStore(
+    store => store,
+  );
   const [awards, setAwards] = useState<AvailableAward[]>([]);
+  const [attachment, setAttachment] = useState<ModuleAttachment | null>(null);
   const { addPoints } = usePointsStore(store => store);
   const confetti = useConfettiStore();
 
@@ -28,12 +32,23 @@ export function ModuleAwards() {
     if (awards.length) {
       awards.map(award => {
         if (!award.awardNotified) {
-          console.log('awards', award, award.awardNotified);
+          const attachments = getAttachment(award.moduleId);
+          const certs = attachments?.find(attachment => attachment.attachmentType.name === 'Certificate');
+
+          if (certs) {
+            setAttachment(certs);
+          }
+
+          console.log('[awards]', award, award.awardNotified);
+          console.log('[awards] - cert', certs);
+
           setAwards(prevState => awards);
-          setOpen(true);
+
           addPoints(award.awardType.points);
           setAwardNotification(award.moduleId, award.id);
           confetti.onOpen();
+
+          setOpen(true);
         }
       });
     }
@@ -68,7 +83,13 @@ export function ModuleAwards() {
                 <p>You scored {award.awardType.points} bonus points</p>
               </div>
               <div>
-                <ButtonDownloadPdf url={''} filename={''} label={'Download your certificate!'} />
+                {attachment && (
+                  <ButtonDownloadPdf
+                    url={attachment.url}
+                    filename={attachment.name}
+                    label={'Download your certificate!'}
+                  />
+                )}
               </div>
             </div>
           ))}
