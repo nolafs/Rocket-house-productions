@@ -1,22 +1,24 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { IContactFormInput } from '@rocket-house-productions/types';
-import React, { useState } from 'react';
-//import ReCAPTCHA from 'react-google-recaptcha';
+import React, { useRef, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { z } from 'zod';
 import cn from 'classnames';
+import { sendMail, VerifyCaptcha } from '@rocket-house-productions/actions/server';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const emailSchema = z.object({
-  'form-name': z.string().optional(),
   name: z.string().min(1, 'Please enter your name'),
   email: z.string().email('Please enter a valid email address'),
   enquiryType: z.string().min(1, 'Please select the nature of your enquiry'),
   message: z.string().min(1, 'Please enter your message'),
   agreeToTerms: z.boolean().refine(val => val, 'You must agree to the Terms & Conditions'),
 });
+
+export type EmailSchema = z.infer<typeof emailSchema>;
 
 interface ContactFormInputProps {
   items: any[];
@@ -26,6 +28,8 @@ export function ContactForm({ items }: ContactFormInputProps) {
   //const captchaRef: any = useRef(null)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submissionSuccess, setSubmissionSuccess] = useState<boolean>(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [isVerified, setIsVerified] = useState(false);
 
   //const key: string = process.env.NEXT_PUBLIC_RECAP_SITE_KEY || '';
 
@@ -38,26 +42,29 @@ export function ContactForm({ items }: ContactFormInputProps) {
     resolver: zodResolver(emailSchema),
   });
 
-  const encode = (data: any) => {
-    return Object.keys(data)
-      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-      .join('&');
-  };
-
-  const onSubmit: SubmitHandler<IContactFormInput> = async (data: IContactFormInput) => {
+  const onSubmit: SubmitHandler<EmailSchema> = async data => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('/__forms.html', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: encode({ 'form-name': 'contact', ...data }),
-      });
-      if (response.status === 200) {
+      const formData = new FormData();
+      formData.append('name', data.name);
+      formData.append('email', data.email || '');
+      formData.append('message', data.message || '');
+      formData.append('enquiryType', data.enquiryType || '');
+      formData.append('agreeToTerms', data.agreeToTerms ? 'true' : 'false');
+
+      const { data: success, errors } = await sendMail(null, formData);
+
+      console.log('success', success);
+      console.log('errors', errors);
+
+      if (success) {
         setIsSubmitting(false);
         setSubmissionSuccess(true);
         toast.success('Your message has been sent!');
         reset(); // Optionally reset form fields
-      } else {
+      }
+
+      if (errors) {
         setIsSubmitting(false);
         toast.error('There was an error sending your message. Please try again later.');
       }
@@ -72,18 +79,40 @@ export function ContactForm({ items }: ContactFormInputProps) {
   const handleContinue = () => {
     setSubmissionSuccess(false);
     setIsSubmitting(false);
+    setIsVerified(false);
   };
+
+  async function handleCaptchaSubmission(token: string | null) {
+    try {
+      if (token) {
+        await VerifyCaptcha(token);
+        setIsVerified(true);
+      }
+    } catch (e) {
+      setIsVerified(false);
+    }
+  }
+
+  const handleChange = (token: string | null) => {
+    if (token) {
+      handleCaptchaSubmission(token);
+    }
+  };
+
+  function handleExpired() {
+    setIsVerified(false);
+  }
 
   if (submissionSuccess) {
     return (
       <div className={'container mx-auto flex max-w-2xl flex-col items-center justify-center'}>
-        <div className="text-center font-bold">
+        <div className="mb-10 text-center font-bold">
           Your message has been sent successfully! We will get back to you soon.
         </div>
         <div>
-          <button className={'btn btn-primary mt-5'} onClick={handleContinue}>
+          <Button variant={'default'} size={'lg'} onClick={handleContinue}>
             Back
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -92,7 +121,6 @@ export function ContactForm({ items }: ContactFormInputProps) {
   return (
     <div className="form-control text-primary w-full max-w-3xl">
       <form onSubmit={handleSubmit(onSubmit)} noValidate data-netlify="true" method="post" className="space-y-4">
-        <input type="hidden" name="form-name" value="contact" />
         <input
           type="text"
           placeholder="Name"
@@ -173,14 +201,23 @@ export function ContactForm({ items }: ContactFormInputProps) {
             {errors.agreeToTerms && <p className="text-error">{errors.agreeToTerms.message}</p>}
           </div>
 
+          <div className="flex w-full justify-start pt-6">
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
+              ref={recaptchaRef}
+              onChange={handleChange}
+              onExpired={handleExpired}
+            />
+          </div>
+
           <div className="flex w-full justify-end pt-6">
             {/* Submit Button */}
             <Button
               type="submit"
               size={'lg'}
               className={cn(`${isSubmitting ? 'loading' : ''}`, 'w-full')}
-              disabled={isSubmitting}>
-              Submit
+              disabled={!isVerified || isSubmitting}>
+              {isSubmitting ? 'Submitting' : 'Submit'}
             </Button>
           </div>
         </div>
