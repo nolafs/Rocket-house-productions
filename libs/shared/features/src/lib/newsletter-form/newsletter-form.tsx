@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { useFormState } from 'react-dom';
-import { ZodIssue } from 'zod';
 import NewsletterFormStatus from './newsletter-form-status';
 import { handleSubscription } from './action';
 
@@ -9,14 +8,6 @@ const initialState = {
   status: '',
   message: '',
   data: null,
-};
-
-const findErrors = (fieldName: string, errors: ZodIssue[]) => {
-  return errors
-    .filter(item => {
-      return item.path.includes(fieldName);
-    })
-    .map(item => item.message);
 };
 
 export function NewsletterForm() {
@@ -31,7 +22,7 @@ export function NewsletterForm() {
           <input
             id="email"
             name="email"
-            //type="email"
+            type="email"
             placeholder="Enter your email"
             //autoComplete="email"
             className="text-primary w-full min-w-0 appearance-none rounded-md border-0 bg-white px-3 py-3 text-base ring-1 ring-inset ring-white/10 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-gray-500 sm:w-64 sm:text-sm sm:leading-6 xl:w-full"

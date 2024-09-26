@@ -10,7 +10,7 @@ export function NewsletterFormStatus({ state }: any) {
             : ''
       } `}>
       {state?.status === 'success'
-        ? state?.data?.status
+        ? state?.message
         : (state?.error?.response?.text?.includes('already a list member') && 'Already listed') || state?.message}
     </p>
   );
