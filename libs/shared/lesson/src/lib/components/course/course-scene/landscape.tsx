@@ -30,6 +30,8 @@ interface LandscapeProps {
   lessonSpacing: number;
   purchaseType?: string | null;
   onOpenLesson?: (lesson: LessonButton) => void;
+  onModulePosition?: (position: ModulePosition[]) => void;
+  onPathLength?: (length: number) => void;
   onReady?: (ready: boolean) => void;
   container?: MutableRefObject<HTMLElement | null>;
 }
@@ -47,10 +49,10 @@ export const Landscape = ({
   onReady,
   container,
   onOpenLesson,
+  onModulePosition,
   ...rest
 }: LandscapeProps) => {
   const [pathLength, setPathLength] = useState<number | null>(null);
-  const [modulePosition, setModulePosition] = useState<ModulePosition[] | []>([]);
   const [currentLesson, setCurrentLesson] = useState<number>(0);
 
   const guitar = useTexture('/images/course/guitar.png');
@@ -159,7 +161,7 @@ export const Landscape = ({
       console.log('LANDSCAPE MODULES: handleUpdate', data);
       setPathLength(data?.pathLength);
       setCurrentLesson(data.buttons[data.next || 0].position.y);
-      setModulePosition(data.modulePosition);
+      onModulePosition && onModulePosition(data.modulePosition);
     }
   };
 
@@ -200,7 +202,7 @@ export const Landscape = ({
     }
   });
 
-  console.log('LANDSCAPE MODULES: RENDER - COMPLETE', courseCompleted);
+  console.log('[awards]  LANDSCAPE MODULES: RENDER - COMPLETE', courseCompleted);
 
   return (
     <>
@@ -225,8 +227,6 @@ export const Landscape = ({
             />
 
             {<FinalScene pathLength={pathLength} courseCompleted={courseCompleted} />}
-
-            <ModuleAwards modulePosition={modulePosition} pathLength={new THREE.Vector3(0, pathLength, -25)} />
           </>
         )}
 

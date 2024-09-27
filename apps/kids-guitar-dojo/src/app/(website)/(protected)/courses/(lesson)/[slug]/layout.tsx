@@ -36,7 +36,7 @@ export default async function Layout({ children, params }: LayoutProps) {
 
   return (
     <div className={'lesson min-h-screen w-full'} style={{ backgroundColor: '#e8c996' }}>
-      <CourseProgressionProvider userId={child.id} courseId={course.id}>
+      <CourseProgressionProvider userId={child.id} course={course}>
         <Header
           childId={child.id}
           avatar={child?.profilePicture}
