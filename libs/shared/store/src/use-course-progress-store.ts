@@ -124,16 +124,13 @@ export const createCourseStore = (
             const lessons = module.lessons || [];
             return lessons.map((item: any) => {
               totalLessons += 1;
-              totalCompletedLessons += lessonStore?.lessons[item.id]?.progress || 0;
+              totalCompletedLessons += lessonStore?.lessons[item.id]?.completed
+                ? 100
+                : lessonStore?.lessons[item.id]?.progress || 0;
             });
           });
 
-          console.log('completedLessons', totalLessons, totalCompletedLessons);
-
           const total = (totalCompletedLessons / (100 * totalLessons)) * 100;
-
-          console.log(['COURSE PROGRESSION - progress'], progress);
-          console.log(['COURSE PROGRESSION - moduleStore'], completed);
 
           set(state => ({
             courses: {
