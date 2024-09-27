@@ -14,13 +14,13 @@ type TProps = {
 const MottoText = forwardRef<HTMLParagraphElement, TProps>(({ text, pathText, path, className, size }, ref) => (
   <div
     className={cn(
-      'font-medium leading-relaxed text-gray-500',
-      size === 'md' && 'text-base',
-      size === 'lg' && 'text-lg',
+      'prose font-medium leading-relaxed !text-gray-500',
+      size === 'md' && 'prose-md lg:prose-lg',
+      size === 'lg' && 'prose-lg lg:prose-xl',
       className,
     )}
     ref={ref}>
-    <PrismicRichText field={text} /> {/* Link block here */}
+    <PrismicRichText field={text} />
   </div>
 ));
 export default MottoText;
