@@ -8,7 +8,7 @@ export function TestimonialItem({ name, designation, review, image }: Testimonia
   return (
     <div
       className={cn(
-        'testimonial shadow-dark/10 flex h-full flex-wrap rounded bg-white px-5 py-6 shadow-md md:py-10 lg:px-7 lg:py-8',
+        'testimonial shadow-dark/10 flex h-full flex-col flex-wrap rounded bg-white px-5 py-6 shadow-md md:py-10 lg:px-7 lg:py-8',
       )}>
       {image?.src && (
         <figure className="image flex-auto0 w-[70px]">
@@ -23,7 +23,7 @@ export function TestimonialItem({ name, designation, review, image }: Testimonia
         </figure>
       )}
 
-      <div className="content flex-auto0 w-full pt-5 md:w-[calc(100%_-_70px)] md:pl-[30px] md:pt-0">
+      <div className="content w-full flex-auto pt-5 md:w-[calc(100%_-_70px)] md:pl-[30px] md:pt-0">
         <p className="mb-6 text-base font-medium leading-relaxed md:mb-[34px] lg:text-lg">
           <PrismicRichText field={review} />
         </p>

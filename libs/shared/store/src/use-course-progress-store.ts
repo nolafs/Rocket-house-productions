@@ -19,7 +19,7 @@ interface CourseAction {
   addCourse: (course: Course) => void;
   setCourseProgress: (courseId: string, progress: number) => void;
   calculateCourseProgress: (courseId: string) => void;
-  getCourseProgress: (courseId: string) => number;
+  getCourseProgress: (courseId: string) => number | null;
 }
 
 export type CourseProgressStore = CourseState & CourseAction;
@@ -30,6 +30,7 @@ export const defaultInitState: CourseState = {
 
 export const createCourseStore = (
   userId: string,
+  course: any,
   moduleState: StoreApi<ModuleProgressStore>,
   initState = defaultInitState,
   // Pass userId or another unique identifier for persistence
@@ -74,7 +75,7 @@ export const createCourseStore = (
             },
           })),
 
-        getCourseProgress: courseId => get().courses[courseId]?.progress || 0,
+        getCourseProgress: courseId => get().courses[courseId]?.progress || null,
         calculateCourseProgress: courseId => {
           const course = get().courses[courseId];
           const moduleStore = moduleState.getState();
@@ -107,7 +108,13 @@ export const createCourseStore = (
         },
       }),
       {
-        name: `course-progress-store-${userId}`, // Unique storage key per user or context
+        name: `course-progress-store-${userId}`,
+        onRehydrateStorage: () => state => {
+          if (state) {
+            // Run addCourse on rehydration
+            state.addCourse(course);
+          }
+        }, // Unique storage key per user or context
         partialize: state => ({ courses: state.courses }), // Persist only the courses part of the state
         // You can also specify a storage engine here, like sessionStorage or any custom storage
       },

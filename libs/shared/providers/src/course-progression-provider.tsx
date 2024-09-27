@@ -13,6 +13,7 @@ import {
   createCourseStore,
   CourseProgressStore,
 } from '@rocket-house-productions/store';
+import { Course } from '@prisma/client';
 
 type CombinedStores = {
   lessonStore: ReturnType<typeof createLessonStore>;
@@ -24,32 +25,34 @@ type CombinedStores = {
 interface CourseProgressionProviderProps {
   children: ReactNode;
   userId: string; // Add userId as a prop
-  courseId: string; // Add courseId as a prop
+  course: Course; // Add courseId as a prop
 }
 
 const CourseProgressionContext = createContext<CombinedStores | undefined>(undefined);
 
-export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ userId, courseId, children }) => {
+export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ userId, course, children }) => {
   const lessonStoreRef = useRef<CombinedStores['lessonStore']>();
   const pointsStoreRef = useRef<CombinedStores['pointsStore']>();
   const moduleStoreRef = useRef<CombinedStores['moduleStore']>();
   const courseStoreRef = useRef<CombinedStores['courseStore']>();
 
   if (!lessonStoreRef.current) {
-    lessonStoreRef.current = createLessonStore(userId, courseId);
+    lessonStoreRef.current = createLessonStore(userId, course.id);
   }
 
   if (!pointsStoreRef.current) {
-    pointsStoreRef.current = createPointsStore(userId, courseId);
+    pointsStoreRef.current = createPointsStore(userId, course.id);
   }
 
   if (!moduleStoreRef.current) {
-    moduleStoreRef.current = createModuleStore(userId, courseId, lessonStoreRef.current);
+    moduleStoreRef.current = createModuleStore(userId, course.id, lessonStoreRef.current);
   }
 
   if (!courseStoreRef.current) {
-    courseStoreRef.current = createCourseStore(userId, moduleStoreRef.current);
+    courseStoreRef.current = createCourseStore(userId, course, moduleStoreRef.current);
   }
+
+  //courseStoreRef.current.addCourse(course);
 
   return (
     <CourseProgressionContext.Provider
