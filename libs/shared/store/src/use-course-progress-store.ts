@@ -75,7 +75,15 @@ export const createCourseStore = (
             },
           })),
 
-        getCourseProgress: courseId => get().courses[courseId]?.progress || null,
+        getCourseProgress: courseId => {
+          const progress = get().courses[courseId]?.progress;
+
+          if (progress !== null) {
+            return progress;
+          }
+          return null;
+        },
+
         calculateCourseProgress: courseId => {
           const course = get().courses[courseId];
           const moduleStore = moduleState.getState();
