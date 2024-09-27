@@ -45,7 +45,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   const courseState = useCourseProgressionStore(store => store);
   const moduleState = useModuleProgressStore(store => store);
-  const lessonState = useLessonProgressionStore(store => store);
+  const lessonState = useLessonProgressionStore(store => store.getLessonProgress);
 
   const [modulePosition, setModulePosition] = useState<ModulePosition[] | null>(null);
   const [lesson, setLesson] = React.useState<LessonButton | null>(null);
