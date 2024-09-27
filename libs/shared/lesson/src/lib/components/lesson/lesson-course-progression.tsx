@@ -1,28 +1,19 @@
 'use client';
-import { useCourseProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
-import { useEffect, useMemo, useState } from 'react';
+import { useCourseProgressionStore } from '@rocket-house-productions/providers';
+import { useEffect, useState } from 'react';
 import LessonProgressBar from '../lesson-progress-bar';
+import { Course } from '@prisma/client';
 
 interface LessonCourseProgressionProps {
-  course: any;
+  course: Course;
 }
-
 export function LessonCourseProgression({ course }: LessonCourseProgressionProps) {
-  const { setCurrentModule, modules } = useModuleProgressStore(store => store);
-  const { calculateCourseProgress, getCourseProgress, addCourse } = useCourseProgressionStore(store => store);
+  const courseProgression = useCourseProgressionStore(store => store);
   const [courseProgress, setCourseProgress] = useState<number | null>(null);
 
-  useMemo(() => {
-    addCourse(course);
-  }, [course]);
-
   useEffect(() => {
-    if (course.id) {
-      calculateCourseProgress(course.id);
-      setCourseProgress(prevState => getCourseProgress(course.id));
-      setCurrentModule(null);
-    }
-  }, [modules, calculateCourseProgress, getCourseProgress, setCurrentModule, course.id]);
+    setCourseProgress(prevState => courseProgression.getCourseProgress(course.id));
+  }, [courseProgression, course]);
 
   if (courseProgress !== null) {
     return <LessonProgressBar currentProgress={courseProgress} variation={'white'} />;

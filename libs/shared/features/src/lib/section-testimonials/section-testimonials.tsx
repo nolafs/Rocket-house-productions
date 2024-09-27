@@ -39,7 +39,9 @@ export function SectionTestimonials({ data, className }: SectionTestimonialsProp
         {data.map(
           (item, idx) =>
             item.name && (
-              <SwiperSlide className={'px-5'} key={(item.name + idx).replace(/\s/g, '-').toLowerCase()}>
+              <SwiperSlide
+                className={'!inline-flex !h-full flex-col px-5'}
+                key={(item.name + idx).replace(/\s/g, '-').toLowerCase()}>
                 <TestimonialItemRatings
                   name={item.name}
                   designation={item.designation}

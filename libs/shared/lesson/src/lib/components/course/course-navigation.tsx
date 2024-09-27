@@ -1,6 +1,6 @@
 'use client';
 import * as THREE from 'three';
-import React, { Suspense, useRef } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import {
   CameraControls,
@@ -22,8 +22,13 @@ import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/SplitText';
-import { LessonButton } from './course-scene/course.types';
-import { useCourseProgressionStore } from '@rocket-house-productions/providers';
+import { LessonButton, ModulePosition } from './course-scene/course.types';
+import {
+  useCourseProgressionStore,
+  useModuleProgressStore,
+  useLessonProgressionStore,
+} from '@rocket-house-productions/providers';
+import ModuleAwards from './course-scene/module-awards';
 
 gsap.registerPlugin(SplitText);
 
@@ -37,9 +42,28 @@ const LESSON_SPACING = 7;
 
 export function CourseNavigation({ course, onLoaded, purchaseType = null }: CourseNavigationProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const courseProgression = useCourseProgressionStore(store => store.getCourseProgress(course.id));
+
+  const courseState = useCourseProgressionStore(store => store);
+  const moduleState = useModuleProgressStore(store => store);
+  const lessonState = useLessonProgressionStore(store => store);
+
+  const [modulePosition, setModulePosition] = useState<ModulePosition[] | null>(null);
   const [lesson, setLesson] = React.useState<LessonButton | null>(null);
+  const [courseProgression, setCourseProgression] = useState<number | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    moduleState.calculateModuleProgress(course.id);
+  }, [lessonState]);
+
+  useEffect(() => {
+    courseState.calculateCourseProgress(course.id);
+  }, [moduleState]);
+
+  useEffect(() => {
+    console.log('COURSE', courseState, courseState.getCourseProgress(course.id));
+    setCourseProgression(courseState.getCourseProgress(course.id));
+  }, [courseState]);
 
   useGSAP(
     () => {
@@ -82,6 +106,22 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     setLesson(lesson);
   };
 
+  const handleModulePosition = (position: any) => {
+    if (!modulePosition?.length) {
+      setModulePosition(prevState => position);
+    }
+  };
+
+  console.log('COURSE NAVIGATION', courseProgression);
+
+  if (courseProgression === null) {
+    return (
+      <div className={'flex h-screen w-full items-center justify-center'}>
+        <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
+      </div>
+    );
+  }
+
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
       <div
@@ -121,8 +161,10 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
               onOpenLesson={handleOpenLesson}
               modules={course.modules}
               onReady={load => handleLoaded(load)}
+              onModulePosition={handleModulePosition}
             />
           )}
+          {containerRef && modulePosition && <ModuleAwards modulePosition={modulePosition} />}
 
           <group position={[0, 300, -300]}>
             <Clouds width={80} height={300} depth={300} numClouds={100} />

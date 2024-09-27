@@ -9,9 +9,9 @@ export function TestimonialRatingItem({ name, designation, review, image, rating
   return (
     <div
       className={cn(
-        'testimonial shadow-2sm shadow-dark/10 my-10 flex h-full flex-row flex-wrap justify-items-stretch rounded bg-white px-9 pb-5 pt-5 lg:px-[50px] lg:pb-[47px] lg:pt-[31px]',
+        'testimonial shadow-2sm shadow-dark/10 my-10 flex h-full flex-1 flex-col flex-wrap justify-items-stretch rounded bg-white px-9 pb-5 pt-5 lg:px-[50px] lg:pb-[47px] lg:pt-[31px]',
       )}>
-      <div className="mb-5 flex w-full">
+      <div className="mb-5 flex w-full shrink">
         {image && (
           <figure className="image w-[90px] shrink">
             <PrismicNextImage
@@ -35,7 +35,7 @@ export function TestimonialRatingItem({ name, designation, review, image, rating
         </div>
       </div>
 
-      <div className="mb-6 font-medium leading-relaxed md:mb-[34px] md:text-lg">
+      <div className="mb-6 flex-auto font-medium leading-relaxed md:mb-[34px] md:text-lg">
         <PrismicRichText field={review} />
       </div>
     </div>
