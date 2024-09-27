@@ -80,6 +80,7 @@ export const createModuleStore = (
 
           let progress = 0;
           let updatedAwards = module.availableAwards;
+          let updatedAttachments = module.attachments;
           const existingModule = get().modules[moduleId];
           // Check if the module already exists
           if (existingModule) {
@@ -94,6 +95,8 @@ export const createModuleStore = (
               }
               return award;
             });
+
+            updatedAttachments = existingModule.attachments || module.attachments;
           } else {
             // set awarded and awardNotified to false for all awards
             updatedAwards = module.availableAwards.map(award => ({
@@ -111,7 +114,7 @@ export const createModuleStore = (
             color: module.color || 'transparent',
             lessons: module.lessons,
             availableAwards: updatedAwards,
-            attachments: module.attachments || [],
+            attachments: updatedAttachments,
           };
 
           set(state => ({
@@ -263,9 +266,6 @@ export const createModuleStore = (
             const modules = get().modules;
             const moduleProgress = await getModuleProgress(childId, courseId);
             const moduleAwards = await getModuleAwards(childId, courseId);
-
-            console.log('SYNC WITH DATABASE');
-
             const updatedModules = { ...modules };
 
             const moduleDb = moduleProgress.map((progress: any) => {
@@ -352,6 +352,8 @@ export const createModuleStore = (
                 };
               }
             });
+
+            console.log('SYNC WITH DATABASE', updatedModules);
 
             set({ modules: updatedModules });
           } catch (error) {
