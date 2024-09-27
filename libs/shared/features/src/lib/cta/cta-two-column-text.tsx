@@ -39,7 +39,7 @@ export function CtaTwoColumnText({
             </div>
           )}
         </div>
-        <div className={'mb-20 mt-10 md:columns-2 md:gap-6'}>
+        <div className={'prose prose-md lg:prose-lg mb-20 mt-10 max-w-full text-black md:columns-2 md:gap-6'}>
           <PrismicRichText field={motto.text} />
         </div>
         {buttons && (
