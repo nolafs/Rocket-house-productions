@@ -195,11 +195,10 @@ export const createModuleStore = (
         },
         getModulesAwardNotification: () => {
           const modules = get().modules;
-          const awards = Object.values(modules).reduce((acc, module) => {
+          return Object.values(modules).reduce((acc, module) => {
             const moduleAwards = module.availableAwards?.filter(award => !award.awardNotified && award.awarded) || [];
             return [...acc, ...moduleAwards];
           }, [] as AvailableAward[]);
-          return awards;
         },
         setAwardNotification: (moduleId, awardId) => {
           const module = get().modules[moduleId];
@@ -240,14 +239,20 @@ export const createModuleStore = (
         getAwards: () => {
           const modules = get().modules;
 
-          const awards = Object.values(modules).reduce((acc, module) => {
+          return Object.values(modules).reduce((acc, module) => {
             const moduleAwards = module.availableAwards?.filter(award => award.awarded && award.awardNotified) || [];
             return [...acc, ...moduleAwards];
           }, [] as AvailableAward[]);
-          return awards;
         },
         getAttachment: (moduleId: string) => {
           const module = get().modules[moduleId];
+          if (module?.attachments?.length) {
+            console.log('[awards] GET ATTACHMENT MODULE', module?.attachments);
+            return module.attachments;
+          } else {
+            return [];
+          }
+
           return module?.attachments || [];
         },
         getModuleProgress: moduleId => get().modules[moduleId]?.progress || 0,

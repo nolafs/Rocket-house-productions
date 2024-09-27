@@ -30,18 +30,23 @@ export function ModuleAwards() {
     const awards = getModulesAwardNotification();
 
     if (awards.length) {
-      awards.map(award => {
+      awards.forEach((award: AvailableAward) => {
         if (!award.awardNotified) {
-          const attachments = getAttachment(award.moduleId);
-          const certs = attachments?.find(attachment => attachment.attachmentType.name === 'Certificate');
+          /*
+          //const attachments = getAttachment(award.moduleId);
+          //const certs = attachments?.find(attachment => attachment.attachmentType.name === 'Certificate');
+
+          //console.log('[awards] - cert', attachments, certs);
 
           if (certs) {
             setAttachment(certs);
+          } else {
+            setAttachment(null);
           }
 
-          console.log('[awards]', award, award.awardNotified);
-          console.log('[awards] - cert', certs);
+           */
 
+          console.log('[awards]', award, award.awardNotified);
           setAwards(prevState => awards);
 
           addPoints(award.awardType.points);

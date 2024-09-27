@@ -1,8 +1,8 @@
 import * as THREE from 'three';
-import { Plane, Text, useCursor, useTexture } from '@react-three/drei';
+import { Plane, useCursor, useTexture } from '@react-three/drei';
 import { ModulePosition } from './course.types';
 import { useModuleProgressStore } from '@rocket-house-productions/providers';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { AvailableAward } from '@rocket-house-productions/store';
 import { ModuleAttachmemtType } from '@prisma/client';
 import axios from 'axios';
@@ -13,7 +13,6 @@ import { useGSAP } from '@gsap/react';
 
 interface ModuleAwardsProps {
   modulePosition: ModulePosition[];
-  pathLength?: THREE.Vector3;
 }
 
 const AwardPlane = ({ image }: { image: string }) => {
@@ -128,17 +127,19 @@ type AwardCollection = AvailableAward & {
   downloads: ModuleAttachment[] | [];
 };
 
-export function ModuleAwards({ modulePosition, pathLength }: ModuleAwardsProps) {
-  const { getAwards, getAttachment } = useModuleProgressStore(store => store);
+export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
+  const awards = useModuleProgressStore(store => store.getAwards());
+  const { getAttachment } = useModuleProgressStore(store => store);
+  console.log('[awards] RENDER', modulePosition);
 
   const awardCollection = useMemo(() => {
-    const awards = getAwards();
-
     if (!awards) return;
     if (awards.length !== 0) {
-      const awardsList: AwardCollection[] = modulePosition.reduce((acc: AwardCollection[], item) => {
-        const award = awards.find(award => award.moduleId === item.id);
+      console.log('[awards] attachment');
+      return modulePosition.reduce((acc: AwardCollection[], item) => {
+        const award = awards.find((awarditem: AvailableAward) => awarditem.moduleId === item.id);
         const attachment = getAttachment(item.id);
+
         const certificates: ModuleAttachment[] = attachment?.filter(att => att.attachmentType.name === 'Certificate');
         const downloads: ModuleAttachment[] | null = attachment?.filter(
           att => att.attachmentType.name === 'Wall Chart',
@@ -153,11 +154,8 @@ export function ModuleAwards({ modulePosition, pathLength }: ModuleAwardsProps) 
         }
         return acc;
       }, []);
-
-      return awardsList;
     }
-    return [];
-  }, [getAwards, getAttachment]);
+  }, [awards, getAttachment]);
 
   if (!awardCollection) return null;
   if (!awardCollection?.length) return null;
