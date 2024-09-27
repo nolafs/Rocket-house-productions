@@ -90,7 +90,9 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
                 </div>
               </div>
             )}
+
             <iframe
+              title={'lesson-video'}
               ref={ref}
               src={`https://iframe.mediadelivery.net/embed/${videoLibId}/${videoId}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}
               loading="lazy"

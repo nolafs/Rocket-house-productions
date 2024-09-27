@@ -32,19 +32,16 @@ export function ModuleAwards() {
     if (awards.length) {
       awards.forEach((award: AvailableAward) => {
         if (!award.awardNotified) {
-          /*
-          //const attachments = getAttachment(award.moduleId);
-          //const certs = attachments?.find(attachment => attachment.attachmentType.name === 'Certificate');
+          const attachments = getAttachment(award.moduleId);
+          const certs = attachments?.find(attachment => attachment.attachmentType.name === 'Certificate');
 
-          //console.log('[awards] - cert', attachments, certs);
+          console.log('[awards] - cert', attachments, certs, modules);
 
           if (certs) {
             setAttachment(certs);
           } else {
             setAttachment(null);
           }
-
-           */
 
           console.log('[awards]', award, award.awardNotified);
           setAwards(prevState => awards);

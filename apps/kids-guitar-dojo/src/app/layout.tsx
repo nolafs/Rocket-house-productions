@@ -8,7 +8,7 @@ import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
-import { ConfettiProvider, ToastProvider, ThemeProvider } from '@rocket-house-productions/providers';
+import { ConfettiProvider, ToastProvider } from '@rocket-house-productions/providers';
 import PlausibleProvider from 'next-plausible';
 
 const raleway = Raleway({
