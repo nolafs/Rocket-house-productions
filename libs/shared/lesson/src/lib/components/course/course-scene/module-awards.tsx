@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { Plane, useCursor, useTexture } from '@react-three/drei';
 import { ModulePosition } from './course.types';
-import { useModuleProgressStore } from '@rocket-house-productions/providers';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCourseProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AvailableAward } from '@rocket-house-productions/store';
 import { ModuleAttachmemtType } from '@prisma/client';
 import axios from 'axios';
@@ -89,7 +89,7 @@ const DownloadPlane = ({ filename, url, imageUrl }: { filename: string; url: str
 
   if (texture1 && texture2) {
     return (
-      <group ref={groupRef} position={[9, -4, 0]}>
+      <group ref={groupRef} position={[9, 0, 0]}>
         <group ref={buttonRef}>
           <Plane
             args={[3, 3]}
@@ -124,45 +124,63 @@ type ModuleAttachment = {
 type AwardCollection = AvailableAward & {
   position: THREE.Vector3;
   certificates: ModuleAttachment[] | [];
+};
+
+type DownloadCollection = {
+  position: THREE.Vector3;
   downloads: ModuleAttachment[] | [];
 };
 
 export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
   const awards = useModuleProgressStore(store => store.getAwards());
   const { getAttachment } = useModuleProgressStore(store => store);
+  const { modules } = useModuleProgressStore(store => store);
+  const { courses, getCurrentCourse } = useCourseProgressionStore(store => store);
   console.log('[awards] RENDER', modulePosition);
 
   const awardCollection = useMemo(() => {
     if (!awards) return;
     if (awards.length !== 0) {
-      console.log('[awards] attachment');
+      console.log('[awards] attachment', awards);
       return modulePosition.reduce((acc: AwardCollection[], item) => {
         const award = awards.find((awarditem: AvailableAward) => awarditem.moduleId === item.id);
         const attachment = getAttachment(item.id);
 
         const certificates: ModuleAttachment[] = attachment?.filter(att => att.attachmentType.name === 'Certificate');
-        const downloads: ModuleAttachment[] | null = attachment?.filter(
-          att => att.attachmentType.name === 'Wall Chart',
-        );
+
         if (award) {
           acc.push({
             ...award,
             certificates: certificates,
-            downloads: downloads,
             position: item.position,
           });
         }
         return acc;
       }, []);
     }
-  }, [awards, getAttachment]);
+  }, [modulePosition, awards]);
 
-  if (!awardCollection) return null;
-  if (!awardCollection?.length) return null;
+  const downloadCollection = useMemo(() => {
+    const course = getCurrentCourse();
+    if (!course) return null;
+    return modulePosition.map(item => {
+      const module = course.modules.find(module => module.id === item.id) as any;
+      const downloads: ModuleAttachment[] | null = module?.attachments?.filter(
+        (att: any) => att.attachmentType.name === 'Wall Chart',
+      );
+
+      return {
+        position: item.position,
+        downloads: downloads,
+      };
+    });
+  }, [modulePosition, modules, courses]);
+
+  console.log('[awards] collection', downloadCollection);
 
   return (
     <group position={[0, 14, -20]}>
-      {awardCollection.map(
+      {awardCollection?.map(
         (item, idx) =>
           item?.awardType.badgeUrl && (
             <group key={item.id} position={awardCollection[idx + 1]?.position || awardCollection[idx]?.position}>
@@ -171,7 +189,7 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
           ),
       )}
 
-      {awardCollection.map(
+      {awardCollection?.map(
         (item, idx) =>
           item?.certificates?.length && (
             <group key={item.id} position={awardCollection[idx + 1]?.position || awardCollection[idx]?.position}>
@@ -187,10 +205,10 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
           ),
       )}
 
-      {awardCollection.map(
+      {downloadCollection?.map(
         (item, idx) =>
           item?.downloads?.length && (
-            <group key={item.id} position={awardCollection[idx]?.position}>
+            <group key={'download-' + idx} position={downloadCollection[idx]?.position}>
               {item.downloads.map((attachment, idx) => (
                 <DownloadPlane
                   key={attachment.id}

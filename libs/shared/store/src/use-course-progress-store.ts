@@ -15,6 +15,7 @@ type Course = {
 
 type CourseState = {
   courses: { [courseId: string]: Course };
+  currentCourse: string | null;
 };
 
 interface CourseAction {
@@ -23,12 +24,14 @@ interface CourseAction {
   calculateCourseProgress: (courseId: string) => void;
   getCourseProgress: (courseId: string) => number | null;
   getCourseLessonProgress: (courseId: string) => number | null;
+  getCurrentCourse: () => Course | null;
 }
 
 export type CourseProgressStore = CourseState & CourseAction;
 
 export const defaultInitState: CourseState = {
   courses: {},
+  currentCourse: null,
 };
 
 export const createCourseStore = (
@@ -57,6 +60,7 @@ export const createCourseStore = (
           }
 
           set(state => ({
+            currentCourse: courseId,
             courses: {
               ...state.courses,
               [courseId]: {
@@ -89,6 +93,10 @@ export const createCourseStore = (
             return progress;
           }
           return null;
+        },
+        getCurrentCourse: () => {
+          const currentCourse = get().currentCourse;
+          return currentCourse ? get().courses[currentCourse] : null;
         },
 
         getCourseLessonProgress: courseId => {
