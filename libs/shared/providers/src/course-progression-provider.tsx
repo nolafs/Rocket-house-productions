@@ -49,7 +49,7 @@ export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ 
   }
 
   if (!courseStoreRef.current) {
-    courseStoreRef.current = createCourseStore(userId, course, moduleStoreRef.current);
+    courseStoreRef.current = createCourseStore(userId, course, moduleStoreRef.current, lessonStoreRef.current);
   }
 
   //courseStoreRef.current.addCourse(course);
