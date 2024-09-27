@@ -2,12 +2,14 @@ import { createStore, StoreApi } from 'zustand';
 import { ModuleProgressStore } from './use-module-progress-store';
 import { persist } from 'zustand/middleware';
 import { Module as ModuleDB } from '@prisma/client';
+import { LessonProgressStore } from './use-lesson-progress-store';
 
 type Course = {
   id: string;
   title: string;
   progress: number;
   completed: number;
+  total: number;
   modules: ModuleDB[]; // Array of module IDs
 };
 
@@ -20,6 +22,7 @@ interface CourseAction {
   setCourseProgress: (courseId: string, progress: number) => void;
   calculateCourseProgress: (courseId: string) => void;
   getCourseProgress: (courseId: string) => number | null;
+  getCourseLessonProgress: (courseId: string) => number | null;
 }
 
 export type CourseProgressStore = CourseState & CourseAction;
@@ -32,6 +35,7 @@ export const createCourseStore = (
   userId: string,
   course: any,
   moduleState: StoreApi<ModuleProgressStore>,
+  lessonState: StoreApi<LessonProgressStore>,
   initState = defaultInitState,
   // Pass userId or another unique identifier for persistence
 ) =>
@@ -43,11 +47,13 @@ export const createCourseStore = (
           const courseId = course.id;
           let progress = 0;
           let completed = 0;
+          let total = 0;
           const existingCourse = get().courses[courseId];
           if (existingCourse) {
             console.warn(`Course with ID ${courseId} already exists.`);
             progress = existingCourse.progress;
             completed = existingCourse.completed;
+            total = existingCourse.total;
           }
 
           set(state => ({
@@ -59,6 +65,7 @@ export const createCourseStore = (
                 modules: course.modules,
                 progress,
                 completed,
+                total,
               },
             },
           }));
@@ -84,9 +91,19 @@ export const createCourseStore = (
           return null;
         },
 
+        getCourseLessonProgress: courseId => {
+          const progress = get().courses[courseId]?.total;
+
+          if (progress !== null) {
+            return progress;
+          }
+          return null;
+        },
+
         calculateCourseProgress: courseId => {
           const course = get().courses[courseId];
           const moduleStore = moduleState.getState();
+          const lessonStore = lessonState.getState();
 
           const modules = course?.modules || [];
           const totalModules = modules.length;
@@ -100,6 +117,21 @@ export const createCourseStore = (
           const completed = (completedModules.length / totalModules) * 100;
           const progress = totalModules > 0 ? progressModule / totalModules : 0;
 
+          let totalLessons = 0;
+          let totalCompletedLessons = 0;
+
+          modules.forEach((module: any) => {
+            const lessons = module.lessons || [];
+            return lessons.map((item: any) => {
+              totalLessons += 1;
+              totalCompletedLessons += lessonStore?.lessons[item.id]?.progress || 0;
+            });
+          });
+
+          console.log('completedLessons', totalLessons, totalCompletedLessons);
+
+          const total = (totalCompletedLessons / (100 * totalLessons)) * 100;
+
           console.log(['COURSE PROGRESSION - progress'], progress);
           console.log(['COURSE PROGRESSION - moduleStore'], completed);
 
@@ -110,6 +142,7 @@ export const createCourseStore = (
                 ...state.courses[courseId],
                 progress,
                 completed,
+                total,
               },
             },
           }));

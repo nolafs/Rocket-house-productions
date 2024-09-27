@@ -12,7 +12,7 @@ export function LessonCourseProgression({ course }: LessonCourseProgressionProps
   const [courseProgress, setCourseProgress] = useState<number | null>(null);
 
   useEffect(() => {
-    setCourseProgress(prevState => courseProgression.getCourseProgress(course.id));
+    setCourseProgress(prevState => courseProgression.getCourseLessonProgress(course.id));
   }, [courseProgression, course]);
 
   if (courseProgress !== null) {
