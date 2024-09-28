@@ -113,7 +113,7 @@ export const Landscape = ({
         if (typeof window !== 'undefined') {
           gsap.to(window, {
             duration: 3,
-            scrollTo: { y: (currentLesson + 30) * SCROLL_FACTOR },
+            scrollTo: { y: (currentLesson + window.innerHeight / 2 / SCROLL_FACTOR) * SCROLL_FACTOR },
             delay: 3,
             ease: 'Power2.inOut',
           });
@@ -176,11 +176,11 @@ export const Landscape = ({
   });
 
   const handleOnBackToCurrentLesson = contextSafe(() => {
-    console.log('LANDSCAPE MODULES: handleOnBackToCurrentLesson');
+    console.log('LANDSCAPE MODULES: handleOnBackToCurrentLesson', currentLesson, window.innerHeight);
     if (typeof window !== 'undefined') {
       gsap.to(window, {
         duration: 3,
-        scrollTo: { y: (currentLesson + 30) * SCROLL_FACTOR },
+        scrollTo: { y: (currentLesson + window.innerHeight / 2 / SCROLL_FACTOR) * SCROLL_FACTOR },
         ease: 'Power2.inOut',
       });
     }

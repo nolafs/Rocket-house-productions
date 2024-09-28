@@ -143,6 +143,18 @@ export const Button3d = ({
     onBackToCurrentLesson && onBackToCurrentLesson();
   };
 
+  const calcuateRelativeWorldPosition = () => {
+    const targetPoint = new THREE.Vector3();
+    const point = {
+      x: position[0],
+      y: position[1],
+      z: position[2],
+    };
+    const relativePoint = new THREE.Vector3(point.x, point.y, point.z); // Create a vector to store the world position
+    const target = button.current?.localToWorld(targetPoint.copy(relativePoint));
+    console.log('[BUTTON] target', target);
+  };
+
   return (
     <group ref={button} position={[0, position[1], 0]}>
       {!courseCompleted && !next && showTooltip && (
@@ -169,6 +181,7 @@ export const Button3d = ({
           setMouseControl(true);
           hover(true);
           setShowTooltip(true);
+          calcuateRelativeWorldPosition();
         }}
         onPointerLeave={() => {
           setMouseControl(false);
