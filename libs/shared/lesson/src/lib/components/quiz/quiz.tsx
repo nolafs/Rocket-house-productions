@@ -21,6 +21,27 @@ interface QuizProps {
   questionaries: Quiz[];
 }
 
+const allCorrectMessages: string[] = [
+  'Sensational! You’ve achieved the highest level of mastery!',
+  'Yatta! You’re a true Guitar Samurai!',
+  'Omedetou! You’ve conquered this quiz like a true master!',
+  'You’ve earned the title of Guitar Sensei!',
+];
+
+const someCorrectMessages: string[] = [
+  'Nice effort! You’re on your way to becoming a Guitar Ronin!',
+  'Almost there! Keep practicing like a diligent samurai!',
+  'Good job! You’ve shown the spirit of a true warrior!',
+  'Great progress! You’re honing your skills like a skilled artisan!',
+];
+
+const noneCorrectMessages: string[] = [
+  'Chin up! Even the greatest samurai started as a beginner!',
+  'Ganbatte! Keep going, and you’ll become stronger!',
+  'Don’t give up! The journey to mastery is long and rewarding!',
+  'Every failure is a step closer to greatness!',
+];
+
 export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
   const [quizCompleted, setQuizCompleted] = useState(false);
 
@@ -98,9 +119,14 @@ export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
               'flex w-full animate-pulse flex-col items-center justify-center rounded-lg bg-pink-500 p-5 text-lg font-bold text-white'
             }>
             <h2 className={'mb-5 text-2xl'}>
-              {questionaries.length === correct && 'You a Guitar Master!!'}
-              {questionaries.length !== correct && correct !== 0 && 'Well done!!'}
-              {questionaries.length !== correct && correct === 0 && 'Better luck next time!!'}
+              {questionaries.length === correct &&
+                allCorrectMessages[Math.floor(Math.random() * allCorrectMessages.length)]}
+              {questionaries.length !== correct &&
+                correct !== 0 &&
+                someCorrectMessages[Math.floor(Math.random() * someCorrectMessages.length)]}
+              {questionaries.length !== correct &&
+                correct === 0 &&
+                noneCorrectMessages[Math.floor(Math.random() * noneCorrectMessages.length)]}
             </h2>
             <div className={'font-lesson-heading count text-4xl'}></div>
             <div className={'font-lesson-heading text-sm'}>Points</div>
