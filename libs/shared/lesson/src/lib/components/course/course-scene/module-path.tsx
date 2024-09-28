@@ -36,6 +36,7 @@ type ModuleButtonPosition = {
   slug: string;
   isFree?: boolean;
   position: Point;
+  worldPosition?: THREE.Vector3;
 };
 
 export type ModuleButtonDisplay = {
