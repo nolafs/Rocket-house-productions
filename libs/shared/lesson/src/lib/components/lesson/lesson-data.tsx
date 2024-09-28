@@ -24,7 +24,7 @@ export function LessonData({ lesson, module }: LessonDataProps) {
     return () => {
       setCurrentModule(null);
     };
-  }, [module]);
+  }, [module, lesson, addModule, setCurrentModule]);
 
   useEffect(() => {
     if (getLessonCompleted(lesson)) {
@@ -34,7 +34,7 @@ export function LessonData({ lesson, module }: LessonDataProps) {
     return () => {
       updateCurrentState(lesson);
     };
-  }, [getLessonCompleted(lesson)]);
+  }, [getLessonCompleted]);
 
   return null;
 }

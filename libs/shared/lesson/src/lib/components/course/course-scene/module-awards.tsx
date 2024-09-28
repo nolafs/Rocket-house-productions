@@ -132,13 +132,15 @@ type DownloadCollection = {
 };
 
 export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
-  const awards = useModuleProgressStore(store => store.getAwards());
+  const { getAwards, modules } = useModuleProgressStore(store => store);
   const { getAttachment } = useModuleProgressStore(store => store);
-  const { modules } = useModuleProgressStore(store => store);
+
   const { courses, getCurrentCourse } = useCourseProgressionStore(store => store);
   const [awardCollection, setAwardCollection] = useState<AwardCollection[] | null>(null);
 
   useEffect(() => {
+    const awards = getAwards();
+
     if (!awards) return;
 
     if (awards.length !== 0) {
@@ -161,7 +163,7 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
 
       setAwardCollection(awardsData);
     }
-  }, [modulePosition, awards]);
+  }, [modulePosition, modules]);
 
   const downloadCollection = useMemo(() => {
     const course = getCurrentCourse();
