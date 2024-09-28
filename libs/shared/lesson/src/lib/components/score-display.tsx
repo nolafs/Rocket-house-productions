@@ -9,10 +9,14 @@ gsap.registerPlugin(useGSAP);
 export function ScoreDisplay() {
   const { points } = usePointsStore(store => store);
   const [score, setScore] = useState<number | null>(null);
-  const ref = useRef<any>();
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useGSAP(
     () => {
+      if (ref.current === null) {
+        return;
+      }
+
       if (points === score) {
         gsap.set('.count', { innerText: points });
         return;

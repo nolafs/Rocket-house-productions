@@ -144,7 +144,7 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
     if (awards.length !== 0) {
       console.log('[awards] attachment', awards);
       const awardsData: AwardCollection[] = modulePosition.reduce((acc: AwardCollection[], item) => {
-        const award = awards.find((awarditem: AvailableAward) => awarditem.moduleId === item.id);
+        const award = awards.find((awardItem: AvailableAward) => awardItem.moduleId === item.id);
         const attachment = getAttachment(item.id);
 
         const certificates: ModuleAttachment[] = attachment?.filter(att => att.attachmentType.name === 'Certificate');
@@ -159,7 +159,7 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
         return acc;
       }, []);
 
-      setAwardCollection(awardsData);
+      setAwardCollection(prevState => awardsData);
     }
   }, [modulePosition, modules]);
 
@@ -181,18 +181,21 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
 
   return (
     <group position={[0, 14, -20]}>
-      {awardCollection?.map(
-        (item, idx) =>
-          item?.awardType.badgeUrl && (
+      {awardCollection?.map((item, idx) => {
+        if (item?.awardType.badgeUrl) {
+          return (
             <group key={item.id} position={awardCollection[idx + 1]?.position || awardCollection[idx]?.position}>
-              <AwardPlane image={item.awardType.badgeUrl} />;
+              <AwardPlane image={item.awardType.badgeUrl} />
             </group>
-          ),
-      )}
+          );
+        } else {
+          return null;
+        }
+      })}
 
-      {awardCollection?.map(
-        (item, idx) =>
-          item?.certificates?.length && (
+      {awardCollection?.map((item, idx) => {
+        if (item?.certificates?.length) {
+          return (
             <group key={item.id} position={awardCollection[idx + 1]?.position || awardCollection[idx]?.position}>
               {item.certificates.map((attachment, idx) => (
                 <DownloadPlane
@@ -203,12 +206,15 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
                 />
               ))}
             </group>
-          ),
-      )}
+          );
+        } else {
+          return null;
+        }
+      })}
 
-      {downloadCollection?.map(
-        (item, idx) =>
-          item?.downloads?.length && (
+      {downloadCollection?.map((item, idx) => {
+        if (item?.downloads?.length) {
+          return (
             <group key={'download-' + idx} position={downloadCollection[idx]?.position}>
               {item.downloads.map((attachment, idx) => (
                 <DownloadPlane
@@ -219,8 +225,11 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
                 />
               ))}
             </group>
-          ),
-      )}
+          );
+        } else {
+          return null;
+        }
+      })}
     </group>
   );
 }

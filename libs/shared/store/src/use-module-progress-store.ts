@@ -78,6 +78,8 @@ export const createModuleStore = (
         addModule: module => {
           const moduleId = module.id;
 
+          console.log('[MODULE STORE] - add', module);
+
           let progress = 0;
           let updatedAwards = module.availableAwards;
           let updatedAttachments = module.attachments;
@@ -153,6 +155,14 @@ export const createModuleStore = (
 
         calculateModuleProgress: moduleId => {
           const module = get().modules[moduleId];
+
+          if (!module) {
+            console.warn(`[MODULE STORE] Module with ID ${moduleId} does not exist.`);
+            return;
+          }
+
+          console.log('[MODULE STORE] - calculateModuleProgress', module);
+
           const lessonStore = lessonState.getState();
 
           const lessons = module?.lessons || [];
