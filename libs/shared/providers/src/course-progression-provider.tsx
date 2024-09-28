@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode, createContext, useRef, useContext, FC } from 'react';
+import { type ReactNode, createContext, useRef, useContext, FC, useState, useEffect } from 'react';
 import { useStore as useZustandStore } from 'zustand';
 
 import {
@@ -16,10 +16,10 @@ import {
 import { Course } from '@prisma/client';
 
 type CombinedStores = {
-  lessonStore: ReturnType<typeof createLessonStore>;
-  pointsStore: ReturnType<typeof createPointsStore>;
-  moduleStore: ReturnType<typeof createModuleStore>;
-  courseStore: ReturnType<typeof createCourseStore>;
+  lessonStore: ReturnType<typeof createLessonStore> | null;
+  pointsStore: ReturnType<typeof createPointsStore> | null;
+  moduleStore: ReturnType<typeof createModuleStore> | null;
+  courseStore: ReturnType<typeof createCourseStore> | null;
 };
 
 interface CourseProgressionProviderProps {
@@ -31,53 +31,75 @@ interface CourseProgressionProviderProps {
 const CourseProgressionContext = createContext<CombinedStores | undefined>(undefined);
 
 export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ userId, course, children }) => {
-  const lessonStoreRef = useRef<CombinedStores['lessonStore']>();
-  const pointsStoreRef = useRef<CombinedStores['pointsStore']>();
-  const moduleStoreRef = useRef<CombinedStores['moduleStore']>();
-  const courseStoreRef = useRef<CombinedStores['courseStore']>();
+  const [isClient, setIsClient] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  if (!lessonStoreRef.current) {
-    lessonStoreRef.current = createLessonStore(userId, course.id);
-  }
+  const lessonStoreRef = useRef<CombinedStores['lessonStore'] | null>(null);
+  const pointsStoreRef = useRef<CombinedStores['pointsStore'] | null>(null);
+  const moduleStoreRef = useRef<CombinedStores['moduleStore'] | null>(null);
+  const courseStoreRef = useRef<CombinedStores['courseStore'] | null>(null);
 
-  if (!pointsStoreRef.current) {
-    pointsStoreRef.current = createPointsStore(userId, course.id);
-  }
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  if (!moduleStoreRef.current) {
-    moduleStoreRef.current = createModuleStore(userId, course.id, lessonStoreRef.current);
-  }
+  useEffect(() => {
+    if (isClient) {
+      if (!lessonStoreRef.current) {
+        lessonStoreRef.current = createLessonStore(userId, course.id);
+      }
 
-  if (!courseStoreRef.current) {
-    courseStoreRef.current = createCourseStore(userId, course, moduleStoreRef.current, lessonStoreRef.current);
-  }
+      if (!pointsStoreRef.current) {
+        pointsStoreRef.current = createPointsStore(userId, course.id);
+      }
+
+      if (!moduleStoreRef.current) {
+        moduleStoreRef.current = createModuleStore(userId, course.id, lessonStoreRef.current);
+      }
+
+      if (!courseStoreRef.current) {
+        courseStoreRef.current = createCourseStore(userId, course, moduleStoreRef.current, lessonStoreRef.current);
+      }
+
+      setIsInitialized(true);
+    }
+  }, [isClient, userId, course]);
 
   //courseStoreRef.current.addCourse(course);
 
-  return (
-    <CourseProgressionContext.Provider
-      value={{
+  const contextValue = isClient
+    ? {
         lessonStore: lessonStoreRef.current,
         pointsStore: pointsStoreRef.current,
         moduleStore: moduleStoreRef.current,
         courseStore: courseStoreRef.current,
-      }}>
-      {children}
-    </CourseProgressionContext.Provider>
-  );
+      }
+    : {
+        lessonStore: null,
+        pointsStore: null,
+        moduleStore: null,
+        courseStore: null,
+      };
+
+  if (!isInitialized) {
+    return null; // Or a loading spinner
+  }
+
+  return <CourseProgressionContext.Provider value={contextValue}>{children}</CourseProgressionContext.Provider>;
 };
 
 export const useLessonProgressionStore = <T,>(selector: (store: LessonProgressStore) => T): T => {
   const context = useContext(CourseProgressionContext);
-  if (!context) {
+  if (!context || !context.lessonStore) {
     throw new Error(`useLessonProgressionStore must be used within CourseProgressionProvider`);
   }
+
   return useZustandStore(context.lessonStore, selector);
 };
 
 export const usePointsStore = <T,>(selector: (store: PointsStore) => T): T => {
   const context = useContext(CourseProgressionContext);
-  if (!context) {
+  if (!context || !context.pointsStore) {
     throw new Error(`usePointsProgressionStore must be used within CourseProgressionProvider`);
   }
   return useZustandStore(context.pointsStore, selector);
@@ -85,7 +107,7 @@ export const usePointsStore = <T,>(selector: (store: PointsStore) => T): T => {
 
 export const useModuleProgressStore = <T,>(selector: (store: ModuleProgressStore) => T): T => {
   const context = useContext(CourseProgressionContext);
-  if (!context) {
+  if (!context || !context.moduleStore) {
     throw new Error(`useModuleProgressStore must be used within CourseProgressionProvider`);
   }
   return useZustandStore(context.moduleStore, selector);
@@ -93,7 +115,7 @@ export const useModuleProgressStore = <T,>(selector: (store: ModuleProgressStore
 
 export const useCourseProgressionStore = <T,>(selector: (store: CourseProgressStore) => T): T => {
   const context = useContext(CourseProgressionContext);
-  if (!context) {
+  if (!context || !context.courseStore) {
     throw new Error(`useCourseProgressionStore must be used within CourseProgressionProvider`);
   }
   return useZustandStore(context.courseStore, selector);

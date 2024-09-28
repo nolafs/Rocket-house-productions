@@ -10,6 +10,12 @@ interface LessonComponentProps {
 }
 
 export function LessonComponent({ data, child, page }: LessonComponentProps) {
+  if (typeof window !== 'undefined') {
+    console.log('Window is defined here');
+  } else {
+    console.log('Window is undefined here');
+  }
+
   return (
     <>
       <LessonVideo lesson={data.lesson} module={data.module as SectionModule} child={child} />

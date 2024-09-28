@@ -53,20 +53,18 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const router = useRouter();
 
   useEffect(() => {
-    moduleState.calculateModuleProgress(course.id);
-  }, [lessonState]);
-
-  useEffect(() => {
     courseState.calculateCourseProgress(course.id);
   }, [moduleState]);
 
   useEffect(() => {
     console.log('COURSE', courseState, courseState.getCourseProgress(course.id));
     setCourseProgression(courseState.getCourseProgress(course.id));
-  }, [courseState]);
+  }, [courseState, lessonState]);
 
   useGSAP(
     () => {
+      if (containerRef.current === null) return;
+
       gsap.set('.lesson-load', { autoAlpha: 0 });
 
       if (lesson !== null) {
