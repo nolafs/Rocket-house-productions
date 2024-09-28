@@ -136,13 +136,14 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
   const { getAttachment } = useModuleProgressStore(store => store);
   const { modules } = useModuleProgressStore(store => store);
   const { courses, getCurrentCourse } = useCourseProgressionStore(store => store);
-  console.log('[awards] RENDER', modulePosition);
+  const [awardCollection, setAwardCollection] = useState<AwardCollection[] | null>(null);
 
-  const awardCollection = useMemo(() => {
+  useEffect(() => {
     if (!awards) return;
+
     if (awards.length !== 0) {
       console.log('[awards] attachment', awards);
-      return modulePosition.reduce((acc: AwardCollection[], item) => {
+      const awardsData: AwardCollection[] = modulePosition.reduce((acc: AwardCollection[], item) => {
         const award = awards.find((awarditem: AvailableAward) => awarditem.moduleId === item.id);
         const attachment = getAttachment(item.id);
 
@@ -157,6 +158,8 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
         }
         return acc;
       }, []);
+
+      setAwardCollection(awardsData);
     }
   }, [modulePosition, awards]);
 
@@ -175,8 +178,6 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
       };
     });
   }, [modulePosition, modules, courses]);
-
-  console.log('[awards] collection', downloadCollection);
 
   return (
     <group position={[0, 14, -20]}>

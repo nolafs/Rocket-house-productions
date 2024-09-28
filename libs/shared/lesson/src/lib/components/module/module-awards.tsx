@@ -34,18 +34,12 @@ export function ModuleAwards() {
         if (!award.awardNotified) {
           const attachments = getAttachment(award.moduleId);
           const certs = attachments?.find(attachment => attachment.attachmentType.name === 'Certificate');
-
-          console.log('[awards] - cert', attachments, certs, modules);
-
           if (certs) {
             setAttachment(certs);
           } else {
             setAttachment(null);
           }
-
-          console.log('[awards]', award, award.awardNotified);
           setAwards(prevState => awards);
-
           addPoints(award.awardType.points);
           setAwardNotification(award.moduleId, award.id);
           confetti.onOpen();
@@ -54,8 +48,6 @@ export function ModuleAwards() {
         }
       });
     }
-
-    console.log('awards', awards);
   }, [modules]);
 
   return (
