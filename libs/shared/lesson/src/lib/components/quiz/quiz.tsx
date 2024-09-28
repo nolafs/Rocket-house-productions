@@ -8,6 +8,7 @@ import { useRef, useState } from 'react';
 import { usePointsStore } from '@rocket-house-productions/providers';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { useConfettiStore } from '@rocket-house-productions/hooks';
 gsap.registerPlugin(useGSAP);
 
 export interface Quiz extends Questionary {
@@ -44,6 +45,7 @@ const noneCorrectMessages: string[] = [
 
 export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const confetti = useConfettiStore();
 
   const { addPoints } = usePointsStore(store => store);
 
@@ -56,6 +58,9 @@ export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
   const handleQuizCompleted = () => {
     setTimer(false);
     setQuizCompleted(true);
+    if (questionaries.length === correct) {
+      confetti.onOpen();
+    }
   };
 
   useGSAP(
