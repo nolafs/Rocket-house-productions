@@ -23,6 +23,7 @@ import { useModuleProgressStore } from '@rocket-house-productions/providers';
 import ModuleProgressList from '../module/module-progress-list';
 import ModuleAwardList from '../module/ModuleAwardList';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface HeaderProps {
   childId: string;
@@ -35,13 +36,18 @@ interface HeaderProps {
 
 export function Header({ childId, name, avatar, background = 'transparent', purchaseType = null }: HeaderProps) {
   const { signOut, openUserProfile } = useClerk();
-  const { getCurrentModule } = useModuleProgressStore(store => store);
+  const { getCurrentModule, currentModule } = useModuleProgressStore(store => store);
+  const [color, setColor] = useState<string>(background || 'transparent');
+
+  useEffect(() => {
+    setColor(prevState => getCurrentModule()?.color || background || 'transparent');
+  }, [getCurrentModule, background, currentModule]);
 
   return (
     <>
       <div
         className={'fixed left-0 top-0 z-[99] flex h-auto w-full flex-row justify-between p-4 transition-all'}
-        style={{ backgroundColor: getCurrentModule()?.color || background || 'transparent' }}>
+        style={{ backgroundColor: color }}>
         <div>
           <ScoreDisplay />
         </div>
