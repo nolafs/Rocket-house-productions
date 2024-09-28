@@ -36,12 +36,12 @@ interface HeaderProps {
 
 export function Header({ childId, name, avatar, background = 'transparent', purchaseType = null }: HeaderProps) {
   const { signOut, openUserProfile } = useClerk();
-  const { getCurrentModule, currentModule } = useModuleProgressStore(store => store);
+  const { getCurrentModule, currentModule, modules } = useModuleProgressStore(store => store);
   const [color, setColor] = useState<string>(background || 'transparent');
 
   useEffect(() => {
     setColor(prevState => getCurrentModule()?.color || background || 'transparent');
-  }, [getCurrentModule, background, currentModule]);
+  }, [getCurrentModule, background, currentModule, modules]);
 
   return (
     <>

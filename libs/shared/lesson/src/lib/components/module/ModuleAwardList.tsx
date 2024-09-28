@@ -4,11 +4,11 @@ import { AvailableAward } from '@rocket-house-productions/store';
 
 export function ModuleAwardList() {
   const [awards, setAwards] = useState<AvailableAward[]>([]);
-  const getAwards = useModuleProgressStore(state => state.getAwards);
+  const { getAwards, modules } = useModuleProgressStore(state => state);
 
   useEffect(() => {
     setAwards(getAwards());
-  }, [getAwards]);
+  }, [getAwards, modules]);
 
   if (!awards.length) {
     return <div className={'py-2'}>No awards received yet</div>;

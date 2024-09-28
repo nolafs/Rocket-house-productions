@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Plane, useCursor, useTexture } from '@react-three/drei';
 import { ModulePosition } from './course.types';
 import { useCourseProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AvailableAward } from '@rocket-house-productions/store';
 import { ModuleAttachmemtType } from '@prisma/client';
 import axios from 'axios';
@@ -132,9 +132,7 @@ type DownloadCollection = {
 };
 
 export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
-  const { getAwards, modules } = useModuleProgressStore(store => store);
-  const { getAttachment } = useModuleProgressStore(store => store);
-
+  const { getAwards, modules, getAttachment } = useModuleProgressStore(store => store);
   const { courses, getCurrentCourse } = useCourseProgressionStore(store => store);
   const [awardCollection, setAwardCollection] = useState<AwardCollection[] | null>(null);
 
@@ -178,7 +176,7 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
         position: item.position,
         downloads: downloads,
       };
-    });
+    }) as DownloadCollection[];
   }, [modulePosition, modules, courses]);
 
   return (

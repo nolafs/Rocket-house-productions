@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { ModuleProgression } from '@rocket-house-productions/store';
 
 export function ModuleProgressList() {
-  const { getAllModules } = useModuleProgressStore(store => store);
+  const { getAllModules, modules } = useModuleProgressStore(store => store);
   const [moduleList, setModuleList] = useState<ModuleProgression[]>([]);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export function ModuleProgressList() {
     if (list.length > 0) {
       setModuleList(list);
     }
-  }, [getAllModules]);
+  }, [getAllModules, modules]);
 
   return (
     <div className={'flex flex-col divide-y'}>
