@@ -256,26 +256,25 @@ const Path: React.FC<{
   }, [curvePath]);
 
   return (
-    <>
+    <group frustumCulled={false}>
       {pathLength && (
         <mesh>
           {/* @ts-expect-error type not register */}
           <meshLineGeometry frustumCulled={false} points={curvePath.curvePoints} castShadow={true} />
 
           <meshLineMaterial
-            transparent
             lineWidth={2}
+            transparent={true}
             color={new THREE.Color(color)}
             depthWrite={false}
             dashArray={1 / pathLength}
             dashRatio={0.4}
-            opacity={opacity}
             sizeAttenuation={1}
             toneMapped={false}
           />
         </mesh>
       )}
-    </>
+    </group>
   );
 };
 
