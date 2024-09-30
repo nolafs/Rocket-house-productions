@@ -13,6 +13,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { LessonButton, ModulePosition } from './course.types';
 import ModuleAwards from './module-awards';
+
 gsap.registerPlugin(ScrollTrigger);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 gsap.registerPlugin(useGSAP);
@@ -217,41 +218,6 @@ export const Landscape = ({
           <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
         </Plane>
 
-        <group position={[0, 2, 2]}>
-          <Center>
-            <Text3D
-              castShadow={true}
-              font={'/images/course/font.json'}
-              curveSegments={32}
-              bevelEnabled
-              bevelSize={0.04}
-              bevelThickness={1.5}
-              height={0.5}
-              lineHeight={0.5}
-              letterSpacing={-0.06}
-              size={2}>
-              LET'S ROCK AND ROLL
-              <meshStandardMaterial color="#EC4899" />
-            </Text3D>
-          </Center>
-          <Center position={[0, -2.5, 0]}>
-            <Text3D
-              castShadow={true}
-              font={'/images/course/font.json'}
-              curveSegments={32}
-              bevelEnabled
-              bevelSize={0.05}
-              bevelThickness={1.5}
-              height={0.5}
-              lineHeight={0.5}
-              letterSpacing={-0.06}
-              size={2}>
-              NINJA STYLE!
-              <meshStandardMaterial color="#DE0BF5" />
-            </Text3D>
-          </Center>
-        </group>
-
         {pathLength && (
           <>
             <FretBoard
@@ -278,3 +244,41 @@ export const Landscape = ({
     </>
   );
 };
+
+/*
+<group position={[0, 2, 2]}>
+  <Center>
+    <Text3D
+      castShadow={true}
+      font={'/images/course/font.json'}
+      curveSegments={32}
+      bevelEnabled
+      bevelSize={0.04}
+      bevelThickness={1.5}
+      height={0.5}
+      lineHeight={0.5}
+      letterSpacing={-0.06}
+      size={2}>
+      LET'S ROCK AND ROLL
+      <meshStandardMaterial color="#EC4899"/>
+    </Text3D>
+  </Center>
+  <Center position={[0, -2.5, 0]}>
+    <Text3D
+      castShadow={true}
+      font={'/images/course/font.json'}
+      curveSegments={32}
+      bevelEnabled
+      bevelSize={0.05}
+      bevelThickness={1.5}
+      height={0.5}
+      lineHeight={0.5}
+      letterSpacing={-0.06}
+      size={2}>
+      NINJA STYLE!
+      <meshStandardMaterial color="#DE0BF5"/>
+    </Text3D>
+  </Center>
+</group>
+
+ */
