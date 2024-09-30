@@ -1,9 +1,6 @@
 'use client';
 import { ReactNode, useRef } from 'react';
 import Image from 'next/image';
-import Bg from '../assets/lessons-bg.webp';
-import Mg from '../assets/lessons-mid.webp';
-import Fg from '../assets/lessons-fore.webp';
 import styles from './parallax-scene.module.scss';
 
 import gsap from 'gsap';
@@ -47,13 +44,25 @@ export function ParallaxScene({ children }: ParallaxSceneProps) {
       </div>
       <div ref={container} className={styles.container}>
         <div className={styles.bg}>
-          <Image src={Bg} alt="lesson" className={'h-full w-full object-cover object-center'} />
+          <Image
+            src={'/images/course/lessons-bg.webp'}
+            alt="lesson"
+            className={'h-full w-full object-cover object-center'}
+          />
         </div>
         <div className={styles.mg}>
-          <Image src={Mg} alt="lesson" className={'h-full w-full object-cover object-center'} />
+          <Image
+            src={'/images/course/lessons-mid.webp'}
+            alt="lesson"
+            className={'h-full w-full object-cover object-center'}
+          />
         </div>
         <div className={styles.fg}>
-          <Image src={Fg} alt="lesson" className={'h-full w-full object-cover object-center'} />
+          <Image
+            src={'/images/course/lessons-fore.webp'}
+            alt="lesson"
+            className={'h-full w-full object-cover object-center'}
+          />
         </div>
       </div>
     </div>
