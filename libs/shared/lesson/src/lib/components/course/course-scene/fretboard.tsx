@@ -25,9 +25,15 @@ export const FretBoard = ({ rotation, position, pathLength, lessonSpacing, lesso
   return (
     <group ref={ref} rotation={rotation} position={position} {...rest}>
       {Array.from({ length: sectionNum }).map((_, index) => (
-        <mesh receiveShadow key={index} position={[0, 20 + PLANE_HEIGHT * index, -25]} scale={1} rotation={[0, 0, 0]}>
+        <mesh
+          receiveShadow
+          castShadow
+          key={index}
+          position={[0, 20 + PLANE_HEIGHT * index, -25]}
+          scale={1}
+          rotation={[0, 0, 0]}>
           <planeGeometry args={[6.85, PLANE_HEIGHT, 100, 100]} />
-          <meshPhongMaterial map={fred} transparent={true} />
+          <meshStandardMaterial map={fred} />
         </mesh>
       ))}
     </group>
