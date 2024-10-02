@@ -1,4 +1,15 @@
-import { useGLTF, Svg, useCursor, RoundedBox, Text, useTexture, Center, Ring, Text3D } from '@react-three/drei';
+import {
+  useGLTF,
+  Svg,
+  useCursor,
+  RoundedBox,
+  Text,
+  useTexture,
+  Center,
+  Ring,
+  Text3D,
+  useIntersect,
+} from '@react-three/drei';
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useLessonProgressionStore } from '@rocket-house-productions/providers';
@@ -63,8 +74,10 @@ export const Button3d = ({
   const [mouseControl, setMouseControl] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
-
-  //console.log('Button3d', lesson.isFree, purchaseType, lesson.name);
+  const [visible, setVisible] = useState(false);
+  const buttonRef = useIntersect<THREE.Mesh>(visible => {
+    setVisible(visible);
+  });
 
   useCursor(hovered);
 
@@ -116,10 +129,9 @@ export const Button3d = ({
   }
 
   useFrame(state => {
+    if (!visible) return;
     if (!button.current) return;
-
     if (mouseControl) return;
-
     if (isScrolling) {
       setShowTooltip(false);
       return;
@@ -143,7 +155,7 @@ export const Button3d = ({
     onBackToCurrentLesson && onBackToCurrentLesson();
   };
 
-  const calcuateRelativeWorldPosition = () => {
+  const calculateRelativeWorldPosition = () => {
     const targetPoint = new THREE.Vector3();
     const point = {
       x: position[0],
@@ -181,7 +193,7 @@ export const Button3d = ({
           setMouseControl(true);
           hover(true);
           setShowTooltip(true);
-          calcuateRelativeWorldPosition();
+          calculateRelativeWorldPosition();
         }}
         onPointerLeave={() => {
           setMouseControl(false);
@@ -210,7 +222,12 @@ export const Button3d = ({
             scale={0.04}>
             <meshStandardMaterial color={'white'} metalness={0} roughness={0.4} opacity={!active ? 0.5 : 1} />
           </Svg>
-          <mesh geometry={(nodes['button'] as THREE.Mesh).geometry} scale={0.009} castShadow receiveShadow>
+          <mesh
+            ref={buttonRef}
+            geometry={(nodes['button'] as THREE.Mesh).geometry}
+            scale={0.009}
+            castShadow
+            receiveShadow>
             <meshStandardMaterial color={!hovered ? lessonTypeColor : '#bd1368'} metalness={0} roughness={0.4} />
           </mesh>
         </group>

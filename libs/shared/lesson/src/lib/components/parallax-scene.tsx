@@ -14,7 +14,7 @@ interface ParallaxSceneProps {
 }
 
 export function ParallaxScene({ children }: ParallaxSceneProps) {
-  const container = useRef<any>();
+  const container = useRef<HTMLDivElement | null>(null);
 
   useGSAP(() => {
     const cx = window.innerWidth / 2;
