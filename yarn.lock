@@ -5260,6 +5260,7 @@ __metadata:
     tslib: "npm:^2.3.0"
     typescript: "npm:~5.5.2"
     valibot: "npm:^0.37.0"
+    valtio: "npm:^2.0.0"
     vaul: "npm:^0.9.1"
     zod: "npm:^3.23.8"
     zustand: "npm:^4.5.4"
@@ -17129,6 +17130,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-compare@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "proxy-compare@npm:3.0.0"
+  checksum: 10c0/9740af3709496b16ba18ebc337df5ca4c103f345436a8c0ec2e09217b7a06e119c145bedfe7fc4ad50b77b30fa804efaa6a7fe147eafb61aaf7ef44e387710f5
+  languageName: node
+  linkType: hard
+
 "proxy-from-env@npm:1.0.0":
   version: 1.0.0
   resolution: "proxy-from-env@npm:1.0.0"
@@ -20528,6 +20536,23 @@ __metadata:
   version: 5.0.1
   resolution: "validate-npm-package-name@npm:5.0.1"
   checksum: 10c0/903e738f7387404bb72f7ac34e45d7010c877abd2803dc2d614612527927a40a6d024420033132e667b1bade94544b8a1f65c9431a4eb30d0ce0d80093cd1f74
+  languageName: node
+  linkType: hard
+
+"valtio@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "valtio@npm:2.0.0"
+  dependencies:
+    proxy-compare: "npm:^3.0.0"
+  peerDependencies:
+    "@types/react": ">=18.0.0"
+    react: ">=18.0.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: 10c0/735fe91d547b87f45a1710c3292612d6d7b89b40113b468a5a3503c17b8093620afc14337499490f1ca28aceae2ed019d888c1e43483ac48b888d59d5f18aa98
   languageName: node
   linkType: hard
 
