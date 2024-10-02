@@ -106,6 +106,7 @@ export function CameraController() {
       ref={cameraControlsRef}
       minDistance={minDistance}
       enabled={enabled}
+      makeDefault={true}
       verticalDragToForward={verticalDragToForward}
       dollyToCursor={dollyToCursor}
       infinityDolly={infinityDolly}

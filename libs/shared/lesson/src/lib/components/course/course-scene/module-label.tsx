@@ -1,5 +1,5 @@
 import { Module } from '@prisma/client';
-import { Center, RoundedBox, Text3D } from '@react-three/drei';
+import { Center, PivotControls, RoundedBox, Text3D } from '@react-three/drei';
 
 interface ModuleLabelProps {
   position: [number, number, number];
@@ -11,7 +11,13 @@ export const ModuleLabel = ({ position, rotation, module, ...rest }: ModuleLabel
   return (
     <group position={position} rotation={rotation} {...rest}>
       <Center rotation={[0, 0, 0]}>
-        <RoundedBox args={[8, 2, 1]} position={[0, 0, 1]} bevelSegments={4} radius={0.3} castShadow receiveShadow>
+        <RoundedBox
+          args={[8, 2, 1]}
+          position={[0, 0, 1.5]}
+          bevelSegments={4}
+          radius={0.3}
+          castShadow={true}
+          receiveShadow>
           <Center rotation={[0, 0, 0]} position={[0, 0, 0.4]}>
             <Text3D
               castShadow={true}

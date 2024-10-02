@@ -6,6 +6,7 @@ import {
   CameraControls,
   Html,
   PerformanceMonitor,
+  PivotControls,
   Preload,
   Sky,
   SoftShadows,
@@ -137,7 +138,18 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
       <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.4} />
-          <directionalLight position={[2, 10, 8]} intensity={4} castShadow></directionalLight>
+
+          <directionalLight
+            shadow-mapSize-width={1024}
+            shadow-mapSize-height={1024}
+            shadow-camera-far={500}
+            shadow-camera-left={-100}
+            shadow-camera-right={100}
+            shadow-camera-top={500}
+            shadow-camera-bottom={-100}
+            position={[-40, 100, 200]}
+            intensity={2.5}
+            castShadow></directionalLight>
 
           <Sky
             distance={900}
@@ -148,27 +160,29 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
             turbidity={10}
             rayleigh={1}
           />
+          <group scale={1}>
+            {containerRef && (
+              <Landscape
+                lessonSpacing={LESSON_SPACING}
+                courseCompleted={courseProgression === 100}
+                position={[0, 0, 0]}
+                container={containerRef}
+                purchaseType={purchaseType}
+                onOpenLesson={handleOpenLesson}
+                modules={course.modules}
+                onReady={load => handleLoaded(load)}
+                onModulePosition={handleModulePosition}
+              />
+            )}
+            {containerRef && modulePosition && <ModuleAwards modulePosition={modulePosition} />}
 
-          {containerRef && (
-            <Landscape
-              lessonSpacing={LESSON_SPACING}
-              courseCompleted={courseProgression === 100}
-              position={[0, 0, 0]}
-              container={containerRef}
-              purchaseType={purchaseType}
-              onOpenLesson={handleOpenLesson}
-              modules={course.modules}
-              onReady={load => handleLoaded(load)}
-              onModulePosition={handleModulePosition}
-            />
-          )}
-          {containerRef && modulePosition && <ModuleAwards modulePosition={modulePosition} />}
+            <group position={[0, 300, -300]}>
+              <Clouds width={80} height={300} depth={300} numClouds={100} />
+            </group>
 
-          <group position={[0, 300, -300]}>
-            <Clouds width={80} height={300} depth={300} numClouds={100} />
+            <CloudCover position={[0, 5, -30]} />
           </group>
-
-          <CloudCover position={[0, 5, -30]} />
+          <CameraController />
 
           <Preload />
         </Suspense>
