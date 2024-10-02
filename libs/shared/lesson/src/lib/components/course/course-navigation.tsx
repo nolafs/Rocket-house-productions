@@ -135,19 +135,19 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         </div>
       </div>
 
-      <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
+      <Canvas className={'fixed h-screen w-full'} shadows={'soft'} camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.4} />
 
           <directionalLight
-            shadow-mapSize-width={1024}
-            shadow-mapSize-height={1024}
+            shadow-mapSize-width={2048}
+            shadow-mapSize-height={2048}
             shadow-camera-far={500}
             shadow-camera-left={-100}
             shadow-camera-right={100}
             shadow-camera-top={500}
             shadow-camera-bottom={-100}
-            position={[-40, 100, 200]}
+            position={[-40, 100, 250]}
             intensity={2.5}
             castShadow></directionalLight>
 
@@ -182,7 +182,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
             <CloudCover position={[0, 5, -30]} />
           </group>
-          <CameraController />
 
           <Preload />
         </Suspense>
