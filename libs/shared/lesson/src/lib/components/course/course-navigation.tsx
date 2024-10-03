@@ -19,6 +19,7 @@ import {
   useLessonProgressionStore,
 } from '@rocket-house-productions/providers';
 import ModuleAwards from './course-scene/module-awards';
+import { CameraController } from './course-scene/camera-control';
 
 gsap.registerPlugin(SplitText);
 
