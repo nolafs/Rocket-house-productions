@@ -47,6 +47,8 @@ export function ParallaxScene({ children }: ParallaxSceneProps) {
           <Image
             src={'/images/course/lessons-bg.webp'}
             alt="lesson"
+            width={1792}
+            height={1024}
             className={'h-full w-full object-cover object-center'}
           />
         </div>
@@ -54,6 +56,8 @@ export function ParallaxScene({ children }: ParallaxSceneProps) {
           <Image
             src={'/images/course/lessons-mid.webp'}
             alt="lesson"
+            width={1792}
+            height={1024}
             className={'h-full w-full object-cover object-center'}
           />
         </div>
@@ -61,6 +65,8 @@ export function ParallaxScene({ children }: ParallaxSceneProps) {
           <Image
             src={'/images/course/lessons-fore.webp'}
             alt="lesson"
+            width={1792}
+            height={1024}
             className={'h-full w-full object-cover object-center'}
           />
         </div>
