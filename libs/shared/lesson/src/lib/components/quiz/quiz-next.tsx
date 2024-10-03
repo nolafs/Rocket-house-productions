@@ -33,6 +33,8 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
 
   const nextLesson = module?.lessons?.length ? module?.lessons?.[position + 1] : null;
 
+  console.log('nextLesson', nextLesson, module);
+
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {
       return module?.lessons[module.lessons.length - 1].id === id;
@@ -65,6 +67,34 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
             Next Lesson:
           </span>{' '}
           <span>{nextLesson.title}</span>
+        </div>
+        <div>
+          <Button variant={'lesson'} size={'lg'} onClick={handleNext} disabled={!active}>
+            {loadingNext ? (
+              <>
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                Please wait...
+              </>
+            ) : (
+              'Continue'
+            )}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (lastLessonInModule(lesson.id)) {
+    return (
+      <div
+        id={'continue'}
+        className={cn(
+          'relative mt-10 flex w-full items-center justify-between rounded-md border border-pink-500 p-10',
+          !active && 'opacity-30',
+        )}
+        style={{ borderColor: module.color }}>
+        <div className={'font-bold'}>
+          <span className={'text-pink-500'}>Congratulations!</span>
         </div>
         <div>
           <Button variant={'lesson'} size={'lg'} onClick={handleNext} disabled={!active}>
