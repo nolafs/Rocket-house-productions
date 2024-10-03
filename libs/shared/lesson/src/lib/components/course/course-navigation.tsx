@@ -1,9 +1,11 @@
 'use client';
 import * as THREE from 'three';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useThree } from '@react-three/fiber';
 import {
+  Box,
   CameraControls,
+  Environment,
   Html,
   PerformanceMonitor,
   PivotControls,
@@ -12,6 +14,7 @@ import {
   SoftShadows,
   StatsGl,
   useProgress,
+  useTexture,
 } from '@react-three/drei';
 import { Landscape } from './course-scene/landscape';
 import { CameraController } from './course-scene/camera-control';
@@ -30,6 +33,7 @@ import {
   useLessonProgressionStore,
 } from '@rocket-house-productions/providers';
 import ModuleAwards from './course-scene/module-awards';
+import { CubeTextureLoader } from 'three';
 
 gsap.registerPlugin(SplitText);
 
@@ -139,6 +143,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.4} />
 
+          <SkyBox />
+
           <directionalLight
             shadow-mapSize-width={2048}
             shadow-mapSize-height={2048}
@@ -151,15 +157,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
             intensity={2.5}
             castShadow></directionalLight>
 
-          <Sky
-            distance={900}
-            sunPosition={[100, 0, -100]}
-            mieDirectionalG={0.022}
-            inclination={0.25}
-            azimuth={0.45}
-            turbidity={10}
-            rayleigh={1}
-          />
           <group scale={1}>
             {containerRef && (
               <Landscape
@@ -183,6 +180,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
             <CloudCover position={[0, 5, -30]} />
           </group>
 
+          <CameraController />
+
           <Preload />
         </Suspense>
       </Canvas>
@@ -205,6 +204,17 @@ function Loader() {
         </div>
       </div>
     </Html>
+  );
+}
+
+function SkyBox() {
+  // highlight-start
+  const texture = useTexture('/images/course/sky.webp');
+
+  return (
+    <Box args={[1000, 1000, 1000]}>
+      <meshStandardMaterial map={texture} side={THREE.BackSide} />
+    </Box>
   );
 }
 
