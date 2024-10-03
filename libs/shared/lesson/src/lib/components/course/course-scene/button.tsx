@@ -413,7 +413,7 @@ const ScrollToCurrentLesson = ({
         bevelEnabled
         bevelSize={0.02}
         bevelThickness={0.08}
-        height={0.5}
+        height={0.05}
         lineHeight={0.5}
         letterSpacing={0.01}
         size={0.35}>
