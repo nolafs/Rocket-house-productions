@@ -24,7 +24,7 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
   const confettiRef = useRef<Group | null>(null);
   const ninjaRef = useRef<Group | null>(null);
   const ninjaRef2 = useRef<Group | null>(null);
-  const fred = useTexture('/images/course/guitar-head.png');
+  const fred = useTexture('/images/course/guitar-head.webp');
   const sun = useTexture('/images/course/finish.png');
   const ninja = useTexture('/images/course/ninja.png');
 
@@ -104,7 +104,8 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
       )}
 
       <mesh
-        geometry={new PlaneGeometry(15.5, 18.5)}
+        receiveShadow={true}
+        geometry={new PlaneGeometry(18, 19)}
         position={[0, pathLength + 15, -24.5]}
         scale={1}
         rotation={[0, 0, 0]}>
