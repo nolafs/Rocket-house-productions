@@ -8,7 +8,7 @@ gsap.registerPlugin(useGSAP);
 
 export function ScoreDisplay() {
   const { points } = usePointsStore(store => store);
-  const [score, setScore] = useState<number | null>(null);
+  const [score, setScore] = useState<number>(0);
   const ref = useRef<HTMLDivElement | null>(null);
 
   useGSAP(
@@ -39,12 +39,8 @@ export function ScoreDisplay() {
     { scope: ref, dependencies: [points, score] },
   );
 
-  if (score === null) {
-    return null;
-  }
-
   return (
-    <div className={'flex flex-col space-y-1 text-white'} ref={ref}>
+    <div ref={ref} className={'flex flex-col space-y-1 text-white'}>
       <small className={'text-sm'}>Score</small>
       <div className={'font-lesson-heading text-border count text-3xl text-pink-500'}></div>
     </div>
