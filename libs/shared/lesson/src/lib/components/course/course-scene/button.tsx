@@ -333,7 +333,13 @@ const PremiumIcon = () => {
   return (
     <group position={[2, 1, 0]} rotation={[-Math.PI / 2, 0, 0]} scale={0.45}>
       <Center>
-        <RoundedBox args={[5, 2, 0.5]} radius={0.2} bevelSegments={2} rotation={[0, 0, 0]} position={[0, 0, -0.019]}>
+        <RoundedBox
+          args={[5, 2, 0.5]}
+          radius={0.2}
+          bevelSegments={2}
+          rotation={[0, 0, 0]}
+          position={[0, 0, -0.019]}
+          castShadow={true}>
           <meshStandardMaterial color="red" />
         </RoundedBox>
         <Text {...fontProps} color="white" anchorX="center" anchorY="middle" position={[0, 0, 0.3]} castShadow={true}>
@@ -377,7 +383,7 @@ const ScrollToCurrentLesson = ({
           button.current?.position,
           { x: 0 },
           {
-            x: -5,
+            x: -5.5,
             duration: 1,
             ease: 'power2.inOut',
             delay: 1,
@@ -407,7 +413,7 @@ const ScrollToCurrentLesson = ({
         bevelEnabled
         bevelSize={0.02}
         bevelThickness={0.08}
-        height={0.5}
+        height={0.05}
         lineHeight={0.5}
         letterSpacing={0.01}
         size={0.35}>
@@ -419,9 +425,7 @@ const ScrollToCurrentLesson = ({
         geometry={(nodes['bookmark'] as THREE.Mesh).geometry}
         position={[2, 0, 0]}
         rotation={[0, 0, Math.PI / 2]}
-        scale={0.015}
-        castShadow
-        receiveShadow>
+        scale={0.015}>
         <meshStandardMaterial color={!hovered ? '#bd1368' : 'green'} />
       </mesh>
     </group>

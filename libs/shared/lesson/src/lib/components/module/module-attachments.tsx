@@ -66,7 +66,7 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
               </DialogDescription>
               <Link
                 href={'/courses/upgrade'}
-                className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'w-full')}>
+                className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'mt-10 w-full')}>
                 Upgrade to Premium
               </Link>
             </>

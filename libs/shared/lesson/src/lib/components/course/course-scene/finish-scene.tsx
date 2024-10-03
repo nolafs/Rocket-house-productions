@@ -103,7 +103,11 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
         </group>
       )}
 
-      <mesh geometry={new PlaneGeometry(15, 18)} position={[0, pathLength + 15, -24.5]} scale={1} rotation={[0, 0, 0]}>
+      <mesh
+        geometry={new PlaneGeometry(15.5, 18.5)}
+        position={[0, pathLength + 15, -24.5]}
+        scale={1}
+        rotation={[0, 0, 0]}>
         <meshStandardMaterial map={fred} color={0xffffff} transparent={true} metalness={0.4} />
       </mesh>
     </group>

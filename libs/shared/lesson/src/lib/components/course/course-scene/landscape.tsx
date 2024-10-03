@@ -12,7 +12,6 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { LessonButton, ModulePosition } from './course.types';
-import ModuleAwards from './module-awards';
 
 gsap.registerPlugin(ScrollTrigger);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -56,7 +55,7 @@ export const Landscape = ({
   const [pathLength, setPathLength] = useState<number | null>(null);
   const [currentLesson, setCurrentLesson] = useState<number>(0);
 
-  const guitar = useTexture('/images/course/guitar.png');
+  const guitar = useTexture('/images/course/guitar.webp');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
   const ref = React.useRef<THREE.Group>(null);
@@ -65,7 +64,6 @@ export const Landscape = ({
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   const lessonNumber = useMemo(() => {
-    console.log('LANDSCAPE MODULES: lessonNumber', modules);
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
   }, [modules]);
 
@@ -90,7 +88,7 @@ export const Landscape = ({
       const tl = gsap.timeline();
 
       tl.to(camera.current.position, {
-        z: 80,
+        z: 90,
         y: 20,
         duration: 0.1,
         ease: 'none',
@@ -208,8 +206,8 @@ export const Landscape = ({
   return (
     <>
       <group ref={ref} position={position} rotation={rotation} {...rest}>
-        <Plane args={[20, 17]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]} receiveShadow>
-          <meshPhongMaterial map={guitar} transparent={true} side={THREE.DoubleSide} />
+        <Plane args={[22, 19]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]} receiveShadow={true}>
+          <meshPhongMaterial map={guitar} transparent={true} />
         </Plane>
         <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
           <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
@@ -218,10 +216,10 @@ export const Landscape = ({
           <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
         </Plane>
 
-        <group position={[0, 2, 2]}>
+        <group position={[0, 13, -23]} scale={0.6}>
           <Center>
             <Text3D
-              castShadow={true}
+              castShadow={false}
               font={'/images/course/font.json'}
               curveSegments={32}
               bevelEnabled
@@ -237,7 +235,7 @@ export const Landscape = ({
           </Center>
           <Center position={[0, -2.5, 0]}>
             <Text3D
-              castShadow={true}
+              castShadow={false}
               font={'/images/course/font.json'}
               curveSegments={32}
               bevelEnabled
@@ -256,7 +254,7 @@ export const Landscape = ({
         {pathLength && (
           <>
             <FretBoard
-              position={[0, 0, 0]}
+              position={[0, 27.9, 0]}
               lessonSpacing={lessonSpacing}
               lessonNumber={lessonNumber}
               pathLength={pathLength}
@@ -279,41 +277,3 @@ export const Landscape = ({
     </>
   );
 };
-
-/*
-<group position={[0, 2, 2]}>
-  <Center>
-    <Text3D
-      castShadow={true}
-      font={'/images/course/font.json'}
-      curveSegments={32}
-      bevelEnabled
-      bevelSize={0.04}
-      bevelThickness={1.5}
-      height={0.5}
-      lineHeight={0.5}
-      letterSpacing={-0.06}
-      size={2}>
-      LET'S ROCK AND ROLL
-      <meshStandardMaterial color="#EC4899"/>
-    </Text3D>
-  </Center>
-  <Center position={[0, -2.5, 0]}>
-    <Text3D
-      castShadow={true}
-      font={'/images/course/font.json'}
-      curveSegments={32}
-      bevelEnabled
-      bevelSize={0.05}
-      bevelThickness={1.5}
-      height={0.5}
-      lineHeight={0.5}
-      letterSpacing={-0.06}
-      size={2}>
-      NINJA STYLE!
-      <meshStandardMaterial color="#DE0BF5"/>
-    </Text3D>
-  </Center>
-</group>
-
- */

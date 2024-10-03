@@ -2,19 +2,8 @@
 import * as THREE from 'three';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import {
-  CameraControls,
-  Html,
-  PerformanceMonitor,
-  PivotControls,
-  Preload,
-  Sky,
-  SoftShadows,
-  StatsGl,
-  useProgress,
-} from '@react-three/drei';
+import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
 import { Landscape } from './course-scene/landscape';
-import { CameraController } from './course-scene/camera-control';
 import { Course } from '@prisma/client';
 import Clouds from './course-scene/cloud-scene';
 import { Loader2 } from 'lucide-react';
@@ -135,13 +124,15 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         </div>
       </div>
 
-      <Canvas className={'fixed h-screen w-full'} shadows={'soft'} camera={{ position: [0, 0, 130], fov: 15 }}>
+      <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
-          <ambientLight intensity={0.4} />
+          <ambientLight intensity={0.6} />
+
+          <SkyBox />
 
           <directionalLight
-            shadow-mapSize-width={2048}
-            shadow-mapSize-height={2048}
+            shadow-mapSize-width={1024 * 8}
+            shadow-mapSize-height={1024 * 8}
             shadow-camera-far={500}
             shadow-camera-left={-100}
             shadow-camera-right={100}
@@ -151,15 +142,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
             intensity={2.5}
             castShadow></directionalLight>
 
-          <Sky
-            distance={900}
-            sunPosition={[100, 0, -100]}
-            mieDirectionalG={0.022}
-            inclination={0.25}
-            azimuth={0.45}
-            turbidity={10}
-            rayleigh={1}
-          />
           <group scale={1}>
             {containerRef && (
               <Landscape
@@ -191,7 +173,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 }
 
 function Loader() {
-  const { active, progress, errors, item, loaded, total } = useProgress();
+  const { progress, loaded, total } = useProgress();
 
   return (
     <Html fullscreen>
@@ -205,6 +187,17 @@ function Loader() {
         </div>
       </div>
     </Html>
+  );
+}
+
+function SkyBox() {
+  // highlight-start
+  const texture = useTexture('/images/course/sky.webp');
+
+  return (
+    <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
+      <meshStandardMaterial map={texture} side={THREE.BackSide} />
+    </Box>
   );
 }
 
