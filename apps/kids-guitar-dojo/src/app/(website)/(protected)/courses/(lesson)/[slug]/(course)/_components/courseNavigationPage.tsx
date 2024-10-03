@@ -41,7 +41,7 @@ export function CourseNavigationPage({ course, role, childId = null, purchaseTyp
           <LessonCourseProgression course={course} />
           <div className={'flex items-center justify-center gap-x-2'}>
             <CourseLeaderboard courseId={course.id} childId={childId} />
-            <ModuleAttachments course={course} />
+            <ModuleAttachments course={course} purchaseType={purchaseType} />
             <CourseQuickNavigation course={course} role={role} />
           </div>
         </div>
