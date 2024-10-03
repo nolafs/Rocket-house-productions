@@ -11,11 +11,11 @@ interface FredBoardProps {
   lessonSpacing: number;
 }
 
-const PLANE_HEIGHT = 13;
+const PLANE_HEIGHT = 12.8;
 
 export const FretBoard = ({ rotation, position, pathLength, lessonSpacing, lessonNumber, ...rest }: FredBoardProps) => {
   const ref = useRef<any>();
-  const fred = useTexture('/images/course/fret.png');
+  const fred = useTexture('/images/course/fret.webp');
 
   const sectionNum = useMemo(
     () => (pathLength ? pathLength / 13 : lessonNumber / (PLANE_HEIGHT / lessonSpacing)),
@@ -25,15 +25,9 @@ export const FretBoard = ({ rotation, position, pathLength, lessonSpacing, lesso
   return (
     <group ref={ref} rotation={rotation} position={position} {...rest}>
       {Array.from({ length: sectionNum }).map((_, index) => (
-        <mesh
-          receiveShadow
-          castShadow
-          key={index}
-          position={[0, 20 + PLANE_HEIGHT * index, -25]}
-          scale={1}
-          rotation={[0, 0, 0]}>
-          <planeGeometry args={[6.85, PLANE_HEIGHT, 100, 100]} />
-          <meshStandardMaterial map={fred} />
+        <mesh receiveShadow key={index} position={[0, PLANE_HEIGHT * index, -25]} scale={1} rotation={[0, 0, 0]}>
+          <planeGeometry args={[9.2, PLANE_HEIGHT, 100, 100]} />
+          <meshStandardMaterial depthTest={true} map={fred} transparent={true} />
         </mesh>
       ))}
     </group>

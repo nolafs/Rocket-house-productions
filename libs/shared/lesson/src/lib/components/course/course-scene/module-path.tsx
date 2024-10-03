@@ -1,7 +1,7 @@
-import { Lesson, Module } from '@prisma/client';
+import { Module } from '@prisma/client';
 import * as THREE from 'three';
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
+import { useLessonProgressionStore } from '@rocket-house-productions/providers';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
@@ -260,13 +260,13 @@ const Path: React.FC<{
       {pathLength && (
         <mesh>
           {/* @ts-expect-error type not register */}
-          <meshLineGeometry frustumCulled={false} points={curvePath.curvePoints} castShadow={true} />
+          <meshLineGeometry isMeshLine={true} frustumCulled={false} points={curvePath.curvePoints} />
 
           <meshLineMaterial
             lineWidth={2}
             transparent={true}
             color={new THREE.Color(color)}
-            depthWrite={false}
+            depthWrite={true}
             dashArray={1 / pathLength}
             dashRatio={0.4}
             sizeAttenuation={1}
