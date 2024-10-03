@@ -1,23 +1,9 @@
 'use client';
 import * as THREE from 'three';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import {
-  Box,
-  CameraControls,
-  Environment,
-  Html,
-  PerformanceMonitor,
-  PivotControls,
-  Preload,
-  Sky,
-  SoftShadows,
-  StatsGl,
-  useProgress,
-  useTexture,
-} from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
 import { Landscape } from './course-scene/landscape';
-import { CameraController } from './course-scene/camera-control';
 import { Course } from '@prisma/client';
 import Clouds from './course-scene/cloud-scene';
 import { Loader2 } from 'lucide-react';
@@ -33,7 +19,6 @@ import {
   useLessonProgressionStore,
 } from '@rocket-house-productions/providers';
 import ModuleAwards from './course-scene/module-awards';
-import { CubeTextureLoader } from 'three';
 
 gsap.registerPlugin(SplitText);
 
@@ -180,8 +165,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
             <CloudCover position={[0, 5, -30]} />
           </group>
 
-          <CameraController />
-
           <Preload />
         </Suspense>
       </Canvas>
@@ -190,7 +173,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 }
 
 function Loader() {
-  const { active, progress, errors, item, loaded, total } = useProgress();
+  const { progress, loaded, total } = useProgress();
 
   return (
     <Html fullscreen>
@@ -212,7 +195,7 @@ function SkyBox() {
   const texture = useTexture('/images/course/sky.webp');
 
   return (
-    <Box args={[1000, 1000, 1000]}>
+    <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
       <meshStandardMaterial map={texture} side={THREE.BackSide} />
     </Box>
   );
