@@ -56,7 +56,7 @@ export const Landscape = ({
   const [pathLength, setPathLength] = useState<number | null>(null);
   const [currentLesson, setCurrentLesson] = useState<number>(0);
 
-  const guitar = useTexture('/images/course/guitar.png');
+  const guitar = useTexture('/images/course/guitar.webp');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
   const ref = React.useRef<THREE.Group>(null);
@@ -65,7 +65,6 @@ export const Landscape = ({
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   const lessonNumber = useMemo(() => {
-    console.log('LANDSCAPE MODULES: lessonNumber', modules);
     return modules.reduce((acc, item) => acc + item.lessons.length, 0);
   }, [modules]);
 
@@ -90,7 +89,7 @@ export const Landscape = ({
       const tl = gsap.timeline();
 
       tl.to(camera.current.position, {
-        z: 80,
+        z: 90,
         y: 20,
         duration: 0.1,
         ease: 'none',
@@ -208,8 +207,8 @@ export const Landscape = ({
   return (
     <>
       <group ref={ref} position={position} rotation={rotation} {...rest}>
-        <Plane args={[20, 17]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]} receiveShadow>
-          <meshPhongMaterial map={guitar} transparent={true} side={THREE.DoubleSide} />
+        <Plane args={[22, 19]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]}>
+          <meshPhongMaterial map={guitar} transparent={true} />
         </Plane>
         <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
           <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
@@ -256,7 +255,7 @@ export const Landscape = ({
         {pathLength && (
           <>
             <FretBoard
-              position={[0, 0, 0]}
+              position={[0, 1, 0]}
               lessonSpacing={lessonSpacing}
               lessonNumber={lessonNumber}
               pathLength={pathLength}
