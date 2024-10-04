@@ -142,7 +142,6 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
     if (!awards) return;
 
     if (awards.length !== 0) {
-      console.log('[awards] attachment', awards);
       const awardsData: AwardCollection[] = modulePosition.reduce((acc: AwardCollection[], item) => {
         const award = awards.find((awardItem: AvailableAward) => awardItem.moduleId === item.id);
         const attachment = getAttachment(item.id);

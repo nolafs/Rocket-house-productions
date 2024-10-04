@@ -75,9 +75,8 @@ export async function updateScore(courseId: string, childId: string, score: numb
 
 export async function getScore(courseId: string, childId: string) {
   try {
-    console.log('Getting score for:', courseId, childId);
     const response = await axios.get(`/api/courses/score?childId=${childId}&courseId=${courseId}`);
-    console.log('Score:', response.data);
+
     return response.data;
   } catch (error) {
     console.error('Error getting score:', error);

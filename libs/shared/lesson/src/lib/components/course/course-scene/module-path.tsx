@@ -133,7 +133,6 @@ export const ModulePath: React.FC<{
       [],
     );
 
-    //console.log('MODULE BUTTONS POSITION:', buttonList);
     return {
       buttons: buttonList,
       total: buttonList.length,
@@ -146,8 +145,6 @@ export const ModulePath: React.FC<{
   useEffect(() => {
     if (!display) return;
     if (pathLength === null) return;
-
-    console.log('MODULE BUTTONS DISPLAY:', display, pathLength);
 
     onUpdated && onUpdated({ ...display, pathLength });
   }, [display, pathLength, onUpdated]);
