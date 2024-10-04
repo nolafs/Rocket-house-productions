@@ -165,7 +165,7 @@ const ModuleAttachmentForm = ({ initialData, courseId, moduleId, attachmentCateg
             </form>
           </Form>
           <div className="text-muted-foreground mt-4 text-xs">
-            Add anything your students might need to complete the course
+            Add anything your students might need to complete the course (PDF or MP3 files only)
           </div>
         </div>
       )}
