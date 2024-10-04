@@ -1,7 +1,7 @@
 'use client';
 import * as THREE from 'three';
-import React, { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas } from '@react-three/fiber';
+import React, { forwardRef, Suspense, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
 import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
 import { Landscape } from './course-scene/landscape';
 import { Course } from '@prisma/client';
@@ -20,6 +20,7 @@ import {
 } from '@rocket-house-productions/providers';
 import ModuleAwards from './course-scene/module-awards';
 import { CameraController } from './course-scene/camera-control';
+import { Button } from '@rocket-house-productions/shadcn-ui';
 
 gsap.registerPlugin(SplitText);
 
@@ -37,18 +38,20 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const courseState = useCourseProgressionStore(store => store);
   const moduleState = useModuleProgressStore(store => store);
   const lessonState = useLessonProgressionStore(store => store);
-
   const [modulePosition, setModulePosition] = useState<ModulePosition[] | null>(null);
   const [lesson, setLesson] = React.useState<LessonButton | null>(null);
   const [courseProgression, setCourseProgression] = useState<number | null>(null);
+  const [ready, setReady] = useState(false);
   const router = useRouter();
+  const zoomDirectionRef = useRef<number>(0); // To store zoom direction
+  const resetRef = useRef<boolean>(false); // To store reset flag
+  const zoomControlRef = useRef<{ handleZoom: (dir: number) => void; handleReset: () => void } | null>(null); // Ref to call child functions
 
   useEffect(() => {
     courseState.calculateCourseProgress(course.id);
   }, [moduleState]);
 
   useEffect(() => {
-    console.log('COURSE', courseState, courseState.getCourseProgress(course.id));
     setCourseProgression(courseState.getCourseProgress(course.id));
   }, [courseState, lessonState]);
 
@@ -89,6 +92,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   const handleLoaded = (load: boolean) => {
     onLoaded && onLoaded(load);
+    setReady(load);
   };
 
   const handleOpenLesson = (lesson: LessonButton) => {
@@ -101,7 +105,12 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     }
   };
 
-  console.log('COURSE NAVIGATION', courseProgression);
+  const handleZoom = (dir: number) => {
+    zoomDirectionRef.current = dir; // Update zoom direction
+    if (zoomControlRef.current) {
+      zoomControlRef.current.handleZoom(dir); // Call the child's handleZoom directly
+    }
+  };
 
   if (courseProgression === null) {
     return (
@@ -113,17 +122,32 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
+      {ready && (
+        <div className={'fixed right-2 top-1/2 z-20 flex flex-col space-y-2 md:hidden'}>
+          <Button onClick={() => handleZoom(-1)} className={'text-lg'}>
+            +
+          </Button>
+          <Button onClick={() => handleZoom(1)} className={'text-lg'}>
+            -
+          </Button>
+        </div>
+      )}
+
       <div
         className={
           'lesson-load pointer-events-none fixed z-20 flex h-screen w-full flex-col items-center justify-center bg-amber-600 p-5 opacity-0'
         }
         style={{ backgroundColor: lesson?.color }}>
         <div className={'lesson-num font-lesson-body text-xl font-bold text-white'}>Lesson {lesson?.num}</div>
-        <div className={'lesson-name font-lesson-heading text-2xl text-white lg:text-4xl'}>{lesson?.name}</div>
+        <div className={'lesson-name font-lesson-heading text-center text-2xl text-white lg:text-4xl'}>
+          {lesson?.name}
+        </div>
         <div className={'lesson-loader mt-3'}>
           <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
         </div>
       </div>
+
+      <Ready ready={ready} />
 
       <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
@@ -165,7 +189,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
             <CloudCover position={[0, 5, -30]} />
           </group>
-
+          <ZoomControl ref={zoomControlRef} />
           <Preload />
         </Suspense>
       </Canvas>
@@ -177,11 +201,10 @@ function Loader() {
   const { progress, loaded, total } = useProgress();
 
   return (
-    <Html fullscreen>
+    <Html fullscreen zIndexRange={[100, 100]}>
       <div className={'z-50 flex h-screen w-full flex-col items-center justify-center'}>
         <div className={'flex flex-col items-center justify-center'}>
-          <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
-          <div className={'font-lesson-heading w-full text-center text-white'}>{Math.round(progress)} %</div>
+          <div className={'font-lesson-heading mt-20 w-full text-center text-white'}>{Math.round(progress)} %</div>
           <div className={'w-full text-center text-sm text-white'}>
             Item: {loaded} / {total}
           </div>
@@ -189,6 +212,18 @@ function Loader() {
       </div>
     </Html>
   );
+}
+
+function Ready({ ready }: { ready: boolean }) {
+  if (!ready) {
+    return (
+      <div className={'z-50 flex h-screen w-full flex-col items-center justify-center bg-[#e8c996]'}>
+        <div className={'flex flex-col items-center justify-center'}>
+          <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
+        </div>
+      </div>
+    );
+  }
 }
 
 function SkyBox() {
@@ -201,5 +236,57 @@ function SkyBox() {
     </Box>
   );
 }
+
+const ZoomControl = forwardRef((_, ref) => {
+  const baseZoom = 120;
+  const { camera } = useThree();
+  const [zoom, setZoom] = useState<number>(baseZoom);
+  const [active, setActive] = useState<boolean>(false);
+
+  const maxZoom = 200;
+  const minZoom = 90;
+
+  // Expose handleZoom and handleReset to parent using useImperativeHandle
+  useImperativeHandle(ref, () => ({
+    handleZoom(dir: number) {
+      if (dir === 0) {
+        return;
+      }
+
+      setActive(true);
+
+      setZoom(prevZoom => {
+        let newZoom = prevZoom;
+        if (dir === 1 && prevZoom < maxZoom) {
+          newZoom = 200;
+        } else if (dir === -1 && prevZoom > minZoom) {
+          newZoom = 100;
+        }
+
+        return newZoom;
+      });
+    },
+    handleReset() {
+      setZoom(baseZoom); // Reset to baseZoom
+    },
+  }));
+
+  // Animate camera position when zoom changes
+  useEffect(() => {
+    if (!camera) return;
+
+    if (!active) {
+      return;
+    }
+
+    gsap.to(camera.position, {
+      z: zoom,
+      duration: 1,
+      ease: 'power2.inOut',
+    });
+  }, [camera, zoom]);
+
+  return null;
+});
 
 export default CourseNavigation;

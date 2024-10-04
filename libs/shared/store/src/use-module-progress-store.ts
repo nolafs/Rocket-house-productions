@@ -78,8 +78,6 @@ export const createModuleStore = (
         addModule: module => {
           const moduleId = module.id;
 
-          console.log('[MODULE STORE] - add', module);
-
           let progress = 0;
           let updatedAwards = module.availableAwards;
           let updatedAttachments = module.attachments;
@@ -161,8 +159,6 @@ export const createModuleStore = (
             return;
           }
 
-          console.log('[MODULE STORE] - calculateModuleProgress', module);
-
           const lessonStore = lessonState.getState();
 
           const lessons = module?.lessons || [];
@@ -174,8 +170,6 @@ export const createModuleStore = (
           if (progress === 100) {
             const updatedAwards = module.availableAwards.map(award => {
               if (!award.awarded && !award.awardNotified) {
-                // Award the player for this specific award
-                console.log(`Player awarded: ${award.awardType} for completing module: ${module.title}`);
                 // Mark the award as granted
                 return {
                   ...award,
@@ -260,7 +254,6 @@ export const createModuleStore = (
         getAttachment: (moduleId: string) => {
           const module = get().modules[moduleId];
           if (module?.attachments?.length) {
-            console.log('[awards] GET ATTACHMENT MODULE', module?.attachments);
             return module.attachments;
           } else {
             return [];
@@ -362,8 +355,6 @@ export const createModuleStore = (
                 };
               }
             });
-
-            console.log('SYNC WITH DATABASE', updatedModules);
 
             set({ modules: updatedModules });
           } catch (error) {
