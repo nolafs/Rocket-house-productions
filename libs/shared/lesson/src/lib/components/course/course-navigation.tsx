@@ -41,7 +41,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const [modulePosition, setModulePosition] = useState<ModulePosition[] | null>(null);
   const [lesson, setLesson] = React.useState<LessonButton | null>(null);
   const [courseProgression, setCourseProgression] = useState<number | null>(null);
-  const [ready, setReady] = useState(false);
+
   const router = useRouter();
   const zoomDirectionRef = useRef<number>(0); // To store zoom direction
   const resetRef = useRef<boolean>(false); // To store reset flag
@@ -92,7 +92,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   const handleLoaded = (load: boolean) => {
     onLoaded && onLoaded(load);
-    setReady(load);
   };
 
   const handleOpenLesson = (lesson: LessonButton) => {
@@ -122,16 +121,14 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
-      {ready && (
-        <div className={'fixed right-2 top-1/2 z-20 flex flex-col space-y-2 md:hidden'}>
-          <Button onClick={() => handleZoom(-1)} className={'text-lg'}>
-            +
-          </Button>
-          <Button onClick={() => handleZoom(1)} className={'text-lg'}>
-            -
-          </Button>
-        </div>
-      )}
+      <div className={'fixed right-2 top-1/2 z-20 flex flex-col space-y-2 md:hidden'}>
+        <Button onClick={() => handleZoom(-1)} className={'text-lg'}>
+          +
+        </Button>
+        <Button onClick={() => handleZoom(1)} className={'text-lg'}>
+          -
+        </Button>
+      </div>
 
       <div
         className={
@@ -146,8 +143,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
           <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
         </div>
       </div>
-
-      <Ready ready={ready} />
 
       <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
         <Suspense fallback={<Loader />}>
@@ -204,7 +199,8 @@ function Loader() {
     <Html fullscreen zIndexRange={[100, 100]}>
       <div className={'z-50 flex h-screen w-full flex-col items-center justify-center'}>
         <div className={'flex flex-col items-center justify-center'}>
-          <div className={'font-lesson-heading mt-20 w-full text-center text-white'}>{Math.round(progress)} %</div>
+          <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
+          <div className={'font-lesson-heading mt-5 w-full text-center text-white'}>{Math.round(progress)} %</div>
           <div className={'w-full text-center text-sm text-white'}>
             Item: {loaded} / {total}
           </div>
