@@ -226,8 +226,8 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
           {!initialData.availableAwards.length && 'No aviailable awards yet'}
           {initialData.availableAwards.length && (
             <div className="space-y-2">
-              {initialData.availableAwards.map((award: any) => (
-                <div key={award.id}>
+              {initialData.availableAwards.map((award: any, idx) => (
+                <div key={`${moduleId}-${idx}`}>
                   <ModuleAwardItem courseId={courseId} moduleId={moduleId} award={award} />
                 </div>
               ))}
