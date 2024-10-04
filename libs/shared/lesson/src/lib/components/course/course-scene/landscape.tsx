@@ -85,13 +85,33 @@ export const Landscape = ({
         scrollTriggerRef.current.kill();
       }
 
-      const tl = gsap.timeline();
+      const tl = gsap.timeline({ paused: false });
 
-      tl.to(camera.current.position, {
-        z: 90,
-        y: 20,
-        duration: 0.1,
-        ease: 'none',
+      const mm = gsap.matchMedia();
+
+      mm.add('(max-width: 767px)', () => {
+        if (!camera.current) {
+          return;
+        }
+        tl.set(camera.current.position, { z: 400, y: 35 });
+        tl.to(camera.current.position, {
+          z: 120,
+          y: 25,
+          duration: 0.09,
+          ease: 'none',
+        });
+      });
+
+      mm.add('(min-width: 767px)', () => {
+        if (!camera.current) {
+          return;
+        }
+        tl.to(camera.current.position, {
+          z: 90,
+          y: 20,
+          duration: 0.1,
+          ease: 'none',
+        });
       });
 
       if (!courseCompleted) {
@@ -157,7 +177,6 @@ export const Landscape = ({
     }
 
     if (!pathLength) {
-      console.log('LANDSCAPE MODULES: handleUpdate', data);
       setPathLength(data?.pathLength);
       setCurrentLesson(data.buttons[data.next || 0].position.y);
       onModulePosition && onModulePosition(data.modulePosition);
@@ -169,13 +188,11 @@ export const Landscape = ({
       return;
     }
 
-    console.log('LANDSCAPE MODULES: handleOnLesson');
     gsap.to(camera.current?.position, { z: 100, duration: 1, ease: 'power2.in' });
     onOpenLesson && onOpenLesson(lesson);
   });
 
   const handleOnBackToCurrentLesson = contextSafe(() => {
-    console.log('LANDSCAPE MODULES: handleOnBackToCurrentLesson', currentLesson, window.innerHeight);
     if (typeof window !== 'undefined') {
       gsap.to(window, {
         duration: 3,
@@ -196,12 +213,9 @@ export const Landscape = ({
     state.camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, state.camera.rotation.x)); // Clamp x-axis rotation to avoid flipping
 
     if (!camera.current) {
-      console.log('LANDSCAPE MODULES: CAMERA NOT SET');
       camera.current = state.camera as THREE.PerspectiveCamera;
     }
   });
-
-  console.log('[awards]  LANDSCAPE MODULES: RENDER - COMPLETE', courseCompleted);
 
   return (
     <>
@@ -216,7 +230,7 @@ export const Landscape = ({
           <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
         </Plane>
 
-        <group position={[0, 13, -23]} scale={0.6}>
+        <group position={[0, 10, 5]} scale={1}>
           <Center>
             <Text3D
               castShadow={false}
