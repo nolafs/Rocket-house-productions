@@ -19,7 +19,7 @@ export default async function Page({ params }: { params: { product: string[] } }
   return (
     <main>
       <div className={'flex h-svh min-h-svh w-full flex-col justify-center md:flex-row'}>
-        <div className={'bg-primary flex flex-col items-center justify-center md:w-1/2'}>
+        <div className={'bg-primary hidden flex-col items-center justify-center md:flex md:w-1/2'}>
           <PrismicNextImage field={settings.data.sign_up_image} />
         </div>
         <div className={'flex w-full flex-col items-center justify-center bg-white md:w-1/2'}>
