@@ -18,15 +18,15 @@ export default async function Page() {
   //check if user
 
   return (
-    <main className={'lesson'}>
-      <ParallaxScene>
+    <div className={'lesson'}>
+      <ParallaxScene className={'!pt-5'}>
         <DialogLayout title={content.data?.success_page_header || 'Welcome'}>
-          <div className={'prose max-w-full'}>
+          <div className={'prose prose-sm md:prose-base max-w-full'}>
             <PrismicRichText field={content.data.success_page_body} />
           </div>
           <ButtonOnboarding userId={userId} />
         </DialogLayout>
       </ParallaxScene>
-    </main>
+    </div>
   );
 }
