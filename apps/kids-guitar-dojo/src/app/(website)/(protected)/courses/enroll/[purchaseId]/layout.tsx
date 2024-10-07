@@ -7,6 +7,8 @@ import { NavbarSimple } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
 import { Viewport } from 'next';
 import { headers } from 'next/headers';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -27,6 +29,12 @@ export async function generateViewport(): Promise<Viewport> {
 }
 
 export default async function Layout({ children, params }: LayoutProps) {
+  const { userId } = auth();
+
+  if (!userId) {
+    return redirect('/');
+  }
+
   const baseUrl = `${BASE_URL}/${params.purchaseId}`;
 
   return (
