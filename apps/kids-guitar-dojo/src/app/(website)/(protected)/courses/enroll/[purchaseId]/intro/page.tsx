@@ -13,7 +13,7 @@ export default async function Page({ params }: { params: { purchaseId: string } 
   return (
     <DialogLayout
       title={data.onboarding_intro_header || 'Welcome to Kids Guitar Dojo'}
-      classNames={'prose pose-sm md:p max-w-none'}>
+      classNames={'prose prose-sm md:prose-base lg:prose-lg max-w-none'}>
       <PrismicRichText field={data.onboarding_intro_body} />
       <div className={'not-prose mt-5 w-full'}>
         <NextButton label={'Get Started'} baseUrl={baseUrl} />
