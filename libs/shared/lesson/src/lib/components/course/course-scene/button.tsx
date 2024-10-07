@@ -151,7 +151,6 @@ export const Button3d = ({
   });
 
   const handleScrollToCurrentLesson = () => {
-    console.log('scroll to current lesson');
     onBackToCurrentLesson && onBackToCurrentLesson();
   };
 
@@ -193,7 +192,6 @@ export const Button3d = ({
           setMouseControl(true);
           hover(true);
           setShowTooltip(true);
-          calculateRelativeWorldPosition();
         }}
         onPointerLeave={() => {
           setMouseControl(false);
@@ -441,7 +439,7 @@ const Tooltip = ({ children, position, rotation, scale, isVisible = true }: Tool
       const box = new THREE.Box3().setFromObject(textRef.current);
       const size = new THREE.Vector3();
       box.getSize(size);
-      //console.log(size);
+
       setSize({ width: size.x * 2 + 1.5, height: size.y * 2 + 1.5 });
     }
   }, [children, isVisible]);

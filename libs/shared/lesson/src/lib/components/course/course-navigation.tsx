@@ -44,19 +44,23 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   const router = useRouter();
   const zoomDirectionRef = useRef<number>(0); // To store zoom direction
-  const resetRef = useRef<boolean>(false); // To store reset flag
   const zoomControlRef = useRef<{ handleZoom: (dir: number) => void; handleReset: () => void } | null>(null); // Ref to call child functions
+
+  console.log('[CourseNavigation] RENDER 1');
 
   useEffect(() => {
     courseState.calculateCourseProgress(course.id);
+    console.log('[CourseNavigation] EFFECT 1');
   }, [moduleState]);
 
   useEffect(() => {
     setCourseProgression(courseState.getCourseProgress(course.id));
+    console.log('[CourseNavigation] EFFECT 2');
   }, [courseState, lessonState]);
 
   useGSAP(
     () => {
+      console.log('[CourseNavigation] useGSAP 1');
       if (containerRef.current === null) return;
 
       gsap.set('.lesson-load', { autoAlpha: 0 });
@@ -91,6 +95,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   );
 
   const handleLoaded = (load: boolean) => {
+    console.log('[CourseNavigation] READY');
     onLoaded && onLoaded(load);
   };
 
@@ -111,6 +116,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     }
   };
 
+  console.log('[CourseNavigation] RENDER 2');
+
   if (courseProgression === null) {
     return (
       <div className={'flex h-screen w-full items-center justify-center'}>
@@ -118,6 +125,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
       </div>
     );
   }
+
+  console.log('[CourseNavigation] RENDER 3');
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
@@ -162,28 +171,26 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
             intensity={2.5}
             castShadow></directionalLight>
 
-          <group scale={1}>
-            {containerRef && (
-              <Landscape
-                lessonSpacing={LESSON_SPACING}
-                courseCompleted={courseProgression === 100}
-                position={[0, 0, 0]}
-                container={containerRef}
-                purchaseType={purchaseType}
-                onOpenLesson={handleOpenLesson}
-                modules={course.modules}
-                onReady={load => handleLoaded(load)}
-                onModulePosition={handleModulePosition}
-              />
-            )}
-            {containerRef && modulePosition && <ModuleAwards modulePosition={modulePosition} />}
+          <Landscape
+            lessonSpacing={LESSON_SPACING}
+            courseCompleted={courseProgression === 100}
+            position={[0, 0, 0]}
+            container={containerRef}
+            purchaseType={purchaseType}
+            onOpenLesson={handleOpenLesson}
+            modules={course.modules}
+            onReady={load => handleLoaded(load)}
+            onModulePosition={handleModulePosition}
+          />
 
-            <group position={[0, 300, -300]}>
-              <Clouds width={80} height={300} depth={300} numClouds={100} />
-            </group>
+          {modulePosition && <ModuleAwards modulePosition={modulePosition} />}
 
-            <CloudCover position={[0, 5, -30]} />
+          <group position={[0, 300, -300]}>
+            <Clouds width={80} height={300} depth={300} numClouds={100} />
           </group>
+
+          <CloudCover position={[0, 5, -30]} />
+
           <ZoomControl ref={zoomControlRef} />
           <Preload />
         </Suspense>
