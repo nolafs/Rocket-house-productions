@@ -50,8 +50,8 @@ export function QuizScoreDisplay({
     <div
       className={'my-8 rounded-md border bg-white p-4 shadow-sm shadow-black/20'}
       style={{ borderColor: module.color }}>
-      <div className={'grid-col-1 grid divide-x divide-gray-100 font-bold md:grid-cols-3'}>
-        <div className={'flex flex-row items-center justify-center gap-x-3'}>
+      <div className={'grid-col-1 grid font-bold md:grid-cols-3 md:divide-x md:divide-gray-100'}>
+        <div className={'flex flex-row items-center gap-x-3 md:justify-center'}>
           <div className={'flex flex-row items-center gap-x-2 p-4'} style={{ color: module.color }}>
             <i>
               <CircleHelp className={'h-4 w-4'} />
@@ -63,7 +63,7 @@ export function QuizScoreDisplay({
           </div>
         </div>
 
-        <div className={'flex flex-row items-center justify-center gap-x-3 p-4'}>
+        <div className={'flex flex-row items-center gap-x-3 p-4 md:justify-center'}>
           <div className={'flex flex-row items-center gap-x-2'} style={{ color: module.color }}>
             <i>
               <CircleCheck className={'h-4 w-4'} />
@@ -73,7 +73,7 @@ export function QuizScoreDisplay({
           <div>{correctCount}</div>
         </div>
 
-        <div className={'flex flex-row items-center justify-center gap-x-3'}>
+        <div className={'flex flex-row items-center gap-x-3 md:justify-center'}>
           <div className={'flex flex-row items-center gap-x-2 p-4'} style={{ color: module.color }}>
             <i>
               <Timer className={'h-4 w-4'} />
