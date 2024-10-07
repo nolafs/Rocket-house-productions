@@ -66,15 +66,17 @@ export default async function Page({ params }: { params: { product: string[]; pu
 
   return (
     <main>
-      <div className={'mt-5 flex h-svh w-full flex-col items-center justify-center'}>
+      <div className={'mt-5 flex min-h-svh w-full flex-col items-center justify-center'}>
         <div>
           <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
         </div>
-        <h1 className={'mb-5 text-2xl font-bold lg:text-3xl'}>Ready to Take the Next Step?</h1>
-        <p>
-          We hope you loved the sneak peek of our course! Unlock the full experience and elevate your skills to the next
-          level by upgrading now.
-        </p>
+        <div className={'px-5'}>
+          <h1 className={'mb-5 text-2xl font-bold lg:text-3xl'}>Ready to Take the Next Step?</h1>
+          <p>
+            We hope you loved the sneak peek of our course! Unlock the full experience and elevate your skills to the
+            next level by upgrading now.
+          </p>
+        </div>
         <Bounded as={'section'} yPadding={'sm'}>
           <SectionPricingTable tiers={tiers as Tier[]} checkout={true} upgrade={true} purchaseId={params.purchaseId} />
         </Bounded>

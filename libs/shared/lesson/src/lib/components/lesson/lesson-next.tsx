@@ -105,7 +105,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
     return (
       <LessonNextWrapper moduleColor={module.color || 'black'} active={active} backUrl={`/courses/${course.slug}`}>
         <>
-          <div className={'font-bold'}>
+          <div className={'text-center font-bold md:text-left'}>
             <span className={'text-pink-500'}>Quiz time</span>
           </div>
           <div>
@@ -129,7 +129,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
     return (
       <LessonNextWrapper moduleColor={module.color || 'black'} active={active} backUrl={`/courses/${course.slug}`}>
         <>
-          <div className={'font-bold'}>
+          <div className={'text-center font-bold md:text-left'}>
             <span className={'text-pink-500'}>Congratulations!</span>
           </div>
           <div>
@@ -154,7 +154,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
     !hasQuiz && (
       <LessonNextWrapper moduleColor={module.color || 'black'} active={active} backUrl={`/courses/${course.slug}`}>
         <>
-          <div className={'font-bold'}>
+          <div className={'text-center font-bold md:text-left'}>
             <span className={'text-pink-500'}>Next Lesson:</span> <span>{nextLesson.title}</span>
           </div>
           <div>

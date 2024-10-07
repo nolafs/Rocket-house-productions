@@ -56,11 +56,11 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
       <div
         id={'continue'}
         className={cn(
-          'relative mt-10 flex w-full items-center justify-between rounded-md border border-pink-500 p-10',
+          'relative mt-10 flex w-full flex-col items-center justify-between rounded-md border border-pink-500 p-10 md:flex-row',
           !active && 'opacity-30',
         )}
         style={{ borderColor: module.color }}>
-        <div className={'font-bold'}>
+        <div className={'mb-5 text-center font-bold md:mb-0 md:text-left'}>
           <span className={'text-pink-500'} style={{ color: module.color }}>
             Next Lesson:
           </span>{' '}
@@ -87,11 +87,11 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
       <div
         id={'continue'}
         className={cn(
-          'relative mt-10 flex w-full items-center justify-between rounded-md border border-pink-500 p-10',
+          'relative mt-10 flex w-full flex-col items-center justify-between rounded-md border border-pink-500 p-10 md:flex-row',
           !active && 'opacity-30',
         )}
         style={{ borderColor: module.color }}>
-        <div className={'font-bold'}>
+        <div className={'mb-5 text-center font-bold md:mb-0 md:text-left'}>
           <span className={'text-pink-500'}>Congratulations!</span>
         </div>
         <div>
