@@ -12,7 +12,7 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 interface ModuleAwardsProps {
-  modulePosition: ModulePosition[];
+  modulePosition?: ModulePosition[];
 }
 
 const AwardPlane = ({ image }: { image: string }) => {
@@ -141,7 +141,7 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
 
     if (!awards) return;
 
-    if (awards.length !== 0) {
+    if (awards.length !== 0 && modulePosition?.length !== 0 && modulePosition !== undefined) {
       const awardsData: AwardCollection[] = modulePosition.reduce((acc: AwardCollection[], item) => {
         const award = awards.find((awardItem: AvailableAward) => awardItem.moduleId === item.id);
         const attachment = getAttachment(item.id);
@@ -165,17 +165,20 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
   const downloadCollection = useMemo(() => {
     const course = getCurrentCourse();
     if (!course) return null;
-    return modulePosition.map(item => {
-      const module = course.modules.find(module => module.id === item.id) as any;
-      const downloads: ModuleAttachment[] | null = module?.attachments?.filter(
-        (att: any) => att.attachmentType.name === 'Wall Chart',
-      );
+    if (modulePosition?.length !== 0 && modulePosition !== undefined) {
+      return modulePosition.map(item => {
+        const module = course.modules.find(module => module.id === item.id) as any;
+        const downloads: ModuleAttachment[] | null = module?.attachments?.filter(
+          (att: any) => att.attachmentType.name === 'Wall Chart',
+        );
 
-      return {
-        position: item.position,
-        downloads: downloads,
-      };
-    }) as DownloadCollection[];
+        return {
+          position: item.position,
+          downloads: downloads,
+        };
+      }) as DownloadCollection[];
+    }
+    return [];
   }, [modulePosition, modules, courses]);
 
   return (
