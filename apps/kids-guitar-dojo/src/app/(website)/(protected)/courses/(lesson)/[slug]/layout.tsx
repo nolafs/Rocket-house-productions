@@ -2,10 +2,9 @@ import { CourseProgressionProvider } from '@rocket-house-productions/providers';
 import { getChild, getCourse } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
-
-import { db } from '@rocket-house-productions/integration';
 import dynamic from 'next/dynamic';
-
+import { headers } from 'next/headers';
+import { Viewport } from 'next';
 const Header = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.Header));
 const ModuleAwards = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.ModuleAwards));
 
@@ -13,6 +12,18 @@ export const metadata = {
   title: 'Kids Guitar Dojo course',
   description: 'Course pages for you to learn guitar with your kids.',
 };
+
+export async function generateViewport(): Promise<Viewport> {
+  const userAgent = headers().get('user-agent');
+  const isiPhone = /iphone/i.test(userAgent ?? '');
+  return isiPhone
+    ? {
+        width: 'device-width',
+        initialScale: 1,
+        maximumScale: 1, // disables auto-zoom on ios safari
+      }
+    : {};
+}
 
 interface LayoutProps {
   children: ReactNode;
