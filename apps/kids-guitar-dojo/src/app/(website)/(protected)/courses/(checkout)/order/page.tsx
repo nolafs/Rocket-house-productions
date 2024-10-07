@@ -44,9 +44,9 @@ export default async function Page({ params }: { params: { product: string[] } }
   return (
     <main>
       <PurchaseOption userId={userId} email={sessionClaims?.email as string}>
-        <Bounded as={'section'} yPadding={'sm'}>
+        <section className={'container px-5'}>
           <SectionPricingTable tiers={tiers as Tier[]} checkout={true} />
-        </Bounded>
+        </section>
       </PurchaseOption>
     </main>
   );

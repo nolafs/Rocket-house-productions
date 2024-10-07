@@ -86,13 +86,15 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
   if (user && !isLoading && !isValidating) {
     return (
       <>
-        <div className={'mt-5 flex h-svh w-full flex-col items-center justify-center'}>
+        <div className={'mt-5 flex min-h-svh w-full flex-col items-center justify-center overflow-auto'}>
           {state === 'ready' ? (
             <>
               <div>
                 <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
               </div>
-              <h1 className={'text-2xl font-bold lg:text-3xl'}>Please select from the following options:</h1>
+              <h1 className={'mb-5 px-5 text-center text-2xl font-bold lg:text-3xl'}>
+                Please select from the following options:
+              </h1>
               {children}
             </>
           ) : (
