@@ -21,6 +21,7 @@ import {
 import ModuleAwards from './course-scene/module-awards';
 import { CameraController } from './course-scene/camera-control';
 import { Button } from '@rocket-house-productions/shadcn-ui';
+import CourseNavigationPage from '@/app/(website)/(protected)/courses/(lesson)/[slug]/(course)/_components/courseNavigationPage';
 
 gsap.registerPlugin(SplitText);
 
@@ -101,6 +102,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   const handleOpenLesson = (lesson: LessonButton) => {
     setLesson(lesson);
+    onLoaded && onLoaded(false);
   };
 
   const handleModulePosition = (position: any) => {
