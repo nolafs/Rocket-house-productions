@@ -45,7 +45,7 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={'default'} size={'sm'} className={'mb-4 border-2 border-white bg-pink-500'}>
+        <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
           <CloudDownload className={'mr-2 h-4 w-4'} />
           Additional Downloads
         </Button>
