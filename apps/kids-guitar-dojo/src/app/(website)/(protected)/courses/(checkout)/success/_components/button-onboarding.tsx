@@ -90,7 +90,7 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
 
   return (
     <Button variant={'default'} size={'lg'} className={'mt-5'} disabled={true}>
-      <Loader2 className={'mr-2 h-6 w-6 animate-spin text-white'} /> {state}
+      <Loader2 className={'mr-2 h-6 w-6 animate-spin text-white'} /> {state} {isError ? 'Error' : 'Loading...'}
     </Button>
   );
 }
