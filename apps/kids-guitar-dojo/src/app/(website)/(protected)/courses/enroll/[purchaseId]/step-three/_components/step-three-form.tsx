@@ -1,7 +1,6 @@
 'use client';
 import { Avatar, DialogLayout } from '@rocket-house-productions/lesson';
 import {
-  Button,
   Form,
   FormControl,
   FormField,
@@ -10,7 +9,7 @@ import {
   FormMessage,
   Input,
 } from '@rocket-house-productions/shadcn-ui';
-import { BASE_URL, FormErrors } from '../../_component/path-types';
+import { FormErrors } from '../../_component/path-types';
 import stepThreeFormAction from '../action';
 import { useFormState } from 'react-dom';
 import { useForm } from 'react-hook-form';

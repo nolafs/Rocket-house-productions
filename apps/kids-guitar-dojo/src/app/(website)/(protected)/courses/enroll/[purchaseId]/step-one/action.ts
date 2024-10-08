@@ -5,9 +5,6 @@ import { redirect } from 'next/navigation';
 
 export default async function stepOneFormAction(prevState: FormErrors | undefined, formData: FormData) {
   const data = Object.fromEntries(formData.entries());
-
-  console.log('[STEP ONE FORM DATA]', data);
-
   const update = {
     ...data,
     confirmTerms: data.confirmTerms === 'on' ? true : false,

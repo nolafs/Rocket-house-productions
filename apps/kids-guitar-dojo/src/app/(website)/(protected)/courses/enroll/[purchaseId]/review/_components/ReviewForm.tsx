@@ -1,16 +1,19 @@
 'use client';
 import { submitOnBoardingAction } from '../actions';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import cn from 'classnames';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import { OnBoardingType } from '../../_component/schemas';
 import { Avatar, DialogLayout } from '@rocket-house-productions/lesson';
-import { Button, Form } from '@rocket-house-productions/shadcn-ui';
 import PrevButton from '../../_component/button-prev';
-import { CheckIcon, Loader2Icon, XIcon } from 'lucide-react';
+import { CheckIcon, XIcon } from 'lucide-react';
 import { PrismicRichText } from '@prismicio/react';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import React, { useState } from 'react';
+import ButtonSubmit from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/button-submit';
 
 interface ReviewFormProps {
   baseUrl: string;
@@ -23,31 +26,39 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
   const { onBoardingData, resetLocalStorage } = useOnBoardingContext();
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
 
   const { firstName, lastName, name, email, parentConsent, confirmTerms, notify, newsletter, avatar } = onBoardingData;
 
   const handleFormSubmit = async (formData: FormData) => {
-    setSubmitting(true);
+    console.log('SUBMITTING FORM DATA', formData);
 
-    const res = await submitOnBoardingAction(onBoardingData as OnBoardingType, baseUrl);
-    const { redirect, errorMsg, success } = res;
+    if (!submitting) {
+      setSubmitting(true);
 
-    if (success) {
-      toast.success('Onboarding successfully');
+      const res = await submitOnBoardingAction(onBoardingData as OnBoardingType, baseUrl);
+      const { redirect, errorMsg, success } = res;
 
-      setSubmitSuccess(true);
+      if (success) {
+        toast.success('Onboarding successfully');
 
-      resetLocalStorage();
+        setSubmitSuccess(true);
 
-      if (redirect) {
-        return router.push(redirect);
-      }
-    } else if (errorMsg) {
-      setSubmitting(false);
-      setSubmitSuccess(false);
-      toast.error(errorMsg);
-      if (redirect) {
-        return router.push(baseUrl + redirect);
+        resetLocalStorage();
+
+        console.log('REDIRECT', redirect);
+
+        if (redirect) {
+          return router.push(redirect);
+        }
+      } else if (errorMsg) {
+        setSubmitting(false);
+        setSubmitSuccess(false);
+        setSubmitError(true);
+        toast.error(errorMsg);
+        if (redirect) {
+          return router.push(baseUrl + redirect);
+        }
       }
     }
   };
@@ -124,16 +135,29 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
             </dl>
             <div className="mt-5 flex justify-between">
               <PrevButton baseUrl={baseUrl} />
-              <Button type={'submit'} variant={'lesson'} size={'lg'}>
-                {submitting && (
-                  <i className={'mr-3'}>
-                    <Loader2Icon className={'h-5 w-5 animate-spin'} />
-                  </i>
-                )}{' '}
-                Submit
-              </Button>
+              <ButtonSubmit text={'Submitting'} />
             </div>
           </form>
+        </DialogLayout>
+      )}
+      {submitSuccess && !submitError && (
+        <DialogLayout title={header || 'Completed'}>
+          <div className="body">
+            <p>
+              Your child’s enrollment was successful, and they’re all set to start their learning journey! We’re excited
+              to have them on board and can’t wait for them to dive into the fun and engaging lessons.
+            </p>
+
+            <p>
+              If the page does not automatically redirect, simply click the button below to go straight to the course
+              and get started.
+            </p>
+          </div>
+          <div className="mt-5 flex justify-center">
+            <Link href={'/courses'} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'w-full')}>
+              Go to course
+            </Link>
+          </div>
         </DialogLayout>
       )}
     </>
