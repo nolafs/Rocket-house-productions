@@ -10,23 +10,15 @@ export default async function stepTwoFormAction(prevState: FormErrors | undefine
     ...data,
   };
 
-  console.log('before data', update);
-
   const validated = stepTwoSchema.safeParse(update);
 
-  console.log('validated', validated);
-
   if (!validated.success) {
-    const errors = validated.error.issues.reduce((acc: FormErrors, issue) => {
+    return validated.error.issues.reduce((acc: FormErrors, issue) => {
       const path = issue.path[0] as string;
       acc[path] = issue.message;
       return acc;
     }, {});
-
-    return errors;
   }
-
-  console.log('send data to server', data);
 
   redirect(`${data.productId}/${OnBoardingRoutes.CHILD_AVATAR}`);
 }

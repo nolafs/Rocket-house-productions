@@ -12,8 +12,9 @@ import PrevButton from '../../_component/button-prev';
 import { CheckIcon, XIcon } from 'lucide-react';
 import { PrismicRichText } from '@prismicio/react';
 import { KeyTextField, RichTextField } from '@prismicio/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ButtonSubmit from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/button-submit';
+import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
 
 interface ReviewFormProps {
   baseUrl: string;
@@ -27,13 +28,18 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState(false);
+  const setActive = useMenuActive(state => state.setActive);
+
+  useEffect(() => {
+    setActive(true);
+  }, []);
 
   const { firstName, lastName, name, email, parentConsent, confirmTerms, notify, newsletter, avatar } = onBoardingData;
 
   const handleFormSubmit = async (formData: FormData) => {
     if (!submitting) {
       setSubmitting(true);
-
+      setActive(false);
       const res = await submitOnBoardingAction(onBoardingData as OnBoardingType, baseUrl);
       const { redirect, errorMsg, success } = res;
 
@@ -53,6 +59,7 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
         setSubmitting(false);
         setSubmitSuccess(false);
         setSubmitError(true);
+        setActive(true);
         toast.error(errorMsg);
         if (redirect) {
           return router.push(baseUrl + redirect);

@@ -26,6 +26,7 @@ import { generateFunName } from '../generateFunName';
 import ButtonSubmit from '../../_component/button-submit';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
+import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
 const initialState: FormErrors = {};
 
 const avatarOptions = ['kimono', 'bonsai', 'carpFish', 'daruma', 'samurai', 'temple_1', 'yukata'];
@@ -40,6 +41,11 @@ export default function StepThreeForm({ baseUrl, header, body }: StepThreeFormPr
   const [serverError, formAction] = useFormState(stepThreeFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
   const [name, setName] = useState<string | null>('');
+  const setActive = useMenuActive(state => state.setActive);
+
+  useEffect(() => {
+    setActive(true);
+  }, []);
 
   const form = useForm<z.infer<typeof stepThreeSchema>>({
     resolver: zodResolver(stepThreeSchema),

@@ -22,7 +22,7 @@ import stepTwoFormAction from '../action';
 import { useForm } from 'react-hook-form';
 import { stepTwoSchema } from '../../_component/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import z from 'zod';
 import { PrevButton } from '../../_component/button-prev';
 import { XIcon } from 'lucide-react';
@@ -30,6 +30,7 @@ import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import ButtonSubmit from '../../_component/button-submit';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
+import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
 
 const initialState: FormErrors = {};
 
@@ -42,6 +43,11 @@ interface StepTwoFormProps {
 export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps) {
   const [serverError, formAction] = useFormState(stepTwoFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
+  const setActive = useMenuActive(state => state.setActive);
+
+  useEffect(() => {
+    setActive(true);
+  }, []);
 
   const form = useForm<z.infer<typeof stepTwoSchema>>({
     resolver: zodResolver(stepTwoSchema),

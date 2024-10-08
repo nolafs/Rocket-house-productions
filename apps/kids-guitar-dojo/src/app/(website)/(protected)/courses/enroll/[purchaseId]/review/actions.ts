@@ -16,11 +16,8 @@ export const submitOnBoardingAction = async (
   onboarding: OnBoardingType,
   baseUrl: string,
 ): Promise<SubmitDealActionReturnType> => {
-  console.log('submitOnBoardingAction', onboarding);
-
   const stepOneValidated = stepOneSchema.safeParse(onboarding);
   if (!stepOneValidated.success) {
-    console.log('stepOneValidated', stepOneValidated.error);
     return {
       redirect: OnBoardingRoutes.PARENT_DETAILS,
       errorMsg: 'Please validate parent information.',
@@ -29,7 +26,6 @@ export const submitOnBoardingAction = async (
 
   const stepTwoValidated = stepTwoSchema.safeParse(onboarding);
   if (!stepTwoValidated.success) {
-    console.log('stepTwoValidated', stepTwoValidated);
     return {
       redirect: OnBoardingRoutes.CHILD_DETAILS,
       errorMsg: 'Please validate child information.',
@@ -39,7 +35,6 @@ export const submitOnBoardingAction = async (
   const stepThreeValidated = stepThreeSchema.safeParse(onboarding);
 
   if (!stepThreeValidated.success) {
-    console.log('stepThreeValidated', stepThreeValidated);
     return {
       redirect: OnBoardingRoutes.CHILD_AVATAR,
       errorMsg: 'Please validate avatar.',
@@ -86,8 +81,6 @@ export const submitOnBoardingAction = async (
         newsletterGroup: onboarding.newsletter || false,
         notify: onboarding.notify || false,
       });
-
-      console.log('[MAILER-LITE] response', mailerList);
     }
 
     const child = await db.child.create({
@@ -138,6 +131,5 @@ export const submitOnBoardingAction = async (
   // Update purchase with child id
 
   const retVal = { success: true, redirect: OnBoardingRoutes.COMPLETED };
-  console.log(retVal);
   return retVal;
 };

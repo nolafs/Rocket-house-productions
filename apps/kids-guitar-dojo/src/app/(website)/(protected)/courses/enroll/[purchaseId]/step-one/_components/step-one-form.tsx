@@ -19,12 +19,13 @@ import {
 import z from 'zod';
 import { stepOneSchema } from '../../_component/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { XIcon } from 'lucide-react';
 import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import ButtonSubmit from '../../_component/button-submit';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
+import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
 
 const initialState: FormErrors = {};
 
@@ -46,6 +47,11 @@ interface StepOneFormProps {
 export default function StepOneForm({ baseUrl, purchase, header, body }: StepOneFormProps) {
   const [serverError, formAction] = useFormState(stepOneFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
+  const setActive = useMenuActive(state => state.setActive);
+
+  useEffect(() => {
+    setActive(true);
+  }, []);
 
   const form = useForm<z.infer<typeof stepOneSchema>>({
     resolver: zodResolver(stepOneSchema),
