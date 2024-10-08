@@ -1,7 +1,6 @@
 'use client';
 import { Avatar, DialogLayout } from '@rocket-house-productions/lesson';
 import {
-  Button,
   Form,
   FormControl,
   FormField,
@@ -10,7 +9,7 @@ import {
   FormMessage,
   Input,
 } from '@rocket-house-productions/shadcn-ui';
-import { BASE_URL, FormErrors } from '../../_component/path-types';
+import { FormErrors } from '../../_component/path-types';
 import stepThreeFormAction from '../action';
 import { useFormState } from 'react-dom';
 import { useForm } from 'react-hook-form';
@@ -27,6 +26,7 @@ import { generateFunName } from '../generateFunName';
 import ButtonSubmit from '../../_component/button-submit';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
+import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
 const initialState: FormErrors = {};
 
 const avatarOptions = ['kimono', 'bonsai', 'carpFish', 'daruma', 'samurai', 'temple_1', 'yukata'];
@@ -41,6 +41,11 @@ export default function StepThreeForm({ baseUrl, header, body }: StepThreeFormPr
   const [serverError, formAction] = useFormState(stepThreeFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
   const [name, setName] = useState<string | null>('');
+  const setActive = useMenuActive(state => state.setActive);
+
+  useEffect(() => {
+    setActive(true);
+  }, []);
 
   const form = useForm<z.infer<typeof stepThreeSchema>>({
     resolver: zodResolver(stepThreeSchema),
