@@ -12,7 +12,7 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 interface ModuleAwardsProps {
-  modulePosition?: ModulePosition[];
+  modulePosition?: ModulePosition[] | null;
 }
 
 const AwardPlane = ({ image }: { image: string }) => {
@@ -131,7 +131,7 @@ type DownloadCollection = {
   downloads: ModuleAttachment[] | [];
 };
 
-export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
+export function ModuleAwards({ modulePosition = null }: ModuleAwardsProps) {
   const { getAwards, modules, getAttachment } = useModuleProgressStore(store => store);
   const { courses, getCurrentCourse } = useCourseProgressionStore(store => store);
   const [awardCollection, setAwardCollection] = useState<AwardCollection[] | null>(null);
@@ -141,7 +141,12 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
 
     if (!awards) return;
 
-    if (awards.length !== 0 && modulePosition?.length !== 0 && modulePosition !== undefined) {
+    if (
+      awards.length !== 0 &&
+      modulePosition?.length !== 0 &&
+      modulePosition !== undefined &&
+      modulePosition !== null
+    ) {
       const awardsData: AwardCollection[] = modulePosition.reduce((acc: AwardCollection[], item) => {
         const award = awards.find((awardItem: AvailableAward) => awardItem.moduleId === item.id);
         const attachment = getAttachment(item.id);
@@ -165,7 +170,7 @@ export function ModuleAwards({ modulePosition }: ModuleAwardsProps) {
   const downloadCollection = useMemo(() => {
     const course = getCurrentCourse();
     if (!course) return null;
-    if (modulePosition?.length !== 0 && modulePosition !== undefined) {
+    if (modulePosition?.length !== 0 && modulePosition !== undefined && modulePosition !== null) {
       return modulePosition.map(item => {
         const module = course.modules.find(module => module.id === item.id) as any;
         const downloads: ModuleAttachment[] | null = module?.attachments?.filter(
