@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 
 import { useEffect, useState } from 'react';
 import cn from 'classnames';
-import { OnBoardingRoutes, STEPS } from './path-types';
-
+import { STEPS } from './path-types';
+import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
 const steps = STEPS;
 
 interface StepNavigationProps {
@@ -17,13 +17,18 @@ export default function StepNavigation({ baseUrl }: StepNavigationProps) {
   const pathname = usePathname();
   const currentPath = path.basename(pathname);
   const [currentStep, setCurrentStep] = useState(1);
+  const active = useMenuActive(state => state.active);
 
   useEffect(() => {
     setCurrentStep(steps.findIndex(step => step.route === currentPath));
   }, [currentPath]);
 
   return (
-    <div className="bg-lesson-background mb-12 mt-4 min-w-60 rounded-full px-3 py-5 lg:mb-0">
+    <div
+      className={cn(
+        'bg-lesson-background mb-12 mt-4 min-w-60 rounded-full px-3 py-5 transition ease-in-out lg:mb-0',
+        active ? 'opacity-100' : 'opacity-0',
+      )}>
       {/* list of form steps */}
       <div className="relative flex flex-row justify-between gap-x-5 md:gap-x-20">
         {steps.map((step, i) => (
