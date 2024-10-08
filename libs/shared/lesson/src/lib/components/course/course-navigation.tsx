@@ -96,7 +96,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   );
 
   const handleLoaded = (load: boolean) => {
-    console.log('[CourseNavigation] READY');
     onLoaded && onLoaded(load);
   };
 
@@ -118,7 +117,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     }
   };
 
-  console.log('[CourseNavigation] RENDER 2');
+  //console.log('[CourseNavigation] RENDER 2');
 
   if (courseProgression === null) {
     return (
@@ -128,7 +127,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     );
   }
 
-  console.log('[CourseNavigation] RENDER 3');
+  //console.log('[CourseNavigation] RENDER 3');
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>

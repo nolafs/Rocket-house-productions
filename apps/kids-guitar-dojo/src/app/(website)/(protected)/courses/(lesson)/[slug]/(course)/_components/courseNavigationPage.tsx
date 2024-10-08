@@ -34,7 +34,7 @@ export function CourseNavigationPage({ course, role, childId = null, purchaseTyp
   );
 
   const handleLoaded = contextSafe((ready: boolean) => {
-    console.log('[CourseNavigationPage] handleLoaded', ready);
+    //console.log('[CourseNavigationPage] handleLoaded', ready);
 
     if (ready) {
       gsap.to('.footer-ui', { duration: 1, autoAlpha: 1, yPercent: 0 });
