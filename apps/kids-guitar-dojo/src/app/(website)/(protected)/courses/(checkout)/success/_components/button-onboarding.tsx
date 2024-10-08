@@ -87,6 +87,12 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
   if (state === 'error') {
     redirect('/courses/error?status=error&message=Could%20not%20verify%20user');
   }
+
+  return (
+    <Button variant={'default'} size={'lg'} className={'mt-5'} disabled={true}>
+      <Loader2 className={'mr-2 h-6 w-6 animate-spin text-white'} /> {state} {isError ? 'Error' : 'Loading...'}
+    </Button>
+  );
 }
 
 export default ButtonOnboarding;
