@@ -31,8 +31,6 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
   const { firstName, lastName, name, email, parentConsent, confirmTerms, notify, newsletter, avatar } = onBoardingData;
 
   const handleFormSubmit = async (formData: FormData) => {
-    console.log('SUBMITTING FORM DATA', formData);
-
     if (!submitting) {
       setSubmitting(true);
 
@@ -135,7 +133,7 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
             </dl>
             <div className="mt-5 flex justify-between">
               <PrevButton baseUrl={baseUrl} />
-              <ButtonSubmit text={'Submitting'} />
+              <ButtonSubmit text={'Submit'} />
             </div>
           </form>
         </DialogLayout>

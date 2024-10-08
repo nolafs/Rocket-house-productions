@@ -5,8 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { useEffect, useState } from 'react';
 import cn from 'classnames';
-import { OnBoardingRoutes, STEPS } from './path-types';
-
+import { STEPS } from './path-types';
 const steps = STEPS;
 
 interface StepNavigationProps {
