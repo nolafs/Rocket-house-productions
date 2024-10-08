@@ -183,8 +183,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
             onModulePosition={handleModulePosition}
           />
 
-          {modulePosition && <ModuleAwards modulePosition={modulePosition} />}
-
           <group position={[0, 300, -300]}>
             <Clouds width={80} height={300} depth={300} numClouds={100} />
           </group>
@@ -192,15 +190,21 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
           <CloudCover position={[0, 5, -30]} />
 
           <ZoomControl ref={zoomControlRef} />
-          <Preload />
+          <Preload all />
         </Suspense>
+
+        <ModuleAwards modulePosition={modulePosition} />
       </Canvas>
     </div>
   );
 }
 
 function Loader() {
-  const { progress, loaded, total } = useProgress();
+  const { progress, loaded, total, item, active } = useProgress();
+
+  useEffect(() => {
+    console.log('[Loader] PROGRESS', progress, loaded, total, item, active);
+  }, [active, item, progress, active]);
 
   return (
     <Html fullscreen zIndexRange={[100, 100]}>
