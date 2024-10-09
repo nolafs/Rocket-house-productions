@@ -258,8 +258,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         </Suspense>
 
         <ModuleAwards display={display} />
-
-        <CameraController />
       </Canvas>
     </div>
   );

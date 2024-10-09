@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { Plane, useCursor, useTexture } from '@react-three/drei';
-import { ModulePosition } from './course.types';
 import { useCourseProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AvailableAward } from '@rocket-house-productions/store';
