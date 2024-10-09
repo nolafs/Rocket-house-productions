@@ -10,8 +10,6 @@ export default async function StepTwo({ params }: { params: { purchaseId: string
   const { data } = await client.getSingle('onboarding');
 
   return (
-    <div>
-      <StepTwoForm baseUrl={baseUrl} header={data.onboarding_step_two_header} body={data?.onboarding_step_two_body} />
-    </div>
+    <StepTwoForm baseUrl={baseUrl} header={data.onboarding_step_two_header} body={data?.onboarding_step_two_body} />
   );
 }
