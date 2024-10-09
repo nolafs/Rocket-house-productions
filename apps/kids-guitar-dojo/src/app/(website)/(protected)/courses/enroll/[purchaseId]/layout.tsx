@@ -41,10 +41,8 @@ export default async function Layout({ children, params }: LayoutProps) {
     <div className={'lesson'}>
       <NavbarSimple logo={logo} />
       <ParallaxScene>
-        <div>
-          <OnBoardingContextProvider>{children}</OnBoardingContextProvider>
-          <StepNavigation baseUrl={baseUrl} />
-        </div>
+        <OnBoardingContextProvider>{children}</OnBoardingContextProvider>
+        <StepNavigation baseUrl={baseUrl} />
       </ParallaxScene>
     </div>
   );

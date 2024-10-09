@@ -53,76 +53,81 @@ export function Navbar({ navigation, logo, isAdmin = false }: HeaderProps) {
   }, []);
 
   return (
-    <>
-      <div id="navbar" className="navbar-area fixed z-10 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
-        <div className="container mx-auto max-w-[1266px]">
-          <nav className={`navbar relative flex flex-wrap`}>
-            <div className="self-center">
-              <Link href="/">
-                <Image src={logo} className="inline" alt="logo" />
-              </Link>
-            </div>
+    <div id="navbar" className="navbar-area fixed z-10 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
+      <div className="container mx-auto max-w-[1266px]">
+        <nav className={`navbar relative flex flex-wrap items-center`}>
+          <div className="grow self-center">
+            <Link href="/">
+              <Image src={logo} className="inline" alt="logo" />
+            </Link>
+          </div>
 
-            <div className="navbar-collapse flex grow basis-auto self-center">
-              <ul className="navbar-nav mx-auto hidden flex-row self-center md:flex">
-                {navigation &&
-                  navigation.items.map(item => (
-                    <li
-                      key={asText(item.label)}
-                      className="group relative mx-[5px] py-[10px] first:ml-0 last:mr-0 lg:py-[5px] xl:mx-[10px] xl:py-[35px] 2xl:mx-[18px] 2xl:py-[30px]">
-                      <PrismicNextLink
-                        field={item.link}
-                        className={cn(
-                          'hover:text-primary text-base font-medium text-gray-500 underline-offset-4 transition-all hover:underline',
-                          item.link.url === currentRoute && 'text-primary',
-                        )}>
-                        <PrismicText field={item.label} />
-                      </PrismicNextLink>
-                    </li>
-                  ))}
-              </ul>
-            </div>
+          <div className="navbar-collapse hidden grow basis-auto self-center md:flex">
+            <ul className="navbar-nav mx-auto flex flex-row self-center">
+              {navigation &&
+                navigation.items.map(item => (
+                  <li
+                    key={asText(item.label)}
+                    className="group relative mx-[5px] py-[10px] first:ml-0 last:mr-0 lg:py-[5px] xl:mx-[10px] xl:py-[35px] 2xl:mx-[18px] 2xl:py-[30px]">
+                    <PrismicNextLink
+                      field={item.link}
+                      className={cn(
+                        'hover:text-primary text-base font-medium text-gray-500 underline-offset-4 transition-all hover:underline',
+                        item.link.url === currentRoute && 'text-primary',
+                      )}>
+                      <PrismicText field={item.label} />
+                    </PrismicNextLink>
+                  </li>
+                ))}
+            </ul>
+          </div>
 
-            {/* Other options */}
-            <div className="other-options hidden self-center pb-[10px] pt-[20px] md:block xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
-              <ul className={'flex flex-row items-center justify-center space-x-2'}>
-                <li className="flex items-center justify-center">
-                  <SignedOut>
-                    <Link
-                      href="/sign-in"
-                      className={cn(buttonVariants({ variant: 'link' }), '!text-[16px] font-medium')}>
-                      Log in
+          {/* Other options */}
+          <div className="other-options hidden self-center pb-[10px] pt-[20px] md:block xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
+            <ul className={'flex flex-row items-center justify-center space-x-2'}>
+              <li className="flex items-center justify-center">
+                <SignedOut>
+                  <Link href="/sign-in" className={cn(buttonVariants({ variant: 'link' }), '!text-[16px] font-medium')}>
+                    Log in
+                  </Link>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </li>
+              <li>
+                <SignedOut>
+                  <Link
+                    href="/sign-up"
+                    className={cn(buttonVariants({ variant: 'default', size: 'sm' }), '!text-[14px] uppercase')}>
+                    Buy now
+                  </Link>
+                </SignedOut>
+                <SignedIn>
+                  <div className={'flex space-x-1'}>
+                    <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
+                      Go to Course
                     </Link>
-                  </SignedOut>
-                  <SignedIn>
-                    <UserButton />
-                  </SignedIn>
-                </li>
-                <li>
-                  <SignedOut>
-                    <Link
-                      href="/sign-up"
-                      className={cn(buttonVariants({ variant: 'default', size: 'sm' }), '!text-[14px] uppercase')}>
-                      Buy now
-                    </Link>
-                  </SignedOut>
-                  <SignedIn>
-                    <div className={'flex space-x-1'}>
-                      <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
-                        Go to Course
+                    {isAdmin && (
+                      <Link href="/admin" className={buttonVariants({ variant: 'default' })}>
+                        <i>
+                          <SettingsIcon className={'h-4 w-4'} />{' '}
+                        </i>
+                        Admin
                       </Link>
-                      {isAdmin && (
-                        <Link href="/admin" className={buttonVariants({ variant: 'default' })}>
-                          <i>
-                            <SettingsIcon className={'h-4 w-4'} />{' '}
-                          </i>
-                          Admin
-                        </Link>
-                      )}
-                    </div>
-                  </SignedIn>
-                </li>
-              </ul>
+                    )}
+                  </div>
+                </SignedIn>
+              </li>
+            </ul>
+          </div>
+
+          {/* Account button */}
+          <div className={'grid grow-0 grid-cols-2 items-center justify-center md:hidden'}>
+            <div className={'mr-1.5 mt-1.5'}>
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
             </div>
 
             {/* Toggle button */}
@@ -156,46 +161,39 @@ export function Navbar({ navigation, logo, isAdmin = false }: HeaderProps) {
                     </ul>
                   </div>
                   <div>
-                    <ul
+                    <div
                       className={
-                        'flex flex-row items-center justify-center space-x-5 border-t border-gray-300 bg-gray-100/50 py-5'
+                        'flex flex-row items-center justify-center space-x-2.5 border-t border-gray-300 bg-gray-100/50 py-5'
                       }>
-                      <li>
-                        <SignedOut>
-                          <Link href="/sign-in" className={buttonVariants({ variant: 'default' })}>
-                            Log in
+                      <SignedOut>
+                        <Link href="/sign-in" className={cn(buttonVariants({ variant: 'default' }))}>
+                          Log in
+                        </Link>
+                      </SignedOut>
+                      <SignedOut>
+                        <Link href="/sign-up" className={buttonVariants({ variant: 'outline' })}>
+                          Buy now
+                        </Link>
+                      </SignedOut>
+                      <SignedIn>
+                        <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
+                          Go to Lesson
+                        </Link>
+                        {isAdmin && (
+                          <Link href="/admin" className={buttonVariants({ variant: 'outline' })}>
+                            Admin
                           </Link>
-                        </SignedOut>
-                        <SignedIn>
-                          <UserButton />
-                        </SignedIn>
-                      </li>
-                      <li>
-                        <SignedOut>
-                          <Link href="/sign-up" className={buttonVariants({ variant: 'outline' })}>
-                            Buy now
-                          </Link>
-                        </SignedOut>
-                        <SignedIn>
-                          <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
-                            Go to Lesson
-                          </Link>
-                          {isAdmin && (
-                            <Link href="/admin" className={buttonVariants({ variant: 'outline' })}>
-                              Admin
-                            </Link>
-                          )}
-                        </SignedIn>
-                      </li>
-                    </ul>
+                        )}
+                      </SignedIn>
+                    </div>
                   </div>
                 </div>
               </SheetContent>
             </Sheet>
-          </nav>
-        </div>
+          </div>
+        </nav>
       </div>
-    </>
+    </div>
   );
 }
 
