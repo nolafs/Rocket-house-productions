@@ -1,10 +1,9 @@
 import * as THREE from 'three';
-import React, { MutableRefObject, useMemo, useRef, useState } from 'react';
+import React, { MutableRefObject, useRef, useState } from 'react';
 import { Center, Plane, Text3D, useTexture } from '@react-three/drei';
 
 import { useFrame } from '@react-three/fiber';
 import { FretBoard } from './fretboard';
-import { Lesson, Module } from '@prisma/client';
 import { FinalScene } from './finish-scene';
 import ModulePath, { ModuleButtonDisplay } from './module-path';
 import { gsap } from 'gsap';
@@ -19,13 +18,10 @@ gsap.registerPlugin(useGSAP);
 
 gsap.registerPlugin(ScrollToPlugin);
 
-type LessonType = Lesson & { category: { name: string } };
-type ModuleSection = Module & { lessons: LessonType[] };
-
 interface LandscapeProps {
   rotation?: [number, number, number];
   position?: [number, number, number];
-  modules: ModuleSection[];
+  display: ModuleButtonDisplay;
   courseCompleted?: boolean;
   lessonSpacing: number;
   purchaseType?: string | null;
@@ -40,7 +36,7 @@ const SCROLL_FACTOR = 50;
 const FINAL_SCENE = 30;
 
 export const Landscape = ({
-  modules,
+  display,
   lessonSpacing,
   courseCompleted,
   rotation,
@@ -52,9 +48,6 @@ export const Landscape = ({
   onModulePosition,
   ...rest
 }: LandscapeProps) => {
-  const [pathLength, setPathLength] = useState<number | null>(null);
-  const [currentLesson, setCurrentLesson] = useState<number>(0);
-
   const guitar = useTexture('/images/course/guitar.webp');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
@@ -63,17 +56,13 @@ export const Landscape = ({
 
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
-  const lessonNumber = useMemo(() => {
-    return modules.reduce((acc, item) => acc + item.lessons.length, 0);
-  }, [modules]);
-
   const { contextSafe } = useGSAP(
     () => {
       if (!container?.current) {
         return;
       }
 
-      if (pathLength === null) {
+      if (!display?.pathLength) {
         return;
       }
 
@@ -84,6 +73,8 @@ export const Landscape = ({
       if (scrollTriggerRef.current) {
         scrollTriggerRef.current.kill();
       }
+
+      const currentLesson = display.buttons[display.next || 0].position.y;
 
       const tl = gsap.timeline({ paused: false });
 
@@ -116,7 +107,7 @@ export const Landscape = ({
 
       if (!courseCompleted) {
         tl.to(camera.current.position, {
-          y: pathLength,
+          y: display.pathLength,
           duration: 1,
           ease: 'none',
         });
@@ -126,7 +117,7 @@ export const Landscape = ({
           trigger: container.current,
           pin: true,
           scrub: 1,
-          end: `+=${pathLength * SCROLL_FACTOR} `,
+          end: `+=${display.pathLength * SCROLL_FACTOR} `,
         });
 
         if (typeof window !== 'undefined') {
@@ -139,7 +130,7 @@ export const Landscape = ({
         }
       } else {
         tl.to(camera.current.position, {
-          y: pathLength + FINAL_SCENE,
+          y: display.pathLength + FINAL_SCENE,
           duration: 1,
           ease: 'none',
         });
@@ -149,13 +140,13 @@ export const Landscape = ({
           trigger: container.current,
           pin: true,
           scrub: 1,
-          end: `+=${(pathLength + FINAL_SCENE) * SCROLL_FACTOR} `,
+          end: `+=${(display.pathLength + FINAL_SCENE) * SCROLL_FACTOR} `,
         });
 
         if (typeof window !== 'undefined') {
           gsap.to(window, {
             duration: 5,
-            scrollTo: { y: (pathLength + FINAL_SCENE) * SCROLL_FACTOR },
+            scrollTo: { y: (display.pathLength + FINAL_SCENE) * SCROLL_FACTOR },
             delay: 0.5,
             ease: 'Power2.inOut',
           });
@@ -168,20 +159,8 @@ export const Landscape = ({
         ScrollTrigger.killAll();
       };
     },
-    { scope: container, dependencies: [pathLength, currentLesson, camera] },
+    { scope: container, dependencies: [display, camera] },
   );
-
-  const handleUpdate = (data: ModuleButtonDisplay) => {
-    if (!data.pathLength) {
-      return;
-    }
-
-    if (!pathLength) {
-      setPathLength(data?.pathLength);
-      setCurrentLesson(data.buttons[data.next || 0].position.y);
-      onModulePosition && onModulePosition(data.modulePosition);
-    }
-  };
 
   const handleOnLesson = contextSafe((lesson: LessonButton) => {
     if (!camera.current) {
@@ -194,6 +173,8 @@ export const Landscape = ({
 
   const handleOnBackToCurrentLesson = contextSafe(() => {
     if (typeof window !== 'undefined') {
+      const currentLesson = display.buttons[display.next || 0].position.y;
+
       gsap.to(window, {
         duration: 3,
         scrollTo: { y: (currentLesson + window.innerHeight / 2 / SCROLL_FACTOR) * SCROLL_FACTOR },
@@ -265,27 +246,26 @@ export const Landscape = ({
           </Center>
         </group>
 
-        {pathLength && (
+        {display.pathLength && (
           <>
             <FretBoard
               position={[0, 27.9, 0]}
               lessonSpacing={lessonSpacing}
-              lessonNumber={lessonNumber}
-              pathLength={pathLength}
+              lessonNumber={display.buttons.length}
+              pathLength={display.pathLength}
             />
 
-            {<FinalScene pathLength={pathLength} courseCompleted={courseCompleted} />}
+            {<FinalScene pathLength={display.pathLength} courseCompleted={courseCompleted} />}
           </>
         )}
 
         <ModulePath
-          modulesSection={modules}
+          display={display}
           lessonSpacing={lessonSpacing}
           courseCompleted={courseCompleted}
           purchaseType={purchaseType}
           onBackToCurrentLesson={handleOnBackToCurrentLesson}
           onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
-          onUpdated={data => handleUpdate(data)}
         />
       </group>
     </>
