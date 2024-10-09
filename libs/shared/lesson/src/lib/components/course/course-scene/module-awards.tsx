@@ -225,7 +225,7 @@ export function ModuleAwards({ display = null }: ModuleAwardsProps) {
       {downloadCollection?.map((item, idx) => {
         if (item?.downloads?.length) {
           return (
-            <group key={'download-' + idx} position={downloadCollection[idx]?.position}>
+            <group key={'download-' + idx} position={[2, downloadCollection[idx]?.position.y + 7, 0]}>
               {item.downloads.map((attachment, idx) => (
                 <DownloadPlane
                   key={attachment.id}
