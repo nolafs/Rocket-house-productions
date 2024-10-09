@@ -10,9 +10,10 @@ import { saveAs } from 'file-saver';
 
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { ModuleButtonDisplay } from './module-path';
 
 interface ModuleAwardsProps {
-  modulePosition?: ModulePosition[] | null;
+  display: ModuleButtonDisplay | null;
 }
 
 const AwardPlane = ({ image }: { image: string }) => {
@@ -131,23 +132,20 @@ type DownloadCollection = {
   downloads: ModuleAttachment[] | [];
 };
 
-export function ModuleAwards({ modulePosition = null }: ModuleAwardsProps) {
+export function ModuleAwards({ display = null }: ModuleAwardsProps) {
   const { getAwards, modules, getAttachment } = useModuleProgressStore(store => store);
   const { courses, getCurrentCourse } = useCourseProgressionStore(store => store);
   const [awardCollection, setAwardCollection] = useState<AwardCollection[] | null>(null);
 
   useEffect(() => {
+    if (!display) return;
+
     const awards = getAwards();
 
     if (!awards) return;
 
-    if (
-      awards.length !== 0 &&
-      modulePosition?.length !== 0 &&
-      modulePosition !== undefined &&
-      modulePosition !== null
-    ) {
-      const awardsData: AwardCollection[] = modulePosition.reduce((acc: AwardCollection[], item) => {
+    if (awards.length !== 0) {
+      const awardsData: AwardCollection[] = display.modulePosition.reduce((acc: AwardCollection[], item) => {
         const award = awards.find((awardItem: AvailableAward) => awardItem.moduleId === item.id);
         const attachment = getAttachment(item.id);
 
@@ -165,13 +163,19 @@ export function ModuleAwards({ modulePosition = null }: ModuleAwardsProps) {
 
       setAwardCollection(prevState => awardsData);
     }
-  }, [modulePosition, modules]);
+  }, [display, modules]);
 
   const downloadCollection = useMemo(() => {
+    if (!display) return;
     const course = getCurrentCourse();
     if (!course) return null;
-    if (modulePosition?.length !== 0 && modulePosition !== undefined && modulePosition !== null) {
-      return modulePosition.map(item => {
+
+    if (
+      display.modulePosition?.length !== 0 &&
+      display.modulePosition !== undefined &&
+      display.modulePosition !== null
+    ) {
+      return display.modulePosition.map(item => {
         const module = course.modules.find(module => module.id === item.id) as any;
         const downloads: ModuleAttachment[] | null = module?.attachments?.filter(
           (att: any) => att.attachmentType.name === 'Wall Chart',
@@ -184,14 +188,14 @@ export function ModuleAwards({ modulePosition = null }: ModuleAwardsProps) {
       }) as DownloadCollection[];
     }
     return [];
-  }, [modulePosition, modules, courses]);
+  }, [display, modules, courses]);
 
   return (
     <group position={[0, 14, -20]}>
       {awardCollection?.map((item, idx) => {
         if (item?.awardType.badgeUrl) {
           return (
-            <group key={item.id} position={awardCollection[idx + 1]?.position || awardCollection[idx]?.position}>
+            <group key={item.id} position={awardCollection[idx + 1]?.position || [0, display?.pathLength, 0]}>
               <AwardPlane image={item.awardType.badgeUrl} />
             </group>
           );
@@ -203,7 +207,7 @@ export function ModuleAwards({ modulePosition = null }: ModuleAwardsProps) {
       {awardCollection?.map((item, idx) => {
         if (item?.certificates?.length) {
           return (
-            <group key={item.id} position={awardCollection[idx + 1]?.position || awardCollection[idx]?.position}>
+            <group key={item.id} position={awardCollection[idx + 1]?.position || [0, display?.pathLength, 0]}>
               {item.certificates.map((attachment, idx) => (
                 <DownloadPlane
                   key={attachment.id}

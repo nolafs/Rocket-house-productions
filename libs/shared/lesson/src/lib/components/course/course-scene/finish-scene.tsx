@@ -24,7 +24,7 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
   const confettiRef = useRef<Group | null>(null);
   const ninjaRef = useRef<Group | null>(null);
   const ninjaRef2 = useRef<Group | null>(null);
-  const fred = useTexture('/images/course/guitar-head.webp');
+  const guitarHead = useTexture('/images/course/guitar-head.webp');
   const sun = useTexture('/images/course/finish.png');
   const ninja = useTexture('/images/course/ninja.png');
 
@@ -106,10 +106,10 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
       <mesh
         receiveShadow={true}
         geometry={new PlaneGeometry(18, 19)}
-        position={[0, pathLength + 15, -24.5]}
+        position={[0, pathLength + 11.5, -24.5]}
         scale={1}
         rotation={[0, 0, 0]}>
-        <meshStandardMaterial map={fred} color={0xffffff} transparent={true} metalness={0.4} />
+        <meshStandardMaterial map={guitarHead} color={0xffffff} transparent={true} metalness={0.4} />
       </mesh>
     </group>
   );

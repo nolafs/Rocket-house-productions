@@ -1,6 +1,6 @@
 'use client';
 import * as THREE from 'three';
-import React, { forwardRef, Suspense, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, Suspense, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
 import { Landscape } from './course-scene/landscape';
@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/SplitText';
-import { LessonButton, ModulePosition } from './course-scene/course.types';
+import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
 import {
   useCourseProgressionStore,
   useModuleProgressStore,
@@ -21,8 +21,8 @@ import {
 import ModuleAwards from './course-scene/module-awards';
 import { CameraController } from './course-scene/camera-control';
 import { Button } from '@rocket-house-productions/shadcn-ui';
-import CourseNavigationPage from '@/app/(website)/(protected)/courses/(lesson)/[slug]/(course)/_components/courseNavigationPage';
-
+import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
+import { Module } from '@prisma/client';
 gsap.registerPlugin(SplitText);
 
 interface CourseNavigationProps {
@@ -39,10 +39,9 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const courseState = useCourseProgressionStore(store => store);
   const moduleState = useModuleProgressStore(store => store);
   const lessonState = useLessonProgressionStore(store => store);
-  const [modulePosition, setModulePosition] = useState<ModulePosition[] | null>(null);
   const [lesson, setLesson] = React.useState<LessonButton | null>(null);
   const [courseProgression, setCourseProgression] = useState<number | null>(null);
-
+  const currentModule = useRef<Module | null>(null);
   const router = useRouter();
   const zoomDirectionRef = useRef<number>(0); // To store zoom direction
   const zoomControlRef = useRef<{ handleZoom: (dir: number) => void; handleReset: () => void } | null>(null); // Ref to call child functions
@@ -58,6 +57,77 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     setCourseProgression(courseState.getCourseProgress(course.id));
     console.log('[CourseNavigation] EFFECT 2');
   }, [courseState, lessonState]);
+
+  const display = useMemo<ModuleButtonDisplay>(() => {
+    if (lessonState.getLessonCompleted === undefined)
+      return { buttons: [], modulePosition: [], total: null, current: null, next: null };
+
+    let current: number | null = null;
+    let next: number | null = null;
+    const modulePosition: ModulePosition[] = [];
+
+    const buttonList: ModuleButtonPosition[] = course.modules.reduce(
+      (acc: ModuleButtonPosition[], item, moduleIndex) => {
+        return [
+          ...acc,
+          ...item.lessons.map((lesson: LessonType, lessonIndex: number) => {
+            const count = acc.length + lessonIndex + 1;
+            const complete = lessonState.getLessonCompleted(lesson.id);
+
+            let moduleSection = null;
+
+            if (currentModule.current?.id !== item.id) {
+              currentModule.current = item;
+              moduleSection = item;
+              modulePosition.push({
+                id: item.id,
+                name: item.title,
+                position: new THREE.Vector3(0, LESSON_SPACING * count - 3.5, 0),
+              });
+            }
+
+            if (!complete) {
+              if (!current) {
+                current = count - 1;
+              }
+              if (!next) {
+                next = count;
+              }
+            }
+
+            return {
+              id: lesson.id,
+              name: lesson.title,
+              count,
+              active: complete || next === count,
+              next: next === count,
+              module: moduleSection,
+              color: item.color || 'white',
+              type: lesson.category.name,
+              slug: lesson.slug || '',
+              isFree: lesson.isFree || false,
+              moduleSlug: item.slug || '',
+              position: {
+                x: lessonIndex % 2 ? -1 : 1,
+                y: LESSON_SPACING * count,
+                z: 0,
+              },
+            };
+          }),
+        ];
+      },
+      [],
+    );
+
+    return {
+      buttons: buttonList,
+      total: buttonList.length,
+      modulePosition: modulePosition,
+      pathLength: buttonList[buttonList.length - 1].position.y + 15,
+      current,
+      next,
+    };
+  }, [course, LESSON_SPACING, lessonState]);
 
   useGSAP(
     () => {
@@ -102,12 +172,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const handleOpenLesson = (lesson: LessonButton) => {
     setLesson(lesson);
     onLoaded && onLoaded(false);
-  };
-
-  const handleModulePosition = (position: any) => {
-    if (!modulePosition?.length) {
-      setModulePosition(prevState => position);
-    }
   };
 
   const handleZoom = (dir: number) => {
@@ -179,9 +243,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
             container={containerRef}
             purchaseType={purchaseType}
             onOpenLesson={handleOpenLesson}
-            modules={course.modules}
+            display={display}
             onReady={load => handleLoaded(load)}
-            onModulePosition={handleModulePosition}
           />
 
           <group position={[0, 300, -300]}>
@@ -194,7 +257,9 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
           <Preload all />
         </Suspense>
 
-        <ModuleAwards modulePosition={modulePosition} />
+        <ModuleAwards display={display} />
+
+        <CameraController />
       </Canvas>
     </div>
   );
