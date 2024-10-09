@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import React, { MutableRefObject, useRef, useState } from 'react';
-import { Center, Plane, Text3D, useTexture } from '@react-three/drei';
+import { Center, Plane, Text3D, useCamera, useTexture } from '@react-three/drei';
 
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { FretBoard } from './fretboard';
 import { FinalScene } from './finish-scene';
 import ModulePath, { ModuleButtonDisplay } from './module-path';
@@ -52,12 +52,17 @@ export const Landscape = ({
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
   const ref = React.useRef<THREE.Group>(null);
-  const camera = useRef<THREE.PerspectiveCamera | null>(null);
+  const { camera } = useThree();
 
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   const { contextSafe } = useGSAP(
     () => {
+      console.log('[Landscape] useGSAP');
+      console.log('[Landscape] useGSAP', !container?.current);
+      console.log('[Landscape] useGSAP', !display?.pathLength);
+      console.log('[Landscape] useGSAP', !camera);
+
       if (!container?.current) {
         return;
       }
@@ -66,7 +71,7 @@ export const Landscape = ({
         return;
       }
 
-      if (!camera.current) {
+      if (!camera) {
         return;
       }
 
@@ -80,12 +85,14 @@ export const Landscape = ({
 
       const mm = gsap.matchMedia();
 
+      console.log('[Landscape] useGSAP - setup scroll');
+
       mm.add('(max-width: 767px)', () => {
-        if (!camera.current) {
+        if (!camera) {
           return;
         }
-        tl.set(camera.current.position, { z: 400, y: 35 });
-        tl.to(camera.current.position, {
+        tl.set(camera.position, { z: 400, y: 35 });
+        tl.to(camera.position, {
           z: 120,
           y: 25,
           duration: 0.09,
@@ -94,10 +101,10 @@ export const Landscape = ({
       });
 
       mm.add('(min-width: 767px)', () => {
-        if (!camera.current) {
+        if (!camera) {
           return;
         }
-        tl.to(camera.current.position, {
+        tl.to(camera.position, {
           z: 90,
           y: 20,
           duration: 0.1,
@@ -106,7 +113,7 @@ export const Landscape = ({
       });
 
       if (!courseCompleted) {
-        tl.to(camera.current.position, {
+        tl.to(camera.position, {
           y: display.pathLength,
           duration: 1,
           ease: 'none',
@@ -129,7 +136,7 @@ export const Landscape = ({
           });
         }
       } else {
-        tl.to(camera.current.position, {
+        tl.to(camera.position, {
           y: display.pathLength + FINAL_SCENE,
           duration: 1,
           ease: 'none',
@@ -163,11 +170,11 @@ export const Landscape = ({
   );
 
   const handleOnLesson = contextSafe((lesson: LessonButton) => {
-    if (!camera.current) {
+    if (!camera) {
       return;
     }
 
-    gsap.to(camera.current?.position, { z: 100, duration: 1, ease: 'power2.in' });
+    gsap.to(camera.position, { z: 100, duration: 1, ease: 'power2.in' });
     onOpenLesson && onOpenLesson(lesson);
   });
 
@@ -192,10 +199,6 @@ export const Landscape = ({
 
     // Ensure you don't rotate too far (optional, to avoid flipping the camera)
     state.camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, state.camera.rotation.x)); // Clamp x-axis rotation to avoid flipping
-
-    if (!camera.current) {
-      camera.current = state.camera as THREE.PerspectiveCamera;
-    }
   });
 
   return (
