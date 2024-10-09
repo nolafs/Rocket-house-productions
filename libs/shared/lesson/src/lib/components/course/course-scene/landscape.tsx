@@ -249,18 +249,14 @@ export const Landscape = ({
           </Center>
         </group>
 
-        {display.pathLength && (
-          <>
-            <FretBoard
-              position={[0, 27.9, 0]}
-              lessonSpacing={lessonSpacing}
-              lessonNumber={display.buttons.length}
-              pathLength={display.pathLength}
-            />
+        <FretBoard
+          position={[0, 27.9, 0]}
+          lessonSpacing={lessonSpacing}
+          lessonNumber={display.buttons.length}
+          pathLength={display.pathLength}
+        />
 
-            {<FinalScene pathLength={display.pathLength} courseCompleted={courseCompleted} />}
-          </>
-        )}
+        <FinalScene pathLength={display.pathLength} courseCompleted={courseCompleted} />
 
         <ModulePath
           display={display}
