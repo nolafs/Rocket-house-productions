@@ -1,4 +1,4 @@
-import { Plane, useTexture } from '@react-three/drei';
+import { useTexture } from '@react-three/drei';
 import React, { useMemo, useRef } from 'react';
 
 import * as THREE from 'three';
@@ -14,7 +14,7 @@ interface FredBoardProps {
 const PLANE_HEIGHT = 12.8;
 
 export const FretBoard = ({ rotation, position, pathLength, lessonSpacing, lessonNumber, ...rest }: FredBoardProps) => {
-  const ref = useRef<any>();
+  const ref = useRef<THREE.Group | null>(null);
   const fred = useTexture('/images/course/fret.webp');
 
   const sectionNum = useMemo(
