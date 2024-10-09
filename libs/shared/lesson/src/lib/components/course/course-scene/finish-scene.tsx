@@ -15,7 +15,7 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 interface FinalSceneProps {
   position?: [number, number, number];
   rotation?: [number, number, number];
-  pathLength?: number;
+  pathLength?: number | null;
   courseCompleted?: boolean;
 }
 
@@ -60,6 +60,8 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
     },
     { scope: ref },
   );
+
+  if (!courseCompleted || !pathLength) return null;
 
   return (
     <group ref={ref}>

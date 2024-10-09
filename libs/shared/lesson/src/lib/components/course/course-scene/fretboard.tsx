@@ -6,7 +6,7 @@ import * as THREE from 'three';
 interface FredBoardProps {
   rotation?: [number, number, number];
   position?: [number, number, number];
-  pathLength?: number;
+  pathLength?: number | null;
   lessonNumber: number;
   lessonSpacing: number;
 }
