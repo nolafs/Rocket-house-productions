@@ -105,10 +105,8 @@ export const ModulePath: React.FC<{
         <group position={[0, 15, -24.6]}>{fullPath.length > 0 && <Path points={fullPath} opacity={1} />}</group>
       ) : (
         <>
-          <group position={[0, 15, -24.6]}>
-            {fullPath.length > 0 && <Path points={fullPath} opacity={0.0} color={'#8896AB'} />}
-          </group>
           <group position={[0, 15, -24.2]}>{completePath.length > 0 && <Path points={completePath} />}</group>
+
           <group position={[0, 15, -24.5]}>
             {unCompletePath.length > 0 && <Path points={unCompletePath} color={'#8896AB'} />}
           </group>
