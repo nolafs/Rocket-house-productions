@@ -160,10 +160,13 @@ export const Landscape = ({
         }
       }
 
+      console.log('[Landscape] useGSAP - setup scroll done');
+
       onReady && onReady(true);
 
       return () => {
         ScrollTrigger.killAll();
+        scrollTriggerRef.current = null;
       };
     },
     { scope: container, dependencies: [display, camera] },
