@@ -180,7 +180,7 @@ export const Landscape = ({
     }
 
     gsap.to(camera.position, {
-      z: 0,
+      z: -8,
       y: position.y + 10,
       duration: 1,
       ease: 'power2.in',
