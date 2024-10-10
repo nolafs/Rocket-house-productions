@@ -127,14 +127,7 @@ export const Landscape = ({
           end: `+=${display.pathLength * SCROLL_FACTOR} `,
         });
 
-        if (typeof window !== 'undefined') {
-          gsap.to(window, {
-            duration: 3,
-            scrollTo: { y: (currentLesson + window.innerHeight / 2 / SCROLL_FACTOR) * SCROLL_FACTOR },
-            delay: 3,
-            ease: 'Power2.inOut',
-          });
-        }
+        handleOnBackToCurrentLesson();
       } else {
         tl.to(camera.position, {
           y: display.pathLength + FINAL_SCENE,
@@ -182,12 +175,21 @@ export const Landscape = ({
   });
 
   const handleOnBackToCurrentLesson = contextSafe(() => {
+    if (!display.pathLength) {
+      return;
+    }
+
     if (typeof window !== 'undefined') {
-      const currentLesson = display.buttons[display.next || 0].position.y;
+      const currentLesson = (display.buttons[display.next || 0].position.y + 10) * SCROLL_FACTOR;
+      const scrollLength = display.pathLength * SCROLL_FACTOR;
+      const percentage = (currentLesson / scrollLength) * 100;
+
+      const positionFromPercent = (percentage / 100) * scrollLength;
+      const offset = window.innerHeight * 0.35;
 
       gsap.to(window, {
         duration: 3,
-        scrollTo: { y: (currentLesson + window.innerHeight / 2 / SCROLL_FACTOR) * SCROLL_FACTOR },
+        scrollTo: { y: positionFromPercent + offset },
         ease: 'Power2.inOut',
       });
     }
