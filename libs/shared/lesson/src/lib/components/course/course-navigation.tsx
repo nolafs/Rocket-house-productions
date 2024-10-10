@@ -186,7 +186,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     }
   };
 
-  //console.log('[CourseNavigation] RENDER 2');
+  console.log('[CourseNavigation] RENDER LOAD');
 
   if (courseProgression === null) {
     return (
