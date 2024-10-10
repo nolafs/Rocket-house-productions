@@ -155,6 +155,7 @@ export const Button3d = ({
       distanceSquaredY > thresholdSquared - thresholdSize && distanceSquaredY < thresholdSquared + thresholdSize;
 
     if (isCloseToCenter) {
+      console.log('[BUTTON] positionScreenSpace', positionScreenSpace);
       setShowTooltip(true);
     } else {
       setShowTooltip(false);
