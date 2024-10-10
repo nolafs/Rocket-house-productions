@@ -56,6 +56,10 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   useEffect(() => {
     setCourseProgression(courseState.getCourseProgress(course.id));
     console.log('[CourseNavigation] EFFECT 2');
+    return () => {
+      console.log('[CourseNavigation] EFFECT CLEANUP');
+      courseProgression && setCourseProgression(null);
+    };
   }, [courseState, lessonState]);
 
   const display = useMemo<ModuleButtonDisplay>(() => {
@@ -166,6 +170,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   );
 
   const handleLoaded = (load: boolean) => {
+    console.log('[CourseNavigation] handleLoaded', load);
     onLoaded && onLoaded(load);
   };
 
@@ -181,7 +186,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     }
   };
 
-  //console.log('[CourseNavigation] RENDER 2');
+  console.log('[CourseNavigation] RENDER LOAD');
 
   if (courseProgression === null) {
     return (
@@ -191,7 +196,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     );
   }
 
-  //console.log('[CourseNavigation] RENDER 3');
+  console.log('[CourseNavigation] RENDER FINAL');
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
