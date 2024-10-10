@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import React, { MutableRefObject, useRef, useState } from 'react';
-import { Center, Plane, Text3D, useCamera, useTexture } from '@react-three/drei';
+import React, { MutableRefObject, useRef } from 'react';
+import { Center, Plane, Text3D, useTexture } from '@react-three/drei';
 
 import { useFrame, useThree } from '@react-three/fiber';
 import { FretBoard } from './fretboard';
