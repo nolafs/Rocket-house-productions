@@ -169,8 +169,26 @@ export const Landscape = ({
     if (!camera) {
       return;
     }
+    const position = display.buttons[lesson.num - 1].position;
+    const target = new THREE.Vector3(position.x, position.y + 10, position.z);
+    const currentLookAt = new THREE.Vector3(camera.position.x, camera.position.y, -1000);
+    console.log('[Landscape] handleOnLesson', lesson);
 
-    gsap.to(camera.position, { z: 100, duration: 1, ease: 'power2.in' });
+    function updateLookAt() {
+      currentLookAt.lerp(target, 0.1); // Adjust the second parameter for smoothness
+      camera.lookAt(currentLookAt);
+    }
+
+    gsap.to(camera.position, {
+      z: -8,
+      y: position.y + 10,
+      duration: 1,
+      ease: 'power2.in',
+      onUpdate: () => {
+        updateLookAt(); // Update the look-at on each animation frame
+      },
+    });
+
     onOpenLesson && onOpenLesson(lesson);
   });
 
