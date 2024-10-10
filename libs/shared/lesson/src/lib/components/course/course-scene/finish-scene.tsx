@@ -61,7 +61,7 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
     { scope: ref },
   );
 
-  if (!courseCompleted || !pathLength) return null;
+  if (!pathLength) return null;
 
   return (
     <group ref={ref}>
