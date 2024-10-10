@@ -137,11 +137,12 @@ export const Button3d = ({
       return;
     }
 
-    const threshold = 1.5;
+    const threshold = 1;
     const thresholdSquared = threshold * threshold;
     const positionScreenSpace = button.current.position.clone().project(state.camera);
 
     const screenCenterY = 0;
+    const thesholdSize = 0.5;
 
     /*
     const isCloseToCenter =
@@ -150,7 +151,8 @@ export const Button3d = ({
     const distanceSquaredY = Math.pow(positionScreenSpace.y - screenCenterY, 2); // Using lengthSq() for squared length
 
     // Check if the squared distance is less than or equal to the threshold squared
-    const isCloseToCenter = distanceSquaredY > thresholdSquared - 0.2 && distanceSquaredY < thresholdSquared + 0.2;
+    const isCloseToCenter =
+      distanceSquaredY > thresholdSquared - thesholdSize && distanceSquaredY < thresholdSquared + thesholdSize;
 
     if (isCloseToCenter) {
       setShowTooltip(true);
