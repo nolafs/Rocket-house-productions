@@ -23,6 +23,7 @@ import { CameraController } from './course-scene/camera-control';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
 import { Module } from '@prisma/client';
+import { useClientMediaQuery } from '@rocket-house-productions/hooks';
 gsap.registerPlugin(SplitText);
 
 interface CourseNavigationProps {
@@ -45,8 +46,10 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const router = useRouter();
   const zoomDirectionRef = useRef<number>(0); // To store zoom direction
   const zoomControlRef = useRef<{ handleZoom: (dir: number) => void; handleReset: () => void } | null>(null); // Ref to call child functions
-
+  const isMobile = useClientMediaQuery('(max-width: 600px)');
   console.log('[CourseNavigation] RENDER 1');
+
+  // check if device is mobile
 
   useEffect(() => {
     courseState.calculateCourseProgress(course.id);
@@ -230,8 +233,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
           <SkyBox />
 
           <directionalLight
-            shadow-mapSize-width={1024 * 8}
-            shadow-mapSize-height={1024 * 8}
+            shadow-mapSize-width={1024 * (isMobile ? 2 : 8)}
+            shadow-mapSize-height={1024 * (isMobile ? 2 : 8)}
             shadow-camera-far={500}
             shadow-camera-left={-100}
             shadow-camera-right={100}
