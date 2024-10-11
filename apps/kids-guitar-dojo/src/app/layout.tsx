@@ -10,6 +10,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import { ClerkProvider } from '@clerk/nextjs';
 import { ConfettiProvider, ToastProvider } from '@rocket-house-productions/providers';
 import PlausibleProvider from 'next-plausible';
+import { CookieConsent } from '@rocket-house-productions/features';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -118,6 +119,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </body>
             {/* Analytics */}
             <GoogleAnalytics gaId={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
+            {/* Cookie consent */}
+            <CookieConsent />
           </html>
         </UIProvider>
       </ClerkProvider>
