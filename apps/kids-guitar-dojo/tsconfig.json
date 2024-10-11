@@ -16,10 +16,6 @@
         "name": "next"
       }
     ],
-    "types": [
-      "jest",
-      "node"
-    ]
   },
   "include": [
     "**/*.ts",

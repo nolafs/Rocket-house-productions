@@ -11,7 +11,7 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@clerk/nextjs": "^5.7.1",
+    "@clerk/nextjs": "^5.7.2",
     "@ducanh2912/next-pwa": "^10.2.9",
     "@gsap/react": "^2.1.1",
     "@hello-pangea/dnd": "^16.6.0",
@@ -51,6 +51,7 @@
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
+    "cookies-next": "^4.3.0",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.12",
     "file-saver": "^2.0.5",
@@ -123,6 +124,7 @@
     "@tailwindcss/line-clamp": "^0.4.4",
     "@testing-library/react": "15.0.6",
     "@types/file-saver": "^2",
+    "@types/gtag.js": "^0.0.20",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4",
     "@types/node": "18.16.9",
