@@ -1692,12 +1692,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ducanh2912/next-pwa@npm:^10.2.8":
-  version: 10.2.8
-  resolution: "@ducanh2912/next-pwa@npm:10.2.8"
+"@ducanh2912/next-pwa@npm:^10.2.9":
+  version: 10.2.9
+  resolution: "@ducanh2912/next-pwa@npm:10.2.9"
   dependencies:
     fast-glob: "npm:3.3.2"
-    semver: "npm:7.6.2"
+    semver: "npm:7.6.3"
     workbox-build: "npm:7.1.1"
     workbox-core: "npm:7.1.0"
     workbox-webpack-plugin: "npm:7.1.0"
@@ -1705,7 +1705,7 @@ __metadata:
   peerDependencies:
     next: ">=14.0.0"
     webpack: ">=5.9.0"
-  checksum: 10c0/7e02ab90a0a7d6e2d964a422e9a48920cc40a50dc3ecc3ac822f32a503206ca5ac1623a1135bdcb234c3057fb371c82a75450fd34c280a0bdfcd0e1e1ec440e6
+  checksum: 10c0/d164d28e3dad77216571648b5641edeb2ce57af5866c41ca4ad2d867f36291a7ddbf150f63b1808b03eef0da87bfc4ce02c6fd9851a7c269b10e047ad0c4e026
   languageName: node
   linkType: hard
 
@@ -5120,7 +5120,7 @@ __metadata:
   resolution: "@rocket-house-productions/source@workspace:."
   dependencies:
     "@clerk/nextjs": "npm:^5.7.1"
-    "@ducanh2912/next-pwa": "npm:^10.2.8"
+    "@ducanh2912/next-pwa": "npm:^10.2.9"
     "@gsap/react": "npm:^2.1.1"
     "@hello-pangea/dnd": "npm:^16.6.0"
     "@hookform/resolvers": "npm:^3.9.0"
@@ -18241,12 +18241,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.6.2":
-  version: 7.6.2
-  resolution: "semver@npm:7.6.2"
+"semver@npm:7.6.3, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0":
+  version: 7.6.3
+  resolution: "semver@npm:7.6.3"
   bin:
     semver: bin/semver.js
-  checksum: 10c0/97d3441e97ace8be4b1976433d1c32658f6afaff09f143e52c593bae7eef33de19e3e369c88bd985ce1042c6f441c80c6803078d1de2a9988080b66684cbb30c
+  checksum: 10c0/88f33e148b210c153873cb08cfe1e281d518aaa9a666d4d148add6560db5cd3c582f3a08ccb91f38d5f379ead256da9931234ed122057f40bb5766e65e58adaf
   languageName: node
   linkType: hard
 
@@ -18265,15 +18265,6 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 10c0/e3d79b609071caa78bcb6ce2ad81c7966a46a7431d9d58b8800cfa9cb6a63699b3899a0e4bcce36167a284578212d9ae6942b6929ba4aa5015c079a67751d42d
-  languageName: node
-  linkType: hard
-
-"semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.8, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0":
-  version: 7.6.3
-  resolution: "semver@npm:7.6.3"
-  bin:
-    semver: bin/semver.js
-  checksum: 10c0/88f33e148b210c153873cb08cfe1e281d518aaa9a666d4d148add6560db5cd3c582f3a08ccb91f38d5f379ead256da9931234ed122057f40bb5766e65e58adaf
   languageName: node
   linkType: hard
 
