@@ -7,8 +7,10 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Kids Guitar Dojo is a fun way to learn guitar for kids.',
     start_url: '/',
     display: 'standalone',
+    orientation: 'portrait',
     background_color: '#222337',
     theme_color: '#7c80ae',
+    lang: 'en',
     icons: [
       {
         src: '/favicon.ico',

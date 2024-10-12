@@ -79,6 +79,17 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
       {
         rel: 'icon',
         type: 'image/png',
+        sizes: '48x48',
+        url: '/favicon-48x48.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        url: '/favicon.svg',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
         sizes: '16x16',
         url: '/favicon.ico',
       },
@@ -88,6 +99,54 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
         url: '/apple-touch-icon.png',
       },
     ],
+    appleWebApp: {
+      startupImage: [
+        {
+          url: '/splash/apple-splash-640-1136.jpg',
+          media: '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)',
+        },
+        {
+          url: '/splash/apple-splash-750-1334.jpg',
+          media: '(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)',
+        },
+        {
+          url: '/splash/apple-splash-828-1792.jpg',
+          media: '(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)',
+        },
+        {
+          url: '/splash/apple-splash-1125-2436.jpg',
+          media: '(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)',
+        },
+        {
+          url: '/splash/apple-splash-1242-2208.jpg',
+          media: '(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)',
+        },
+        {
+          url: '/splash/apple-splash-1242-2688.jpg',
+          media: '(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)',
+        },
+        {
+          url: '/splash/apple-splash-1536-2048.jpg',
+          media:
+            '(min-device-width: 768px) and (max-device-width: 1024px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)',
+        },
+        {
+          url: '/splash/apple-splash-1668-2224.jpg',
+          media:
+            '(min-device-width: 834px) and (max-device-width: 1112px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)',
+        },
+        {
+          url: '/splash/apple-splash-1668-2388.jpg',
+          media:
+            '(min-device-width: 834px) and (max-device-width: 1194px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)',
+        },
+        {
+          url: '/splash/apple-splash-2048-2732.jpg',
+          media:
+            '(min-device-width: 1024px) and (max-device-width: 1366px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)',
+        },
+      ],
+    },
     robots: {
       index: true,
       follow: true,
