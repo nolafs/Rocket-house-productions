@@ -8,8 +8,6 @@ interface StripePricingProps {
 }
 
 export async function StripePricing({ productId, sales = false }: StripePricingProps) {
-  console.log('THIS BACK productId', productId);
-
   if (!productId) {
     return null;
   }

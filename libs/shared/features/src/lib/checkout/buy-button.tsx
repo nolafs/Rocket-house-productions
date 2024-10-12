@@ -17,7 +17,6 @@ export function BuyButton({ productId, courseId, type, mostPopular = false }: Bu
   const { setProductId, setCourseId, setType } = usePurchaseStore();
 
   const handleBuy = () => {
-    console.log('[BuyButton]', productId, courseId, type);
     setProductId(productId || null);
     setCourseId(courseId || null);
     setType(type);
