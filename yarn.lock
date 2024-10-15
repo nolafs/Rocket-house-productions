@@ -3695,6 +3695,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prismicio/client@npm:^7.10.1":
+  version: 7.11.0
+  resolution: "@prismicio/client@npm:7.11.0"
+  dependencies:
+    imgix-url-builder: "npm:^0.0.5"
+  checksum: 10c0/45fb2caaa305504411cbf11a218edc0e8d1977fdaebccdb77f50e43010e1543bf6341fc070143fb293cb4390558edc69527f06993873b6fc95403e8ade487680
+  languageName: node
+  linkType: hard
+
 "@prismicio/custom-types-client@npm:2.1.0":
   version: 2.1.0
   resolution: "@prismicio/custom-types-client@npm:2.1.0"
@@ -5139,7 +5148,7 @@ __metadata:
     "@prisma/client": "npm:^5.19.1"
     "@prisma/extension-accelerate": "npm:^1.1.0"
     "@prisma/nextjs-monorepo-workaround-plugin": "npm:^5.19.1"
-    "@prismicio/client": "npm:^7.6.0"
+    "@prismicio/client": "npm:^7.10.1"
     "@prismicio/next": "npm:^1.6.0"
     "@prismicio/react": "npm:^2.8.0"
     "@prismicio/slice-simulator-react": "npm:^0.2.3"
@@ -5203,7 +5212,7 @@ __metadata:
     eslint-plugin-react: "npm:7.32.2"
     eslint-plugin-react-hooks: "npm:4.6.0"
     file-saver: "npm:^2.0.5"
-    framer-motion: "npm:^11.3.17"
+    framer-motion: "npm:^11.11.8"
     gsap: ./gsap-bonus.tgz
     husky: "npm:^9.1.3"
     iconsax-react: "npm:^0.0.8"
@@ -5248,10 +5257,10 @@ __metadata:
     server-only: "npm:^0.0.1"
     sharp: "npm:^0.33.4"
     slice-machine-ui: "npm:^2.4.1"
-    stripe: "npm:^16.6.0"
-    svix: "npm:^1.28.0"
+    stripe: "npm:^17.2.0"
+    svix: "npm:^1.35.0"
     swiper: "npm:^11.1.9"
-    tailwind-merge: "npm:^2.4.0"
+    tailwind-merge: "npm:^2.5.4"
     tailwindcss: "npm:^3.4.7"
     tailwindcss-animate: "npm:^1.0.7"
     three: "npm:^0.168.0"
@@ -11528,9 +11537,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"framer-motion@npm:^11.3.17":
-  version: 11.3.21
-  resolution: "framer-motion@npm:11.3.21"
+"framer-motion@npm:^11.11.8":
+  version: 11.11.8
+  resolution: "framer-motion@npm:11.11.8"
   dependencies:
     tslib: "npm:^2.4.0"
   peerDependencies:
@@ -11544,7 +11553,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/47ea88207920800294159f20d89d217c0118cbe2f5b7c4f1204490a04ac379a60e4ba323bfb101f334155014ebf07b51ad70a4d67b0363043f9d1d00347b1b3b
+  checksum: 10c0/5294dbd7272f4958e9e567843d5d6bf226b42bfa605262e9a6ad68d44c5380e8073f61bad345db94372abfe5781407221be804608475fca37a870f7beb77b9c4
   languageName: node
   linkType: hard
 
@@ -19228,13 +19237,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:^16.6.0":
-  version: 16.6.0
-  resolution: "stripe@npm:16.6.0"
+"stripe@npm:^17.2.0":
+  version: 17.2.0
+  resolution: "stripe@npm:17.2.0"
   dependencies:
     "@types/node": "npm:>=8.1.0"
     qs: "npm:^6.11.0"
-  checksum: 10c0/c7e6237d6964fac0bc9c01a77b9b3a8fc5ae303ecde298c084f639524c896b39cc7158c6e4bf9c589a045afe864e0b93b6c8c25e0ba921b8c6adc6df7ff08c33
+  checksum: 10c0/cf3c9894faa4ce564d63a6144e5d4472c7cefdf5ca8bf0bb601e741dbc7c5d9950866e75d263ac44bbdc69b51031348546c79b7b46be803a075523344f4d5a3f
   languageName: node
   linkType: hard
 
@@ -19421,16 +19430,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svix@npm:^1.28.0":
-  version: 1.28.0
-  resolution: "svix@npm:1.28.0"
+"svix@npm:^1.35.0":
+  version: 1.37.0
+  resolution: "svix@npm:1.37.0"
   dependencies:
     "@stablelib/base64": "npm:^1.0.0"
     es6-promise: "npm:^4.2.4"
     fast-sha256: "npm:^1.3.0"
     svix-fetch: "npm:^3.0.0"
     url-parse: "npm:^1.4.3"
-  checksum: 10c0/8eef4a06e693bc63d5aecfacb4b6914c5e8f4e6523fbae60cebe719d4c075bebec3bdd9daafede199e2408874fc11b70d09c95ed9ecdf1d0e529805300ac9362
+  checksum: 10c0/ea6dd950f016d32f6a7b776692a9a784b8cf7fa1f6974b8c82108f8bf976d5e1745393f7fcffa4bab283d25e303899eddfe95c29c16fa7c6c4203711fa014f7a
   languageName: node
   linkType: hard
 
@@ -19460,10 +19469,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "tailwind-merge@npm:2.4.0"
-  checksum: 10c0/77bd20647d08db78a0bdf7b57d4b904479aee7727f44570f8834d62a1aa56f42d7ae68ac959e3d610c9f188aa164eeefb6c43df4f0c8bb7cfc3418e1575bfecb
+"tailwind-merge@npm:^2.5.4":
+  version: 2.5.4
+  resolution: "tailwind-merge@npm:2.5.4"
+  checksum: 10c0/6c3d2a1d44344f373859f005e6366f0dbd7f66131d330a51dbe823dab08f71c388b2efcbb2b6a2170ca469581d27079c25cd40c234ca1356c4893ae99c2febb3
   languageName: node
   linkType: hard
 
