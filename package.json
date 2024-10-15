@@ -93,7 +93,7 @@
     "stripe": "^16.6.0",
     "svix": "^1.28.0",
     "swiper": "^11.1.9",
-    "tailwind-merge": "^2.4.0",
+    "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.168.0",
     "three.meshline": "^1.4.0",
