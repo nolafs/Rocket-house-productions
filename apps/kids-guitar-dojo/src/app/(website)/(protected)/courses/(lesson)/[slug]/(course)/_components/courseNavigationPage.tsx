@@ -1,10 +1,5 @@
 'use client';
-import {
-  CourseQuickNavigation,
-  CourseLeaderboard,
-  LessonCourseProgression,
-  ModuleAttachments,
-} from '@rocket-house-productions/lesson';
+import { CourseQuickNavigation, LessonCourseProgression, ModuleAttachments } from '@rocket-house-productions/lesson';
 import { Course } from '@prisma/client';
 import React, { useRef } from 'react';
 import dynamic from 'next/dynamic';
@@ -14,6 +9,11 @@ import { useGSAP } from '@gsap/react';
 const CourseNavigation = dynamic(
   () => import('@rocket-house-productions/lesson').then(module => module.CourseNavigation),
   { ssr: false }, // Optional: Disable SSR if necessary
+);
+
+const CourseLeaderboard = dynamic(
+  () => import('@rocket-house-productions/lesson').then(module => module.CourseLeaderboard),
+  { ssr: false },
 );
 
 interface CourseNavigationPageProps {
