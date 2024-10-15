@@ -55,7 +55,7 @@
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.12",
     "file-saver": "^2.0.5",
-    "framer-motion": "^11.11.8",
+    "framer-motion": "^11.3.17",
     "gsap": "./gsap-bonus.tgz",
     "iconsax-react": "^0.0.8",
     "ismounted": "^0.1.8",
