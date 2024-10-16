@@ -193,6 +193,7 @@ model Questionary {
   title       String
   position    Int
   isPublished Boolean @default(false)
+  imageUrl    String? @db.Text
 
   lessonId String
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
@@ -212,11 +213,15 @@ model Question {
   title       String
   position    Int
   isPublished Boolean @default(false)
+  type        String? @default("text")
+
+  imageUrl    String? @db.Text
 
   questionaryId String
   questionary   Questionary @relation(fields: [questionaryId], references: [id], onDelete: Cascade)
 
   correctAnswer Boolean
+  boardCordinates String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()

@@ -12,6 +12,7 @@ import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
 import AnswersForm from './_components/answers-form';
 import QuestionPointsForm from './_components/question-points-form';
+import QuestionImageForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/question-image-form';
 
 const QuestionnaireIdPage = async ({
   params,
@@ -85,6 +86,13 @@ const QuestionnaireIdPage = async ({
                 <h2 className="text-xl">Customize your Questionanaire</h2>
               </div>
               <QuestionTitleForm
+                initialData={questionary}
+                courseId={params.courseId}
+                moduleId={params.moduleId}
+                lessonId={params.lessonId}
+                questionanaireId={params.questionanaireId}
+              />
+              <QuestionImageForm
                 initialData={questionary}
                 courseId={params.courseId}
                 moduleId={params.moduleId}
