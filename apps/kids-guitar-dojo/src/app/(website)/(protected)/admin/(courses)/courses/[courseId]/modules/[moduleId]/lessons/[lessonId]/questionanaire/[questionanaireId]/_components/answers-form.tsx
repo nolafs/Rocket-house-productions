@@ -26,6 +26,9 @@ import {
   FormLabel,
 } from '@rocket-house-productions/shadcn-ui';
 import { AnswersList } from './answers-list';
+import AnswerImageForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answer-image-form';
+import { FileImageUpload } from '@rocket-house-productions/features';
+import AnswerFretboardForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answer-fretboard-form';
 
 interface AnswersFormProps {
   initialData: Questionary & { questions: Question[] };
@@ -37,6 +40,9 @@ interface AnswersFormProps {
 
 const formSchema = z.object({
   title: z.string().min(1),
+  imageUrl: z.string().optional(),
+  type: z.string().optional(),
+  boardCordinates: z.string().optional(),
   correctAnswer: z.boolean(),
 });
 
@@ -45,6 +51,7 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
 
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   const toggleCreating = () => {
     setIsCreating(current => !current);
@@ -54,6 +61,7 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
+      type: initialData.type || 'text',
       correctAnswer: false,
     },
   });
@@ -68,6 +76,7 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
       );
       toast.success('Answer created');
       toggleCreating();
+      setImageUrl(null);
       router.refresh();
     } catch (error) {
       toast.error('Something went wrong');
@@ -122,6 +131,18 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control as any}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input type={'hidden'} defaultValue={initialData.type || 'text'} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control as any}
               name="title"
               render={({ field }) => (
                 <FormItem>
@@ -132,19 +153,61 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control as any}
-              name="correctAnswer"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                  <FormLabel className="ml-3 font-normal">Correct Answer</FormLabel>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+            {initialData?.type === 'images' ||
+              (initialData?.type === 'fretboard' &&
+                (imageUrl === null ? (
+                  <FormField
+                    control={form.control as any}
+                    name="imageUrl"
+                    render={({ field }) => (
+                      <>
+                        <FileImageUpload
+                          onChange={file => {
+                            if (file) {
+                              //set form control
+                              field.onChange(file);
+                              field.value = file;
+                              setImageUrl(prevState => file);
+                            }
+                          }}
+                        />
+                        <div className="text-muted-foreground mt-4 text-xs">1:1 aspect ratio recommended</div>
+                      </>
+                    )}
+                  />
+                ) : (
+                  imageUrl && <img src={imageUrl} className="h-24 w-24" alt={'upload'} />
+                )))}
+
+            {initialData?.type === 'fretboard' ? (
+              <FormField
+                control={form.control as any}
+                name="boardCordinates"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <AnswerFretboardForm rows={11} cols={6} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            ) : (
+              <FormField
+                control={form.control as any}
+                name="correctAnswer"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                    <FormLabel className="ml-3 font-normal">Correct Answer</FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
             <Button disabled={!isValid || isSubmitting} type="submit">
               Create
             </Button>
@@ -156,6 +219,7 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
           {!initialData.questions.length && 'No lessons quiz'}
           <AnswersList
             onReorder={onReorder}
+            type={initialData.type}
             items={initialData.questions || []}
             courseId={courseId}
             moduleId={moduleId}

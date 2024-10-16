@@ -12,7 +12,8 @@ import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
 import AnswersForm from './_components/answers-form';
 import QuestionPointsForm from './_components/question-points-form';
-import QuestionImageForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/question-image-form';
+import QuestionImageForm from './_components/question-image-form';
+import QuestionTypeForm from './_components/question-type-form';
 
 const QuestionnaireIdPage = async ({
   params,
@@ -43,9 +44,7 @@ const QuestionnaireIdPage = async ({
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
-
   const completionText = `(${completedFields}/${totalFields})`;
-
   const isComplete = requiredFields.every(Boolean);
 
   return (
@@ -86,6 +85,13 @@ const QuestionnaireIdPage = async ({
                 <h2 className="text-xl">Customize your Questionanaire</h2>
               </div>
               <QuestionTitleForm
+                initialData={questionary}
+                courseId={params.courseId}
+                moduleId={params.moduleId}
+                lessonId={params.lessonId}
+                questionanaireId={params.questionanaireId}
+              />
+              <QuestionTypeForm
                 initialData={questionary}
                 courseId={params.courseId}
                 moduleId={params.moduleId}

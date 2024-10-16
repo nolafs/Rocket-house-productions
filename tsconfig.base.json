@@ -16,10 +16,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ],
+    "typeRoots": ["./node_modules/@types", "./types"],
     "paths": {
       "@/*": ["apps/kids-guitar-dojo/src/*"],
       "@assets/*": ["apps/kids-guitar-dojo/src/assets/*"],
