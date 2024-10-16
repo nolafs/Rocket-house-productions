@@ -36,15 +36,15 @@ export async function DELETE(
       return new NextResponse('Not found', { status: 404 });
     }
 
-    const deletedQuestionary = await db.questionary.delete({
+    const deletedAnswerId = await db.question.delete({
       where: {
-        id: params.questionanaireId,
+        id: params.answerId,
       },
     });
 
-    return NextResponse.json(deletedQuestionary);
+    return NextResponse.json(deletedAnswerId);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID]', error);
+    console.log('[COURSES_COURSE-ID_deletedAnswerId]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

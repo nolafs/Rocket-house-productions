@@ -51,6 +51,19 @@ export const LessonQuestionanaireList = ({ items, onReorder, onEdit }: LessonLis
     onReorder(bulkUpdateData);
   };
 
+  const typeToLabel = (type: string) => {
+    switch (type) {
+      case 'text':
+        return 'Text';
+      case 'images':
+        return 'Images';
+      case 'fretboard':
+        return 'Fretboard';
+      default:
+        return 'Text';
+    }
+  };
+
   if (!isMounted) {
     return null;
   }
@@ -80,6 +93,9 @@ export const LessonQuestionanaireList = ({ items, onReorder, onEdit }: LessonLis
                     </div>
                     {questionary.title}
                     <div className="ml-auto flex items-center gap-x-2 pr-2">
+                      <Badge className={cn('bg-slate-500', questionary.isPublished && 'bg-sky-700')}>
+                        {typeToLabel(questionary.type || 'text')}
+                      </Badge>
                       <Badge className={cn('bg-slate-500', questionary.isPublished && 'bg-sky-700')}>
                         {questionary.isPublished ? 'Published' : 'Draft'}
                       </Badge>
