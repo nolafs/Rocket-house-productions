@@ -71,6 +71,9 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
     if (slideIndex !== questionaries.length - 1) {
       setSlideIndex(prevState => prevState + 1);
       setIsCompleted(false);
+
+      const slidesItem: HTMLDivElement[] = gsap.utils.toArray('.slide > .item ');
+
       gsap.to('.slide', {
         xPercent: '-=100',
         duration: 0.4,
@@ -80,6 +83,8 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
           }
         },
       });
+
+      gsap.to('.inner', { duration: 0.5, height: slidesItem[slideIndex + 1].offsetHeight });
     }
   });
 
@@ -103,7 +108,7 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
     <>
       <div className={'relative isolate pb-20'}>
         <div ref={ref} className={'relative flex flex-1 overflow-hidden'}>
-          <div className={'inner relative h-full w-full overflow-hidden'}>
+          <div className={'inner relative h-full w-full'}>
             {questionaries.map(questionary => (
               <div key={questionary.id} className={'slide absolute h-full w-full'}>
                 <QuizListItem

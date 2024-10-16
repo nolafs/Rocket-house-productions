@@ -27,7 +27,10 @@ export function LessonHeader({ lessonId, url = '/courses', hasProgress = true }:
         }>
         <Link
           href={url}
-          className={cn(buttonVariants({ variant: 'lesson' }), hasProgress ? 'hidden md:flex' : 'flex w-full')}>
+          className={cn(
+            buttonVariants({ variant: 'lesson' }),
+            hasProgress ? 'hidden md:flex' : 'flex w-full md:w-auto',
+          )}>
           <i>
             <ArrowBigLeftIcon className={'h-4 w-4'} />{' '}
           </i>{' '}

@@ -11,7 +11,6 @@ export const uploadImageAction = async (formData: FormData) => {
   const validated = UploadImageSchema.safeParse(formDataObject);
 
   if (!validated.success) {
-    console.log('[uploadImageAction] error', validated.error);
     return {
       status: 'error',
       validationErrors: validated?.error.issues,

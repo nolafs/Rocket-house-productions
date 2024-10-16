@@ -86,6 +86,11 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
 
   return (
     <div ref={ref} className={'item relative isolate'}>
+      {questionary?.imageUrl && (
+        <div className={'mb-5 w-full'}>
+          <img src={questionary.imageUrl} alt="question" className="object-fit w-full rounded-md" />
+        </div>
+      )}
       <h2 className={'!font-lesson-body mb-5 text-xl font-bold'}>{questionary.title}</h2>
       <Form {...form}>
         <form onChangeCapture={form.handleSubmit(onSubmit)} className="space-y-8">

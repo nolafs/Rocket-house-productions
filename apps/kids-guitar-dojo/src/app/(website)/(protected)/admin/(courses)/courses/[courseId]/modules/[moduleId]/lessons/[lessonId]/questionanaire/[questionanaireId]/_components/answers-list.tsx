@@ -5,7 +5,7 @@ import { Question } from '@prisma/client';
 
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
-import { BookCheck, BookDashed, Grip, MoreHorizontal, Pencil } from 'lucide-react';
+import { BookCheck, BookDashed, Grip, MoreHorizontal, Pencil, XCircleIcon } from 'lucide-react';
 
 import cn from 'classnames';
 import {
@@ -26,6 +26,7 @@ import { useRouter } from 'next/navigation';
 
 interface AnswersListProps {
   items: Question[];
+  type?: string | null;
   onReorder: (updateData: { id: string; position: number }[]) => void;
   courseId: string;
   moduleId: string;
@@ -33,13 +34,15 @@ interface AnswersListProps {
   questionanaireId: string;
 }
 
-const formSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().min(1),
-  correctAnswer: z.boolean(),
-});
-
-export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, lessonId, courseId }: AnswersListProps) => {
+export const AnswersList = ({
+  items,
+  type,
+  onReorder,
+  questionanaireId,
+  moduleId,
+  lessonId,
+  courseId,
+}: AnswersListProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [question, setQuestion] = useState(items);
   const [editing, setEditing] = useState<boolean | null>(null);
@@ -71,6 +74,23 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
         );
         toast.success('Question published');
       }
+
+      router.refresh();
+    } catch (error) {
+      toast.error('Something went wrong');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onDelete = async (questionId: string) => {
+    try {
+      setIsLoading(true);
+
+      await axios.delete(
+        `/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire/${questionanaireId}/answers/${questionId}`,
+      );
+      toast.success('Question deleted');
 
       router.refresh();
     } catch (error) {
@@ -135,6 +155,9 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
                     ) : (
                       <AnswerInlineForm
                         title={answer.title}
+                        imageUrl={answer.imageUrl}
+                        type={type}
+                        boardCordinates={answer.boardCordinates}
                         correctAnswer={answer.correctAnswer}
                         courseId={courseId}
                         moduleId={moduleId}
@@ -170,6 +193,15 @@ export const AnswersList = ({ items, onReorder, questionanaireId, moduleId, less
                                 <Pencil className="mr-2 h-4 w-4" />
                                 Edit
                               </DropdownMenuItem>
+                              {!answer.isPublished && (
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    onDelete(answer.id);
+                                  }}>
+                                  <XCircleIcon className="mr-2 h-4 w-4" />
+                                  Delete
+                                </DropdownMenuItem>
+                              )}
                               {!answer.isPublished ? (
                                 <DropdownMenuItem
                                   onClick={() => {
