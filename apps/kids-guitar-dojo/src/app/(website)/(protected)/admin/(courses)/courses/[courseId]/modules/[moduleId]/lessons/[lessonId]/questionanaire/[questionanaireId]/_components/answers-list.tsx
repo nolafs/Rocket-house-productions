@@ -157,6 +157,7 @@ export const AnswersList = ({
                         title={answer.title}
                         imageUrl={answer.imageUrl}
                         type={type}
+                        boardCordinates={answer.boardCordinates}
                         correctAnswer={answer.correctAnswer}
                         courseId={courseId}
                         moduleId={moduleId}

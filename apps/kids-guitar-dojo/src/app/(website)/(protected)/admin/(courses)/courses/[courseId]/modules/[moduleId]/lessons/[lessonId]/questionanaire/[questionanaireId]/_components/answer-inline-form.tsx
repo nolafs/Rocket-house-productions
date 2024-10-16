@@ -15,19 +15,21 @@ import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import AnswerImageForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answer-image-form';
+import AnswerImageForm from './answer-image-form';
 import cn from 'classnames';
-import AnswerFretboardForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answer-fretboard-form';
+import AnswerFretboardForm from './answer-fretboard-form';
 
 const formSchema = z.object({
   title: z.string().min(1),
   imageUrl: z.string().optional(),
+  boardCordinates: z.string().optional(),
   correctAnswer: z.boolean(),
 });
 
 interface AnswerInlineFormProps {
   title: string;
   imageUrl?: string | null;
+  boardCordinates?: string | null;
   type?: string | null;
   correctAnswer: boolean;
   courseId: string;
@@ -41,6 +43,7 @@ interface AnswerInlineFormProps {
 export function AnswerInlineForm({
   title,
   imageUrl = null,
+  boardCordinates = null,
   type = null,
   correctAnswer,
   answerId,
@@ -56,6 +59,7 @@ export function AnswerInlineForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: title,
+      boardCordinates: boardCordinates || '',
       correctAnswer: correctAnswer,
     },
   });
@@ -124,7 +128,7 @@ export function AnswerInlineForm({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <AnswerFretboardForm rows={11} cols={6} />
+                    <AnswerFretboardForm rows={11} cols={6} {...field} />
                   </FormControl>
                 </FormItem>
               )}
