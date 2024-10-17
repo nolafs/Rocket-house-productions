@@ -11,14 +11,14 @@ import cn from 'classnames';
 import { Badge } from '@rocket-house-productions/shadcn-ui';
 
 interface LessonListProps {
-  items: Questionary[];
+  items: Questionary[] | null;
   onReorder: (updateData: { id: string; position: number }[]) => void;
   onEdit: (id: string) => void;
 }
 
 export const LessonQuestionanaireList = ({ items, onReorder, onEdit }: LessonListProps) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [questionanaire, setQuestionanaire] = useState(items);
+  const [questionanaire, setQuestionanaire] = useState<Questionary[] | null>(null);
 
   useEffect(() => {
     // To avoid hydration issues between server side rendering & client side
@@ -26,14 +26,19 @@ export const LessonQuestionanaireList = ({ items, onReorder, onEdit }: LessonLis
   }, []);
 
   useEffect(() => {
-    setQuestionanaire(items);
+    // sort items by position
+    if (items) {
+      items.sort((a, b) => a.position - b.position);
+      setQuestionanaire(items);
+    }
   }, [items]);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
-
+    if (questionanaire === null) return;
     const items = Array.from(questionanaire);
     const [reorderedItem] = items.splice(result.source.index, 1);
+
     items.splice(result.destination.index, 0, reorderedItem);
 
     const startIndex = Math.min(result.source.index, result.destination.index);
@@ -73,7 +78,7 @@ export const LessonQuestionanaireList = ({ items, onReorder, onEdit }: LessonLis
       <Droppable droppableId="lessons">
         {provided => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
-            {questionanaire.map((questionary, index) => (
+            {questionanaire?.map((questionary, index) => (
               <Draggable key={questionary.id} draggableId={questionary.id} index={index}>
                 {provided => (
                   <div
