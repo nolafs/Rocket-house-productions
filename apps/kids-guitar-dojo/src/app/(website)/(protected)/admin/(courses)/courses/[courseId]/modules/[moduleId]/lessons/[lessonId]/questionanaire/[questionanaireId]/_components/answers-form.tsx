@@ -26,9 +26,8 @@ import {
   FormLabel,
 } from '@rocket-house-productions/shadcn-ui';
 import { AnswersList } from './answers-list';
-import AnswerImageForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answer-image-form';
 import { FileImageUpload } from '@rocket-house-productions/features';
-import AnswerFretboardForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/questionanaire/[questionanaireId]/_components/answer-fretboard-form';
+import AnswerFretboardForm from './answer-fretboard-form';
 
 interface AnswersFormProps {
   initialData: Questionary & { questions: Question[] };
@@ -154,31 +153,30 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
               )}
             />
 
-            {initialData?.type === 'images' ||
-              (initialData?.type === 'fretboard' &&
-                (imageUrl === null ? (
-                  <FormField
-                    control={form.control as any}
-                    name="imageUrl"
-                    render={({ field }) => (
-                      <>
-                        <FileImageUpload
-                          onChange={file => {
-                            if (file) {
-                              //set form control
-                              field.onChange(file);
-                              field.value = file;
-                              setImageUrl(prevState => file);
-                            }
-                          }}
-                        />
-                        <div className="text-muted-foreground mt-4 text-xs">1:1 aspect ratio recommended</div>
-                      </>
-                    )}
-                  />
-                ) : (
-                  imageUrl && <img src={imageUrl} className="h-24 w-24" alt={'upload'} />
-                )))}
+            {(initialData?.type === 'images' || initialData?.type === 'fretboard') &&
+              (imageUrl === null ? (
+                <FormField
+                  control={form.control as any}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <>
+                      <FileImageUpload
+                        onChange={file => {
+                          if (file) {
+                            //set form control
+                            field.onChange(file);
+                            field.value = file;
+                            setImageUrl(prevState => file);
+                          }
+                        }}
+                      />
+                      <div className="text-muted-foreground mt-4 text-xs">1:1 aspect ratio recommended</div>
+                    </>
+                  )}
+                />
+              ) : (
+                imageUrl && <img src={imageUrl} className="h-24 w-24" alt={'upload'} />
+              ))}
 
             {initialData?.type === 'fretboard' ? (
               <FormField

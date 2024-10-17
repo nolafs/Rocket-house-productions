@@ -32,7 +32,11 @@ const QuestionnaireIdPage = async ({
       lessonId: params.lessonId,
     },
     include: {
-      questions: true,
+      questions: {
+        orderBy: {
+          position: 'asc',
+        },
+      },
     },
   });
 
