@@ -93,7 +93,7 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
           <img src={questionary.imageUrl} alt="question" className="object-fit w-full rounded-md" />
         </div>
       )}
-      <h2 className={'!font-lesson-body mb-5 text-xl font-bold'}>{questionary.title}</h2>
+      <h2 className={'!font-lesson-body mb-5 text-2xl font-bold'}>{questionary.title}</h2>
       <Form {...form}>
         <form onChangeCapture={form.handleSubmit(onSubmit)} className={'space-y-8'}>
           <FormField
@@ -102,14 +102,14 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
             name="items"
             render={() => {
               return (
-                <FormItem className={cn(questionary.type === 'images' && 'flex flex-row flex-wrap gap-2 space-y-0')}>
+                <FormItem className={'grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-5 lg:gap-10'}>
                   {questions.map(item => (
                     <>
                       {item.type === 'text' && (
-                        <QuestionCheckbox item={item} form={form.control} isSelected={isSelected} />
+                        <QuestionCheckbox key={item.id} item={item} form={form.control} isSelected={isSelected} />
                       )}
                       {item.type === 'images' && (
-                        <QuestionImageCheckbox item={item} form={form.control} isSelected={isSelected} />
+                        <QuestionImageCheckbox key={item.id} item={item} form={form.control} isSelected={isSelected} />
                       )}
                     </>
                   ))}
