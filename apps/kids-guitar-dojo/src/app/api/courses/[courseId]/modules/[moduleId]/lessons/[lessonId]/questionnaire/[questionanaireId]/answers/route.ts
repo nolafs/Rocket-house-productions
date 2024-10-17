@@ -8,7 +8,7 @@ export async function POST(
 ) {
   try {
     const { userId } = auth();
-    const { title, correctAnswer } = await req.json();
+    const { title, correctAnswer, imageUrl, type, boardCordinates } = await req.json();
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -71,6 +71,9 @@ export async function POST(
         title,
         questionaryId: params.questionanaireId,
         position: newPosition,
+        type: type || 'text',
+        imageUrl: imageUrl || null,
+        boardCordinates: boardCordinates || null,
         correctAnswer: correctAnswer || false,
       },
     });

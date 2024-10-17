@@ -24,6 +24,13 @@ import {
   FormItem,
   FormMessage,
   Input,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
 } from '@rocket-house-productions/shadcn-ui';
 
 interface LessonsQuestionanaireFormProps {
@@ -35,6 +42,7 @@ interface LessonsQuestionanaireFormProps {
 
 const formSchema = z.object({
   title: z.string().min(1),
+  type: z.string().min(1),
 });
 
 const LessonQuestionanaireForm = ({ initialData, moduleId, courseId, lessonId }: LessonsQuestionanaireFormProps) => {
@@ -51,6 +59,7 @@ const LessonQuestionanaireForm = ({ initialData, moduleId, courseId, lessonId }:
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
+      type: '',
     },
   });
 
@@ -72,7 +81,7 @@ const LessonQuestionanaireForm = ({ initialData, moduleId, courseId, lessonId }:
       setIsUpdating(true);
 
       const response = await axios.put(
-        `/api/courses/${courseId}/modules/${moduleId}/lessons//${lessonId}/questionanaire/reorder`,
+        `/api/courses/${courseId}/modules/${moduleId}/lessons//${lessonId}/questionnaire/reorder`,
         {
           list: updateData,
         },
@@ -129,6 +138,31 @@ const LessonQuestionanaireForm = ({ initialData, moduleId, courseId, lessonId }:
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control as any}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Type</SelectLabel>
+                          <SelectItem value="text">Text</SelectItem>
+                          <SelectItem value="images">Images</SelectItem>
+                          <SelectItem value="fretboard">Fretboard</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <Button disabled={!isValid || isSubmitting} type="submit">
               Create
             </Button>

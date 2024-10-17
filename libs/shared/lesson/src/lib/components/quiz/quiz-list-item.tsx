@@ -1,13 +1,15 @@
 'use client';
 import { Question, Questionary } from '@prisma/client';
-import { Checkbox, Form, FormControl, FormField, FormItem, FormLabel } from '@rocket-house-productions/shadcn-ui';
+import { Form, FormField, FormItem } from '@rocket-house-productions/shadcn-ui';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
-import cn from 'classnames';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import QuestionCheckbox from './question-checkbox';
+import QuestionImageCheckbox from './question-image-checkbox';
+import cn from 'classnames';
 
 gsap.registerPlugin(useGSAP);
 
@@ -86,51 +88,30 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
 
   return (
     <div ref={ref} className={'item relative isolate'}>
-      <h2 className={'!font-lesson-body mb-5 text-xl font-bold'}>{questionary.title}</h2>
+      {questionary?.imageUrl && (
+        <div className={'mb-5 w-full'}>
+          <img src={questionary.imageUrl} alt="question" className="object-fit w-full rounded-md" />
+        </div>
+      )}
+      <h2 className={'!font-lesson-body mb-5 text-2xl font-bold'}>{questionary.title}</h2>
       <Form {...form}>
-        <form onChangeCapture={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onChangeCapture={form.handleSubmit(onSubmit)} className={'space-y-8'}>
           <FormField
             control={form.control}
             disabled={isSelected !== null}
             name="items"
             render={() => {
               return (
-                <FormItem>
+                <FormItem className={'grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-5 lg:gap-10'}>
                   {questions.map(item => (
-                    <FormField
-                      key={item.id}
-                      control={form.control}
-                      name="items"
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={item.id}
-                            className={cn(
-                              'flex flex-row items-start space-x-3 space-y-0 rounded-md p-3',
-                              isSelected?.correctAnswer && isSelected?.id === item.id
-                                ? 'correct bg-green-600 text-white transition-all'
-                                : '',
-                              !isSelected?.correctAnswer && isSelected?.id === item.id
-                                ? 'incorrect bg-red-600 text-white transition-all'
-                                : '',
-                              isSelected?.id !== item.id ? 'unselected' : '',
-                            )}>
-                            <FormControl>
-                              <Checkbox
-                                disabled={isSelected !== null}
-                                checked={field.value?.includes(item.id)}
-                                onCheckedChange={checked => {
-                                  return checked
-                                    ? field.onChange([...field.value, item.id])
-                                    : field.onChange(field.value?.filter(value => value !== item.id));
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="text-lg !font-bold !opacity-100">{item.title}</FormLabel>
-                          </FormItem>
-                        );
-                      }}
-                    />
+                    <>
+                      {item.type === 'text' && (
+                        <QuestionCheckbox key={item.id} item={item} form={form.control} isSelected={isSelected} />
+                      )}
+                      {item.type === 'images' && (
+                        <QuestionImageCheckbox key={item.id} item={item} form={form.control} isSelected={isSelected} />
+                      )}
+                    </>
                   ))}
                 </FormItem>
               );
