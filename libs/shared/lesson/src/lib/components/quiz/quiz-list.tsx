@@ -33,19 +33,30 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
     () => {
       const slidesItem = gsap.utils.toArray('.slide > .item ');
       const slides = gsap.utils.toArray('.slide');
-      // loop slides find largest height
-      let largestHeight = 0;
 
-      slides.forEach((slide: any, idx) => {
-        gsap.set(slide, { xPercent: idx * 100 });
+      const observer = new ResizeObserver(() => {
+        // Update the height when any item changes size
+        let largestHeight = 0;
+
+        slides.forEach((slide: any, idx) => {
+          gsap.set(slide, { xPercent: idx * 100 });
+        });
+
+        slidesItem.forEach((slide: any) => {
+          if (slide.offsetHeight > largestHeight) {
+            largestHeight = slide.offsetHeight;
+          }
+        });
+
+        // Set the height of the inner container to the largest item
+        gsap.set('.inner', { height: largestHeight });
       });
 
-      slidesItem.forEach((slide: any) => {
-        if (slide.offsetHeight > largestHeight) {
-          largestHeight = slide.offsetHeight;
-        }
-      });
-      gsap.set('.inner', { height: largestHeight });
+      slidesItem.forEach((slide: any) => observer.observe(slide));
+
+      return () => {
+        observer.disconnect();
+      };
     },
     { scope: ref },
   );

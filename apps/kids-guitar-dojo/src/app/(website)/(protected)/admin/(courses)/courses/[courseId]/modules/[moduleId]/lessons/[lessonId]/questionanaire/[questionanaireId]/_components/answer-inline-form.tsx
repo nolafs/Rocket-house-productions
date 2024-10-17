@@ -102,24 +102,23 @@ export function AnswerInlineForm({
             )}
           />
 
-          {type === 'images' ||
-            (type === 'fretboard' && (
-              <FormField
-                control={form.control as any}
-                name="imageUrl"
-                render={({ field }) => (
-                  <AnswerImageForm
-                    imageUrl={imageUrl || null}
-                    onChange={file => {
-                      if (file) {
-                        field.onChange({ imageUrl: file });
-                        field.value = file;
-                      }
-                    }}
-                  />
-                )}
-              />
-            ))}
+          {(type === 'images' || type === 'fretboard') && (
+            <FormField
+              control={form.control as any}
+              name="imageUrl"
+              render={({ field }) => (
+                <AnswerImageForm
+                  imageUrl={imageUrl || null}
+                  onChange={file => {
+                    if (file) {
+                      field.onChange({ imageUrl: file });
+                      field.value = file;
+                    }
+                  }}
+                />
+              )}
+            />
+          )}
 
           {type === 'fretboard' ? (
             <FormField
