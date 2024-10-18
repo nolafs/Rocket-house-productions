@@ -9,7 +9,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import QuestionCheckbox from './question-checkbox';
 import QuestionImageCheckbox from './question-image-checkbox';
-import cn from 'classnames';
+import Fretboard from './fretboard/fretboard';
 
 gsap.registerPlugin(useGSAP);
 
@@ -30,7 +30,7 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
   const [isSelected, setIsSelected] = useState<Question | null>(null);
   const [correctAnswerNumber, setCorrectAnswerNumber] = useState(0);
   const [inCorrectAnswerNumber, setInCorrectAnswerNumber] = useState(0);
-  const ref = useRef<any>();
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -100,19 +100,31 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
             control={form.control}
             disabled={isSelected !== null}
             name="items"
-            render={() => {
+            render={({ field }) => {
               return (
-                <FormItem className={'grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-5 lg:gap-10'}>
-                  {questions.map(item => (
-                    <>
-                      {item.type === 'text' && (
-                        <QuestionCheckbox key={item.id} item={item} form={form.control} isSelected={isSelected} />
-                      )}
-                      {item.type === 'images' && (
-                        <QuestionImageCheckbox key={item.id} item={item} form={form.control} isSelected={isSelected} />
-                      )}
-                    </>
-                  ))}
+                <FormItem className={'w-full'}>
+                  {(questionary.type === 'text' || questionary.type === 'images') && (
+                    <div className={'grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-5 lg:gap-10'}>
+                      {questions.map(item => (
+                        <div key={item.id}>
+                          {item.type === 'text' && (
+                            <QuestionCheckbox key={item.id} item={item} form={form.control} isSelected={isSelected} />
+                          )}
+                          {item.type === 'images' && (
+                            <QuestionImageCheckbox
+                              key={item.id}
+                              item={item}
+                              form={form.control}
+                              isSelected={isSelected}
+                            />
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {questionary.type === 'fretboard' && (
+                    <Fretboard questionary={questionary} isSelected={isSelected} {...field} />
+                  )}
                 </FormItem>
               );
             }}

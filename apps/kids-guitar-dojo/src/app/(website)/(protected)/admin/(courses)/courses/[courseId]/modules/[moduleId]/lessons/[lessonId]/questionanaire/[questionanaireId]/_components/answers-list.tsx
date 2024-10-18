@@ -171,9 +171,12 @@ export const AnswersList = ({
                     <div className="ml-auto flex items-center gap-x-2 pr-2">
                       {!editing || currentSelected !== answer.id ? (
                         <>
-                          <Badge className={cn('bg-slate-500', answer.correctAnswer && 'bg-green-700')}>
-                            {answer.correctAnswer ? 'Correct' : 'Incorrect'}
-                          </Badge>
+                          {answer.type !== 'fretboard' && (
+                            <Badge className={cn('bg-slate-500', answer.correctAnswer && 'bg-green-700')}>
+                              {answer.correctAnswer ? 'Correct' : 'Incorrect'}
+                            </Badge>
+                          )}
+
                           <Badge className={cn('bg-slate-500', answer.isPublished && 'bg-sky-700')}>
                             {answer.isPublished ? 'Published' : 'Draft'}
                           </Badge>
