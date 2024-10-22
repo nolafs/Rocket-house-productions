@@ -17,6 +17,8 @@ const AnswerFretboardForm = forwardRef<GridSelectorHandle, GridSelectorProps>(
 
     // Initialize selectedCells based on value prop
     useEffect(() => {
+      console.log('AnswerFretboardForm value', value);
+
       if (value) {
         setSelectedCells(value.split(',').filter(Boolean));
       } else {

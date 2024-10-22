@@ -14,13 +14,17 @@ interface ImageFormProps {
 const AnswerImageForm = ({ imageUrl, onChange }: ImageFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing(current => !current);
+  const toggleEdit = () => {
+    setIsEditing(current => !current);
+  };
+
+  console.log('AnswerImageForm', imageUrl);
 
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">
         Image
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button onClick={toggleEdit} variant="ghost" type={'button'}>
           {isEditing && <>Cancel</>}
           {!isEditing && !imageUrl && (
             <>

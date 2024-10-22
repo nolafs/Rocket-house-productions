@@ -15,6 +15,7 @@ export const FileImageUpload = ({ onChange }: FileUploadProps) => {
 
   const onFileUpload = async (files: File[]) => {
     const formData = new FormData();
+
     const fileObjects = files.map(file => {
       formData.append('imageFiles', file, file.name);
     });
