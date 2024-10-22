@@ -103,7 +103,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
     );
 
     return (
-      <div ref={fretboardRef} className={'relative isolate flex w-full flex-col space-y-10 bg-amber-300/50'}>
+      <div ref={fretboardRef} className={'relative isolate flex w-full flex-col space-y-10'}>
         <div id={'drag-items'} className={'relative flex w-full space-x-2 bg-amber-700'}>
           {/* items */}
 
@@ -120,9 +120,40 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
           ))}
         </div>
 
-        <div id={'fretboard-grid'} className={'w-full'}>
-          <div className={'grid grid-cols-6 gap-5'}>
+        <div
+          id={'fretboard-grid'}
+          className={
+            'relative mx-auto w-full max-w-[320px] border-t-8 border-[#f2dc0cff] bg-gradient-to-r from-[#54311bff] via-[#7c4e2dff] to-[#54311bff] shadow-2xl'
+          }>
+          <div className={'grid grid-cols-6 gap-x-0 gap-y-2'}>
             <FretboardGrid rows={rows} cols={cols} />
+          </div>
+          <div
+            className={'z-1 pointer-events-none absolute left-0 top-0 grid h-full w-full grid-cols-6 gap-x-0 gap-y-0'}>
+            <div className={'string px-[22px]'}>
+              <div
+                className={
+                  'inlay h-full w-full bg-gradient-to-r from-[#eccaa5ff] via-[#eccaa5ff] via-50% to-[#b0967bff] shadow-sm'
+                }
+              />
+            </div>
+            <div className={'string px-[22.5px]'}>
+              <div
+                className={'inlay h-full w-full bg-gradient-to-r from-[#f0cda7ff] from-50% to-[#c3a688ff] shadow-sm'}
+              />
+            </div>
+            <div className={'string px-[23px]'}>
+              <div className={'inlay h-full w-full bg-[#efcab0ff] shadow-sm'} />
+            </div>
+            <div className={'string px-[23.5px]'}>
+              <div className={'inlay h-full w-full bg-[#eed8c3ff] shadow-sm'} />
+            </div>
+            <div className={'string px-[24px]'}>
+              <div className={'inlay h-full w-full bg-[#edededff] shadow-sm'} />
+            </div>
+            <div className={'string px-[24.5px]'}>
+              <div className={'inlay h-full w-full bg-[#fcfcfcff] shadow-sm'} />
+            </div>
           </div>
         </div>
       </div>
@@ -137,13 +168,8 @@ const FretboardGrid = ({ rows, cols }: { rows: number; cols: number }) => {
     for (let col = 1; col <= cols; col++) {
       const cell = `${String.fromCharCode(96 + col)}-${row}`; // 'a-1', 'b-1', etc.
       grid.push(
-        <div
-          key={cell}
-          id={cell}
-          className={`line-height-10 relative h-20 w-full cursor-pointer border border-black text-center`}>
-          <div className={'dropzone z-0 h-full w-full'} data-value={cell}>
-            {cell}
-          </div>
+        <div key={cell} id={cell} className={`relative h-32 w-full cursor-pointer border-b-4 border-[#f2dcd3ff] px-5`}>
+          <div className={'dropzone z-0 h-full w-full'} data-value={cell}></div>
         </div>,
       );
     }

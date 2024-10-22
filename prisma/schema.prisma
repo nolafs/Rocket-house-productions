@@ -279,6 +279,7 @@ model Purchase {
   amount          Int
 
   type            String?
+  category        String?
 
   billingAddress String?
 
