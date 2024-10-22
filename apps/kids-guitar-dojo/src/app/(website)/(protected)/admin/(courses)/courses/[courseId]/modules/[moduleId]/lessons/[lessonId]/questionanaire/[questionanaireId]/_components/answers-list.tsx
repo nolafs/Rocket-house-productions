@@ -16,9 +16,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@rocket-house-productions/shadcn-ui';
-import * as z from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import AnswerInlineForm from './answer-inline-form';
@@ -60,6 +57,8 @@ export const AnswersList = ({
   }, [items]);
 
   const onPublish = async (isPublished: boolean, questionId: string) => {
+    console.log('[AnswersList] isPublished', isPublished);
+
     try {
       setIsLoading(true);
 
@@ -84,6 +83,8 @@ export const AnswersList = ({
   };
 
   const onDelete = async (questionId: string) => {
+    console.log('[AnswersList] onDelete', questionId);
+
     try {
       setIsLoading(true);
 
@@ -101,6 +102,8 @@ export const AnswersList = ({
   };
 
   const onDragEnd = (result: DropResult) => {
+    console.log('[AnswersList] onDragEnd', result);
+
     if (!result.destination) return;
 
     const items = Array.from(question);

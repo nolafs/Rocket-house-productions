@@ -1,3 +1,4 @@
+'use client';
 import {
   Button,
   Checkbox,
@@ -67,6 +68,8 @@ export function AnswerInlineForm({
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log('[AnswerInlineForm] onSubmit', values);
+
     try {
       await axios.patch(
         `/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire/${questionanaireId}/answers/${answerId}`,
@@ -84,7 +87,7 @@ export function AnswerInlineForm({
   return (
     <Form {...(form as any)}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={() => form.handleSubmit(onSubmit)}
         className={cn(
           type === 'images' || type === 'fretboard' ? 'my-4 flex w-full flex-col gap-4' : 'my-4 flex w-full gap-4',
         )}>
@@ -106,17 +109,7 @@ export function AnswerInlineForm({
             <FormField
               control={form.control as any}
               name="imageUrl"
-              render={({ field }) => (
-                <AnswerImageForm
-                  imageUrl={imageUrl || null}
-                  onChange={file => {
-                    if (file) {
-                      field.onChange({ imageUrl: file });
-                      field.value = file;
-                    }
-                  }}
-                />
-              )}
+              render={({ field }) => <AnswerImageForm imageUrl={imageUrl || null} onChange={file => null} />}
             />
           )}
 
