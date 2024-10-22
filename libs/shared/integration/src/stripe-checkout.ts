@@ -38,6 +38,7 @@ export const stripeCheckout = async (productId: string, purchaseId: string | nul
       metadata: {
         userId: userId,
         courseId: metadata?.course_id,
+        type: metadata?.type,
         purchaseId: purchaseId,
       },
       payment_intent_data: {
@@ -45,6 +46,7 @@ export const stripeCheckout = async (productId: string, purchaseId: string | nul
           userId: userId,
           courseId: metadata?.course_id,
           purchaseId: purchaseId,
+          type: metadata?.type,
         },
       },
     });
