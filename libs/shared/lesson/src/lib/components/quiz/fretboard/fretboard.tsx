@@ -29,7 +29,6 @@ interface DroppedItem {
 const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
   ({ questionary, value, onChange, isSelected }, ref) => {
     const fretboardRef = useRef<HTMLDivElement | null>(null);
-    const [ready, setReady] = useState(false);
     const [droppedItems, setDroppedItems] = useState<DroppedItem[]>([]);
 
     const rows = 7;
@@ -51,6 +50,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         //check if all are correct
         const allCorrect = droppedItems.every(item => item.correct);
         console.log('All correct', allCorrect);
+        onChange(allCorrect);
       }
     }, [droppedItems]);
 
@@ -142,7 +142,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
           });
         }
       },
-      { scope: fretboardRef, dependencies: [ready] },
+      { scope: fretboardRef, dependencies: [] },
     );
 
     return (
