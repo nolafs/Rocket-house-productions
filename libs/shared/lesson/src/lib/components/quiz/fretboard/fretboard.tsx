@@ -1,4 +1,4 @@
-import { forwardRef, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Question, Questionary } from '@prisma/client';
 import Image from 'next/image';
 import gsap from 'gsap';
@@ -21,17 +21,42 @@ interface FretboardHandleProps {
   getValues: any;
 }
 
+interface DroppedItem {
+  id: string;
+  correct: boolean;
+}
+
 const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
   ({ questionary, value, onChange, isSelected }, ref) => {
     const fretboardRef = useRef<HTMLDivElement | null>(null);
     const [ready, setReady] = useState(false);
+    const [droppedItems, setDroppedItems] = useState<DroppedItem[]>([]);
 
     const rows = 7;
     const cols = 6;
 
+    // Function to add an item
+    const handleDrop = (item: DroppedItem) => {
+      setDroppedItems(prevItems => [...prevItems, item]);
+    };
+
+    // Function to remove an item
+    const handleRemove = (idToRemove: string) => {
+      setDroppedItems(prevItems => prevItems.filter(item => item.id !== idToRemove));
+    };
+
+    useEffect(() => {
+      if (questionary.questions.length === droppedItems.length) {
+        console.log('All items dropped');
+        //check if all are correct
+        const allCorrect = droppedItems.every(item => item.correct);
+        console.log('All correct', allCorrect);
+      }
+    }, [droppedItems]);
+
     const { contextSafe } = useGSAP(
       () => {
-        const dragItems: HTMLDivElement[] = gsap.utils.toArray('#drag-items > div');
+        const dragItems: HTMLDivElement[] = gsap.utils.toArray('#drag-items .drag-item ');
         const dropZones: HTMLDivElement[] = gsap.utils.toArray('.dropzone');
 
         if (dragItems.length === 0) return;
@@ -61,6 +86,10 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
             },
             inertia: true,
             type: 'x,y',
+            onDragStart: function (event) {
+              this.target.classList.add('!border-0');
+              this.target.classList.add('!shadow-none');
+            },
             onRelease: function (event) {
               let current: { correct: boolean; x: string; y: string } | null = null;
 
@@ -73,25 +102,39 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
 
                   // check answer array includes arrays in it correctAnswerArray
 
-                  const correct = answerArray.includes(dropAnswer);
+                  const correct: boolean = answerArray.includes(dropAnswer);
 
-                  dropZone.classList.add(correct ? 'bg-green-500/20' : 'bg-red-500/20');
+                  this.target.classList.add(correct ? 'bg-green-500/20' : 'bg-red-500/20');
 
                   current = {
                     correct: correct,
-                    x: '+=' + (dropZone.getBoundingClientRect().left - this.target.getBoundingClientRect().left),
-                    y: '+=' + (dropZone.getBoundingClientRect().top - this.target.getBoundingClientRect().top),
+                    x:
+                      '+=' +
+                      (dropZone.getBoundingClientRect().left +
+                        dropZone.getBoundingClientRect().width / 2 -
+                        this.target.getBoundingClientRect().left -
+                        this.target.getBoundingClientRect().width / 2),
+                    y:
+                      '+=' +
+                      (dropZone.getBoundingClientRect().top +
+                        dropZone.getBoundingClientRect().height / 2 -
+                        this.target.getBoundingClientRect().top -
+                        this.target.getBoundingClientRect().height / 2),
                   };
                 }
               });
 
               if (current !== null) {
                 console.log('hit', current);
-                const { x, y } = current as { x: string; y: string };
+                const { x, y, correct } = current as { x: string; y: string; correct: boolean };
                 gsap.to(this.target, { x: x, y: y });
+                handleDrop({ id: this.target.id, correct: correct });
               } else {
                 console.log('not hit');
                 gsap.to(this.target, { x: 0, y: 0 });
+                this.target.classList.remove('!border-0');
+                this.target.classList.remove('!shadow-none');
+                handleRemove(this.target.id);
               }
 
               current = null;
@@ -103,23 +146,29 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
     );
 
     return (
-      <div ref={fretboardRef} className={'relative isolate flex w-full flex-col space-y-10'}>
-        <div id={'drag-items'} className={'relative flex w-full space-x-2 bg-amber-700'}>
+      <div ref={fretboardRef} className={'relative isolate flex w-full flex-col'}>
+        <div id={'drag-items'} className={'relative flex w-full space-x-2 rounded border border-amber-700 p-3'}>
           {/* items */}
-
           {questionary.questions.map((item, index) => (
-            <div
-              data-value={item.boardCordinates}
-              id={`item-${item.id}`}
-              key={item.id}
-              className={'z-50 h-10 w-10 border border-black'}>
-              <div id={`item-${item.id}-image`}>
-                {item?.imageUrl && <Image src={item?.imageUrl} alt={item.title} width={50} height={50} />}
+            <div key={item.id} className={'relative'}>
+              <div
+                data-value={item.boardCordinates}
+                id={`item-${item.id}`}
+                className={
+                  'drag-item absolute left-0 top-0 z-50 h-10 w-10 rounded border border-black/20 p-1 shadow-sm shadow-black/20'
+                }>
+                <div id={`item-${item.id}-image`}>
+                  {item?.imageUrl && <Image src={item?.imageUrl} alt={item.title} width={50} height={50} />}
+                </div>
+              </div>
+              <div className={'z-50 h-10 w-10 rounded border border-black/50 p-1 opacity-25 grayscale'}>
+                <div>{item?.imageUrl && <Image src={item?.imageUrl} alt={item.title} width={50} height={50} />}</div>
               </div>
             </div>
           ))}
         </div>
-
+        {/* Fretboard */}
+        <div className={'mb-10 mt-2 text-sm opacity-40'}>Drag & Drop items to the correct location on fretboard</div>
         <div
           id={'fretboard-grid'}
           className={
