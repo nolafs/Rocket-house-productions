@@ -133,26 +133,44 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
             <div className={'string px-[22px]'}>
               <div
                 className={
-                  'inlay h-full w-full bg-gradient-to-r from-[#eccaa5ff] via-[#eccaa5ff] via-50% to-[#b0967bff] shadow-sm'
+                  'inlay h-full w-full bg-gradient-to-r from-[#eccaa5ff] via-[#b0967bff] via-50% to-[#b0967bff] shadow-sm'
                 }
               />
             </div>
             <div className={'string px-[22.5px]'}>
               <div
-                className={'inlay h-full w-full bg-gradient-to-r from-[#f0cda7ff] from-50% to-[#c3a688ff] shadow-sm'}
+                className={
+                  'inlay h-full w-full bg-gradient-to-r from-[#f0cda7ff] from-50% via-[#c3a688ff] to-[#c3a688ff] shadow-sm'
+                }
               />
             </div>
             <div className={'string px-[23px]'}>
-              <div className={'inlay h-full w-full bg-[#efcab0ff] shadow-sm'} />
+              <div
+                className={
+                  'inlay h-full w-full bg-gradient-to-r from-[#eecab0ff] from-50% via-[#be9f8cff] to-[#be9f8cff] shadow-sm'
+                }
+              />
             </div>
             <div className={'string px-[23.5px]'}>
-              <div className={'inlay h-full w-full bg-[#eed8c3ff] shadow-sm'} />
+              <div
+                className={
+                  'inlay h-full w-full bg-gradient-to-r from-[#eed8c3ff] from-50% via-[#bcab9bff] to-[#bcab9bff] shadow-sm'
+                }
+              />
             </div>
             <div className={'string px-[24px]'}>
-              <div className={'inlay h-full w-full bg-[#edededff] shadow-sm'} />
+              <div
+                className={
+                  'inlay h-full w-full bg-gradient-to-r from-[#ecececff] from-50% via-[#8e8e8eff] to-[#8e8e8eff] shadow-sm'
+                }
+              />
             </div>
             <div className={'string px-[24.5px]'}>
-              <div className={'inlay h-full w-full bg-[#fcfcfcff] shadow-sm'} />
+              <div
+                className={
+                  'inlay h-full w-full bg-gradient-to-r from-[#fcfcfcff] from-50% via-[#a2a2a2ff] to-[#a2a2a2ff] shadow-sm'
+                }
+              />
             </div>
           </div>
         </div>
