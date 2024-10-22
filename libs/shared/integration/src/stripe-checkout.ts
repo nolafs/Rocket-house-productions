@@ -35,6 +35,11 @@ export const stripeCheckout = async (productId: string, purchaseId: string | nul
       ],
       success_url: `${process.env.BASE_URL}/courses/success`,
       cancel_url: `${process.env.BASE_URL}`,
+      metadata: {
+        userId: userId,
+        courseId: metadata?.course_id,
+        purchaseId: purchaseId,
+      },
       payment_intent_data: {
         metadata: {
           userId: userId,

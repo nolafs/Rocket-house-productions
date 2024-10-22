@@ -4,7 +4,6 @@ import Stripe from 'stripe';
 import { db, stripe } from '@rocket-house-productions/integration';
 import { clerkClient } from '@clerk/nextjs/server';
 import { MailerList } from '@rocket-house-productions/actions/server';
-import { Account } from '@prisma/client';
 
 export async function POST(req: Request, res: Response) {
   let event: Stripe.Event;
