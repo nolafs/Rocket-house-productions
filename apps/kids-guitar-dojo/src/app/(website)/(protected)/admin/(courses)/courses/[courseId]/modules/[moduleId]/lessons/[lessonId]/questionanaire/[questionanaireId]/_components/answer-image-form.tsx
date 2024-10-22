@@ -13,6 +13,7 @@ interface ImageFormProps {
 
 const AnswerImageForm = ({ imageUrl, onChange }: ImageFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [image, setImage] = useState<string | null>(imageUrl);
 
   const toggleEdit = () => {
     setIsEditing(current => !current);
@@ -41,13 +42,13 @@ const AnswerImageForm = ({ imageUrl, onChange }: ImageFormProps) => {
         </Button>
       </div>
       {!isEditing &&
-        (!imageUrl ? (
+        (!image ? (
           <div className="flex h-60 items-center justify-center rounded-md bg-slate-200">
             <ImageIcon className="h-10 w-10 text-slate-500" />
           </div>
         ) : (
           <div className="relative h-60 w-full">
-            <Image alt="Upload" fill className="rounded-md object-cover" src={imageUrl} />
+            <Image alt="Upload" fill className="rounded-md object-cover" src={image} />
           </div>
         ))}
       {isEditing && (
@@ -56,6 +57,8 @@ const AnswerImageForm = ({ imageUrl, onChange }: ImageFormProps) => {
             onChange={file => {
               if (file) {
                 onChange(file);
+                setImage(file);
+                toggleEdit();
               }
             }}
           />
