@@ -42,41 +42,13 @@ export async function POST(req: Request, res: Response) {
 
     try {
       switch (event.type) {
-        case 'checkout.session.completed':
+        case 'checkout.session.completed': {
           data = event.data.object as Stripe.Checkout.Session;
-          console.log(`💰 CheckoutSession status: ${data.payment_status}`);
-          break;
-        case 'checkout.session.async_payment_failed':
-          data = event.data.object as Stripe.Checkout.Session;
-          console.log(`❌ CheckoutSession status: ${data.payment_status}`);
-          break;
-        case 'checkout.session.async_payment_succeeded':
-          data = event.data.object as Stripe.Checkout.Session;
-          console.log(`💰 CheckoutSession status: ${data.payment_status}`);
-          break;
-        case 'checkout.session.expired':
-          data = event.data.object as Stripe.Checkout.Session;
-          //await cancelBooking(data.metadata.id);
-          console.log(`❌ CheckoutSession status: ${data.payment_status}`);
-          break;
-        case 'payment_intent.payment_failed':
-          data = event.data.object as Stripe.PaymentIntent;
-          //await cancelBooking(data.metadata.id);
-          console.log(`❌ Payment failed: ${data.last_payment_error?.message}`);
-          break;
-        case 'payment_intent.succeeded':
-          data = event.data.object as Stripe.PaymentIntent;
-          console.log(`💰 PaymentIntent status: ${data.status}`);
-          break;
-        case 'charge.failed':
-          data = event.data.object as Stripe.Charge;
-          //await cancelBooking(data.metadata.id);
-          console.log(`❌ Charge status: ${data.status}`);
-          break;
-        case 'charge.succeeded': {
-          data = event.data.object as Stripe.Charge;
-          console.log(`💰 Charge status: ${data.status}`);
-          console.log('data', data);
+          console.log(`💰 CheckoutSession Completed status: ${data.payment_status}`);
+
+          if (!data.metadata || !data.metadata.userId) {
+            throw new Error('User ID is missing from metadata');
+          }
 
           const account = await db.account.findUnique({
             where: {
@@ -84,7 +56,7 @@ export async function POST(req: Request, res: Response) {
             },
           });
 
-          if (!account) {
+          if (!account || !account.id) {
             throw new Error('Account not found');
           }
 
@@ -116,9 +88,13 @@ export async function POST(req: Request, res: Response) {
                 },
                 data: {
                   stripeChargeId: data?.id,
-                  amount: data.amount,
+                  amount: data.amount_subtotal || 0,
                   type: 'charge',
-                  billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
+                  billingAddress: JSON.stringify(
+                    (data?.shipping_details?.address as Stripe.Address) ||
+                      (data?.customer_details?.address as Stripe.Address) ||
+                      null,
+                  ),
                 },
               });
             } else {
@@ -128,9 +104,13 @@ export async function POST(req: Request, res: Response) {
                   courseId: data.metadata.courseId,
                   childId: data.metadata.childId,
                   stripeChargeId: data?.id,
-                  amount: data.amount,
+                  amount: data.amount_subtotal || 0,
                   type: 'charge',
-                  billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
+                  billingAddress: JSON.stringify(
+                    (data?.shipping_details?.address as Stripe.Address) ||
+                      (data?.customer_details?.address as Stripe.Address) ||
+                      null,
+                  ),
                 },
               });
             }
@@ -140,9 +120,13 @@ export async function POST(req: Request, res: Response) {
                 accountId: account?.id as string,
                 courseId: data.metadata.courseId,
                 stripeChargeId: data?.id,
-                amount: data.amount,
+                amount: data.amount_subtotal || 0,
                 type: 'charge',
-                billingAddress: JSON.stringify(data.billing_details.address as Stripe.Address),
+                billingAddress: JSON.stringify(
+                  (data?.shipping_details?.address as Stripe.Address) ||
+                    (data?.customer_details?.address as Stripe.Address) ||
+                    null,
+                ),
               },
             });
           }
@@ -170,6 +154,37 @@ export async function POST(req: Request, res: Response) {
           console.log(`💰 Charge status: ${data.status}`);
           break;
         }
+        case 'checkout.session.async_payment_failed':
+          data = event.data.object as Stripe.Checkout.Session;
+          console.log(`❌ CheckoutSession status: ${data.payment_status}`);
+          break;
+        case 'checkout.session.async_payment_succeeded':
+          data = event.data.object as Stripe.Checkout.Session;
+          console.log(`💰 CheckoutSession async_payment_succeeded status: ${data.payment_status}`);
+          break;
+        case 'checkout.session.expired':
+          data = event.data.object as Stripe.Checkout.Session;
+          //await cancelBooking(data.metadata.id);
+          console.log(`❌ CheckoutSession status: ${data.payment_status}`);
+          break;
+        case 'payment_intent.payment_failed':
+          data = event.data.object as Stripe.PaymentIntent;
+          //await cancelBooking(data.metadata.id);
+          console.log(`❌ Payment failed: ${data.last_payment_error?.message}`);
+          break;
+        case 'payment_intent.succeeded':
+          data = event.data.object as Stripe.PaymentIntent;
+          console.log(`💰 PaymentIntent status: ${data.status}`);
+          break;
+        case 'charge.failed':
+          data = event.data.object as Stripe.Charge;
+          //await cancelBooking(data.metadata.id);
+          console.log(`❌ Charge status: ${data.status}`);
+          break;
+        case 'charge.succeeded':
+          data = event.data.object as Stripe.Charge;
+          console.log(`💰 Charge status: ${data.status}`);
+          break;
         case 'invoice.paid':
           data = event.data.object as Stripe.Invoice;
           console.log(`💰 Invoice status: ${data.id}`);
