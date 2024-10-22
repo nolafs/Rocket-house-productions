@@ -90,6 +90,7 @@ export async function POST(req: Request, res: Response) {
                   stripeChargeId: data?.id,
                   amount: data.amount_subtotal || 0,
                   type: 'charge',
+                  category: data.metadata.type || null,
                   billingAddress: JSON.stringify(
                     (data?.shipping_details?.address as Stripe.Address) ||
                       (data?.customer_details?.address as Stripe.Address) ||
@@ -106,6 +107,7 @@ export async function POST(req: Request, res: Response) {
                   stripeChargeId: data?.id,
                   amount: data.amount_subtotal || 0,
                   type: 'charge',
+                  category: data.metadata.type || null,
                   billingAddress: JSON.stringify(
                     (data?.shipping_details?.address as Stripe.Address) ||
                       (data?.customer_details?.address as Stripe.Address) ||
@@ -121,6 +123,7 @@ export async function POST(req: Request, res: Response) {
                 courseId: data.metadata.courseId,
                 stripeChargeId: data?.id,
                 amount: data.amount_subtotal || 0,
+                category: data.metadata.type || null,
                 type: 'charge',
                 billingAddress: JSON.stringify(
                   (data?.shipping_details?.address as Stripe.Address) ||
