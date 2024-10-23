@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import Quiz from './quiz';
 import QuizQuestionResult from './quiz-question-result';
+import Fretboard from './fretboard/fretboard';
 
 gsap.registerPlugin(useGSAP);
 
@@ -33,30 +34,19 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
     () => {
       const slidesItem = gsap.utils.toArray('.slide > .item ');
       const slides = gsap.utils.toArray('.slide');
+      // loop slides find largest height
+      let largestHeight = 0;
 
-      const observer = new ResizeObserver(() => {
-        // Update the height when any item changes size
-        let largestHeight = 0;
-
-        slides.forEach((slide: any, idx) => {
-          gsap.set(slide, { xPercent: idx * 100 });
-        });
-
-        slidesItem.forEach((slide: any) => {
-          if (slide.offsetHeight > largestHeight) {
-            largestHeight = slide.offsetHeight;
-          }
-        });
-
-        // Set the height of the inner container to the largest item
-        gsap.set('.inner', { height: largestHeight });
+      slides.forEach((slide: any, idx) => {
+        gsap.set(slide, { xPercent: idx * 100 });
       });
 
-      slidesItem.forEach((slide: any) => observer.observe(slide));
-
-      return () => {
-        observer.disconnect();
-      };
+      slidesItem.forEach((slide: any) => {
+        if (slide.offsetHeight > largestHeight) {
+          largestHeight = slide.offsetHeight;
+        }
+      });
+      gsap.set('.inner', { height: largestHeight });
     },
     { scope: ref },
   );
@@ -82,9 +72,6 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
     if (slideIndex !== questionaries.length - 1) {
       setSlideIndex(prevState => prevState + 1);
       setIsCompleted(false);
-
-      const slidesItem: HTMLDivElement[] = gsap.utils.toArray('.slide > .item ');
-
       gsap.to('.slide', {
         xPercent: '-=100',
         duration: 0.4,
@@ -94,8 +81,6 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
           }
         },
       });
-
-      gsap.to('.inner', { duration: 0.5, height: slidesItem[slideIndex + 1].offsetHeight });
     }
   });
 
@@ -119,20 +104,39 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
     <>
       <div className={'relative isolate pb-20'}>
         <div ref={ref} className={'relative flex flex-1 overflow-hidden'}>
-          <div className={'inner relative h-full w-full'}>
-            {questionaries.map(questionary => (
-              <div key={questionary.id} className={'slide absolute h-full w-full'}>
-                <QuizListItem
-                  questionary={questionary}
-                  onQuestionCompleted={onQuestionCompleted}
-                  onUpdateScore={(correct, incorrect, current) => {
-                    console.log('onUpdateScore');
-                    setCurrentCorrect(current);
-                    setCorrectCount(prevState => prevState + correct);
-                  }}
-                />
-              </div>
-            ))}
+          <div className={'inner relative h-full w-full overflow-hidden'}>
+            {questionaries.map(questionary => {
+              switch (questionary.type) {
+                case 'fretboard': {
+                  return (
+                    <div key={questionary.id} className={'slide absolute h-full w-full'}>
+                      <Fretboard
+                        questionary={questionary}
+                        onQuestionCompleted={onQuestionCompleted}
+                        onUpdateScore={(correct, current) => {
+                          setCurrentCorrect(current);
+                          setCorrectCount(prevState => prevState + correct);
+                        }}
+                      />
+                    </div>
+                  );
+                }
+                default: {
+                  return (
+                    <div key={questionary.id} className={'slide absolute h-full w-full'}>
+                      <QuizListItem
+                        questionary={questionary}
+                        onQuestionCompleted={onQuestionCompleted}
+                        onUpdateScore={(correct, incorrect, current) => {
+                          setCurrentCorrect(current);
+                          setCorrectCount(prevState => prevState + correct);
+                        }}
+                      />
+                    </div>
+                  );
+                }
+              }
+            })}
           </div>
         </div>
         <QuizQuestionResult show={isCompleted} isCorrect={currentCorrect} />

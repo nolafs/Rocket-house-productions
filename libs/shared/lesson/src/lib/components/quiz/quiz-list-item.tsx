@@ -122,9 +122,6 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
                       ))}
                     </div>
                   )}
-                  {questionary.type === 'fretboard' && (
-                    <Fretboard questionary={questionary} isSelected={isSelected} {...field} />
-                  )}
                 </FormItem>
               );
             }}
