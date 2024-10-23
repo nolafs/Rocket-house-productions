@@ -8,6 +8,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui';
 import Quiz from './quiz';
 import QuizQuestionResult from './quiz-question-result';
 import Fretboard from './fretboard/fretboard';
+import cn from 'classnames';
 
 gsap.registerPlugin(useGSAP);
 
@@ -105,11 +106,11 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
       <div className={'relative isolate pb-20'}>
         <div ref={ref} className={'relative flex flex-1 overflow-hidden'}>
           <div className={'inner relative h-full w-full overflow-hidden'}>
-            {questionaries.map(questionary => {
+            {questionaries.map((questionary, idx) => {
               switch (questionary.type) {
                 case 'fretboard': {
                   return (
-                    <div key={questionary.id} className={'slide absolute h-full w-full'}>
+                    <div key={questionary.id} className={`slide-${idx} slide absolute h-full w-full overflow-hidden`}>
                       <Fretboard
                         questionary={questionary}
                         onQuestionCompleted={onQuestionCompleted}
@@ -123,7 +124,7 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
                 }
                 default: {
                   return (
-                    <div key={questionary.id} className={'slide absolute h-full w-full'}>
+                    <div key={questionary.id} className={`slide-${idx} slide absolute h-full w-full overflow-hidden`}>
                       <QuizListItem
                         questionary={questionary}
                         onQuestionCompleted={onQuestionCompleted}
