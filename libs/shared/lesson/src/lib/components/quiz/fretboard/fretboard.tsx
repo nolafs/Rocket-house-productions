@@ -9,12 +9,8 @@ gsap.registerPlugin(Draggable);
 
 interface FretboardProps {
   questionary: Questionary & { questions: Question[] };
-  isSelected: {
-    correctAnswer: boolean;
-    id: string;
-  } | null;
-  value: any;
-  onChange: any;
+  onQuestionCompleted: () => void;
+  onUpdateScore: (correct: number, currentCorrect: boolean) => void;
 }
 
 interface FretboardHandleProps {
@@ -27,7 +23,7 @@ interface DroppedItem {
 }
 
 const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
-  ({ questionary, value, onChange, isSelected }, ref) => {
+  ({ questionary, onQuestionCompleted, onUpdateScore }, ref) => {
     const fretboardRef = useRef<HTMLDivElement | null>(null);
     const [droppedItems, setDroppedItems] = useState<DroppedItem[]>([]);
 
@@ -46,11 +42,9 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
 
     useEffect(() => {
       if (questionary.questions.length === droppedItems.length) {
-        console.log('All items dropped');
-        //check if all are correct
         const allCorrect = droppedItems.every(item => item.correct);
-        console.log('All correct', allCorrect);
-        onChange(allCorrect);
+        onUpdateScore(allCorrect ? 1 : 0, allCorrect);
+        onQuestionCompleted();
       }
     }, [droppedItems]);
 
