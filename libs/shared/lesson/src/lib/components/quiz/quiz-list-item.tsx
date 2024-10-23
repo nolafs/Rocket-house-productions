@@ -40,7 +40,7 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
   });
 
   useGSAP(
-    onQuizCompleted => {
+    () => {
       if (isSelected) {
         const runResults = () => {
           const timeline = gsap.timeline({
