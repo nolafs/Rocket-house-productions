@@ -179,7 +179,7 @@ model Lesson {
 
   questionaries Questionary[]
 
-  bookCta Boolean @default(false)
+  bookCta Boolean? @default(false)
   bookMessage String?
 
   createdAt DateTime @default(now())
