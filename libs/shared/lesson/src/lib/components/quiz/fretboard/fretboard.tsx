@@ -57,15 +57,6 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         if (!fretboardRef.current) return;
         if (!dropZones.length) return;
 
-        console.log('dropZones', dropZones.length);
-        console.log('dropZones', dropZones[0].offsetTop, dropZones[0].getBoundingClientRect().y);
-
-        console.log(
-          'fretboardRef.current',
-          fretboardRef.current.getBoundingClientRect().width,
-          fretboardRef.current.getBoundingClientRect().height,
-        );
-
         for (let i = 0; i <= dragItems.length; i++) {
           Draggable.create(dragItems[i], {
             bounds: {
