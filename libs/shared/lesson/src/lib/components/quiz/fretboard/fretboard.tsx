@@ -49,7 +49,6 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
     };
 
     useEffect(() => {
-      console.log('droppedItems', droppedItems);
       if (questionary.questions.length === droppedItems.length) {
         const allCorrect = droppedItems.every(item => item.correct);
         onUpdateScore(allCorrect ? 1 : 0, allCorrect);
