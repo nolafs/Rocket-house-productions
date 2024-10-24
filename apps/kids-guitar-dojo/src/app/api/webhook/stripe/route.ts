@@ -46,6 +46,10 @@ export async function POST(req: Request, res: Response) {
           data = event.data.object as Stripe.Checkout.Session;
           console.log(`💰 CheckoutSession Completed status: ${data.payment_status}`);
 
+          if (data.payment_status !== 'paid') {
+            throw new Error('Payment not completed');
+          }
+
           if (!data.metadata || !data.metadata.userId) {
             throw new Error('User ID is missing from metadata');
           }
@@ -64,6 +68,8 @@ export async function POST(req: Request, res: Response) {
             throw new Error('No Course ID found');
           }
 
+          console.info('[CheckoutSession] update account', data.metadata);
+
           await db.account.update({
             where: {
               userId: data.metadata.userId,
@@ -74,6 +80,8 @@ export async function POST(req: Request, res: Response) {
             },
           });
 
+          console.info('[CheckoutSession] has purchase id', data.metadata?.purchaseId);
+
           if (data.metadata?.purchaseId) {
             const purchase = await db.purchase.findUnique({
               where: {
@@ -81,7 +89,11 @@ export async function POST(req: Request, res: Response) {
               },
             });
 
+            console.info('[CheckoutSession] purchase', purchase?.id);
+
             if (purchase) {
+              console.info('[CheckoutSession] purchase updated', purchase?.id);
+
               await db.purchase.update({
                 where: {
                   id: purchase?.id as string,
@@ -98,7 +110,11 @@ export async function POST(req: Request, res: Response) {
                   ),
                 },
               });
+
+              console.info('[CheckoutSession] purchase updated complete', purchase?.id);
             } else {
+              console.info('[CheckoutSession] no purchase found create');
+
               await db.purchase.create({
                 data: {
                   accountId: account?.id as string,
@@ -115,8 +131,12 @@ export async function POST(req: Request, res: Response) {
                   ),
                 },
               });
+
+              console.info('[CheckoutSession] no purchase found create complete');
             }
           } else {
+            console.info('[CheckoutSession] NEW PURCHASE');
+
             await db.purchase.create({
               data: {
                 accountId: account?.id as string,
@@ -142,7 +162,7 @@ export async function POST(req: Request, res: Response) {
           });
 
           if (account.email) {
-            const mailerList = await MailerList({
+            await MailerList({
               email: account.email,
               firstName: account.firstName || null,
               lastName: account.lastName || null,
@@ -150,11 +170,9 @@ export async function POST(req: Request, res: Response) {
               memberType: 'paid',
               newsletterGroup: account.newsletter || false,
             });
-
-            console.log('[MAILER-LITE] response', mailerList);
           }
 
-          console.log(`💰 Charge status: ${data.status}`);
+          console.log(`💰 CheckoutSession Completed final: ${data.status}`);
           break;
         }
         case 'checkout.session.async_payment_failed':

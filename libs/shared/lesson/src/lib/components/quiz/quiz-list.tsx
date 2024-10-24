@@ -8,6 +8,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui';
 import Quiz from './quiz';
 import QuizQuestionResult from './quiz-question-result';
 import Fretboard from './fretboard/fretboard';
+import cn from 'classnames';
 
 gsap.registerPlugin(useGSAP);
 
@@ -32,21 +33,32 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
 
   useGSAP(
     () => {
-      const slidesItem = gsap.utils.toArray('.slide > .item ');
+      const slidesItem = gsap.utils.toArray('.slide');
       const slides = gsap.utils.toArray('.slide');
-      // loop slides find largest height
-      let largestHeight = 0;
 
-      slides.forEach((slide: any, idx) => {
-        gsap.set(slide, { xPercent: idx * 100 });
+      window.addEventListener('resize', () => {
+        const containerWidth = ref.current.offsetWidth;
+        slidesItem.forEach((item: any) => {
+          gsap.set(item, { width: containerWidth });
+        });
+
+        gsap.set('.inner', { width: containerWidth * slides.length });
       });
 
-      slidesItem.forEach((slide: any) => {
-        if (slide.offsetHeight > largestHeight) {
-          largestHeight = slide.offsetHeight;
+      window.dispatchEvent(new Event('resize'));
+
+      setTimeout(() => {
+        const item: HTMLDivElement[] = gsap.utils.toArray('.slide > .item');
+        if (item.length) {
+          gsap.set('.inner', { height: item[0].offsetHeight || 'auto' });
         }
-      });
-      gsap.set('.inner', { height: largestHeight });
+      }, 1000);
+
+      return () => {
+        window.removeEventListener('resize', () => {
+          console.log('remove resize event');
+        });
+      };
     },
     { scope: ref },
   );
@@ -61,17 +73,22 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
 
   useEffect(() => {
     if (isQuizCompleted) {
-      console.log('isQuizCompleted');
       onQuizCompleted();
     }
   }, [isQuizCompleted]);
 
   const onNext = contextSafe(() => {
-    console.log('onNext');
     clearTimeout(displayTimeout);
     if (slideIndex !== questionaries.length - 1) {
       setSlideIndex(prevState => prevState + 1);
       setIsCompleted(false);
+
+      const slidesItem: HTMLDivElement[] = gsap.utils.toArray('.slide > .item');
+
+      if (slidesItem[slideIndex]) {
+        gsap.to(`.inner`, { duration: 1, delay: 0.4, height: slidesItem[slideIndex + 1].offsetHeight || 'auto' });
+      }
+
       gsap.to('.slide', {
         xPercent: '-=100',
         duration: 0.4,
@@ -85,7 +102,6 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
   });
 
   const onQuestionCompleted = () => {
-    console.log('onQuestionCompleted');
     clearTimeout(displayTimeout);
     setIsCompleted(true);
     if (isLastQuestion) {
@@ -104,12 +120,12 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
     <>
       <div className={'relative isolate pb-20'}>
         <div ref={ref} className={'relative flex flex-1 overflow-hidden'}>
-          <div className={'inner relative h-full w-full overflow-hidden'}>
-            {questionaries.map(questionary => {
+          <div className={`inner relative flex flex-row`}>
+            {questionaries.map((questionary, idx) => {
               switch (questionary.type) {
                 case 'fretboard': {
                   return (
-                    <div key={questionary.id} className={'slide absolute h-full w-full'}>
+                    <div key={questionary.id} className={`slide-${idx} slide h-auto overflow-hidden`}>
                       <Fretboard
                         questionary={questionary}
                         onQuestionCompleted={onQuestionCompleted}
@@ -123,7 +139,7 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
                 }
                 default: {
                   return (
-                    <div key={questionary.id} className={'slide absolute h-full w-full'}>
+                    <div key={questionary.id} className={`slide-${idx} slide h-auto overflow-hidden`}>
                       <QuizListItem
                         questionary={questionary}
                         onQuestionCompleted={onQuestionCompleted}
