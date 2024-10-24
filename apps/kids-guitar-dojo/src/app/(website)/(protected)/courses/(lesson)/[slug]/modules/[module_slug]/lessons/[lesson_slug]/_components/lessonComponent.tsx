@@ -1,7 +1,7 @@
 'use client';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 import { LessonContent } from '@rocket-house-productions/lesson/server';
-import { LessonNext, LessonVideo } from '@rocket-house-productions/lesson';
+import { LessonBookCta, LessonNext, LessonVideo } from '@rocket-house-productions/lesson';
 
 interface LessonComponentProps {
   data: { course: any; module: any; lesson: any };
@@ -27,6 +27,9 @@ export function LessonComponent({ data, child, page }: LessonComponentProps) {
         position={data.lesson.position}
         category={data.lesson?.category?.name}
       />
+
+      <LessonBookCta bookCta={data.lesson.bookCta} bookMessage={data.lesson.bookCtaMessage} />
+
       <LessonNext
         lesson={data.lesson as SectionLesson}
         module={data.module as SectionModule}

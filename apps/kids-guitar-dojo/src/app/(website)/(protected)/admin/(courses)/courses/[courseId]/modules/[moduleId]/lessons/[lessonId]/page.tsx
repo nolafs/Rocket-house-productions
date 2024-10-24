@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 
-import { ArrowLeft, Eye, LayoutDashboard, Video } from 'lucide-react';
+import { ArrowLeft, Eye, LayoutDashboard, Video, FileQuestionIcon, MegaphoneIcon } from 'lucide-react';
 
 import { db } from '@rocket-house-productions/integration';
 
@@ -18,6 +18,7 @@ import { createClient } from '@/prismicio';
 import LessonPrismicForm from './_components/lesson-prismic-form';
 import { PreviewPrismic } from '@rocket-house-productions/features/server';
 import LessonQuestionanaireForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-questionanaire-form';
+import LessonBookCtaForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-book-cta-form';
 
 const LessonIdPage = async ({ params }: { params: { courseId: string; moduleId: string; lessonId: string } }) => {
   const { userId } = auth();
@@ -148,7 +149,7 @@ const LessonIdPage = async ({ params }: { params: { courseId: string; moduleId: 
               />
             </div>
           </div>
-          <div>
+          <div className="space-y-4">
             <div className="flex items-center gap-x-2">
               <IconBadge icon={Video} />
               <h2 className="text-xl">Add a video</h2>
@@ -160,7 +161,22 @@ const LessonIdPage = async ({ params }: { params: { courseId: string; moduleId: 
               lessonId={params.lessonId}
             />
 
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={FileQuestionIcon} />
+              <h2 className="text-xl">Add a Quiz</h2>
+            </div>
             <LessonQuestionanaireForm
+              initialData={lesson}
+              courseId={params.courseId}
+              moduleId={params.moduleId}
+              lessonId={params.lessonId}
+            />
+
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={MegaphoneIcon} />
+              <h2 className="text-xl">Add a Book CTA</h2>
+            </div>
+            <LessonBookCtaForm
               initialData={lesson}
               courseId={params.courseId}
               moduleId={params.moduleId}
