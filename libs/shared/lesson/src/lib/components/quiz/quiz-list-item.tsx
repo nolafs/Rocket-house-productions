@@ -9,8 +9,6 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import QuestionCheckbox from './question-checkbox';
 import QuestionImageCheckbox from './question-image-checkbox';
-import Fretboard from './fretboard/fretboard';
-
 gsap.registerPlugin(useGSAP);
 
 interface QuizListItemProps {
@@ -40,7 +38,7 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
   });
 
   useGSAP(
-    onQuizCompleted => {
+    () => {
       if (isSelected) {
         const runResults = () => {
           const timeline = gsap.timeline({
@@ -104,7 +102,7 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
               return (
                 <FormItem className={'w-full'}>
                   {(questionary.type === 'text' || questionary.type === 'images') && (
-                    <div className={'grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-5 lg:gap-10'}>
+                    <div className={'grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-5 lg:gap-7'}>
                       {questions.map(item => (
                         <div key={item.id}>
                           {item.type === 'text' && (
