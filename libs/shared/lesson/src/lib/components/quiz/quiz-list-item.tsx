@@ -104,7 +104,7 @@ export function QuizListItem({ questionary, onQuestionCompleted, onUpdateScore }
               return (
                 <FormItem className={'w-full'}>
                   {(questionary.type === 'text' || questionary.type === 'images') && (
-                    <div className={'grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-5 lg:gap-10'}>
+                    <div className={'grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-5 lg:gap-7'}>
                       {questions.map(item => (
                         <div key={item.id}>
                           {item.type === 'text' && (

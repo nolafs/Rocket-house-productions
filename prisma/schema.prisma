@@ -223,6 +223,7 @@ model Question {
 
   correctAnswer Boolean
   boardCordinates String?
+  boardSize String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
@@ -275,7 +276,7 @@ model Purchase {
   accountId String
   account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
-  stripeChargeId String?
+  stripeChargeId String? @unique
   amount          Int
 
   type            String?
@@ -286,6 +287,7 @@ model Purchase {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
+  @@unique([accountId, courseId, childId, stripeChargeId])
   @@unique([accountId, courseId, childId])
   @@index([courseId, accountId, childId])
 }
