@@ -94,7 +94,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
                     const dropAnswer = dropZone?.dataset?.value;
                     const correct: boolean = answerArray.includes(dropAnswer);
 
-                    this.target.classList.add(correct ? 'bg-green-500/20' : 'bg-red-500/20');
+                    //this.target.classList.add(correct ? 'bg-green-500/20' : 'bg-red-500/20');
 
                     current = {
                       correct: correct,
