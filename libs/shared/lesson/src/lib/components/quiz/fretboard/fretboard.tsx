@@ -32,7 +32,15 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
 
     // Function to add an item
     const handleDrop = (item: DroppedItem) => {
-      setDroppedItems(prevItems => [...prevItems, item]);
+      // Check if the item is already in the list
+      setDroppedItems(prevItems => {
+        // Check if the item is already in the list
+        if (prevItems.some(i => i.id === item.id)) {
+          return prevItems; // If the item already exists, return the same array
+        }
+        // Add the new item to the array
+        return [...prevItems, item];
+      });
     };
 
     // Function to remove an item
@@ -41,6 +49,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
     };
 
     useEffect(() => {
+      console.log('droppedItems', droppedItems);
       if (questionary.questions.length === droppedItems.length) {
         const allCorrect = droppedItems.every(item => item.correct);
         onUpdateScore(allCorrect ? 1 : 0, allCorrect);
@@ -48,7 +57,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
       }
     }, [droppedItems]);
 
-    const { contextSafe } = useGSAP(
+    useGSAP(
       () => {
         const dragItems: HTMLDivElement[] = gsap.utils.toArray('#drag-items .drag-item ');
         const dropZones: HTMLDivElement[] = gsap.utils.toArray('.dropzone');
@@ -57,81 +66,80 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         if (!fretboardRef.current) return;
         if (!dropZones.length) return;
 
-        for (let i = 0; i <= dragItems.length; i++) {
-          Draggable.create(dragItems[i], {
-            bounds: {
-              top: 0,
-              left: 0,
-              width: fretboardRef.current.getBoundingClientRect().width,
-              height: fretboardRef.current.getBoundingClientRect().height,
-              minX: 0,
-              minY: 0,
-              maxX: fretboardRef.current.getBoundingClientRect().width,
-              maxY: fretboardRef.current.getBoundingClientRect().height,
-            },
-            inertia: true,
-            type: 'x,y',
-            onDragStart: function (event) {
-              this.target.classList.add('!border-0');
-              this.target.classList.add('!shadow-none');
-            },
-            onRelease: function (event) {
-              let current: { correct: boolean; x: string; y: string } | null = null;
+        window.addEventListener('resize', () => {
+          for (let i = 0; i <= dragItems.length; i++) {
+            Draggable.create(dragItems[i], {
+              bounds: {
+                top: 0,
+                left: 0,
+                width: fretboardRef.current?.getBoundingClientRect().width,
+                height: fretboardRef.current?.getBoundingClientRect().height,
+                minX: 0,
+                minY: 0,
+                maxX: fretboardRef.current?.getBoundingClientRect().width,
+                maxY: fretboardRef.current?.getBoundingClientRect().height,
+              },
+              inertia: true,
+              type: 'x,y',
+              onDragStart: function (event) {
+                this.target.classList.add('!border-0');
+                this.target.classList.add('!shadow-none');
+              },
+              onRelease: function (event) {
+                let current: { correct: boolean; x: string; y: string } | null = null;
 
-              dropZones.forEach(dropZone => {
-                if (this.hitTest(dropZone)) {
-                  const answerArray = this.target.dataset.value.split(',');
-                  const dropAnswer = dropZone?.dataset?.value;
+                dropZones.forEach(dropZone => {
+                  if (this.hitTest(dropZone)) {
+                    const answerArray = this.target.dataset.value.split(',');
+                    const dropAnswer = dropZone?.dataset?.value;
+                    const correct: boolean = answerArray.includes(dropAnswer);
 
-                  console.log('answerArray', answerArray, dropAnswer);
+                    this.target.classList.add(correct ? 'bg-green-500/20' : 'bg-red-500/20');
 
-                  // check answer array includes arrays in it correctAnswerArray
+                    current = {
+                      correct: correct,
+                      x:
+                        '+=' +
+                        (dropZone.getBoundingClientRect().left +
+                          dropZone.getBoundingClientRect().width / 2 -
+                          this.target.getBoundingClientRect().left -
+                          this.target.getBoundingClientRect().width / 2),
+                      y:
+                        '+=' +
+                        (dropZone.getBoundingClientRect().top +
+                          dropZone.getBoundingClientRect().height / 2 -
+                          this.target.getBoundingClientRect().top -
+                          this.target.getBoundingClientRect().height / 2),
+                    };
+                  }
+                });
 
-                  const correct: boolean = answerArray.includes(dropAnswer);
-
-                  this.target.classList.add(correct ? 'bg-green-500/20' : 'bg-red-500/20');
-
-                  current = {
-                    correct: correct,
-                    x:
-                      '+=' +
-                      (dropZone.getBoundingClientRect().left +
-                        dropZone.getBoundingClientRect().width / 2 -
-                        this.target.getBoundingClientRect().left -
-                        this.target.getBoundingClientRect().width / 2),
-                    y:
-                      '+=' +
-                      (dropZone.getBoundingClientRect().top +
-                        dropZone.getBoundingClientRect().height / 2 -
-                        this.target.getBoundingClientRect().top -
-                        this.target.getBoundingClientRect().height / 2),
-                  };
+                if (current !== null) {
+                  const { x, y, correct } = current as { x: string; y: string; correct: boolean };
+                  gsap.to(this.target, { x: x, y: y });
+                  handleDrop({ id: this.target.id, correct: correct });
+                } else {
+                  gsap.to(this.target, { x: 0, y: 0 });
+                  this.target.classList.remove('!border-0');
+                  this.target.classList.remove('!shadow-none');
+                  handleRemove(this.target.id);
                 }
-              });
 
-              if (current !== null) {
-                console.log('hit', current);
-                const { x, y, correct } = current as { x: string; y: string; correct: boolean };
-                gsap.to(this.target, { x: x, y: y });
-                handleDrop({ id: this.target.id, correct: correct });
-              } else {
-                console.log('not hit');
-                gsap.to(this.target, { x: 0, y: 0 });
-                this.target.classList.remove('!border-0');
-                this.target.classList.remove('!shadow-none');
-                handleRemove(this.target.id);
-              }
+                current = null;
+              },
+            });
+          }
+        });
 
-              current = null;
-            },
-          });
-        }
+        return () => {
+          dragItems.forEach(item => Draggable.get(item)?.kill());
+        };
       },
       { scope: fretboardRef, dependencies: [] },
     );
 
     return (
-      <div ref={fretboardRef} className={'relative isolate flex w-full flex-col'}>
+      <div ref={fretboardRef} className={'item relative isolate flex w-full flex-col'}>
         <div id={'drag-items'} className={'relative flex w-full space-x-2 rounded border border-amber-700 p-3'}>
           {/* items */}
           {questionary.questions.map((item, index) => (

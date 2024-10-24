@@ -9,8 +9,6 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import QuestionCheckbox from './question-checkbox';
 import QuestionImageCheckbox from './question-image-checkbox';
-import Fretboard from './fretboard/fretboard';
-
 gsap.registerPlugin(useGSAP);
 
 interface QuizListItemProps {
