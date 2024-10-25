@@ -36,7 +36,7 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
       const slidesItem = gsap.utils.toArray('.slide');
       const slides = gsap.utils.toArray('.slide');
 
-      window.addEventListener('resize', () => {
+      const updateSizes = () => {
         if (!ref.current) return;
         const containerWidth = ref.current.offsetWidth;
         slidesItem.forEach((item: any) => {
@@ -44,9 +44,15 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
         });
 
         gsap.set('.inner', { width: containerWidth * slides.length });
+      };
+
+      const resizeObserver = new ResizeObserver(() => {
+        if (ref.current) {
+          updateSizes();
+        }
       });
 
-      window.dispatchEvent(new Event('resize'));
+      resizeObserver.observe(ref.current);
 
       setTimeout(() => {
         const item: HTMLDivElement[] = gsap.utils.toArray('.slide > .item');
@@ -56,9 +62,7 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
       }, 1000);
 
       return () => {
-        window.removeEventListener('resize', () => {
-          console.log('remove resize event');
-        });
+        resizeObserver.disconnect();
       };
     },
     { scope: ref },

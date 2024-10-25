@@ -58,14 +58,14 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
 
     useGSAP(
       () => {
+        if (!fretboardRef.current) return;
+
         const dragItems: HTMLDivElement[] = gsap.utils.toArray('#drag-items .drag-item ');
         const dropZones: HTMLDivElement[] = gsap.utils.toArray('.dropzone');
 
-        if (dragItems.length === 0) return;
-        if (!fretboardRef.current) return;
-        if (!dropZones.length) return;
+        if (dragItems.length === 0 || !dropZones.length) return;
 
-        window.addEventListener('resize', () => {
+        const dragSetup = () => {
           for (let i = 0; i <= dragItems.length; i++) {
             Draggable.create(dragItems[i], {
               bounds: {
@@ -128,12 +128,19 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
               },
             });
           }
+        };
+
+        const resizeObserver = new ResizeObserver(() => {
+          if (fretboardRef.current) {
+            dragSetup();
+          }
         });
 
-        window.dispatchEvent(new Event('resize'));
+        resizeObserver.observe(fretboardRef.current);
 
         return () => {
           dragItems.forEach(item => Draggable.get(item)?.kill());
+          resizeObserver.disconnect();
         };
       },
       { scope: fretboardRef, dependencies: [] },
