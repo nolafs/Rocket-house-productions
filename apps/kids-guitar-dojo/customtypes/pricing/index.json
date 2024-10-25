@@ -35,6 +35,14 @@
           "placeholder": ""
         }
       },
+      "purchase_type": {
+        "type": "Select",
+        "config": {
+          "label": "Purchase Type",
+          "placeholder": "",
+          "options": ["purchase", "upgrade"]
+        }
+      },
       "sales": {
         "type": "Boolean",
         "config": {
@@ -88,7 +96,7 @@
       "position": {
         "type": "Number",
         "config": {
-          "label": "position",
+          "label": "Position",
           "placeholder": ""
         }
       }
