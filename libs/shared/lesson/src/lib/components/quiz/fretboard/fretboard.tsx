@@ -176,7 +176,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
             'relative mx-auto w-full max-w-[320px] border-t-8 border-[#f2dc0cff] bg-gradient-to-r from-[#54311bff] via-[#7c4e2dff] to-[#54311bff] shadow-2xl'
           }>
           <div className={'grid grid-cols-6 gap-x-0 gap-y-2'}>
-            <FretboardGrid rows={rows} cols={cols} />
+            <FretboardGrid rows={questionary.boardSize || 11} cols={6} />
           </div>
           <div
             className={'z-1 pointer-events-none absolute left-0 top-0 grid h-full w-full grid-cols-6 gap-x-0 gap-y-0'}>
