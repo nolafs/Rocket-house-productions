@@ -15,7 +15,6 @@ interface LessonBookCtaProps {
 }
 
 export function LessonBookCta({ course, bookCta, bookMessage }: LessonBookCtaProps) {
-  const [purchaseType, setPurchaseType] = useState<string | null>(null);
   const [purchaseCatgory, setPurchaseCategory] = useState<string | null>(null);
 
   useEffect(() => {
@@ -24,7 +23,6 @@ export function LessonBookCta({ course, bookCta, bookMessage }: LessonBookCtaPro
         try {
           const child = await getChild(course.slug);
           console.log('child:', child);
-          setPurchaseType(child.purchaseType);
           setPurchaseCategory(child.purchaseCategory);
         } catch (error) {
           console.error('Error fetching purchase type:', error);
@@ -33,7 +31,7 @@ export function LessonBookCta({ course, bookCta, bookMessage }: LessonBookCtaPro
 
       fetchPurchaseType();
     }
-  }, []);
+  }, [bookCta, course.slug]);
 
   if (bookCta) {
     return (
