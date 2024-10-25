@@ -31,6 +31,7 @@ const QuestionnaireIdPage = async ({
       id: params.questionanaireId,
       lessonId: params.lessonId,
     },
+
     include: {
       questions: {
         orderBy: {
@@ -43,6 +44,8 @@ const QuestionnaireIdPage = async ({
   if (!questionary) {
     return redirect('/');
   }
+
+  console.log('questionary', questionary);
 
   const requiredFields = [questionary?.title || '', questionary?.questions.length > 0];
 

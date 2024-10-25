@@ -11,6 +11,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { ConfettiProvider, ToastProvider } from '@rocket-house-productions/providers';
 import PlausibleProvider from 'next-plausible';
 import { CookieConsent } from '@rocket-house-productions/features';
+import { Toaster } from 'react-hot-toast';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -172,7 +173,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               {/* Confetti */}
               <ConfettiProvider />
               {/* Toaster */}
-              <ToastProvider />
+              <Toaster position="bottom-center" />
 
               {children}
               {/* Preview */}

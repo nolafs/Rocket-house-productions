@@ -15,17 +15,15 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
 import AnswerImageForm from './answer-image-form';
-import cn from 'classnames';
 import AnswerFretboardForm from './answer-fretboard-form';
-import { useState } from 'react';
+import cn from 'classnames';
+import toast from 'react-hot-toast';
 
 const formSchema = z.object({
   title: z.string().min(1),
   imageUrl: z.string().optional(),
   boardCordinates: z.string().optional(),
-  boardSize: z.preprocess(val => (val === '' ? undefined : Number(val)), z.number().optional()),
   correctAnswer: z.boolean(),
 });
 
@@ -48,7 +46,7 @@ export function AnswerInlineForm({
   title,
   imageUrl = null,
   boardCordinates = null,
-  boardSize = null,
+  boardSize = 11,
   type = null,
   correctAnswer,
   answerId,
@@ -59,14 +57,12 @@ export function AnswerInlineForm({
   onClose,
 }: AnswerInlineFormProps) {
   const router = useRouter();
-  const [rows, setRows] = useState<number>(11);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: title,
       boardCordinates: boardCordinates || '',
-      boardSize: boardSize || undefined,
       correctAnswer: correctAnswer,
     },
   });
@@ -97,6 +93,7 @@ export function AnswerInlineForm({
           type === 'images' || type === 'fretboard' ? 'my-4 flex w-full flex-col gap-4' : 'my-4 flex w-full gap-4',
         )}>
         <div className={'flex-1 space-y-2'}>
+          <button onClick={() => toast('First Toast')}>Show Toast</button>
           <FormField
             control={form.control as any}
             name="title"
@@ -133,34 +130,11 @@ export function AnswerInlineForm({
             <>
               <FormField
                 control={form.control as any}
-                name="boardSize"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        disabled={isSubmitting}
-                        type={'number'}
-                        {...field}
-                        value={field.value ?? ''}
-                        placeholder={'Board Size (default 11 rows)'}
-                        onChange={e => {
-                          const newValue = parseInt(e.target.value, 10);
-                          setRows(newValue); // Update local state
-                          field.onChange(e); // Update form state
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control as any}
                 name="boardCordinates"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <AnswerFretboardForm rows={rows} {...field} />
+                      <AnswerFretboardForm rows={boardSize || 11} {...field} />
                     </FormControl>
                   </FormItem>
                 )}
