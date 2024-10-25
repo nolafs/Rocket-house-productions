@@ -130,6 +130,8 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
           }
         });
 
+        window.dispatchEvent(new Event('resize'));
+
         return () => {
           dragItems.forEach(item => Draggable.get(item)?.kill());
         };
