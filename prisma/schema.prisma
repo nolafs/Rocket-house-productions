@@ -198,16 +198,12 @@ model Questionary {
   isPublished Boolean @default(false)
   imageUrl    String? @db.Text
   type        String? @default("text")
-
-  lessonId String
-  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-
-  questions Question[]
-
-  points Int?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  lessonId    String
+  lesson      Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  questions   Question[]
+  boardSize   Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt()
 
   @@index([lessonId])
 }
@@ -226,7 +222,6 @@ model Question {
 
   correctAnswer Boolean
   boardCordinates String?
-  boardSize String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
