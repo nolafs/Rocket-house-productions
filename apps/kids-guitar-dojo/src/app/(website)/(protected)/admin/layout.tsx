@@ -4,11 +4,11 @@ import Image from 'next/image';
 import Navigation from './_components/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { FolderIcon, GraduationCapIcon, HomeIcon, UsersIcon } from 'lucide-react';
 import NavigationMobile from '@/app/(website)/(protected)/admin/_components/navigation-mobile';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
 import cn from 'classnames';
+import { ToastProvider } from '@rocket-house-productions/providers';
 
 export const metadata = {
   title: 'Welcome to Kids Guitar Dojo Admin',
