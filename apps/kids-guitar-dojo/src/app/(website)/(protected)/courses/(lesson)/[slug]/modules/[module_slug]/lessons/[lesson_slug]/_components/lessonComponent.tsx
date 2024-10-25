@@ -28,7 +28,11 @@ export function LessonComponent({ data, child, page }: LessonComponentProps) {
         category={data.lesson?.category?.name}
       />
 
-      <LessonBookCta bookCta={data.lesson.bookCta} bookMessage={data.lesson.bookCtaMessage} />
+      <LessonBookCta
+        course={data.course as SectionCourse}
+        bookCta={data.lesson.bookCta}
+        bookMessage={data.lesson.bookMessage}
+      />
 
       <LessonNext
         lesson={data.lesson as SectionLesson}

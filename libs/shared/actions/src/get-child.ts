@@ -46,5 +46,6 @@ export const getChild = async (slug: string) => {
     ...child,
     purchaseId: purchase?.id,
     purchaseType: purchase?.type,
+    purchaseCategory: purchase?.category,
   };
 };
