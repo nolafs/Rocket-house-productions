@@ -24,6 +24,7 @@ import { useRouter } from 'next/navigation';
 interface AnswersListProps {
   items: Question[];
   type?: string | null;
+  boardSize: number;
   onReorder: (updateData: { id: string; position: number }[]) => void;
   courseId: string;
   moduleId: string;
@@ -34,6 +35,7 @@ interface AnswersListProps {
 export const AnswersList = ({
   items,
   type,
+  boardSize = 11,
   onReorder,
   questionanaireId,
   moduleId,
@@ -161,6 +163,7 @@ export const AnswersList = ({
                         imageUrl={answer.imageUrl}
                         type={type}
                         boardCordinates={answer.boardCordinates}
+                        boardSize={boardSize}
                         correctAnswer={answer.correctAnswer}
                         courseId={courseId}
                         moduleId={moduleId}
