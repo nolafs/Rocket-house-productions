@@ -1082,6 +1082,17 @@ interface PricingDocumentData {
   stripeProductId: prismic.KeyTextField;
 
   /**
+   * Purchase Type field in *Pricing*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing.purchase_type
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  purchase_type: prismic.SelectField<'purchase' | 'upgrade'>;
+
+  /**
    * Sales field in *Pricing*
    *
    * - **Field Type**: Boolean
@@ -1140,7 +1151,7 @@ interface PricingDocumentData {
   most_popular: prismic.BooleanField;
 
   /**
-   * position field in *Pricing*
+   * Position field in *Pricing*
    *
    * - **Field Type**: Number
    * - **Placeholder**: *None*

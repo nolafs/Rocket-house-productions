@@ -28,15 +28,16 @@ export default async function Page({ params }: { params: { product: string[]; pu
     }
   }
 
+  let purchase = null;
+
   // check if params contain childId and account
 
   if (!params.purchaseId) {
     // get childId from account
     const account = await getAccount(userId);
-    const purchase = await db.purchase.findFirst({
+    purchase = await db.purchase.findFirst({
       where: {
         accountId: account?.id,
-        type: 'free',
       },
       include: {
         course: true,
@@ -51,6 +52,9 @@ export default async function Page({ params }: { params: { product: string[]; pu
       return redirect('/courses');
     }
 
+    if (purchase.category === 'premium') {
+      return redirect('/courses');
+    }
     params.purchaseId = purchase.id;
   }
 
@@ -70,15 +74,20 @@ export default async function Page({ params }: { params: { product: string[]; pu
         <div>
           <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
         </div>
-        <div className={'px-5'}>
+        <div className={'px-5 text-center'}>
           <h1 className={'mb-5 text-2xl font-bold lg:text-3xl'}>Ready to Take the Next Step?</h1>
           <p>
-            We hope you loved the sneak peek of our course! Unlock the full experience and elevate your skills to the
-            next level by upgrading now.
+            {purchase?.category !== 'standard' && <>We hope you loved the sneak peek of our course!</>} Unlock the full
+            experience and elevate your skills to the next level by upgrading now.
           </p>
         </div>
         <Bounded as={'section'} yPadding={'sm'}>
-          <SectionPricingTable tiers={tiers as Tier[]} checkout={true} upgrade={true} purchaseId={params.purchaseId} />
+          <SectionPricingTable
+            tiers={tiers as Tier[]}
+            checkout={true}
+            upgrade={purchase?.category || 'basic'}
+            purchaseId={params.purchaseId}
+          />
         </Bounded>
       </div>
     </main>

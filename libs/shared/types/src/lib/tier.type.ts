@@ -6,6 +6,7 @@ export type Tier = {
     name: KeyTextField | string | null | undefined;
     description: RichTextField | null | undefined;
     features: { feature: string }[];
+    purchase_type: KeyTextField | string | null | undefined;
     most_popular?: boolean;
     stripeProductId?: string;
     course_id?: string;

@@ -7,6 +7,7 @@ import Image from 'next/image';
 // @ts-expect-error
 import bookCtaImage from '../../assets/bookcta.png';
 import { Button } from '@rocket-house-productions/shadcn-ui';
+import { useRouter } from 'next/navigation';
 
 interface LessonBookCtaProps {
   course: SectionCourse;
@@ -16,13 +17,13 @@ interface LessonBookCtaProps {
 
 export function LessonBookCta({ course, bookCta, bookMessage }: LessonBookCtaProps) {
   const [purchaseCatgory, setPurchaseCategory] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (bookCta) {
       const fetchPurchaseType = async () => {
         try {
           const child = await getChild(course.slug);
-          console.log('child:', child);
           setPurchaseCategory(child.purchaseCategory);
         } catch (error) {
           console.error('Error fetching purchase type:', error);
@@ -32,6 +33,10 @@ export function LessonBookCta({ course, bookCta, bookMessage }: LessonBookCtaPro
       fetchPurchaseType();
     }
   }, [bookCta, course.slug]);
+
+  const handleUpgrade = () => {
+    router.push('/courses/upgrade');
+  };
 
   if (bookCta) {
     return (
@@ -63,7 +68,7 @@ export function LessonBookCta({ course, bookCta, bookMessage }: LessonBookCtaPro
             </div>
             {purchaseCatgory !== 'premium' && (
               <div className={'flex shrink flex-row justify-end'}>
-                <Button variant={'lesson'} size={'lg'}>
+                <Button onClick={handleUpgrade} variant={'lesson'} size={'lg'}>
                   Upgrade now!
                 </Button>
               </div>

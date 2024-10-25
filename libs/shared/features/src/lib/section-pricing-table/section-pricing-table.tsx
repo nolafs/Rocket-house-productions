@@ -10,7 +10,7 @@ import StripePricing from './stripe-pricing';
 interface SectionPricingTableProps {
   tiers: Tier[];
   checkout?: boolean;
-  upgrade?: boolean;
+  upgrade?: string | null;
   courseId?: string | null;
   purchaseId?: string | null;
 }
@@ -20,7 +20,7 @@ export function SectionPricingTable({
   checkout = false,
   purchaseId = null,
   courseId = null,
-  upgrade = false,
+  upgrade = null,
 }: SectionPricingTableProps) {
   if (tiers.length === 0) {
     return null;
@@ -28,7 +28,18 @@ export function SectionPricingTable({
 
   if (upgrade) {
     // remove free tier
-    tiers = tiers.filter(tier => !tier.data.free);
+    if (upgrade === 'basic') {
+      tiers = tiers.filter(tier => !tier.data.free || tier.data.purchase_type === 'upgrade');
+    }
+    if (upgrade === 'standard') {
+      tiers = tiers.filter(tier => tier.data.purchase_type === 'upgrade');
+    }
+    if (upgrade === 'premium') {
+      tiers = [];
+    }
+  } else {
+    // remove paid tiers
+    tiers = tiers.filter(tier => tier.data.purchase_type === 'purchase');
   }
 
   return (
