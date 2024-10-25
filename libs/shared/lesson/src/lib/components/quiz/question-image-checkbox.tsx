@@ -24,7 +24,7 @@ const QuestionImageCheckbox = forwardRef<unknown, QuestionImageCheckboxProps>(({
       render={({ field }) => (
         <div
           className={
-            'relative isolate !m-0 h-auto w-full cursor-pointer overflow-hidden rounded border border-amber-700 p-2 transition-all hover:scale-95 hover:border-amber-300 md:p-5 lg:p-10'
+            'relative isolate !m-0 flex h-full w-full cursor-pointer flex-col justify-stretch overflow-hidden rounded-lg border border-amber-700 p-2 transition-all hover:scale-95 hover:border-amber-300 md:p-5 lg:p-10'
           }>
           <label id={'select-' + item.id}>
             <Checkbox
@@ -46,19 +46,19 @@ const QuestionImageCheckbox = forwardRef<unknown, QuestionImageCheckboxProps>(({
                 !isSelected?.correctAnswer && isSelected?.id === item.id ? 'bg-red-600' : '',
               )}></div>
             {item?.imageUrl ? (
-              <div className={'p-5'}>
+              <div className={'flex-1 p-5'}>
                 <Image
                   src={item?.imageUrl}
                   alt={item.title}
                   width={100}
                   height={100}
-                  className={'h-auto w-full object-center'}
+                  className={'h-auto w-full object-contain object-center'}
                 />
               </div>
             ) : (
               'No Image'
             )}
-            <p className={'mt-5 !text-lg !font-bold'}>{item.title}</p>
+            <p className={'mt-5 shrink !text-lg !font-bold'}>{item.title}</p>
           </label>
         </div>
       )}

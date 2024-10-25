@@ -36,9 +36,8 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
       const slidesItem = gsap.utils.toArray('.slide');
       const slides = gsap.utils.toArray('.slide');
 
-      if (!ref.current) return;
-
       window.addEventListener('resize', () => {
+        if (!ref.current) return;
         const containerWidth = ref.current.offsetWidth;
         slidesItem.forEach((item: any) => {
           gsap.set(item, { width: containerWidth });
