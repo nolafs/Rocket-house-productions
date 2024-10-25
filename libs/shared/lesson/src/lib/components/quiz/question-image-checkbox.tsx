@@ -50,15 +50,15 @@ const QuestionImageCheckbox = forwardRef<unknown, QuestionImageCheckboxProps>(({
                 <Image
                   src={item?.imageUrl}
                   alt={item.title}
-                  width={100}
-                  height={100}
+                  width={300}
+                  height={300}
                   className={'h-auto w-full object-contain object-center'}
                 />
               </div>
             ) : (
               'No Image'
             )}
-            <p className={'mt-5 shrink !text-lg !font-bold'}>{item.title}</p>
+            <p className={'mt-5 shrink items-end !text-lg !font-bold'}>{item.title}</p>
           </label>
         </div>
       )}
