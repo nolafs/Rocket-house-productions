@@ -169,10 +169,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
             suppressHydrationWarning={true}>
             <body className={'bg-background min-h-screen font-sans antialiased'} suppressHydrationWarning>
+              {/* Confetti */}
               <ConfettiProvider />
+              {/* Toaster */}
               <ToastProvider />
-              {children}
 
+              {children}
               {/* Preview */}
               <PrismicPreview repositoryName={repositoryName} />
             </body>
