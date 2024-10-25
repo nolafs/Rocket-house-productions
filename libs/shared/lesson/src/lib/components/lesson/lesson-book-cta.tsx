@@ -3,7 +3,8 @@ import { useEffect, useState } from 'react';
 import { getChild } from '@rocket-house-productions/actions/server';
 import { SectionCourse } from '@rocket-house-productions/types';
 import Image from 'next/image';
-import bookCtaImage from '../../assets/bookcta.png';
+
+import bookCtaImage from '../../assets/book-cta.png';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { useRouter } from 'next/navigation';
 
