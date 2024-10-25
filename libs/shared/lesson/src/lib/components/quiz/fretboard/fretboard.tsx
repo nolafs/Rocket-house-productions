@@ -65,7 +65,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         if (!fretboardRef.current) return;
         if (!dropZones.length) return;
 
-        window.addEventListener('resize', () => {
+        const dragSetup = () => {
           for (let i = 0; i <= dragItems.length; i++) {
             Draggable.create(dragItems[i], {
               bounds: {
@@ -128,12 +128,19 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
               },
             });
           }
+        };
+
+        const resizeObserver = new ResizeObserver(() => {
+          if (fretboardRef.current) {
+            dragSetup();
+          }
         });
 
-        window.dispatchEvent(new Event('resize'));
+        resizeObserver.observe(fretboardRef.current);
 
         return () => {
           dragItems.forEach(item => Draggable.get(item)?.kill());
+          resizeObserver.disconnect();
         };
       },
       { scope: fretboardRef, dependencies: [] },
