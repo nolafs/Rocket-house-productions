@@ -222,6 +222,7 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
           <AnswersList
             onReorder={onReorder}
             type={initialData.type}
+            boardSize={initialData.boardSize || 11}
             items={initialData.questions || []}
             courseId={courseId}
             moduleId={moduleId}

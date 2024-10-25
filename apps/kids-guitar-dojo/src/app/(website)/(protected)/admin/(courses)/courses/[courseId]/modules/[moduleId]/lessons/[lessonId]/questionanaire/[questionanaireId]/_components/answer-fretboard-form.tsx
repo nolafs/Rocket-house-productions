@@ -67,7 +67,7 @@ const AnswerFretboardForm = forwardRef<GridSelectorHandle, GridSelectorProps>(
     return (
       <div
         className={
-          'relative isolate mx-auto w-full max-w-[320px] border-t-8 border-[#f2dc0cff] bg-gradient-to-r from-[#54311bff] via-[#7c4e2dff] to-[#54311bff] shadow-2xl'
+          'relative isolate mx-auto w-full max-w-[320px] border-t-8 border-[#f2dc0cff] bg-gradient-to-r from-[#54311bff] via-[#7c4e2dff] to-[#54311bff]'
         }>
         <div className={'pointer-events-none absolute left-0 top-0 z-0 grid h-full w-full grid-cols-6 gap-x-0 gap-y-0'}>
           <div className={'string string px-[22px]'}>

@@ -33,6 +33,7 @@ import { SlugFormControl } from '@rocket-house-productions/lesson';
 interface QuestionFormProps {
   initialData: {
     type: 'text' | 'images' | 'fretboard' | string | undefined | null;
+    boardSize?: number | null;
   };
   courseId: string;
   moduleId: string;
@@ -42,18 +43,23 @@ interface QuestionFormProps {
 
 const formSchema = z.object({
   type: z.string().min(1, 'Type is required'),
+  boardSize: z.preprocess(val => (val === '' ? undefined : Number(val)), z.number().optional()),
 });
 
 const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questionanaireId }: QuestionFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [type, setType] = useState(initialData.type || 'text');
+  const [rows, setRows] = useState<number>(11);
 
   const toggleEdit = () => setIsEditing(current => !current);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { type: type },
+    defaultValues: {
+      type: type,
+      boardSize: initialData.boardSize || undefined,
+    },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -129,6 +135,34 @@ const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questiona
                 </FormItem>
               )}
             />
+            {type === 'fretboard' && (
+              <FormField
+                control={form.control as any}
+                name="boardSize"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        id={'boardSize'}
+                        disabled={isSubmitting}
+                        type={'number'}
+                        {...field}
+                        value={field.value ?? ''}
+                        placeholder={'Board Size (default 11 rows)'}
+                        onChange={e => {
+                          const newValue = parseInt(e.target.value, 10);
+                          setRows(newValue); // Update local state
+                          field.onChange(e); // Update form state
+                        }}
+                      />
+                    </FormControl>
+                    <FormLabel htmlFor="boardSize">Board Size (default 11 rows)</FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
                 Save
