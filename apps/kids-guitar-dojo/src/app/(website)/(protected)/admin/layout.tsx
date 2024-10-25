@@ -8,7 +8,6 @@ import NavigationMobile from '@/app/(website)/(protected)/admin/_components/navi
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
 import cn from 'classnames';
-import { ToastProvider } from '@rocket-house-productions/providers';
 
 export const metadata = {
   title: 'Welcome to Kids Guitar Dojo Admin',
@@ -32,7 +31,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
       <NextTopLoader color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
 
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="bg-primary flex grow flex-col gap-y-5 overflow-y-auto px-6">
           <div className="flex h-16 shrink-0 items-center fill-white">
             <Image src={Logo} alt="Kids Guitar Dojo" width={240} height={64} className={'fill-white'} />
