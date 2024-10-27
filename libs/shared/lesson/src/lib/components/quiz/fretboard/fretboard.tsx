@@ -149,6 +149,12 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
 
     return (
       <div ref={fretboardRef} className={'item relative isolate flex w-full flex-col'}>
+        {questionary?.imageUrl && (
+          <div className={'mb-5 w-full'}>
+            <img src={questionary.imageUrl} alt="question" className="object-fit w-full rounded-md" />
+          </div>
+        )}
+        <h2 className={'!font-lesson-body mb-5 text-2xl font-bold'}>{questionary.title}</h2>
         <div id={'drag-items'} className={'relative flex w-full space-x-2 rounded border border-amber-700 p-3'}>
           {/* items */}
           {questionary.questions.map((item, index) => (
