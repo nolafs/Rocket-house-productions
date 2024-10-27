@@ -117,6 +117,15 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
                 courseId={params.courseId}
                 moduleId={params.moduleId}
               />
+              <ModuleAttachementForm
+                initialData={moduleSection}
+                attachmentCategories={attachmentCategories.map(category => ({
+                  label: category.name,
+                  value: category.id,
+                }))}
+                courseId={params.courseId}
+                moduleId={moduleSection.id}
+              />
             </div>
             <div></div>
           </div>
@@ -126,15 +135,6 @@ const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: 
               <h2 className="text-xl">Modules Lesson</h2>
             </div>
             <LessonForm initialData={moduleSection} moduleId={moduleSection.id} courseId={params.courseId} />
-            <ModuleAttachementForm
-              initialData={moduleSection}
-              attachmentCategories={attachmentCategories.map(category => ({
-                label: category.name,
-                value: category.id,
-              }))}
-              courseId={params.courseId}
-              moduleId={moduleSection.id}
-            />
           </div>
         </div>
       </div>
