@@ -51,6 +51,7 @@ export default async function Layout({ children, params }: LayoutProps) {
           avatar={child?.profilePicture}
           name={child?.name}
           purchaseType={child?.purchaseType}
+          purchaseCategory={child?.purchaseCategory}
         />
         <ModuleAwards />
         {children}
