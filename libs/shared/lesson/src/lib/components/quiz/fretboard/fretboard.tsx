@@ -68,6 +68,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         const dragSetup = () => {
           for (let i = 0; i <= dragItems.length; i++) {
             Draggable.create(dragItems[i], {
+              autoScroll: 1,
               bounds: {
                 top: 0,
                 left: 0,

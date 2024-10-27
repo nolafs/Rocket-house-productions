@@ -2,6 +2,7 @@
 import Avatar from '../avatar';
 import ScoreDisplay from '../score-display';
 import {
+  Badge,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -32,9 +33,17 @@ interface HeaderProps {
   background?: string | null | undefined;
   score?: number;
   purchaseType: string | null | undefined;
+  purchaseCategory: string | null | undefined;
 }
 
-export function Header({ childId, name, avatar, background = 'transparent', purchaseType = null }: HeaderProps) {
+export function Header({
+  childId,
+  name,
+  avatar,
+  background = 'transparent',
+  purchaseType = null,
+  purchaseCategory = null,
+}: HeaderProps) {
   const { signOut, openUserProfile } = useClerk();
   const { getCurrentModule, currentModule, modules } = useModuleProgressStore(store => store);
   const [color, setColor] = useState<string>(background || 'transparent');
@@ -42,6 +51,16 @@ export function Header({ childId, name, avatar, background = 'transparent', purc
   useEffect(() => {
     setColor(prevState => getCurrentModule()?.color || background || 'transparent');
   }, [getCurrentModule, background, currentModule, modules]);
+
+  const accountTypeLabel = (type: string) => {
+    if (type === 'basic') {
+      return 'Free';
+    } else if (type === 'standard') {
+      return 'Standard';
+    } else if (type === 'premium') {
+      return 'Premium';
+    }
+  };
 
   return (
     <>
@@ -59,7 +78,12 @@ export function Header({ childId, name, avatar, background = 'transparent', purc
                 <Avatar avatar={avatar} classNames={'border  border-3 border-white'} />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuLabel>Account {purchaseType === 'free' && '(FREE)'}</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                  <span className={'mr-5 inline-block'}>Account </span>
+                  <Badge>
+                    {accountTypeLabel(purchaseCategory || (purchaseType === 'free' ? 'basic' : 'standard'))}
+                  </Badge>
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <DialogTrigger>Your profile</DialogTrigger>
@@ -74,6 +98,15 @@ export function Header({ childId, name, avatar, background = 'transparent', purc
                   <>
                     <DropdownMenuItem>
                       <Link href={'/courses/upgrade'}>Upgrade</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+
+                {purchaseType !== 'free' && purchaseCategory === 'standard' && (
+                  <>
+                    <DropdownMenuItem>
+                      <Link href={'/courses/upgrade'}>Upgrade to premium</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                   </>
