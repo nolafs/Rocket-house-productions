@@ -9,19 +9,33 @@ import React from 'react';
 interface HeaderProps {
   isAdmin?: boolean;
   logo?: any;
+  backToUrl?: string;
+  backToText?: string;
 }
 
-export function NavbarSimple({ isAdmin = false, logo }: HeaderProps) {
+export function NavbarSimple({
+  isAdmin = false,
+  logo = null,
+  backToUrl = '/',
+  backToText = 'Back to home',
+}: HeaderProps) {
   return (
     <>
       <div id="navbar" className="navbar-area fixed z-10 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
         <div className="container mx-auto max-w-[1266px] py-3">
           <nav className={`navbar relative flex flex-wrap justify-between`}>
             <div className="self-center">
-              <Link href="/">
-                <Image src={logo} className="inline" alt="logo" />
-                <span className={'sr-only'}>Back to home</span>
-              </Link>
+              {logo && (
+                <Link href={backToUrl}>
+                  <Image src={logo} className="inline" alt="logo" />
+                  <span className={'sr-only'}>{backToText}</span>
+                </Link>
+              )}
+              {!logo && (
+                <Link href={backToUrl} className={buttonVariants({ variant: 'lesson' })}>
+                  <span>{backToText}</span>
+                </Link>
+              )}
             </div>
             {/* Other options */}
             <div className="other-options hidden self-center pb-[10px] pt-[20px] md:block xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
