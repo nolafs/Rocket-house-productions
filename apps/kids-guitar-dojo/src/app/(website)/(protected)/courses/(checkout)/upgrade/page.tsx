@@ -11,21 +11,10 @@ import { getAccount } from '@rocket-house-productions/actions/server';
 import { db } from '@rocket-house-productions/integration';
 
 export default async function Page({ params }: { params: { product: string[]; purchaseId: string } }) {
-  const { userId, sessionClaims } = auth();
+  const { userId } = auth();
 
   if (!userId) {
     return redirect('/');
-  }
-
-  if (!sessionClaims) {
-    return redirect('/');
-  }
-
-  if (sessionClaims.metadata?.status === 'active') {
-    if (sessionClaims.metadata?.type === 'paid') {
-      console.log('User is already active and has a paid account');
-      redirect('/courses');
-    }
   }
 
   let purchase = null;

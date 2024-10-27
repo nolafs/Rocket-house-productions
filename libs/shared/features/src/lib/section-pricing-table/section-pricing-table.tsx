@@ -29,7 +29,7 @@ export function SectionPricingTable({
   if (upgrade) {
     // remove free tier
     if (upgrade === 'basic') {
-      tiers = tiers.filter(tier => !tier.data.free || tier.data.purchase_type === 'upgrade');
+      tiers = tiers.filter(tier => !tier.data.free && tier.data.purchase_type !== 'upgrade');
     }
     if (upgrade === 'standard') {
       tiers = tiers.filter(tier => tier.data.purchase_type === 'upgrade');
