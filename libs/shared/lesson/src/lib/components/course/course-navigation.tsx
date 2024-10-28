@@ -19,7 +19,6 @@ import {
   useLessonProgressionStore,
 } from '@rocket-house-productions/providers';
 import ModuleAwards from './course-scene/module-awards';
-import { CameraController } from './course-scene/camera-control';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
 import { Module } from '@prisma/client';
@@ -40,7 +39,10 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const courseState = useCourseProgressionStore(store => store);
   const moduleState = useModuleProgressStore(store => store);
   const lessonState = useLessonProgressionStore(store => store);
-  const [lesson, setLesson] = React.useState<LessonButton | null>(null);
+
+  const previousProgress = useRef<unknown | null>(null);
+
+  const [lesson, setLesson] = useState<LessonButton | null>(null);
   const [courseProgression, setCourseProgression] = useState<number | null>(null);
   const currentModule = useRef<Module | null>(null);
   const router = useRouter();
@@ -50,18 +52,31 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   console.log('[CourseNavigation] RENDER 1');
 
   // check if device is mobile
+  const isMounted = useRef(false);
 
   useEffect(() => {
-    courseState.calculateCourseProgress(course.id);
-    console.log('[CourseNavigation] EFFECT 1');
-  }, [moduleState]);
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
-    setCourseProgression(courseState.getCourseProgress(course.id));
-    console.log('[CourseNavigation] EFFECT 2');
+    // Calculate the current course progress
+    const newProgress = courseState.getCourseProgress(course.id);
+    console.log('[CourseNavigation] EFFECT 2', newProgress);
+    // Update only if the progression data has actually changed
+    if (newProgress !== previousProgress.current) {
+      console.log('[CourseNavigation] EFFECT 2 - Progress Updated');
+      setCourseProgression(newProgress);
+      previousProgress.current = newProgress;
+    } else {
+      console.log('[CourseNavigation] EFFECT 2 - No Change');
+    }
+
     return () => {
       console.log('[CourseNavigation] EFFECT CLEANUP');
-      courseProgression && setCourseProgression(null);
+      setCourseProgression(null);
     };
   }, [courseState, lessonState]);
 
@@ -126,6 +141,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
       [],
     );
 
+    console.log('[CourseNavigation] DISPLAY');
+
     return {
       buttons: buttonList,
       total: buttonList.length,
@@ -173,13 +190,17 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   );
 
   const handleLoaded = (load: boolean) => {
-    console.log('[CourseNavigation] handleLoaded', load);
-    onLoaded && onLoaded(load);
+    if (isMounted.current) {
+      console.log('[CourseNavigation] handleLoaded', load);
+      onLoaded && onLoaded(load);
+    }
   };
 
   const handleOpenLesson = (lesson: LessonButton) => {
     setLesson(lesson);
-    onLoaded && onLoaded(false);
+    if (isMounted.current) {
+      onLoaded && onLoaded(false);
+    }
   };
 
   const handleZoom = (dir: number) => {
@@ -191,7 +212,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   console.log('[CourseNavigation] RENDER LOAD');
 
-  if (courseProgression === null) {
+  if (previousProgress.current === null) {
     return (
       <div className={'flex h-screen w-full items-center justify-center'}>
         <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
@@ -199,7 +220,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     );
   }
 
-  console.log('[CourseNavigation] RENDER FINAL', isMobile);
+  console.log('[CourseNavigation] RENDER FINAL');
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
@@ -246,7 +267,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
           <Landscape
             lessonSpacing={LESSON_SPACING}
-            courseCompleted={courseProgression === 100}
+            courseCompleted={previousProgress.current === 100}
             position={[0, 0, 0]}
             container={containerRef}
             purchaseType={purchaseType}
