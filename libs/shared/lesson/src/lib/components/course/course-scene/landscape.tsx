@@ -172,6 +172,7 @@ export const Landscape = ({
         ScrollTrigger.killAll();
         scrollTriggerRef.current = null;
         setupComplete.current = false; // Reset on cleanup
+        prevDisplayRef.current = null;
       };
     },
     { scope: container, dependencies: [display, camera] },
