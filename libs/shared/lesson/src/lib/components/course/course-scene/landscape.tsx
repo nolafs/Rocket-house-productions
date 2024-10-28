@@ -52,16 +52,19 @@ export const Landscape = ({
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
   const ref = React.useRef<THREE.Group>(null);
+  const setupComplete = useRef(false);
+  const prevDisplayRef = useRef<ModuleButtonDisplay | null>(null);
   const { camera } = useThree();
 
   const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
 
   const { contextSafe } = useGSAP(
     () => {
-      console.log('[Landscape] useGSAP');
-      console.log('[Landscape] useGSAP', !container?.current);
-      console.log('[Landscape] useGSAP', !display?.pathLength);
-      console.log('[Landscape] useGSAP', !camera);
+      console.log('[Landscape] useGSAP', display);
+
+      if (setupComplete.current) {
+        return;
+      }
 
       if (!container?.current) {
         return;
@@ -79,7 +82,15 @@ export const Landscape = ({
         scrollTriggerRef.current.kill();
       }
 
-      const currentLesson = display.buttons[display.next || 0].position.y;
+      setupComplete.current = true;
+
+      if (prevDisplayRef.current) {
+        if (prevDisplayRef.current.total === display.total) {
+          console.log('[Landscape] useGSAP - No Change in Display');
+          return;
+        }
+      }
+      prevDisplayRef.current = display;
 
       const tl = gsap.timeline({ paused: false });
 
@@ -160,6 +171,7 @@ export const Landscape = ({
       return () => {
         ScrollTrigger.killAll();
         scrollTriggerRef.current = null;
+        setupComplete.current = false; // Reset on cleanup
       };
     },
     { scope: container, dependencies: [display, camera] },
@@ -193,6 +205,8 @@ export const Landscape = ({
   });
 
   const handleOnBackToCurrentLesson = contextSafe(() => {
+    console.log('[Landscape] handleOnBackToCurrentLesson');
+
     if (!display.pathLength) {
       return;
     }
