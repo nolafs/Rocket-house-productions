@@ -175,7 +175,7 @@ export const Landscape = ({
         prevDisplayRef.current = null;
       };
     },
-    { scope: container, dependencies: [display, camera] },
+    { scope: container, dependencies: [display, courseCompleted] },
   );
 
   const handleOnLesson = contextSafe((lesson: LessonButton) => {
