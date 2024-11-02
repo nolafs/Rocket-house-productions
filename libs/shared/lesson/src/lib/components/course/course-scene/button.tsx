@@ -190,7 +190,7 @@ export const Button3d = ({
         />
       )}
       {lesson.num !== 1 && next && (
-        <Svg src={'/images/course/next-msg-lesson.svg'} position={[5, 6, 0.6]} scale={0.04}></Svg>
+        <Svg src={'/images/course/next-msg-lesson.svg'} position={[5, 10, 0.6]} scale={0.04}></Svg>
       )}
       <group
         position={[position[0], 0, position[2]]}

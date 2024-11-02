@@ -37,7 +37,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const courseState = useCourseProgressionStore(store => store);
-  const moduleState = useModuleProgressStore(store => store);
   const lessonState = useLessonProgressionStore(store => store);
 
   const previousProgress = useRef<unknown | null>(null);
@@ -78,7 +77,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
       console.log('[CourseNavigation] EFFECT CLEANUP');
       setCourseProgression(null);
     };
-  }, [courseState, lessonState]);
+  }, [courseState]);
 
   const display = useMemo<ModuleButtonDisplay>(() => {
     if (lessonState.getLessonCompleted === undefined)
@@ -254,8 +253,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
           <SkyBox />
 
           <directionalLight
-            shadow-mapSize-width={1024 * (isMobile ? 2 : 8)}
-            shadow-mapSize-height={1024 * (isMobile ? 2 : 8)}
+            shadow-mapSize-width={1024 * (isMobile ? 2 : 4)}
+            shadow-mapSize-height={1024 * (isMobile ? 2 : 4)}
             shadow-camera-far={500}
             shadow-camera-left={-100}
             shadow-camera-right={100}
