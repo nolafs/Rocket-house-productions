@@ -6,12 +6,18 @@ export const uploadFile = async (path: string, file: Buffer | any) => {
 
   console.log('[uploadFile]', uploadFileUrl);
 
+  // get file type
+  // const fileType = file instanceof Buffer ? 'application/octet-stream' : file.type;
+  const fileType = 'application/octet-stream';
+
+  console.log('[uploadFile]', fileType);
+
   try {
     const response = await fetch(uploadFileUrl, {
       method: 'PUT',
       headers: {
         AccessKey: process.env.BUNNYCDN_API_KEY || '',
-        'Content-Type': 'application/octet-stream',
+        'Content-Type': fileType,
       },
       body: file,
     });

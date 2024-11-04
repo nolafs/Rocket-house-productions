@@ -10,6 +10,7 @@ import { File, Loader2, PlusCircle, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import {
+  Badge,
   Button,
   Form,
   FormControl,
@@ -20,11 +21,18 @@ import {
   Input,
 } from '@rocket-house-productions/shadcn-ui';
 
-import { Attachment, Course } from '@prisma/client';
+import { Course } from '@prisma/client';
 import { FileUpload } from '@rocket-house-productions/features';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AttachmentCategoryForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/attachment-category-form';
+
+interface Attachment {
+  id: string;
+  name: string;
+  url: string;
+  attachmentType: { name: string };
+}
 
 interface AttachmentFormProps {
   initialData: Course & { attachments: Attachment[] };
@@ -55,8 +63,6 @@ const AttachmentForm = ({ initialData, courseId, attachmentCategories }: Attachm
   const toggleEdit = () => setIsEditing(current => !current);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('[ATTACHMENT FORM]', values);
-
     try {
       await axios.post(`/api/courses/${courseId}/attachments`, values);
       toast.success('Course updated');
@@ -106,7 +112,10 @@ const AttachmentForm = ({ initialData, courseId, attachmentCategories }: Attachm
                   key={attachment.id}
                   className="flex w-full items-center rounded-md border-sky-200 bg-sky-100 p-3 text-sky-700">
                   <File className="mr-2 h-4 w-4 flex-shrink-0" />
-                  <p className="line-clamp-1 text-xs">{attachment.name}</p>
+                  <p className="line-clamp-1 grow text-xs">{attachment.name}</p>
+                  <div className={'mr-5 flex flex-shrink-0 justify-end'}>
+                    <Badge className="ml-auto">{attachment?.attachmentType?.name}</Badge>
+                  </div>
                   {deletingId === attachment.id && (
                     <div>
                       <Loader2 className="h-4 w-4 animate-spin" />

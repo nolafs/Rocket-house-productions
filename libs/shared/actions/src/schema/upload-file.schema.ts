@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const MAX_FILE_SIZE = 50000000;
-export const ACCEPTED_FILE_TYPES = ['application/pdf'];
+export const ACCEPTED_FILE_TYPES = ['application/pdf', 'audio/mpeg'];
 
 export const UploadFileSchema = z.object({
   file: z

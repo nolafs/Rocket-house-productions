@@ -1,3 +1,4 @@
+export * from './lib/components/jukebox/jukebox';
 export { LessonBookCta } from './lib/components/lesson/lesson-book-cta';
 export { CourseNavigation } from './lib/components/course/course-navigation';
 export { CourseQuickNavigation } from './lib/components/course/course-quick-navigation';
