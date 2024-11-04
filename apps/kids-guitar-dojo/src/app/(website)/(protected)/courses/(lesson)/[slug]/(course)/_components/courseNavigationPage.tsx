@@ -16,6 +16,10 @@ const CourseLeaderboard = dynamic(
   { ssr: false },
 );
 
+const CourseJukeBox = dynamic(() => import('@rocket-house-productions/lesson').then(module => module.Jukebox), {
+  ssr: false,
+});
+
 interface CourseNavigationPageProps {
   course: Course & { modules: any[] };
   childId?: string | null;
@@ -34,8 +38,6 @@ export function CourseNavigationPage({ course, role, childId = null, purchaseTyp
   );
 
   const handleLoaded = contextSafe((ready: boolean) => {
-    //console.log('[CourseNavigationPage] handleLoaded', ready);
-
     if (ready) {
       gsap.to('.footer-ui', { duration: 1, autoAlpha: 1, yPercent: 0 });
     } else {
@@ -51,6 +53,7 @@ export function CourseNavigationPage({ course, role, childId = null, purchaseTyp
       <div className="footer-ui fixed bottom-2 left-0 z-50 flex w-full flex-col justify-center gap-y-5 px-3 md:flex-row md:justify-between">
         <LessonCourseProgression course={course} />
         <div className={'flex items-center justify-center gap-x-2'}>
+          <CourseJukeBox course={course} />
           <CourseLeaderboard courseId={course.id} childId={childId} />
           <ModuleAttachments course={course} purchaseType={purchaseType} />
           <CourseQuickNavigation course={course} role={role} />
