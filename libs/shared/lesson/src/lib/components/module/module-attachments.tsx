@@ -33,10 +33,12 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
   const attachmentsByType: { [key: string]: Attachment[] } = course.attachments.reduce(
     (acc: any, attachment: any) => {
       const typeName = attachment.attachmentType.name;
-      if (!acc[typeName]) {
+
+      if (!acc[typeName] && typeName !== 'Playlist') {
         acc[typeName] = [];
+        acc[typeName].push(attachment);
       }
-      acc[typeName].push(attachment);
+
       return acc;
     },
     {} as { [key: string]: Attachment[] },
