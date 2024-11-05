@@ -150,7 +150,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
       current,
       next,
     };
-  }, [course, LESSON_SPACING, lessonState]);
+  }, [LESSON_SPACING, lessonState]);
 
   useGSAP(
     () => {
@@ -311,18 +311,6 @@ function Loader() {
       </div>
     </Html>
   );
-}
-
-function Ready({ ready }: { ready: boolean }) {
-  if (!ready) {
-    return (
-      <div className={'z-50 flex h-screen w-full flex-col items-center justify-center bg-[#e8c996]'}>
-        <div className={'flex flex-col items-center justify-center'}>
-          <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
-        </div>
-      </div>
-    );
-  }
 }
 
 function SkyBox() {
