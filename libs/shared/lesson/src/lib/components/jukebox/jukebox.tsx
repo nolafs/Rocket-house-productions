@@ -12,7 +12,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui';
 
 import { Disc3 } from 'lucide-react';
 import Player from '@madzadev/audio-player';
-import '@madzadev/audio-player/dist/index.css';
+import './jukebox.css';
 
 interface JukeboxProps {
   course: any;
@@ -44,25 +44,25 @@ export function Jukebox({ course }: JukeboxProps) {
   const colors = {
     tagsBackground: 'hsl(var(--primary))',
     tagsText: '#ffffff',
-    tagsBackgroundHoverActive: '#6e65f1',
+    tagsBackgroundHoverActive: 'rgb(236 72 153)',
     tagsTextHoverActive: '#ffffff',
-    searchBackground: '#18191f',
-    searchText: '#ffffff',
+    searchBackground: 'hsl(35deg 74.32% 70%)',
+    searchText: '#000000',
     searchPlaceHolder: '#575a77',
-    playerBackground: '#18191f',
+    playerBackground: 'hsl(35deg 74.32% 70%)',
     titleColor: '#ffffff',
     timeColor: '#ffffff',
-    progressSlider: '#3e32e4',
+    progressSlider: 'rgb(236 72 153)',
     progressUsed: '#ffffff',
-    progressLeft: '#151616',
+    progressLeft: 'hsl(35deg 74.32% 60%)',
     bufferLoaded: '#1f212b',
-    volumeSlider: '#3e32e4',
+    volumeSlider: 'rgb(236 72 153)',
     volumeUsed: '#ffffff',
-    volumeLeft: '#151616',
-    playlistBackground: 'hsl(var(--secondary))',
-    playlistText: '#575a77',
-    playlistBackgroundHoverActive: '#18191f',
-    playlistTextHoverActive: '#ffffff',
+    volumeLeft: 'hsl(35deg 74.32% 60%)',
+    playlistBackground: 'rgb(236 72 153)',
+    playlistText: '#ffffff',
+    playlistBackgroundHoverActive: 'hsl(var(--accent))',
+    playlistTextHoverActive: 'hsl(var(--primary))',
   };
 
   return (
