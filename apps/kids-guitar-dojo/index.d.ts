@@ -8,3 +8,4 @@ declare module '*.svg' {
 
 declare module 'server-only';
 declare module 'player.js';
+declare module '@madzadev/audio-player';
