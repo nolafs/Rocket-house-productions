@@ -21,18 +21,14 @@ import {
   Input,
 } from '@rocket-house-productions/shadcn-ui';
 
-import { Attachment, AttachmemtType, Course } from '@prisma/client';
+import { Course } from '@prisma/client';
 import { FileUpload } from '@rocket-house-productions/features';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import AttachmentCategoryForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/attachment-category-form';
 
-interface AttachmentItem extends Attachment {
-  attachmentType: AttachmemtType;
-}
-
 interface AttachmentFormProps {
-  initialData: Course & { attachments: AttachmentItem[] };
+  initialData: Course & { attachments: any[] };
   attachmentCategories: { label: string; value: string }[];
   courseId: string;
 }
