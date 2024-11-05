@@ -11,10 +11,8 @@ import {
 import { Button } from '@rocket-house-productions/shadcn-ui';
 
 import { Disc3 } from 'lucide-react';
-import dynamic from 'next/dynamic';
-import { InterfaceGridTemplateArea } from 'react-modern-audio-player';
-
-const AudioPlayer = dynamic(() => import('react-modern-audio-player'), { ssr: false });
+import Player from '@madzadev/audio-player';
+import '@madzadev/audio-player/dist/index.css';
 
 interface JukeboxProps {
   course: any;
@@ -35,25 +33,36 @@ type Attachment = {
 export function Jukebox({ course }: JukeboxProps) {
   const attachmentPlaylist = course.attachments.filter((v: Attachment) => v.attachmentType.name === 'Playlist');
 
-  const playList = attachmentPlaylist.map((item: Attachment, idx: number) => ({
-    name: item.name,
-    writer: 'Paul Greg',
-    src: item.url,
-    id: idx + 1,
+  const playList: any = attachmentPlaylist.map((item: Attachment, idx: number) => ({
+    title: item.name,
+    url: item.url,
+    tags: [],
   }));
 
   console.log('playlist', playList, course.attachments);
 
-  const template: any = {
-    artwork: 'row1-2',
-    playList: 'row1-4',
-    trackInfo: 'row2-2',
-    trackTimeCurrent: 'row3-1',
-    progress: 'row3-2',
-    trackTimeDuration: 'row3-3',
-    playButton: 'row4-2',
-    repeatType: 'row4-1',
-    volume: 'row4-3',
+  const colors = {
+    tagsBackground: 'hsl(var(--primary))',
+    tagsText: '#ffffff',
+    tagsBackgroundHoverActive: '#6e65f1',
+    tagsTextHoverActive: '#ffffff',
+    searchBackground: '#18191f',
+    searchText: '#ffffff',
+    searchPlaceHolder: '#575a77',
+    playerBackground: '#18191f',
+    titleColor: '#ffffff',
+    timeColor: '#ffffff',
+    progressSlider: '#3e32e4',
+    progressUsed: '#ffffff',
+    progressLeft: '#151616',
+    bufferLoaded: '#1f212b',
+    volumeSlider: '#3e32e4',
+    volumeUsed: '#ffffff',
+    volumeLeft: '#151616',
+    playlistBackground: 'hsl(var(--secondary))',
+    playlistText: '#575a77',
+    playlistBackgroundHoverActive: '#18191f',
+    playlistTextHoverActive: '#ffffff',
   };
 
   return (
@@ -69,37 +78,7 @@ export function Jukebox({ course }: JukeboxProps) {
           <DialogTitle>Jukebox</DialogTitle>
         </DialogHeader>
 
-        <DialogBody>
-          <DialogDescription>Ninja Jukebox</DialogDescription>
-          <div className={'py-5'}>
-            {playList && (
-              <AudioPlayer
-                audioInitialState={{
-                  muted: false,
-                  volume: 1,
-                  curPlayId: 1,
-                }}
-                activeUI={{
-                  all: true,
-                  progress: 'waveform',
-                }}
-                placement={{
-                  interface: {
-                    templateArea: template,
-                  },
-                  player: 'static',
-                  playList: 'bottom',
-                  volumeSlider: 'left',
-                }}
-                rootContainerProps={{
-                  colorScheme: 'light',
-                  width: '100%',
-                }}
-                playList={playList}
-              />
-            )}
-          </div>
-        </DialogBody>
+        <DialogBody>{playList && <Player trackList={playList} customColorScheme={colors} />}</DialogBody>
       </DialogContent>
     </Dialog>
   );
