@@ -49,7 +49,7 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
       <DialogTrigger asChild>
         <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
           <CloudDownload className={'mr-2 h-4 w-4'} />
-          Additional Downloads
+          <span className={'hidden md:inline-block'}>Additional Downloads</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
