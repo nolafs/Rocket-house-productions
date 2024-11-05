@@ -1,5 +1,5 @@
 'use client';
-import { CourseQuickNavigation, LessonCourseProgression, ModuleAttachments } from '@rocket-house-productions/lesson';
+
 import { Course } from '@prisma/client';
 import React, { useRef } from 'react';
 import dynamic from 'next/dynamic';
@@ -19,6 +19,27 @@ const CourseLeaderboard = dynamic(
 const CourseJukeBox = dynamic(() => import('@rocket-house-productions/lesson').then(module => module.Jukebox), {
   ssr: false,
 });
+
+const ModuleAttachments = dynamic(
+  () => import('@rocket-house-productions/lesson').then(module => module.ModuleAttachments),
+  {
+    ssr: false,
+  },
+);
+
+const CourseQuickNavigation = dynamic(
+  () => import('@rocket-house-productions/lesson').then(module => module.CourseQuickNavigation),
+  {
+    ssr: false,
+  },
+);
+
+const LessonCourseProgression = dynamic(
+  () => import('@rocket-house-productions/lesson').then(module => module.LessonCourseProgression),
+  {
+    ssr: false,
+  },
+);
 
 interface CourseNavigationPageProps {
   course: Course & { modules: any[] };
@@ -50,9 +71,9 @@ export function CourseNavigationPage({ course, role, childId = null, purchaseTyp
       <div id="course-nav" className={'relative h-screen w-full'}>
         <CourseNavigation purchaseType={purchaseType} course={course} onLoaded={loaded => handleLoaded(loaded)} />
       </div>
-      <div className="footer-ui fixed bottom-2 left-0 z-50 flex w-full flex-col justify-center gap-y-5 px-3 md:flex-row md:justify-between">
+      <div className="footer-ui fixed bottom-0 left-0 z-50 flex w-full flex-col justify-center gap-y-5 rounded-t-lg bg-gradient-to-t from-slate-50 to-slate-200 px-3 shadow-md md:bottom-2 md:flex-row md:justify-between md:bg-transparent md:shadow-none">
         <LessonCourseProgression course={course} />
-        <div className={'flex items-center justify-center gap-x-2'}>
+        <div className={'flex items-center justify-center gap-x-2 pb-5 md:pb-0'}>
           <CourseJukeBox course={course} />
           <CourseLeaderboard courseId={course.id} childId={childId} />
           <ModuleAttachments course={course} purchaseType={purchaseType} />

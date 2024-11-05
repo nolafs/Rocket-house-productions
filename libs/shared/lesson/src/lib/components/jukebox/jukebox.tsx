@@ -70,7 +70,7 @@ export function Jukebox({ course }: JukeboxProps) {
       <DialogTrigger asChild>
         <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
           <Disc3 className={'mr-2 h-4 w-4'} />
-          Jukebox
+          <span className={'hidden md:inline-block'}>Jukebox</span>
         </Button>
       </DialogTrigger>
       <DialogContent>

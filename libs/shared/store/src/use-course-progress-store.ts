@@ -16,6 +16,7 @@ type Course = {
 type CourseState = {
   courses: { [courseId: string]: Course };
   currentCourse: string | null;
+  currentCourseProgress: number;
 };
 
 interface CourseAction {
@@ -32,6 +33,7 @@ export type CourseProgressStore = CourseState & CourseAction;
 export const defaultInitState: CourseState = {
   courses: {},
   currentCourse: null,
+  currentCourseProgress: 0,
 };
 
 export const createCourseStore = (
@@ -47,11 +49,15 @@ export const createCourseStore = (
       (set, get) => ({
         ...initState,
         addCourse: course => {
+          console.log('[COURSE STORE] - ADD');
+
           const courseId = course.id;
           let progress = 0;
           let completed = 0;
           let total = 0;
+
           const existingCourse = get().courses[courseId];
+
           if (existingCourse) {
             console.warn(`Course with ID ${courseId} already exists.`);
             progress = existingCourse.progress;
@@ -61,6 +67,7 @@ export const createCourseStore = (
 
           set(state => ({
             currentCourse: courseId,
+            currentCourseProgress: progress,
             courses: {
               ...state.courses,
               [courseId]: {
@@ -77,6 +84,8 @@ export const createCourseStore = (
 
         setCourseProgress: (courseId, progress) =>
           set(state => ({
+            currentCourse: courseId,
+            currentCourseProgress: progress,
             courses: {
               ...state.courses,
               [courseId]: {
@@ -109,6 +118,8 @@ export const createCourseStore = (
         },
 
         calculateCourseProgress: courseId => {
+          console.log('[COURSE STORE] - CALC');
+
           const course = get().courses[courseId];
           const moduleStore = moduleState.getState();
           const lessonStore = lessonState.getState();
@@ -141,6 +152,8 @@ export const createCourseStore = (
           const total = (totalCompletedLessons / (100 * totalLessons)) * 100;
 
           set(state => ({
+            currentCourse: courseId,
+            currentCourseProgress: progress,
             courses: {
               ...state.courses,
               [courseId]: {
@@ -157,8 +170,12 @@ export const createCourseStore = (
         name: `course-progress-store-${userId}`,
         onRehydrateStorage: () => state => {
           if (state) {
+            console.log('[COURSE STORE] - onRehydrateStorage');
             // Run addCourse on rehydration
             state.addCourse(course);
+            if (course) {
+              state.calculateCourseProgress(course.id);
+            }
           }
         }, // Unique storage key per user or context
         partialize: state => ({ courses: state.courses }), // Persist only the courses part of the state

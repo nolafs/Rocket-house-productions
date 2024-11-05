@@ -26,7 +26,7 @@ export const LessonProgressBar: FC<LessonProgressBarProps> = memo(({ currentProg
     <div className="mb-4 flex w-full flex-col md:max-w-[360px] md:space-x-1.5">
       <div
         className={cn('flex justify-between px-1.5 pb-2 text-sm font-bold', progressVariants({ variant: variation }))}>
-        <div>Your progress</div>
+        <div className={'text-black md:text-white'}>Your progress</div>
         <div className="text-pink-500">{Math.round(currentProgress)}%</div>
       </div>
       <Progress

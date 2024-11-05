@@ -34,7 +34,7 @@ export function CourseLeaderboard({ courseId, childId }: CourseLeaderboardProps)
       <DialogTrigger asChild>
         <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
           <Trophy className={'mr-2 h-4 w-4'} />
-          Leaderboard
+          <span className={'hidden md:inline-block'}>Leaderboard</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
