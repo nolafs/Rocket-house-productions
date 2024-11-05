@@ -12,7 +12,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui';
 
 import { Disc3 } from 'lucide-react';
 import Player from '@madzadev/audio-player';
-import '@madzadev/audio-player/dist/index.css';
+import './jukebox.css';
 
 interface JukeboxProps {
   course: any;
