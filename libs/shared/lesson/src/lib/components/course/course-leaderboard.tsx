@@ -32,10 +32,21 @@ export function CourseLeaderboard({ courseId, childId }: CourseLeaderboardProps)
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
-          <Trophy className={'mr-2 h-4 w-4'} />
-          <span className={'hidden md:inline-block'}>Leaderboard</span>
-        </Button>
+        <div>
+          <div className={'hidden lg:block'}>
+            <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
+              <Trophy className={'mr-2 h-4 w-4'} />
+              <span className={'hidden md:inline-block'}>Leaderboard</span>
+            </Button>
+          </div>
+
+          <div className={'block lg:hidden'}>
+            <div className={'flex flex-col items-center justify-center space-y-2'}>
+              <Trophy className={'h-7 w-7 text-pink-500'} />
+              <span className={'text-sm font-bold text-pink-500'}>Leaderboard</span>
+            </div>
+          </div>
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

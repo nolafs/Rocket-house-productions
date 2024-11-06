@@ -15,7 +15,7 @@ import {
   Button,
   buttonVariants,
 } from '@rocket-house-productions/shadcn-ui';
-import { ChevronRightIcon, MenuIcon } from 'lucide-react';
+import { ChevronRightIcon, Disc3, MenuIcon } from 'lucide-react';
 import Link from 'next/link';
 import cn from 'classnames';
 import Image from 'next/image';
@@ -34,10 +34,20 @@ export function CourseQuickNavigation({ course, role }: CourseQuickNavigationPro
     return (
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
-            <MenuIcon className={'h-4 w-4'} />
-            <span className={'sr-only'}>Quick Menu</span>
-          </Button>
+          <div>
+            <div className={'hidden lg:block'}>
+              <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
+                <MenuIcon className={'h-4 w-4'} />
+                <span className={'sr-only'}>Quick Menu</span>
+              </Button>
+            </div>
+            <div className={'block lg:hidden'}>
+              <div className={'flex flex-col items-center justify-start space-y-2'}>
+                <MenuIcon className={'h-7 w-7 text-pink-500'} />
+                <span className={'text-center text-sm font-bold text-pink-500'}>Menu</span>
+              </div>
+            </div>
+          </div>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
