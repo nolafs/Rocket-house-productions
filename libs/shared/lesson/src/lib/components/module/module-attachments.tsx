@@ -62,14 +62,14 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
             <>
               <DialogDescription>
                 Unlock the full potential of your course with a paid account! Get instant access to exclusive additional
-                resources, including comprehensive PDF guides, interactive games, and enriching audio files. These
-                materials are designed to enhance your learning experience, making it more engaging and effective.
-                Upgrade today to explore these valuable resources and take your learning journey to the next level!
+                resources, including comprehensive PDF guides and games These materials are designed to enhance your
+                learning experience, making it more engaging and effective. Upgrade today to explore these valuable
+                resources and take your learning journey to the next level!
               </DialogDescription>
               <Link
                 href={'/courses/upgrade'}
                 className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'mt-10 w-full')}>
-                Upgrade to Premium
+                Upgrade now!
               </Link>
             </>
           )}
