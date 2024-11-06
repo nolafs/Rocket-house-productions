@@ -223,11 +223,11 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
-      <div className={'fixed right-2 top-1/2 z-20 flex flex-col space-y-2 md:hidden'}>
-        <Button onClick={() => handleZoom(-1)} className={'text-lg'}>
+      <div className={'fixed right-2 top-1/2 z-20 flex flex-col space-y-2 rounded-lg bg-white p-1 md:hidden'}>
+        <Button onClick={() => handleZoom(-1)} className={'h-10 w-10 rounded-full text-lg'}>
           +
         </Button>
-        <Button onClick={() => handleZoom(1)} className={'text-lg'}>
+        <Button onClick={() => handleZoom(1)} className={'h-10 w-10 rounded-full text-lg'}>
           -
         </Button>
       </div>

@@ -27,3 +27,4 @@ export * from './components/ui/color-picker';
 export * from './components/ui/accordion';
 export * from './components/ui/drawer';
 export * from './components/ui/pagination';
+export * from './components/ui/scroll-area';
