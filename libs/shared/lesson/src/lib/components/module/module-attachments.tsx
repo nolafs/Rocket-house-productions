@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../dialog-layout/dialog';
-import { CloudDownload } from 'lucide-react';
+import { CloudDownload, Disc3 } from 'lucide-react';
 import ButtonDownloadPdf from '../button-download-pdf';
 import Link from 'next/link';
 import cn from 'classnames';
@@ -47,10 +47,20 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
-          <CloudDownload className={'mr-2 h-4 w-4'} />
-          <span className={'hidden md:inline-block'}>Additional Downloads</span>
-        </Button>
+        <div>
+          <div className={'hidden lg:block'}>
+            <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
+              <CloudDownload className={'mr-2 h-4 w-4'} />
+              <span className={'hidden md:inline-block'}>Additional Downloads</span>
+            </Button>
+          </div>
+          <div className={'block lg:hidden'}>
+            <div className={'flex flex-col items-center justify-center space-y-2'}>
+              <CloudDownload className={'h-7 w-7 text-pink-500'} />
+              <span className={'text-sm font-bold text-pink-500'}>Downloads</span>
+            </div>
+          </div>
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
