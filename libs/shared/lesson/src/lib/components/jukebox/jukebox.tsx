@@ -8,13 +8,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../dialog-layout/dialog';
-import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import {
+  Button,
+  buttonVariants,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@rocket-house-productions/shadcn-ui';
 
 import { Disc3 } from 'lucide-react';
 import Player from '@madzadev/audio-player';
 import './jukebox.css';
 import Link from 'next/link';
 import cn from 'classnames';
+import { useClientMediaQuery } from '@rocket-house-productions/hooks';
 
 interface JukeboxProps {
   course: any;
@@ -33,15 +43,81 @@ type Attachment = {
 };
 
 export function Jukebox({ course, purchaseType }: JukeboxProps) {
-  const attachmentPlaylist = course.attachments.filter((v: Attachment) => v.attachmentType.name === 'Playlist');
+  const isMobile = useClientMediaQuery('(max-width: 424px)');
 
+  if (!isMobile) {
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <div>
+            <div className={'hidden lg:block'}>
+              <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
+                <Disc3 className={'mr-2 h-4 w-4'} />
+                <span className={'hidden md:inline-block'}>Jukebox</span>
+              </Button>
+            </div>
+            <div className={'block lg:hidden'}>
+              <div className={'flex flex-col items-center justify-start space-y-2'}>
+                <Disc3 className={'h-7 w-7 text-pink-500'} />
+                <span className={'text-center text-sm font-bold text-pink-500'}>Jukebox</span>
+              </div>
+            </div>
+          </div>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Jukebox</DialogTitle>
+          </DialogHeader>
+
+          <DialogBody>
+            <JukePlayer course={course} purchaseType={purchaseType} />
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
+    );
+  } else {
+    return (
+      <Drawer>
+        <DrawerTrigger asChild>
+          <div>
+            <div className={'hidden lg:block'}>
+              <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
+                <Disc3 className={'mr-2 h-4 w-4'} />
+                <span className={'hidden md:inline-block'}>Jukebox</span>
+              </Button>
+            </div>
+            <div className={'block lg:hidden'}>
+              <div className={'flex flex-col items-center justify-start space-y-2'}>
+                <Disc3 className={'h-7 w-7 text-pink-500'} />
+                <span className={'text-center text-sm font-bold text-pink-500'}>Jukebox</span>
+              </div>
+            </div>
+          </div>
+        </DrawerTrigger>
+        <DrawerContent>
+          <div className="mx-auto w-full max-w-sm">
+            <DrawerHeader>
+              <DrawerTitle>
+                <h2 className={'font-lesson-heading text-pink-500'}>Jukebox</h2>
+              </DrawerTitle>
+            </DrawerHeader>
+            <div className="p-4 pb-0">
+              <JukePlayer course={course} purchaseType={purchaseType} />
+            </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+}
+
+const JukePlayer = ({ course, purchaseType }: JukeboxProps) => {
+  const attachmentPlaylist = course.attachments.filter((v: Attachment) => v.attachmentType.name === 'Playlist');
   const playList: any = attachmentPlaylist.map((item: Attachment, idx: number) => ({
     title: item.name,
     url: item.url,
     tags: [],
   }));
-
-  console.log('playlist', playList, course.attachments);
 
   const colors = {
     tagsBackground: 'hsl(var(--primary))',
@@ -68,48 +144,23 @@ export function Jukebox({ course, purchaseType }: JukeboxProps) {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <div>
-          <div className={'hidden lg:block'}>
-            <Button variant={'default'} size={'sm'} className={'!mb-0 border-2 border-white bg-pink-500'}>
-              <Disc3 className={'mr-2 h-4 w-4'} />
-              <span className={'hidden md:inline-block'}>Jukebox</span>
-            </Button>
-          </div>
-          <div className={'block lg:hidden'}>
-            <div className={'flex flex-col items-center justify-start space-y-2'}>
-              <Disc3 className={'h-7 w-7 text-pink-500'} />
-              <span className={'text-center text-sm font-bold text-pink-500'}>Jukebox</span>
-            </div>
-          </div>
-        </div>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Jukebox</DialogTitle>
-        </DialogHeader>
-
-        <DialogBody>
-          {purchaseType === 'free' && (
-            <>
-              <DialogDescription>
-                Unlock the full potential of your course with a paid account! Get instant access to exclusive audio
-                files. Upgrade today to explore these valuable resources and take your learning journey to the next
-                level!
-              </DialogDescription>
-              <Link
-                href={'/courses/upgrade'}
-                className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'mt-10 w-full')}>
-                Upgrade now!
-              </Link>
-            </>
-          )}
-          {purchaseType === 'charge' && playList && <Player trackList={playList} customColorScheme={colors} />}
-        </DialogBody>
-      </DialogContent>
-    </Dialog>
+    <>
+      {purchaseType === 'free' && (
+        <>
+          <DialogDescription>
+            Unlock the full potential of your course with a paid account! Get instant access to exclusive audio files.
+            Upgrade today to explore these valuable resources and take your learning journey to the next level!
+          </DialogDescription>
+          <Link
+            href={'/courses/upgrade'}
+            className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'mt-10 w-full')}>
+            Upgrade now!
+          </Link>
+        </>
+      )}
+      {purchaseType === 'charge' && playList && <Player trackList={playList} customColorScheme={colors} />}
+    </>
   );
-}
+};
 
 export default Jukebox;
