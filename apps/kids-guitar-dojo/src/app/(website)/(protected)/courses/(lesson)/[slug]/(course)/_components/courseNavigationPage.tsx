@@ -77,7 +77,7 @@ export function CourseNavigationPage({ course, role, childId = null, purchaseTyp
 
       {isMobile && (
         <div className="footer-ui fixed bottom-0 left-0 z-50 w-full shadow-md md:bottom-2 md:px-4">
-          <div className={'grid w-full grid-cols-3 justify-items-center gap-y-5 rounded-md bg-white px-2 md:px-4'}>
+          <div className={'grid w-full grid-cols-3 justify-items-center gap-y-3 rounded-md bg-white px-2 md:px-4'}>
             <div className={'grid w-full grid-cols-2 items-center justify-start gap-x-2'}>
               <CourseJukeBox course={course} purchaseType={purchaseType} />
               <CourseLeaderboard courseId={course.id} childId={childId} />
