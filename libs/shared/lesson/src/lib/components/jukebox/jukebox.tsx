@@ -8,11 +8,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../dialog-layout/dialog';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
 
 import { Disc3 } from 'lucide-react';
 import Player from '@madzadev/audio-player';
 import './jukebox.css';
+import Link from 'next/link';
+import cn from 'classnames';
 
 interface JukeboxProps {
   course: any;
@@ -30,7 +32,7 @@ type Attachment = {
   url: string;
 };
 
-export function Jukebox({ course }: JukeboxProps) {
+export function Jukebox({ course, purchaseType }: JukeboxProps) {
   const attachmentPlaylist = course.attachments.filter((v: Attachment) => v.attachmentType.name === 'Playlist');
 
   const playList: any = attachmentPlaylist.map((item: Attachment, idx: number) => ({
@@ -78,7 +80,23 @@ export function Jukebox({ course }: JukeboxProps) {
           <DialogTitle>Jukebox</DialogTitle>
         </DialogHeader>
 
-        <DialogBody>{playList && <Player trackList={playList} customColorScheme={colors} />}</DialogBody>
+        <DialogBody>
+          {purchaseType === 'free' && (
+            <>
+              <DialogDescription>
+                Unlock the full potential of your course with a paid account! Get instant access to exclusive audio
+                files. Upgrade today to explore these valuable resources and take your learning journey to the next
+                level!
+              </DialogDescription>
+              <Link
+                href={'/courses/upgrade'}
+                className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'mt-10 w-full')}>
+                Upgrade now!
+              </Link>
+            </>
+          )}
+          {purchaseType === 'charge' && playList && <Player trackList={playList} customColorScheme={colors} />}
+        </DialogBody>
       </DialogContent>
     </Dialog>
   );
