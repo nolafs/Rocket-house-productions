@@ -111,7 +111,7 @@ const LeaderboardList = ({ courseId, childId }: CourseLeaderboardProps) => {
   }
 
   if (isValidating) {
-    return null;
+    return <div>Loading...</div>;
   }
 
   return (
