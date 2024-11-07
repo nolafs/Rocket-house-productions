@@ -66,6 +66,8 @@ const LessonQuestionanaireForm = ({ initialData, moduleId, courseId, lessonId }:
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log('values', values);
+
     try {
       await axios.post(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire`, values);
       toast.success('Lesson Questionanaire created');
@@ -144,7 +146,12 @@ const LessonQuestionanaireForm = ({ initialData, moduleId, courseId, lessonId }:
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={value => {
+                        field.value = value;
+                        field.onChange(value);
+                      }}
+                      defaultValue={field.value}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select a Type" />
                       </SelectTrigger>

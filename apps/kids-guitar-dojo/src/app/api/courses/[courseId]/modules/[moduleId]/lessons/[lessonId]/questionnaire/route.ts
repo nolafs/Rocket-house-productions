@@ -8,7 +8,7 @@ export async function POST(
 ) {
   try {
     const { userId } = auth();
-    const { title } = await req.json();
+    const { title, type } = await req.json();
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -41,7 +41,7 @@ export async function POST(
     });
 
     if (!lesson) {
-      return new NextResponse('Unauthorized Leson', { status: 401 });
+      return new NextResponse('Unauthorized Lesson', { status: 401 });
     }
 
     const lastQuestionanaire = await db.questionary.findFirst({
@@ -60,6 +60,7 @@ export async function POST(
         title,
         lessonId: params.lessonId,
         position: newPosition,
+        type,
       },
     });
 
