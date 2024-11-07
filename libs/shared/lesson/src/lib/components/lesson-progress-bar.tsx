@@ -52,7 +52,7 @@ export const LessonProgressBar: FC<LessonProgressBarProps> = memo(
               r="40"
               fill="transparent"
               strokeDasharray="251.2"
-              strokeDashoffset={`calc(251.2px - (251.2px * ${currentProgress}) / 100)`}></circle>
+              strokeDashoffset={`${251.2 - (251.2 * currentProgress) / 100}`}></circle>
             <text
               x="50"
               y="50"

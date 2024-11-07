@@ -41,7 +41,7 @@ export function CookieConsent() {
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-50 mx-auto my-10 flex max-w-max px-3 py-3 md:max-w-screen-lg md:px-4 ${showConsent ? 'hidden' : 'flex'} bg-primary flex-col items-center justify-between gap-4 rounded-lg shadow sm:flex-row`}>
+      className={`fixed bottom-0 left-0 right-0 z-50 mx-auto my-10 flex max-w-max px-3 py-3 md:max-w-screen-lg md:px-4 ${showConsent ? 'hidden' : 'flex'} bg-primary flex-col items-center justify-between gap-4 rounded-sm shadow sm:flex-row`}>
       <div className="text-left text-white">
         <Link href={'/legal/privacy-notice-for-kids-guitar-dojo'}>
           <p>
