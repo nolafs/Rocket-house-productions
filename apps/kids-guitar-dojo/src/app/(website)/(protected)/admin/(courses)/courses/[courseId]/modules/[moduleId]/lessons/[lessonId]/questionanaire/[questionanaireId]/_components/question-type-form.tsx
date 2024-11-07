@@ -117,7 +117,12 @@ const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questiona
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={value => {
+                        field.onChange(value);
+                        setType(value);
+                      }}
+                      defaultValue={field.value}>
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select a type" />
                       </SelectTrigger>
@@ -162,7 +167,6 @@ const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questiona
                 )}
               />
             )}
-
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
                 Save

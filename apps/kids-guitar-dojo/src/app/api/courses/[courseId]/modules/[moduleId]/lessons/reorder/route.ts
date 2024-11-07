@@ -32,6 +32,8 @@ export async function PUT(req: Request, { params }: { params: { courseId: string
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
+    console.log('list', list);
+
     for (const item of list) {
       await db.lesson.update({
         where: { id: item.id },

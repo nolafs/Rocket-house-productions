@@ -78,6 +78,7 @@ const LessonForm = ({ initialData, moduleId, courseId }: LessonsFormProps) => {
       const response = await axios.put(`/api/courses/${courseId}/modules/${moduleId}/lessons/reorder`, {
         list: updateData,
       });
+
       if (response.status === 200) {
         toast.success('Lesson reordered');
         router.refresh();
