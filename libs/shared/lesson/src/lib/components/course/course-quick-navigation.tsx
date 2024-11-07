@@ -64,9 +64,9 @@ export function CourseQuickNavigation({ course, role }: CourseQuickNavigationPro
             </DialogHeader>
 
             <DialogBody>
-              <ScrollArea className={'max-h-[342px] w-full'}>
+              <div className={'max-h-[342px] w-full'}>
                 <QuickNavigation course={course} role={role} />
-              </ScrollArea>
+              </div>
             </DialogBody>
           </DialogContent>
         </Dialog>
