@@ -45,8 +45,6 @@ const QuestionnaireIdPage = async ({
     return redirect('/');
   }
 
-  console.log('questionary', questionary);
-
   const requiredFields = [questionary?.title || '', questionary?.questions.length > 0];
 
   const totalFields = requiredFields.length;
