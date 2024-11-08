@@ -17,7 +17,24 @@ export async function GET(req: NextRequest, context: { params: { userId: string 
         userId: userId,
       },
       include: {
-        purchases: true,
+        _count: {
+          select: {
+            purchases: true,
+          },
+        },
+        purchases: {
+          include: {
+            course: {
+              select: {
+                id: true,
+                title: true,
+                slug: true,
+                isPublished: true,
+              },
+            },
+          },
+        },
+        children: true,
       },
     });
 
