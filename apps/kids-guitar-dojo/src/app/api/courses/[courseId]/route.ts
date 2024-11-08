@@ -2,6 +2,38 @@ import { NextResponse } from 'next/server';
 import { db } from '@rocket-house-productions/integration';
 import { auth } from '@clerk/nextjs/server';
 
+export async function GET(req: Request, { params }: { params: { courseId: string } }) {
+  try {
+    /*
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+     */
+
+    const course = await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        isPublished: true,
+      },
+      select: {
+        slug: true,
+      },
+    });
+
+    if (!course) {
+      return new NextResponse('Not found', { status: 404 });
+    }
+
+    return NextResponse.json(course);
+  } catch (error) {
+    console.log('[COURSE_ID_GET]', error);
+    return new NextResponse('Internal Error', { status: 500 });
+  }
+}
+
 export async function DELETE(req: Request, { params }: { params: { courseId: string } }) {
   try {
     const { userId } = auth();
