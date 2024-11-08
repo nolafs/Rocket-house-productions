@@ -39,7 +39,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
         slug: true,
         isPublished: true,
       },
-      cacheStrategy: { ttl: 60 },
+      //cacheStrategy: { ttl: 60 },
     });
     console.log('Time taken for db.course.findUnique:', Date.now() - startCourse, 'ms');
 
@@ -56,7 +56,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
           childId: account.children[0].id,
         },
       },
-      cacheStrategy: { ttl: 60 },
+      //cacheStrategy: { ttl: 60 },
     });
     console.log('Time taken for db.purchase.findUnique:', Date.now() - startPurchase, 'ms');
 
@@ -109,7 +109,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
           },
         },
       },
-      cacheStrategy: { ttl: 60 },
+      //cacheStrategy: { ttl: 60 },
     });
     console.log('Time taken for db.module.findUnique:', Date.now() - startModule, 'ms');
 
@@ -138,7 +138,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
           },
         },
       },
-      cacheStrategy: { ttl: 60 },
+      //cacheStrategy: { ttl: 60 },
     });
     console.log('Time taken for db.lesson.findUnique:', Date.now() - startLesson, 'ms');
 
