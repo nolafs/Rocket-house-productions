@@ -1,13 +1,18 @@
-import { PrismaClient } from '@prisma/client/edge';
-import { withAccelerate } from '@prisma/extension-accelerate';
+import { PrismaClient } from '@prisma/client';
+//import { withAccelerate } from '@prisma/extension-accelerate';
 
-if (typeof window === 'undefined') {
-  console.log('Running in the server');
-}
+// Learn more about instantiating PrismaClient in Next.js here: https://www.prisma.io/docs/data-platform/accelerate/getting-started
 
-if (typeof window !== 'undefined') {
-  console.log('Running in the browser');
-  throw new Error('This file should not be imported in the browser');
-}
+const prismaClientSingleton = () => {
+  return new PrismaClient(); //.$extends(withAccelerate());
+};
 
-export const db = new PrismaClient().$extends(withAccelerate());
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+} & typeof global;
+
+export const db = globalThis.prismaGlobal ?? prismaClientSingleton();
+
+export default db;
+
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = db;
