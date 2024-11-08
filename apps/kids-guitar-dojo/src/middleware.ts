@@ -1,16 +1,181 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { db } from '@rocket-house-productions/integration';
+import { NextResponse } from 'next/server';
 
 const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
 
 export default clerkMiddleware(
-  (auth, req) => {
+  async (auth, req) => {
     const url = req.nextUrl.pathname;
+
     // Skip Clerk processing for /slice-simulator and its sub-paths
     if (url.startsWith('slice-simulator')) {
       return;
     }
 
-    if (isProtectedRoute(req)) auth().protect();
+    if (isProtectedRoute(req)) {
+      auth().protect();
+
+      if (url.startsWith('/courses')) {
+        const { userId, sessionClaims } = auth();
+        const match = url.match(/^\/courses\/([^/]+)(.*)?$/);
+        const product = match ? match[1] : null;
+        let userDb = null;
+
+        console.log('[MIDDLEWARE COURSE]', sessionClaims);
+
+        if (!userId) {
+          if (url.startsWith(`/course/error`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect('/course/error?status=unauthorized');
+        }
+
+        const user = await clerkClient().users.getUser(userId);
+
+        if (!user) {
+          if (url.startsWith(`/course/error`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect('/course/error?status=unauthorized');
+        }
+
+        if (user?.publicMetadata.status === 'pending') {
+          console.info('[COURSE] PENDING');
+          if (url.startsWith(`/courses/success`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect('/courses/success');
+        }
+
+        // CHECK USER IS ACTIVE
+        //const accountRes = await fetch(`${req.nextUrl.origin}/api/getAccount?userId=${userId}`);
+        userDb = await db.account.findFirst({
+          where: {
+            userId: userId,
+          },
+          include: {
+            _count: {
+              select: {
+                purchases: true,
+              },
+            },
+            purchases: {
+              include: {
+                course: {
+                  select: {
+                    id: true,
+                    title: true,
+                    slug: true,
+                    isPublished: true,
+                  },
+                },
+              },
+            },
+            children: true,
+          },
+        });
+
+        //userDb = await getAccount(userId);
+
+        console.log('[COURSE] USER', userDb);
+
+        if (!userDb) {
+          if (url.startsWith(`/courses/error`)) {
+            return NextResponse.next();
+          }
+          NextResponse.redirect(
+            `${req.nextUrl.origin}/courses/error?status=error&message=No%20user%20found%20in%20Database`,
+          );
+        }
+
+        if (userDb?.status === 'inactive') {
+          console.info('[COURSE] INACTIVE');
+          if (url.startsWith(`/courses/order`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(
+            product ? `${req.nextUrl.origin}/courses/order?product=${product}` : `${req.nextUrl.origin}/courses/order`,
+          );
+        }
+
+        if (userDb?.status === 'pending') {
+          console.info('[COURSE] PENDING');
+          if (url.startsWith(`/courses/success`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(`${req.nextUrl.origin}/courses/success`);
+        }
+
+        // CHECK USER HAS PURCHASED COURSE
+
+        if (!userDb?._count?.purchases) {
+          console.info('[COURSE] NO PURCHASES');
+
+          if (url.startsWith(`/courses/order`)) {
+            return NextResponse.next();
+          }
+
+          return NextResponse.redirect(
+            product ? `${req.nextUrl.origin}/courses/order?product=${product}` : `${req.nextUrl.origin}/courses/order`,
+          );
+        }
+
+        // CHECK USER HAS PURCHASED COURSE ENROLLMENT
+
+        if (userDb?._count?.purchases) {
+          const unEnrolledPurchases = userDb.purchases.filter((purchase: any) => !purchase.childId);
+
+          console.info('[COURSE] PURCHASES', unEnrolledPurchases);
+
+          if (unEnrolledPurchases.length === 0) {
+            // All purchases are enrolled
+            if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
+              // Only one purchase, and it's enrolled
+
+              const course = await db.course.findUnique({
+                where: {
+                  id: userDb.purchases[0].courseId,
+                },
+              });
+
+              console.info('[COURSE] SINGLE PURCHASE ENROLLED - GO TO LESSON');
+              if (url.startsWith(`/courses/${course?.slug}`)) {
+                return NextResponse.next();
+              }
+              return NextResponse.redirect(`${req.nextUrl.origin}/courses/${course?.slug}`);
+            } else {
+              console.info('[COURSE] ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
+              // todo: go to course selection
+            }
+          } else if (unEnrolledPurchases.length === 1) {
+            // Only one purchase is not enrolled
+            console.log('[COURSE] PURCHASE SINGLE NOT ENROLLED - GO TO ENROLLMENT');
+            if (url.startsWith(`courses/enroll/${unEnrolledPurchases[0].id}`)) {
+              return NextResponse.next();
+            }
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}`);
+          } else {
+            // More than one purchase is not enrolled
+            console.info('[COURSE] PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
+            // todo: select your purchase to [module_slug]
+            if (url.startsWith(`courses/enroll/${unEnrolledPurchases[0].id}`)) {
+              return NextResponse.next();
+            }
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}`);
+          }
+        } else {
+          console.info('[COURSE] NO PURCHASES FOUND');
+          // Handle the case where there are no purchases
+          if (url.startsWith(`courses/order`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(
+            product ? `${req.nextUrl.origin}/courses/order?product=${product}` : '/courses/order',
+          );
+        }
+      }
+    }
   },
   { debug: false },
 );
