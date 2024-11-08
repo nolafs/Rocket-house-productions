@@ -1,5 +1,4 @@
 import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration';
 import { NextResponse } from 'next/server';
 
 const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
@@ -50,33 +49,18 @@ export default clerkMiddleware(
 
         // CHECK USER IS ACTIVE
         //const accountRes = await fetch(`${req.nextUrl.origin}/api/getAccount?userId=${userId}`);
-        userDb = await db.account.findFirst({
-          where: {
-            userId: userId,
-          },
-          include: {
-            _count: {
-              select: {
-                purchases: true,
-              },
-            },
-            purchases: {
-              include: {
-                course: {
-                  select: {
-                    id: true,
-                    title: true,
-                    slug: true,
-                    isPublished: true,
-                  },
-                },
-              },
-            },
-            children: true,
-          },
-        });
+        const userResponse = await fetch(`${req.nextUrl.origin}/api/users/${userId}`);
 
-        //userDb = await getAccount(userId);
+        if (!userResponse.ok) {
+          if (url.startsWith(`/courses/error`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(
+            `${req.nextUrl.origin}/courses/error?status=error&message=No%20user%20found%20in%20Database`,
+          );
+        }
+
+        userDb = await userResponse.json();
 
         console.log('[COURSE] USER', userDb);
 
@@ -132,14 +116,19 @@ export default clerkMiddleware(
             // All purchases are enrolled
             if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
               // Only one purchase, and it's enrolled
-
+              /*
               const course = await db.course.findUnique({
                 where: {
                   id: userDb.purchases[0].courseId,
                 },
               });
+               */
+
+              const courseResp = await fetch(`${req.nextUrl.origin}/api/courses/${userDb.purchases[0].courseId}`);
+              const course = await courseResp.json();
 
               console.info('[COURSE] SINGLE PURCHASE ENROLLED - GO TO LESSON');
+
               if (url.startsWith(`/courses/${course?.slug}`)) {
                 return NextResponse.next();
               }
