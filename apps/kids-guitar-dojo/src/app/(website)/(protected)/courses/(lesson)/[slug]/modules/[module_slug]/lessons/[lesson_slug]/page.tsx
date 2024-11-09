@@ -5,7 +5,7 @@ import { createClient } from '@/prismicio';
 import dynamic from 'next/dynamic';
 
 const LessonComponent = dynamic(() => import('./_components/lessonComponent'), {
-  ssr: false,
+  ssr: true,
 });
 
 const LessonHeader = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonHeader), {

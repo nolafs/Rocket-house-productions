@@ -22,6 +22,7 @@ export function LessonComponent({ data, child, page }: LessonComponentProps) {
 
       <LessonContent
         title={data.lesson.title}
+        moduleTitle={data.module.title}
         page={page}
         description={data.lesson.description}
         position={data.lesson.position}
