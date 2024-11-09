@@ -1,13 +1,10 @@
-import { auth, clerkClient, getAuth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@rocket-house-productions/integration';
-import type { NextApiRequest } from 'next';
 
 export async function GET(req: NextRequest, context: { params: { userId: string } }) {
   // get userid from route
   const user = auth();
-
-  console.log('[USERS]', user);
 
   if (user.userId !== context.params.userId || user.sessionClaims.metadata.role !== 'admin') {
     return new NextResponse('Unauthorized operation', { status: 401 });
