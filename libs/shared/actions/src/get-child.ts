@@ -5,7 +5,7 @@ import { auth } from '@clerk/nextjs/server';
 import getAccount from './get-account';
 
 export const getChild = async (slug: string) => {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect('/');

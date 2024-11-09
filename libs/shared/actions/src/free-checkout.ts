@@ -4,7 +4,7 @@ import { auth, clerkClient } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
 export async function freeCheckout(formData: FormData) {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     throw new Error('Unauthorized');
@@ -30,7 +30,8 @@ export async function freeCheckout(formData: FormData) {
     },
   });
 
-  const clerkUpdate = await clerkClient.users.updateUserMetadata(userId, {
+  const client = await clerkClient();
+  const clerkUpdate = await client.users.updateUserMetadata(userId, {
     publicMetadata: {
       status: 'active',
       type: 'free',

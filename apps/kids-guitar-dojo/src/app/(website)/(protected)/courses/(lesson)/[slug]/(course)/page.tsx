@@ -8,7 +8,7 @@ interface PageProps {
 }
 
 export default async function Page({ params }: PageProps) {
-  const { userId, sessionClaims } = auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     return redirect('/');

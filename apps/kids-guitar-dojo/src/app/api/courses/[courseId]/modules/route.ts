@@ -4,7 +4,7 @@ import { db } from '@rocket-house-productions/integration';
 
 export async function POST(req: Request, { params }: { params: { courseId: string } }) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { title, slug } = await req.json();
 
     if (!userId) {

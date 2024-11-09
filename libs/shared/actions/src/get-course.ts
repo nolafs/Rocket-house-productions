@@ -8,7 +8,7 @@ interface GetCourseProps {
 }
 
 export const getCourse = async ({ courseSlug }: GetCourseProps) => {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect('/');

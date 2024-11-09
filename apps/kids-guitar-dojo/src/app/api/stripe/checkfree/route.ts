@@ -4,7 +4,7 @@ import { db } from '@rocket-house-productions/integration';
 import { MailerList } from '@rocket-house-productions/actions/server';
 
 export async function POST(req: NextRequest) {
-  const { userId } = auth();
+  const { userId } = await auth();
   const data = await req.json();
 
   if (!userId) {
@@ -51,7 +51,8 @@ export async function POST(req: NextRequest) {
 
     // check if ok and redirect to success page
     if (purchase) {
-      await clerkClient.users.updateUserMetadata(userId, {
+      const client = await clerkClient();
+      await client.users.updateUserMetadata(userId, {
         publicMetadata: {
           status: 'active',
           type: 'free',

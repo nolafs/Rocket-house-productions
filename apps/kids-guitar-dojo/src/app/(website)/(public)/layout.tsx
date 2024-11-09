@@ -11,7 +11,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   const navigation = await client.getSingle('navigation');
   const settings = await client.getSingle('settings');
 
-  const { sessionClaims } = auth();
+  const { sessionClaims } = await auth();
 
   return (
     <>
