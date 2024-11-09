@@ -30,7 +30,8 @@ export async function freeCheckout(formData: FormData) {
     },
   });
 
-  const clerkUpdate = await clerkClient.users.updateUserMetadata(userId, {
+  const client = await clerkClient();
+  const clerkUpdate = await client.users.updateUserMetadata(userId, {
     publicMetadata: {
       status: 'active',
       type: 'free',
