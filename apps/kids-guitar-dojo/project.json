@@ -51,7 +51,7 @@
             "command": "nx run kids-guitar-dojo:generate-types-no-engine"
           },
           {
-            "command": "nx build kids-guitar-dojo"
+            "command": "nx build kids-guitar-dojo --prod"
           }
 
         ],
