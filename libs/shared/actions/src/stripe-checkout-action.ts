@@ -15,7 +15,7 @@ export const stripeCheckoutAction = async (data: FormData) => {
     purchaseId = null;
   }
 
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return null;

@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { product: string[] } }
   const client = createClient();
   const settings = await client.getSingle('settings');
 
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (userId) {
     redirect('/courses');

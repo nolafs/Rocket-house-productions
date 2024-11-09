@@ -43,7 +43,9 @@ export async function POST(req: Request, res: Response) {
       case 'user.created': {
         const { id, first_name, last_name, email_addresses } = payload.data;
 
-        await clerkClient().users.updateUserMetadata(id, {
+        await (
+          await clerkClient()
+        ).users.updateUserMetadata(id, {
           publicMetadata: {
             status: 'inactive',
             role: 'member',

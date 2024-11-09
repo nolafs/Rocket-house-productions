@@ -10,7 +10,7 @@ import Actions from './_components/actions';
 import ActionRole from './_components/action-role';
 
 export default async function Page({ params }: { params: { userId: string } }) {
-  const { userId, sessionClaims } = auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     return redirect('/');

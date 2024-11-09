@@ -7,7 +7,7 @@ export async function PUT(
   { params }: { params: { courseId: string; moduleId: string; lessonId: string; childId: string } },
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { isCompleted } = await req.json();
 
     if (!userId) {

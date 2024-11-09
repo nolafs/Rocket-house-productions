@@ -17,7 +17,7 @@ import { auth } from '@clerk/nextjs/server';
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   // To verify if the course creator, is the one editing it
-  const { userId }: { userId: string | null } = auth();
+  const { userId }: { userId: string | null } = await auth();
 
   if (!userId) {
     return redirect('/');

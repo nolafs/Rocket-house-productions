@@ -4,7 +4,7 @@ import { db } from '@rocket-house-productions/integration';
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
       return new NextResponse('Unauthorized operation', { status: 401 });

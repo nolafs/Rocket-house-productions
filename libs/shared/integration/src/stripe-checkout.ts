@@ -6,7 +6,7 @@ import { db } from './db';
 import Stripe from 'stripe';
 
 export const stripeCheckout = async (productId: string, purchaseId: string | null = null) => {
-  const { userId, sessionClaims } = auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     return null;
@@ -141,8 +141,8 @@ export const stripeCheckoutSessionStatus = async (sessionId: string, userId: str
         },
       });
     }
-
-    await clerkClient.users.updateUserMetadata(userId, {
+    const client = await clerkClient();
+    await client.users.updateUserMetadata(userId, {
       publicMetadata: {
         status: 'active',
         type: 'paid',

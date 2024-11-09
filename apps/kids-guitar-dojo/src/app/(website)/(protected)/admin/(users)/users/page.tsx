@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration';
 
 export default async function Page() {
-  const { userId, sessionClaims } = auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     return redirect('/');

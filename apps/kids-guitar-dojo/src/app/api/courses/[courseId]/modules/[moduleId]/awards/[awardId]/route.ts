@@ -4,7 +4,7 @@ import { db } from '@rocket-house-productions/integration';
 
 export async function DELETE(req: Request, { params }: { params: { courseId: string; awardId: string } }) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -32,7 +32,7 @@ export async function PATCH(
   },
 ) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const values = await req.json();
 
     if (!userId) {

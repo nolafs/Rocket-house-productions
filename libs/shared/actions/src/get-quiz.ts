@@ -11,7 +11,7 @@ interface GetQuizProps {
 }
 
 export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizProps) => {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect('/');
