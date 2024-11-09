@@ -153,8 +153,8 @@ export async function POST(req: Request, res: Response) {
               },
             });
           }
-
-          await clerkClient.users.updateUserMetadata(data.metadata.userId, {
+          const client = await clerkClient();
+          await client.users.updateUserMetadata(data.metadata.userId, {
             publicMetadata: {
               status: 'active',
               type: 'paid',

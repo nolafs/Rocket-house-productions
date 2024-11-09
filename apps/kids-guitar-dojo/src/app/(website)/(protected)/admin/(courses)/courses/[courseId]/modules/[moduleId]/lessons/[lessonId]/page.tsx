@@ -21,7 +21,7 @@ import LessonQuestionanaireForm from '@/app/(website)/(protected)/admin/(courses
 import LessonBookCtaForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-book-cta-form';
 
 const LessonIdPage = async ({ params }: { params: { courseId: string; moduleId: string; lessonId: string } }) => {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect('/');

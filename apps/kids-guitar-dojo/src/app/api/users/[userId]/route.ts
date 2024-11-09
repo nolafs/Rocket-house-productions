@@ -4,7 +4,7 @@ import { db } from '@rocket-house-productions/integration';
 
 export async function GET(req: NextRequest, context: { params: { userId: string } }) {
   // get userid from route
-  const user = auth();
+  const user = await auth();
 
   if (user.userId !== context.params.userId || user.sessionClaims.metadata.role !== 'admin') {
     return new NextResponse('Unauthorized operation', { status: 401 });
@@ -56,7 +56,7 @@ export async function DELETE(req: NextRequest, context: { params: { userId: stri
   // get userid from route
 
   const { userId } = context.params;
-  const { sessionClaims } = auth();
+  const { sessionClaims } = await auth();
 
   if (sessionClaims?.metadata.role !== 'admin') {
     return new NextResponse('Unauthorized operation', { status: 401 });
@@ -67,7 +67,7 @@ export async function DELETE(req: NextRequest, context: { params: { userId: stri
   }
 
   try {
-    const deleteUser = await clerkClient().users.deleteUser(userId);
+    const deleteUser = await (await clerkClient()).users.deleteUser(userId);
     return NextResponse.json(deleteUser);
   } catch (error) {
     console.log('[USERS]', error);

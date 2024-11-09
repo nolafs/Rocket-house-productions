@@ -22,7 +22,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await clerkClient().users.updateUserMetadata(userId, {
+    await (
+      await clerkClient()
+    ).users.updateUserMetadata(userId, {
       publicMetadata: {
         status: 'pending',
         type: 'paid',

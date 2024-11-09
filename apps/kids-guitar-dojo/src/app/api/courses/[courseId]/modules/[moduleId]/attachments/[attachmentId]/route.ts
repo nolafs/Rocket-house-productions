@@ -4,7 +4,7 @@ import { db } from '@rocket-house-productions/integration';
 
 export async function DELETE(req: Request, { params }: { params: { moduleId: string; attachmentId: string } }) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });

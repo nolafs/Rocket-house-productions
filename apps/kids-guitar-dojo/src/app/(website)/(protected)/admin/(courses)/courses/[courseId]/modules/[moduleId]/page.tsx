@@ -17,7 +17,7 @@ import ModuleAttachementForm from '@/app/(website)/(protected)/admin/(courses)/c
 import ModuleAwardForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-award-form';
 
 const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: string } }) => {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect('/');

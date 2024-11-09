@@ -15,7 +15,7 @@ export const metadata = {
 };
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  const { userId, sessionClaims } = auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     redirect('/');
