@@ -29,17 +29,17 @@ export default clerkMiddleware(
           if (url.startsWith(`/course/error`)) {
             return NextResponse.next();
           }
-          return NextResponse.redirect('/course/error?status=unauthorized');
+          return NextResponse.redirect(`${req.nextUrl.origin}/course/error?status=unauthorized`);
         }
 
         const client = await clerkClient();
         const user = await client.users.getUser(userId);
 
         if (!user) {
-          if (url.startsWith(`/course/error`)) {
+          if (url.startsWith(`${req.nextUrl.origin}/course/error`)) {
             return NextResponse.next();
           }
-          return NextResponse.redirect('/course/error?status=unauthorized');
+          return NextResponse.redirect(`${req.nextUrl.origin}/course/error?status=unauthorized`);
         }
 
         if (user?.publicMetadata.status === 'pending') {
@@ -47,7 +47,7 @@ export default clerkMiddleware(
           if (url.startsWith(`/courses/success`)) {
             return NextResponse.next();
           }
-          return NextResponse.redirect('/courses/success');
+          return NextResponse.redirect(`${req.nextUrl.origin}/courses/success`);
         }
 
         // CHECK USER IS ACTIVE
@@ -123,13 +123,6 @@ export default clerkMiddleware(
             // All purchases are enrolled
             if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
               // Only one purchase, and it's enrolled
-              /*
-              const course = await db.course.findUnique({
-                where: {
-                  id: userDb.purchases[0].courseId,
-                },
-              });
-               */
 
               const courseResp = await fetch(`${req.nextUrl.origin}/api/courses/${userDb.purchases[0].courseId}`);
               const course = await courseResp.json();
