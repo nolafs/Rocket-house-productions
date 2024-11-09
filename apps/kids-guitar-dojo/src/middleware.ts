@@ -49,7 +49,11 @@ export default clerkMiddleware(
 
         // CHECK USER IS ACTIVE
         //const accountRes = await fetch(`${req.nextUrl.origin}/api/getAccount?userId=${userId}`);
-        const userResponse = await fetch(`${req.nextUrl.origin}/api/users/${userId}`);
+        const userResponse = await fetch(`${req.nextUrl.origin}/api/users/${userId}`, {
+          headers: {
+            Cookie: req.headers.get('Cookie') || '',
+          },
+        });
 
         if (!userResponse.ok) {
           if (url.startsWith(`/courses/error`)) {
