@@ -141,8 +141,8 @@ export const stripeCheckoutSessionStatus = async (sessionId: string, userId: str
         },
       });
     }
-
-    await clerkClient.users.updateUserMetadata(userId, {
+    const client = await clerkClient();
+    await client.users.updateUserMetadata(userId, {
       publicMetadata: {
         status: 'active',
         type: 'paid',

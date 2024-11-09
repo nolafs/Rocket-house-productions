@@ -29,8 +29,8 @@ export const ActionRole = async ({ userId }: ActionRoleProps) => {
           role: formData,
         },
       });
-
-      await clerkClient().users.updateUserMetadata(userId, {
+      const client = await clerkClient();
+      await client.users.updateUserMetadata(userId, {
         publicMetadata: {
           role: formData,
         },
