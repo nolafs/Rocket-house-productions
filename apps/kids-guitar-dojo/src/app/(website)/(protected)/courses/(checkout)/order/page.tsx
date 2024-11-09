@@ -7,7 +7,7 @@ import { SectionPricingTable } from '@rocket-house-productions/features';
 import { Tier } from '@rocket-house-productions/types';
 
 export default async function Page({ params }: { params: { product: string[] } }) {
-  const { userId, sessionClaims } = auth();
+  const { userId, sessionClaims } = await auth();
 
   console.log('[COURSE-ORDER]', userId, sessionClaims);
 

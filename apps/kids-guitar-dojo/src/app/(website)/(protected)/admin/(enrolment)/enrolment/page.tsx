@@ -5,7 +5,7 @@ import { DataTable } from './_components/data-table';
 import { columns } from './_components/columns';
 
 export default async function Page() {
-  const { userId, sessionClaims } = auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     return redirect('/');

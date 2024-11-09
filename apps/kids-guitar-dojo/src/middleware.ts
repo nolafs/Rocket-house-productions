@@ -13,12 +13,14 @@ export default clerkMiddleware(
     }
 
     if (isProtectedRoute(req)) {
-      auth().protect();
+      auth.protect();
 
       if (url.startsWith('/courses')) {
-        const { userId, sessionClaims } = auth();
+        const { userId, sessionClaims } = await auth();
+
         const match = url.match(/^\/courses\/([^/]+)(.*)?$/);
         const product = match ? match[1] : null;
+
         let userDb = null;
 
         console.log('[MIDDLEWARE COURSE]', sessionClaims);
@@ -30,7 +32,8 @@ export default clerkMiddleware(
           return NextResponse.redirect('/course/error?status=unauthorized');
         }
 
-        const user = await clerkClient().users.getUser(userId);
+        const client = await clerkClient();
+        const user = await client.users.getUser(userId);
 
         if (!user) {
           if (url.startsWith(`/course/error`)) {

@@ -14,7 +14,7 @@ interface GetLessonProps {
 export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLessonProps) => {
   try {
     const startUserId = Date.now();
-    const { userId } = auth();
+    const { userId } = await auth();
     console.log('Time taken for Userid:', Date.now() - startUserId, 'ms');
     if (!userId) {
       redirect('/');

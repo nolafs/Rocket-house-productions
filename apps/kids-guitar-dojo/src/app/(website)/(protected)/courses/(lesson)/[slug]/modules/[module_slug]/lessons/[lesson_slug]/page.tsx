@@ -21,7 +21,7 @@ export default async function Page({ params }: PageProps) {
     return notFound();
   }
 
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return redirect('/');

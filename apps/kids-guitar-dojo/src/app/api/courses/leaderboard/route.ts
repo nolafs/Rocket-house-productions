@@ -6,7 +6,7 @@ import { isDynamicServerError } from 'next/dist/client/components/hooks-server-c
 export async function GET(req: NextRequest) {
   try {
     // Retrieve user authentication data
-    const { userId } = auth(); // This gets the userId from the request context automatically
+    const { userId } = await auth(); // This gets the userId from the request context automatically
 
     // Check if the user is authenticated
     if (!userId) {

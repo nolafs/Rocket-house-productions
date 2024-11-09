@@ -6,7 +6,7 @@ import { db } from './db';
 import Stripe from 'stripe';
 
 export const stripeCheckout = async (productId: string, purchaseId: string | null = null) => {
-  const { userId, sessionClaims } = auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     return null;

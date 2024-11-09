@@ -6,7 +6,7 @@ import { PrismicRichText } from '@prismicio/react';
 import ButtonOnboarding from './_components/button-onboarding';
 
 export default async function Page() {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     redirect('/');

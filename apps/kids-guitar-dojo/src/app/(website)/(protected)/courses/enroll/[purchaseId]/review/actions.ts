@@ -43,7 +43,7 @@ export const submitOnBoardingAction = async (
 
   // Add child
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
 
     if (!userId) {
       return redirect('/course/error?status=unauthorized');

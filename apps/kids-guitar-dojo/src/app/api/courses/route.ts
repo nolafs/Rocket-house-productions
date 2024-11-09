@@ -5,7 +5,7 @@ import { auth } from '@clerk/nextjs/server';
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
+    const { userId } = await auth();
     const { title } = await req.json();
 
     if (!userId) {
