@@ -106,6 +106,18 @@ const LessonIdPage = async ({ params }: { params: { courseId: string; moduleId: 
                 moduleId={params.moduleId}
                 lessonId={params.lessonId}
               />
+
+              <LessonCategoryForm
+                initialData={lesson}
+                courseId={params.courseId}
+                moduleId={params.moduleId}
+                lessonId={params.lessonId}
+                options={categories.map(category => ({
+                  label: category.name,
+                  value: category.id,
+                }))}
+              />
+
               <LessonDescriptionForm
                 initialData={lesson}
                 courseId={params.courseId}
@@ -124,17 +136,6 @@ const LessonIdPage = async ({ params }: { params: { courseId: string; moduleId: 
                 }))}>
                 <PreviewPrismic value={lesson.prismaSlug} />
               </LessonPrismicForm>
-
-              <LessonCategoryForm
-                initialData={lesson}
-                courseId={params.courseId}
-                moduleId={params.moduleId}
-                lessonId={params.lessonId}
-                options={categories.map(category => ({
-                  label: category.name,
-                  value: category.id,
-                }))}
-              />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
