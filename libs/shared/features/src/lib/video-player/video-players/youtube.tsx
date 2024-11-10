@@ -37,6 +37,7 @@ export function Youtube({
 }: YoutubeProps) {
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
   const ref = useRef<any>(null);
+
   if (!width) {
     width = 944;
   }
@@ -76,6 +77,8 @@ export function Youtube({
   const play = () => {
     setShowPlayer(true);
   };
+
+  //debugger;
 
   return (
     <VideoPlayerWrapper handlePlay={handlePlay} handlePause={handlePause} handleReplay={handleReplay}>

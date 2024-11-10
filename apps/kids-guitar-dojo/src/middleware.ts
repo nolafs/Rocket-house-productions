@@ -43,7 +43,7 @@ export default clerkMiddleware(
         }
 
         if (user?.publicMetadata.status === 'pending') {
-          console.info('[COURSE] PENDING');
+          console.info('[MIDDLEWARE COURSE] PENDING');
           if (url.startsWith(`/courses/success`)) {
             return NextResponse.next();
           }
@@ -58,6 +58,8 @@ export default clerkMiddleware(
           },
         });
 
+        console.info('[MIDDLEWARE COURSE] USER DB', userResponse.ok);
+
         if (!userResponse.ok) {
           if (url.startsWith(`/courses/error`)) {
             return NextResponse.next();
@@ -69,7 +71,7 @@ export default clerkMiddleware(
 
         userDb = await userResponse.json();
 
-        console.log('[COURSE] USER', userDb);
+        console.log('[MIDDLEWARE COURSE] USER', userDb);
 
         if (!userDb) {
           if (url.startsWith(`/courses/error`)) {
