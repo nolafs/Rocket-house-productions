@@ -141,8 +141,8 @@ export default clerkMiddleware(
             }
           } else if (unEnrolledPurchases.length === 1) {
             // Only one purchase is not enrolled
-            console.log('[COURSE] PURCHASE SINGLE NOT ENROLLED - GO TO ENROLLMENT');
-            if (url.startsWith(`courses/enroll/${unEnrolledPurchases[0].id}`)) {
+            console.log('[COURSE] PURCHASE SINGLE NOT ENROLLED - GO TO ENROLLMENT', unEnrolledPurchases[0]);
+            if (url.startsWith(`/courses/enroll/${unEnrolledPurchases[0].id}`)) {
               return NextResponse.next();
             }
             return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}`);
@@ -150,7 +150,7 @@ export default clerkMiddleware(
             // More than one purchase is not enrolled
             console.info('[COURSE] PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
             // todo: select your purchase to [module_slug]
-            if (url.startsWith(`courses/enroll/${unEnrolledPurchases[0].id}`)) {
+            if (url.startsWith(`/courses/enroll/${unEnrolledPurchases[0].id}`)) {
               return NextResponse.next();
             }
             return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}`);
@@ -158,7 +158,7 @@ export default clerkMiddleware(
         } else {
           console.info('[COURSE] NO PURCHASES FOUND');
           // Handle the case where there are no purchases
-          if (url.startsWith(`courses/order`)) {
+          if (url.startsWith(`/courses/order`)) {
             return NextResponse.next();
           }
           return NextResponse.redirect(
