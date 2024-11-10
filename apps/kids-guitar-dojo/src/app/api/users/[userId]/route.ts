@@ -6,7 +6,7 @@ export async function GET(req: NextRequest, context: { params: { userId: string 
   // get userid from route
   const user = await auth();
 
-  if (user.userId !== context.params.userId || user.sessionClaims.metadata.role !== 'admin') {
+  if (user.userId !== context.params.userId && user.sessionClaims?.metadata?.role !== 'admin') {
     return new NextResponse('Unauthorized operation', { status: 401 });
   }
 

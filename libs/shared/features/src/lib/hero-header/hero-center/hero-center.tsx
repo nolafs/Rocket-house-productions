@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { fadeIn, scrollUpFadeVariants, scrollUpVariants } from '@rocket-house-productions/util';
+import { scrollUpFadeVariants } from '@rocket-house-productions/util';
 import { BottomShape, ButtonGroup } from '@rocket-house-productions/ui';
 import SectionTitle from '../../section-title/section-title';
 import { GroupField, RichTextField } from '@prismicio/client';
