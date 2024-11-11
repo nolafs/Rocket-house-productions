@@ -6,6 +6,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
+  ScrollArea,
 } from '@rocket-house-productions/shadcn-ui';
 import {
   Dialog,
@@ -89,7 +90,7 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
                   understanding and make learning more engaging. Download and explore these materials at your own pace
                   to maximize your learning journey.
                 </DialogDescription>
-                <Attachements course={course} />
+                <Attachments course={course} />
               </>
             )}
           </DialogBody>
@@ -146,7 +147,9 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
                     understanding and make learning more engaging. Download and explore these materials at your own pace
                     to maximize your learning journey.
                   </DialogDescription>
-                  <Attachements course={course} />
+                  <ScrollArea>
+                    <Attachments course={course} />
+                  </ScrollArea>
                 </>
               )}
             </div>
@@ -157,16 +160,19 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
   }
 }
 
-const Attachements = ({ course }: ModuleAttachmentsProps) => {
-  const attachmentsByType: { [key: string]: Attachment[] } = course.attachments.reduce(
+const Attachments = ({ course }: ModuleAttachmentsProps) => {
+  const attachmentFilter = course.attachments.filter(
+    (attachment: any) => attachment.attachmentType.name !== 'Playlist',
+  );
+
+  const attachmentsByType: { [key: string]: Attachment[] } = attachmentFilter.reduce(
     (acc: any, attachment: any) => {
       const typeName = attachment.attachmentType.name;
 
-      if (!acc[typeName] && typeName !== 'Playlist') {
+      if (!acc[typeName]) {
         acc[typeName] = [];
-        acc[typeName].push(attachment);
       }
-
+      acc[typeName].push(attachment);
       return acc;
     },
     {} as { [key: string]: Attachment[] },
