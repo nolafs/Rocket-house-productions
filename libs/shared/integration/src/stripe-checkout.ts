@@ -1,4 +1,5 @@
 'use server';
+import 'server-only';
 
 import { stripe } from './stripe';
 import { auth, clerkClient } from '@clerk/nextjs/server';
