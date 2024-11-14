@@ -18,7 +18,7 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
   const [loadingNext, setLoadingNext] = useState(false);
 
   const [active, setActive] = useState(false);
-  const position = lesson.position - 1;
+  const position = lesson.position;
 
   useEffect(() => {
     if (quizCompleted) {
@@ -32,6 +32,8 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
   }
 
   const nextLesson = module?.lessons?.length ? module?.lessons?.[position + 1] : null;
+
+  //console.log('nextLesson', nextLesson, module.lessons);
 
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {
