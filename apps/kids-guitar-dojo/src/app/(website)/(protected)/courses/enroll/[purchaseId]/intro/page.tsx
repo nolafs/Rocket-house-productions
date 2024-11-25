@@ -5,7 +5,7 @@ import { createClient } from '@/prismicio';
 import { PrismicRichText } from '@prismicio/react';
 
 export default async function Page({ params }: { params: { purchaseId: string } }) {
-  const baseUrl = `${BASE_URL}/${params.purchaseId}`;
+  const baseUrl = `${BASE_URL}${params.purchaseId}`;
 
   const client = createClient();
   const { data } = await client.getSingle('onboarding');
