@@ -40,17 +40,17 @@ export const DialogAddress = ({ address }: DialogAddressProps) => {
 
         <dl>
           <dt>Line 1</dt>
-          <dd>{address.line1}</dd>
+          <dd>{address?.line1}</dd>
           <dt>Line 2</dt>
-          <dd>{address.line2}</dd>
+          <dd>{address?.line2}</dd>
           <dt>City</dt>
-          <dd>{address.city}</dd>
+          <dd>{address?.city}</dd>
           <dt>State</dt>
-          <dd>{address.state}</dd>
+          <dd>{address?.state}</dd>
           <dt>Postal Code</dt>
-          <dd>{address.postal_code}</dd>
+          <dd>{address?.postal_code}</dd>
           <dt>Country</dt>
-          <dd>{address.country}</dd>
+          <dd>{address?.country}</dd>
         </dl>
       </DialogContent>
     </Dialog>
