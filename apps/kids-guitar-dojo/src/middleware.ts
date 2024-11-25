@@ -153,7 +153,7 @@ export default clerkMiddleware(
             if (url.startsWith(`/courses/enroll/${unEnrolledPurchases[0].id}`)) {
               return NextResponse.next();
             }
-            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}`);
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}/intro`);
           }
         } else {
           console.info('[COURSE] NO PURCHASES FOUND');
