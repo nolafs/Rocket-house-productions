@@ -145,7 +145,7 @@ export default clerkMiddleware(
             if (url.startsWith(`/courses/enroll/${unEnrolledPurchases[0].id}`)) {
               return NextResponse.next();
             }
-            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}`);
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}/intro`);
           } else {
             // More than one purchase is not enrolled
             console.info('[COURSE] PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
