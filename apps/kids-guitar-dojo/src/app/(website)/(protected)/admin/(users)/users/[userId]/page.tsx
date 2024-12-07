@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
                   <p>{user?.email}</p>
                 </div>
                 <div className="grid gap-3">
-                  <ActionRole userId={userId} />
+                  <ActionRole userId={params.userId} />
                 </div>
               </div>
             </CardContent>
