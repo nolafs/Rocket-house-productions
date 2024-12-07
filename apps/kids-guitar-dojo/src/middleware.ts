@@ -136,6 +136,12 @@ export default clerkMiddleware(
           console.info('[MIDDLEWARE COURSE]  PURCHASES', unEnrolledPurchases);
 
           if (unEnrolledPurchases.length === 0) {
+            // check if User wants to upgrade
+            if (url.startsWith(`/courses/upgrade`)) {
+              console.info('[MIDDLEWARE COURSE]  UPGRADE');
+              return NextResponse.next();
+            }
+
             // All purchases are enrolled
             if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
               // Only one purchase, and it's enrolled
