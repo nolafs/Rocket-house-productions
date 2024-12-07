@@ -43,7 +43,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">Account detail</h1>
           </div>
-          <Actions userId={userId} />
+          {user && <Actions accountId={user.id} userId={user.userId} />}
         </div>
         <div className="mb-10 mt-16 grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
           <Card x-chunk="dashboard-07-chunk-0">
@@ -54,20 +54,53 @@ export default async function Page({ params }: { params: { userId: string } }) {
             <CardContent>
               <div className="grid gap-6">
                 <div className="grid gap-3">
-                  First Name
+                  <span className={'text-sm font-bold'}>First Name</span>
                   <p>{user?.firstName}</p>
                 </div>
                 <div className="grid gap-3">
-                  Last Name
+                  <span className={'text-sm font-bold'}>Last Name</span>
                   <p>{user?.lastName}</p>
                 </div>
                 <div className="grid gap-3 border-b border-b-gray-100 pb-5">
-                  Email
+                  <span className={'text-sm font-bold'}>Email</span>
                   <p>{user?.email}</p>
                 </div>
-                <div className="grid gap-3">
-                  <ActionRole userId={userId} />
+                <div className="grid gap-3 border-b border-b-gray-100 pb-5">
+                  <span className={'text-sm font-bold'}>Account Id</span>
+                  <p>{user?.id}</p>
                 </div>
+                <div className="grid gap-3 border-b border-b-gray-100 pb-5">
+                  <span className={'text-sm font-bold'}>Account Status</span>
+                  <p>{user?.status}</p>
+                </div>
+
+                <div className="grid gap-3">
+                  {user?.id && <ActionRole accountId={user?.id} userId={user?.userId} role={user?.role} />}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Clerk Details</CardTitle>
+              <CardDescription>Clerk authentication details</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-3 border-b border-b-gray-100 pb-5">
+                <span className={'text-sm font-bold'}>Clerk Id</span>
+                <p>{user?.userId}</p>
+              </div>
+              <div className="grid gap-3 border-b border-b-gray-100 pb-5">
+                <span className={'text-sm font-bold'}>Clerk Status</span>
+                <p>{sessionClaims.metadata.role}</p>
+              </div>
+              <div className="grid gap-3 border-b border-b-gray-100 pb-5">
+                <span className={'text-sm font-bold'}>Clerk Status</span>
+                <p>{sessionClaims.metadata.status}</p>
+              </div>
+              <div className="grid gap-3 border-b border-b-gray-100 pb-5">
+                <span className={'text-sm font-bold'}>Clerk Purchase Status</span>
+                <p>{sessionClaims.metadata.type}</p>
               </div>
             </CardContent>
           </Card>

@@ -24,6 +24,9 @@ export const stripeCheckout = async (productId: string, purchaseId: string | nul
       mode: 'payment',
       customer_email: sessionClaims?.email as string,
       allow_promotion_codes: true,
+      invoice_creation: {
+        enabled: true,
+      },
       billing_address_collection: 'required',
       shipping_address_collection: {
         allowed_countries: ['US', 'AU', 'NZ', 'CA', 'GB', 'AE', 'DE', 'FR', 'SG'],
