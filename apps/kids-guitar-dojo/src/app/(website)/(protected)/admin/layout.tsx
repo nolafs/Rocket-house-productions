@@ -52,7 +52,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
                 <Link href={'/'} className={cn(buttonVariants({ variant: 'outline' }))}>
                   Home
                 </Link>
-                <Link href={'/'} className={cn(buttonVariants({ variant: 'default' }))}>
+                <Link href={'/courses'} className={cn(buttonVariants({ variant: 'default' }))}>
                   Go to Courses
                 </Link>
               </div>
