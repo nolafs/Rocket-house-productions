@@ -43,6 +43,30 @@ export async function POST(req: Request, res: Response) {
       case 'user.created': {
         const { id, first_name, last_name, email_addresses } = payload.data;
 
+        if (!id) {
+          console.error('[CLERK WEBHOOK]', 'Invalid user ID', id);
+          throw new Error('Invalid user ID');
+        }
+
+        //check if user is already in the database
+        const user = await db.account.findUnique({
+          where: {
+            userId: id,
+          },
+        });
+
+        if (user) {
+          console.error('[CLERK WEBHOOK]', 'User already exists', user);
+
+          //check if email is identical
+          if (user.email === email_addresses[0].email_address) {
+            console.error('[CLERK WEBHOOK]', 'Email already exists', user.email);
+            throw new Error('Cannot create user, user email already exists');
+          }
+
+          throw new Error('Cannot create user, user id already exists');
+        }
+
         await (
           await clerkClient()
         ).users.updateUserMetadata(id, {
@@ -52,26 +76,14 @@ export async function POST(req: Request, res: Response) {
           },
         });
 
-        if (!id) {
-          throw new Error('Invalid user ID');
-        }
-
-        const count = await db.account.count({
-          where: {
+        await db.account.create({
+          data: {
             userId: id,
+            firstName: first_name,
+            lastName: last_name,
+            email: email_addresses[0].email_address,
           },
         });
-
-        if (count === 0) {
-          await db.account.create({
-            data: {
-              userId: id,
-              firstName: first_name,
-              lastName: last_name,
-              email: email_addresses[0].email_address,
-            },
-          });
-        }
 
         break;
       }
@@ -116,8 +128,6 @@ export async function POST(req: Request, res: Response) {
             userId: id,
           },
         });
-
-        console.log('count', count, id);
 
         if (count !== 0) {
           await db.account.delete({

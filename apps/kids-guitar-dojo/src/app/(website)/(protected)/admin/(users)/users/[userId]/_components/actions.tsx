@@ -3,15 +3,16 @@ import { Button } from '@rocket-house-productions/shadcn-ui';
 import { ConfirmModal } from '@rocket-house-productions/features';
 import { Trash } from 'lucide-react';
 import { useState } from 'react';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import { deleteUser } from '@rocket-house-productions/actions/server';
 
 interface ActionsProps {
   userId: string;
+  accountId: string;
 }
 
-export function Actions({ userId }: ActionsProps) {
+export function Actions({ accountId, userId }: ActionsProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,7 +20,7 @@ export function Actions({ userId }: ActionsProps) {
     setIsLoading(true);
 
     try {
-      await axios.delete(`/api/users/${userId}`);
+      await deleteUser(accountId, userId);
       toast.success('User deleted');
       router.refresh();
       router.push(`/admin/users`);
