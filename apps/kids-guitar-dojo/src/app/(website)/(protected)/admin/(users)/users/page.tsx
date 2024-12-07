@@ -17,7 +17,6 @@ export default async function Page() {
   }
 
   const users = await db.account.findMany({
-    take: 10,
     orderBy: {
       createdAt: 'desc',
     },
