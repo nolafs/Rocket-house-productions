@@ -1,49 +1,37 @@
+'use client';
 import React from 'react';
-import { db } from '@rocket-house-productions/integration';
 import { Label } from '@rocket-house-productions/shadcn-ui';
 import SelectRole from './select-role';
-import { clerkClient } from '@clerk/nextjs/server';
 
+import toast from 'react-hot-toast';
+import { updateUserRole } from '@rocket-house-productions/actions/server';
 interface ActionRoleProps {
   userId: string;
+  accountId: string;
+  role?: string | null | undefined;
 }
 
-export const ActionRole = async ({ userId }: ActionRoleProps) => {
-  console.log('USER ID', userId);
+export const ActionRole = ({ accountId, userId, role }: ActionRoleProps) => {
+  const formRef = React.useRef<HTMLFormElement>(null);
 
-  const user = await db.account.findFirst({
-    where: {
-      userId: userId,
-    },
-  });
+  const updateRole = async (data: any) => {
+    const formData = new FormData(formRef.current!);
 
-  const updateRole = async (formData: any) => {
-    'use server';
-    console.log(formData);
     try {
-      await db.account.update({
-        where: {
-          userId: userId,
-        },
-        data: {
-          role: formData,
-        },
-      });
-      const client = await clerkClient();
-      await client.users.updateUserMetadata(userId, {
-        publicMetadata: {
-          role: formData,
-        },
-      });
+      const account = await updateUserRole(accountId, userId, formData.get('role') as string);
+      if (account) {
+        toast.success('User role updated');
+      }
     } catch (error) {
-      console.log('ERROR', error);
+      console.error('Failed to update user role', error);
+      toast.error('Failed to update user role');
     }
   };
 
   return (
-    <form>
+    <form ref={formRef} onChange={updateRole}>
       <Label htmlFor="role">Role</Label>
-      <SelectRole role={user?.role} updateRole={updateRole} />
+      <SelectRole role={role} />
     </form>
   );
 };

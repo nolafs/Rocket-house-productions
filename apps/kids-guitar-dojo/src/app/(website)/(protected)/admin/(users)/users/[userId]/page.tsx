@@ -43,7 +43,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">Account detail</h1>
           </div>
-          <Actions userId={params.userId} />
+          {user && <Actions accountId={user.id} userId={user.userId} />}
         </div>
         <div className="mb-10 mt-16 grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
           <Card x-chunk="dashboard-07-chunk-0">
@@ -65,8 +65,16 @@ export default async function Page({ params }: { params: { userId: string } }) {
                   Email
                   <p>{user?.email}</p>
                 </div>
+                <div className="grid gap-3 border-b border-b-gray-100 pb-5">
+                  Account Id
+                  <p>{user?.id}</p>
+                </div>
+                <div className="grid gap-3 border-b border-b-gray-100 pb-5">
+                  Clerk Id
+                  <p>{user?.userId}</p>
+                </div>
                 <div className="grid gap-3">
-                  <ActionRole userId={params.userId} />
+                  {user?.id && <ActionRole accountId={user?.id} userId={user?.userId} role={user?.role} />}
                 </div>
               </div>
             </CardContent>
