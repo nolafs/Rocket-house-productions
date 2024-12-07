@@ -55,29 +55,3 @@ export async function GET(req: NextRequest, context: { params: { userId: string 
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
-
-export async function DELETE(req: NextRequest, context: { params: { userId: string } }) {
-  const { userId, sessionClaims } = await auth();
-
-  if (!userId) {
-    return new NextResponse('Unauthorized operation', { status: 401 });
-  }
-
-  if (sessionClaims?.metadata.role !== 'admin') {
-    return new NextResponse('Unauthorized operation', { status: 401 });
-  }
-
-  const params = context.params;
-
-  if (!params?.userId) {
-    throw new Error('No user id');
-  }
-
-  try {
-    const deleteUser = await (await clerkClient()).users.deleteUser(params?.userId);
-    return NextResponse.json(deleteUser);
-  } catch (error) {
-    console.log('[USERS]', error);
-    return new NextResponse('Internal Error', { status: 500 });
-  }
-}
