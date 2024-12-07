@@ -43,7 +43,7 @@ export default async function Page({ params }: { params: { userId: string } }) {
           <div className="flex flex-col gap-y-2">
             <h1 className="text-2xl font-medium">Account detail</h1>
           </div>
-          <Actions userId={userId} />
+          <Actions userId={params.userId} />
         </div>
         <div className="mb-10 mt-16 grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
           <Card x-chunk="dashboard-07-chunk-0">

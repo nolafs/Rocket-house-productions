@@ -71,6 +71,8 @@ export default clerkMiddleware(
 
         userDb = await userResponse.json();
 
+        //todo: check if userDb is null it does not go to an error page
+
         console.log('[MIDDLEWARE COURSE] USER', userDb);
 
         if (!userDb) {
