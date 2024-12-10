@@ -147,13 +147,11 @@ const JukePlayer = ({ course, purchaseType }: JukeboxProps) => {
     <>
       {purchaseType === 'free' && (
         <>
-          <DialogDescription>
-            Unlock the full potential of your course with a paid account! Get instant access to exclusive audio files.
-            Upgrade today to explore these valuable resources and take your learning journey to the next level!
-          </DialogDescription>
+          Unlock the full potential of your course with a paid account! Get instant access to exclusive audio files.
+          Upgrade today to explore these valuable resources and take your learning journey to the next level!
           <Link
             href={'/courses/upgrade'}
-            className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'mt-10 w-full')}>
+            className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'my-10 w-full')}>
             Upgrade now!
           </Link>
         </>
