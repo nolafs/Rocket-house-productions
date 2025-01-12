@@ -25,8 +25,6 @@ export async function PATCH(
       return new NextResponse('Course Not found', { status: 401 });
     }
 
-    console.log('[PUBLISH ANSWER 0]', params);
-
     const questionanaire = await db.questionary.findUnique({
       where: {
         id: params.questionanaireId,
@@ -38,8 +36,6 @@ export async function PATCH(
       return new NextResponse('Not found', { status: 404 });
     }
 
-    console.log('[PUBLISH ANSWER 1]', params);
-
     const answer = await db.question.findUnique({
       where: {
         id: params.answerId,
@@ -50,8 +46,6 @@ export async function PATCH(
     if (!answer) {
       return new NextResponse('Not found', { status: 404 });
     }
-
-    console.log('[PUBLISH ANSWER 2]', params);
 
     const publishedAnswer = await db.question.update({
       where: {
@@ -65,7 +59,7 @@ export async function PATCH(
 
     return NextResponse.json(publishedAnswer);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_MODDULE_LEDDONS-ID-QUESTION_PUBLISH]', error);
+    console.error('[COURSES_COURSE-ID_MODDULE_LEDDONS-ID-QUESTION_PUBLISH]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

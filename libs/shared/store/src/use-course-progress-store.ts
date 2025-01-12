@@ -49,8 +49,6 @@ export const createCourseStore = (
       (set, get) => ({
         ...initState,
         addCourse: course => {
-          console.log('[COURSE STORE] - ADD');
-
           const courseId = course.id;
           let progress = 0;
           let completed = 0;
@@ -118,8 +116,6 @@ export const createCourseStore = (
         },
 
         calculateCourseProgress: courseId => {
-          console.log('[COURSE STORE] - CALC');
-
           const course = get().courses[courseId];
           const moduleStore = moduleState.getState();
           const lessonStore = lessonState.getState();
@@ -170,7 +166,6 @@ export const createCourseStore = (
         name: `course-progress-store-${userId}`,
         onRehydrateStorage: () => state => {
           if (state) {
-            console.log('[COURSE STORE] - onRehydrateStorage');
             // Run addCourse on rehydration
             state.addCourse(course);
             if (course) {

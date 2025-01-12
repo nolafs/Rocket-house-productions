@@ -5,8 +5,6 @@ import { clerkClient } from '@clerk/nextjs/server';
 export async function POST(req: NextRequest) {
   const data = await req.json();
 
-  console.log('[CHECK URL FOR PURCHASE]', data);
-
   const { productId, userId, email } = data;
 
   if (!productId) {
@@ -50,9 +48,6 @@ export async function POST(req: NextRequest) {
       recentStripeCheckoutId: checkoutSession.id || null,
     },
   });
-
-  // Redirect to the checkout session URL
-  console.log(`Redirecting to checkout session URL: ${checkoutSession.url}`);
 
   return NextResponse.json({ url: checkoutSession.url });
 }

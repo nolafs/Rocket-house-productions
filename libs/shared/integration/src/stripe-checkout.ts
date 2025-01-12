@@ -67,7 +67,6 @@ export const stripeCheckout = async (productId: string, purchaseId: string | nul
 
 export const stripeCheckoutSessionStatus = async (sessionId: string, userId: string, childId: string | null = null) => {
   const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
-  console.log('checkoutSession', checkoutSession);
 
   if (!checkoutSession) {
     throw new Error('Invalid checkout session');

@@ -19,8 +19,6 @@ const AnswerImageForm = ({ imageUrl, onChange }: ImageFormProps) => {
     setIsEditing(current => !current);
   };
 
-  console.log('AnswerImageForm', imageUrl);
-
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">

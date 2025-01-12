@@ -50,7 +50,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
 
     return NextResponse.json(unPublishedChapter);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_MODULE_UNPUBLISH]', error);
+    console.error('[COURSES_COURSE-ID_MODULE_UNPUBLISH]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

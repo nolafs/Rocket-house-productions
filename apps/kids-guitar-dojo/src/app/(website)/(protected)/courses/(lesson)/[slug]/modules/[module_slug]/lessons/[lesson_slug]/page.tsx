@@ -66,8 +66,6 @@ export default async function Page({ params }: PageProps) {
     return notFound();
   }
 
-  console.log(['LESSON-PAGE'], child);
-
   return (
     <>
       <LessonHeader lessonId={data.lesson.id} module={data.module} />

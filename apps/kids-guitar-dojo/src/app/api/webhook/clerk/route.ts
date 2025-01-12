@@ -115,8 +115,6 @@ export async function POST(req: Request, res: Response) {
         break;
       }
       case 'user.deleted': {
-        console.log('USER DELETE');
-
         const { id } = payload.data;
 
         if (!id) {
@@ -140,7 +138,7 @@ export async function POST(req: Request, res: Response) {
         break;
       }
       default: {
-        console.log('Unhandled event', eventType);
+        console.info('Unhandled event', eventType);
         break;
       }
     }

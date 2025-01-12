@@ -22,8 +22,6 @@ export const checkoutUrl = async (productId: string, userId: string, email = '')
   }
 
   // Redirect to the checkout session URL
-  console.log(`Redirecting to checkout session URL: ${checkoutSession.url}`);
-
   redirect(checkoutSession.url);
 };
 

@@ -23,8 +23,6 @@ export async function sendMail(prevState: any, formData: FormData) {
     apiKey: process.env.MAILERSEND_API_KEY || '',
   });
 
-  console.log(['SENDMAIL'], formData);
-
   try {
     const validatedFields = emailSchema.parse({
       name: formData.get('name'),
@@ -33,8 +31,6 @@ export async function sendMail(prevState: any, formData: FormData) {
       message: formData.get('message'),
       agreeToTerms: formData.get('agreeToTerms') === 'true' ? true : false,
     });
-
-    console.log(['SENDMAIL'], validatedFields);
 
     const sentFrom = new Sender(`noreply@${process.env.MAILERSEND_DOMAIN}`, 'Paul');
     const recipients: Recipient[] = [new Recipient('rockethouse1@gmail.com', 'Contact Form Website')];
@@ -52,7 +48,6 @@ export async function sendMail(prevState: any, formData: FormData) {
         .setHtml(`${formData.get('message') || ''}`);
 
       const mailer = await mailerSend.email.send(emailParams);
-      console.log(['SENDMAIL'], mailer);
     }
 
     return {

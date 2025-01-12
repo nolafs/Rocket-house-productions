@@ -41,7 +41,6 @@ export function LessonVideoListDialog({ onSelectVideo }: LessonVideoListDialogPr
   };
 
   const handlePagination = (pagination: any) => {
-    console.log('[LessonVideoListDialog] pagination', pagination);
     setItemsPerPage(prevState => pagination.itemsPerPage);
     setTotalVideos(prevState => pagination.totalItems);
     setCurrentPage(prevState => pagination.currentPage);

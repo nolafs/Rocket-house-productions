@@ -68,7 +68,7 @@ export async function PATCH(
 
     return NextResponse.json(publishedQuestionary);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_MODDULE_LEDDONS-ID-QUESTION_PUBLISH]', error);
+    console.error('[COURSES_COURSE-ID_MODDULE_LEDDONS-ID-QUESTION_PUBLISH]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

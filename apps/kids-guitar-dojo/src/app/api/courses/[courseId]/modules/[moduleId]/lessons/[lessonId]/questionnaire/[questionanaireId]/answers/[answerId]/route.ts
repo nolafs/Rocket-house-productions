@@ -44,7 +44,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedAnswerId);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_deletedAnswerId]', error);
+    console.error('[COURSES_COURSE-ID_deletedAnswerId]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -95,9 +95,6 @@ export async function PATCH(
       return new NextResponse('Not found', { status: 404 });
     }
 
-    console.log('params.answerId', params.answerId);
-    console.log('values', values);
-
     const answerUpdate = await db.question.update({
       where: {
         id: params.answerId,
@@ -110,7 +107,7 @@ export async function PATCH(
 
     return NextResponse.json(answerUpdate);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_MOLDULE_LESSON-QUESTION-Update-ID]', error);
+    console.error('[COURSES_COURSE-ID_MOLDULE_LESSON-QUESTION-Update-ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

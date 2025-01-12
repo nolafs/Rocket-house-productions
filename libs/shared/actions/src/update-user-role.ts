@@ -10,8 +10,6 @@ export const updateUserRole = async (accountUpdateId: string, userUpdateId: stri
     throw new Error('User not authenticated');
   }
 
-  console.log('[USERS]', sessionClaims);
-
   if ((sessionClaims.metadata as any).role !== 'admin') {
     throw new Error('User not admin');
   }
@@ -37,7 +35,7 @@ export const updateUserRole = async (accountUpdateId: string, userUpdateId: stri
 
     return account;
   } catch (error) {
-    console.log('[USERS]', error);
+    console.error('[USERS] ERROR', error);
     throw new Error('Failed to update user role');
   }
 };

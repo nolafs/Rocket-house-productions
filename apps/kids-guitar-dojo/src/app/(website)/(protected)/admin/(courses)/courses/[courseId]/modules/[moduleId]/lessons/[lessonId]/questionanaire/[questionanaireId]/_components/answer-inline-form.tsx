@@ -116,7 +116,6 @@ export function AnswerInlineForm({
                   imageUrl={imageUrl || null}
                   onChange={file => {
                     if (file) {
-                      console.log('[AnswerInlineForm] file', file);
                       field.onChange(file);
                       field.value = file;
                     }

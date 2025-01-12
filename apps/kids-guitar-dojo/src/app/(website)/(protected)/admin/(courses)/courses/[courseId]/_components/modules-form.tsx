@@ -123,7 +123,6 @@ const ModulesForm = ({ initialData, courseId }: ModulesFormProps) => {
                     <Input
                       disabled={isSubmitting}
                       onChangeCapture={e => {
-                        console.log('e', e.currentTarget.value);
                         setTitle(e.currentTarget.value);
                       }}
                       placeholder="ex. 'Introduction to the course...'"

@@ -36,8 +36,6 @@ const LessonVideoForm = ({ initialData, courseId, moduleId, lessonId }: LessonVi
   const toggleEdit = () => setIsEditing(current => !current);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('[LessonVideoForm] submitting', values);
-
     try {
       await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`, values);
       toast.success('Lesson updated');
@@ -53,8 +51,6 @@ const LessonVideoForm = ({ initialData, courseId, moduleId, lessonId }: LessonVi
       videoId: video.guid,
       videoLibId: video.videoLibraryId.toString(),
     };
-
-    console.log('[LessonVideoForm]', values);
 
     await onSubmit(values);
   };

@@ -61,8 +61,6 @@ const LessonPrismicForm = ({
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('values', values);
-
     try {
       await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}`, values);
       toast.success('Lesson updated');
