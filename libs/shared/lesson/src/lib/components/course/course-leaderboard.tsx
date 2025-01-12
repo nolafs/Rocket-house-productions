@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@rocket-house-productions/shadcn-ui';
-import { Disc3, Trophy } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import cn from 'classnames';
 import { useClientMediaQuery, useLeaderboard } from '@rocket-house-productions/hooks';
 
@@ -31,7 +31,7 @@ interface CourseLeaderboardProps {
 }
 
 export function CourseLeaderboard({ courseId, childId }: CourseLeaderboardProps) {
-  const isMobile = useClientMediaQuery('(max-width: 424px)');
+  const isMobile = useClientMediaQuery('(max-width: 430px)');
 
   if (!isMobile) {
     return (

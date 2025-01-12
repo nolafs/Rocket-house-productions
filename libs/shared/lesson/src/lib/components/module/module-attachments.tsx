@@ -8,15 +8,7 @@ import {
   DrawerTrigger,
   ScrollArea,
 } from '@rocket-house-productions/shadcn-ui';
-import {
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../dialog-layout/dialog';
+import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../dialog-layout/dialog';
 import { CloudDownload, Disc3 } from 'lucide-react';
 import ButtonDownloadPdf from '../button-download-pdf';
 import Link from 'next/link';
@@ -40,8 +32,7 @@ type Attachment = {
 };
 
 export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsProps) {
-  const isMobile = useClientMediaQuery('(max-width: 424px)');
-
+  const isMobile = useClientMediaQuery('(max-width: 430px)');
   if (!isMobile) {
     return (
       <Dialog>
@@ -69,12 +60,12 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
           <DialogBody>
             {purchaseType === 'free' && (
               <>
-                <DialogDescription>
+                <div>
                   Unlock the full potential of your course with a paid account! Get instant access to exclusive
                   additional resources, including comprehensive PDF guides and games These materials are designed to
                   enhance your learning experience, making it more engaging and effective. Upgrade today to explore
                   these valuable resources and take your learning journey to the next level!
-                </DialogDescription>
+                </div>
                 <Link
                   href={'/courses/upgrade'}
                   className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'mt-10 w-full')}>
@@ -84,12 +75,12 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
             )}
             {purchaseType === 'charge' && (
               <>
-                <DialogDescription>
+                <div>
                   Enhance your course experience with our exclusive additional downloads! Whether it’s in-depth PDF
                   books, interactive games, or enriching sound files, these resources are designed to deepen your
                   understanding and make learning more engaging. Download and explore these materials at your own pace
                   to maximize your learning journey.
-                </DialogDescription>
+                </div>
                 <Attachments course={course} />
               </>
             )}
@@ -140,17 +131,18 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
                 </>
               )}
               {purchaseType === 'charge' && (
-                <>
-                  <DialogDescription>
+                <ScrollArea className={'h-[400px]'}>
+                  <div>
                     Enhance your course experience with our exclusive additional downloads! Whether it’s in-depth PDF
                     books, interactive games, or enriching sound files, these resources are designed to deepen your
                     understanding and make learning more engaging. Download and explore these materials at your own pace
                     to maximize your learning journey.
-                  </DialogDescription>
-                  <ScrollArea>
-                    <Attachments course={course} />
-                  </ScrollArea>
-                </>
+                  </div>
+
+                  <Attachments course={course} />
+
+                  <div className={'p-5'}></div>
+                </ScrollArea>
               )}
             </div>
           </div>
