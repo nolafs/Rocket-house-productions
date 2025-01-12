@@ -22,8 +22,8 @@ export function NavbarSimple({
   return (
     <>
       <div id="navbar" className="navbar-area fixed z-10 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-0">
-        <div className="container mx-auto max-w-[1266px] py-3">
-          <nav className={`navbar relative flex flex-wrap justify-between`}>
+        <div className="container mx-auto max-w-[1266px]">
+          <nav className={`navbar relative flex flex-wrap items-center justify-between`}>
             <div className="self-center">
               {logo && (
                 <Link href={backToUrl}>
@@ -38,7 +38,7 @@ export function NavbarSimple({
               )}
             </div>
             {/* Other options */}
-            <div className="other-options hidden self-center pb-[10px] pt-[20px] md:block xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
+            <div className="other-options block self-center pb-[10px] pt-[20px] xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
               <ul className={'flex flex-row items-center justify-center space-x-2'}>
                 <li className="flex items-center justify-center">
                   <SignedOut>
