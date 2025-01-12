@@ -13,11 +13,7 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/SplitText';
 import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
-import {
-  useCourseProgressionStore,
-  useModuleProgressStore,
-  useLessonProgressionStore,
-} from '@rocket-house-productions/providers';
+import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
 import ModuleAwards from './course-scene/module-awards';
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
@@ -48,7 +44,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const zoomDirectionRef = useRef<number>(0); // To store zoom direction
   const zoomControlRef = useRef<{ handleZoom: (dir: number) => void; handleReset: () => void } | null>(null); // Ref to call child functions
   const isMobile = useClientMediaQuery('(max-width: 600px)');
-  console.log('[CourseNavigation] RENDER 1');
 
   // check if device is mobile
   const isMounted = useRef(false);
@@ -63,18 +58,13 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   useEffect(() => {
     // Calculate the current course progress
     const newProgress = courseState.getCourseProgress(course.id);
-    console.log('[CourseNavigation] EFFECT 2', newProgress);
     // Update only if the progression data has actually changed
     if (newProgress !== previousProgress.current) {
-      console.log('[CourseNavigation] EFFECT 2 - Progress Updated');
       setCourseProgression(newProgress);
       previousProgress.current = newProgress;
-    } else {
-      console.log('[CourseNavigation] EFFECT 2 - No Change');
     }
 
     return () => {
-      console.log('[CourseNavigation] EFFECT CLEANUP');
       setCourseProgression(null);
     };
   }, [courseState]);
@@ -140,8 +130,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
       [],
     );
 
-    console.log('[CourseNavigation] DISPLAY');
-
     return {
       buttons: buttonList,
       total: buttonList.length,
@@ -154,7 +142,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   useGSAP(
     () => {
-      console.log('[CourseNavigation] useGSAP 1');
       if (containerRef.current === null) return;
 
       gsap.set('.lesson-load', { autoAlpha: 0 });
@@ -190,7 +177,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   const handleLoaded = (load: boolean) => {
     if (isMounted.current) {
-      console.log('[CourseNavigation] handleLoaded', load);
       onLoaded && onLoaded(load);
     }
   };
@@ -209,8 +195,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     }
   };
 
-  console.log('[CourseNavigation] RENDER LOAD');
-
   if (previousProgress.current === null) {
     return (
       <div className={'flex h-screen w-full items-center justify-center'}>
@@ -218,8 +202,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
       </div>
     );
   }
-
-  console.log('[CourseNavigation] RENDER FINAL');
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
@@ -292,11 +274,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 }
 
 function Loader() {
-  const { progress, loaded, total, item, active } = useProgress();
-
-  useEffect(() => {
-    console.log('[Loader] PROGRESS', progress, loaded, total, item, active);
-  }, [active, item, progress, active]);
+  const { progress, loaded, total } = useProgress();
 
   return (
     <Html fullscreen zIndexRange={[100, 100]}>
