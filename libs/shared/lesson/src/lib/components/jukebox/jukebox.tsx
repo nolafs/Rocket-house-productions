@@ -43,7 +43,9 @@ type Attachment = {
 };
 
 export function Jukebox({ course, purchaseType }: JukeboxProps) {
-  const isMobile = useClientMediaQuery('(max-width: 424px)');
+  const isMobile = useClientMediaQuery('(max-width: 430px)');
+
+  console.log('[Jukebox] isMobile', isMobile);
 
   if (!isMobile) {
     return (
