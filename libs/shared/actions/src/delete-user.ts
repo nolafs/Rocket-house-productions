@@ -10,8 +10,6 @@ export const deleteUser = async (accountDeleteId: string, userDeleteId: string) 
     throw new Error('User not authenticated');
   }
 
-  console.log('[USERS]', sessionClaims);
-
   if ((sessionClaims.metadata as any).role !== 'admin') {
     throw new Error('User not admin');
   }
@@ -28,7 +26,7 @@ export const deleteUser = async (accountDeleteId: string, userDeleteId: string) 
 
     revalidatePath('/admin/users');
   } catch (error) {
-    console.log('[USERS]', error);
+    console.error('[USERS]', error);
     throw new Error('Failed to delete user');
   }
 };

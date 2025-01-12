@@ -50,8 +50,6 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
 
         resetLocalStorage();
 
-        console.log('REDIRECT', redirect);
-
         if (redirect) {
           return router.push(redirect);
         }

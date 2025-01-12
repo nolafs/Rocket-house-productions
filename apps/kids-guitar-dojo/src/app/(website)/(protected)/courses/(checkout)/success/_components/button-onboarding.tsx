@@ -19,7 +19,6 @@ export function ButtonOnboarding({ userId }: ButtonOnboardingProps) {
   const router = useRouter();
 
   useEffect(() => {
-    console.log('[ButtonOnboarding]', user, isLoading, isError, isValidating, state, count);
     if (user && !isLoading && !isValidating && !isError) {
       if (count < 6) {
         setState('unverified');

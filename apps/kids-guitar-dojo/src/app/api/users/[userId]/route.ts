@@ -47,11 +47,9 @@ export async function GET(req: NextRequest, context: { params: { userId: string 
       },
     });
 
-    console.log('[USERS]', response);
-
     return NextResponse.json(response);
   } catch (error) {
-    console.log('[USERS]', error);
+    console.error('[USERS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

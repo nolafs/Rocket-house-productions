@@ -18,7 +18,7 @@ export async function DELETE(req: Request, { params }: { params: { courseId: str
 
     return NextResponse.json(attachment);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_DELETE_AWARD-ID]', error);
+    console.error('[COURSES_COURSE-ID_DELETE_AWARD-ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -50,7 +50,7 @@ export async function PATCH(
 
     return NextResponse.json(attachment);
   } catch (error) {
-    console.log('[COURSE_ID_MODULE_AWARD_AWARD_ID]', error);
+    console.error('[COURSE_ID_MODULE_AWARD_AWARD_ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

@@ -155,7 +155,6 @@ export const Button3d = ({
       distanceSquaredY > thresholdSquared - thresholdSize && distanceSquaredY < thresholdSquared + thresholdSize;
 
     if (isCloseToCenter) {
-      //console.log('[BUTTON] positionScreenSpace', button.current.position, calculateRelativeWorldPosition());
       setShowTooltip(true);
     } else {
       setShowTooltip(false);
@@ -175,7 +174,6 @@ export const Button3d = ({
     };
     const relativePoint = new THREE.Vector3(point.x, point.y, point.z); // Create a vector to store the world position
     const target = button.current?.localToWorld(targetPoint.copy(relativePoint));
-    console.log('[BUTTON] target', target);
     return target;
   };
 

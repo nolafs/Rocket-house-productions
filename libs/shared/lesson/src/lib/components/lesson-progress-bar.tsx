@@ -56,11 +56,11 @@ export const LessonProgressBar: FC<LessonProgressBarProps> = memo(
             <text
               x="50"
               y="50"
-              font-family="Verdana"
-              font-size="12"
+              fontFamily="Verdana"
+              fontSize="12"
               className={'font-bold'}
-              text-anchor="middle"
-              alignment-baseline="middle">
+              textAnchor="middle"
+              alignmentBaseline="middle">
               {Math.round(currentProgress)}%
             </text>
           </svg>

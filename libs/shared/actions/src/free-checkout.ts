@@ -51,7 +51,6 @@ export async function freeCheckout(formData: FormData) {
 
   // check if ok and redirect to success page
   if (purchase) {
-    console.log('clerkUpdate', clerkUpdate);
     redirect('/courses/success');
   }
 }

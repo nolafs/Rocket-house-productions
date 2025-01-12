@@ -66,7 +66,7 @@ export async function POST(
 
     return NextResponse.json(questionanaire);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_LESSON_QUESTIONANAIRE]', error);
+    console.error('[COURSES_COURSE-ID_LESSON_QUESTIONANAIRE]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

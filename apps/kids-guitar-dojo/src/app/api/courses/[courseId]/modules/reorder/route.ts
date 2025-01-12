@@ -31,7 +31,7 @@ export async function PUT(req: Request, { params }: { params: { courseId: string
 
     return new NextResponse('Success', { status: 200 });
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_MODULE_REORDER]', error);
+    console.error('[COURSES_COURSE-ID_MODULE_REORDER]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

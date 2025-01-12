@@ -46,7 +46,6 @@ export function AttachmentCategoryForm({ types, field, form }: AttachmentCategor
                     value={type.label}
                     key={type.value}
                     onSelect={() => {
-                      console.log('type', field);
                       field.value = type.value;
                       form.setValue('attachmentType', type.value);
                     }}>

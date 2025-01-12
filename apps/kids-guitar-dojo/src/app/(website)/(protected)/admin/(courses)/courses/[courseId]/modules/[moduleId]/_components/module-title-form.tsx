@@ -52,8 +52,6 @@ const ModuleTitleForm = ({ initialData, courseId, moduleId }: ModuleTitleFormPro
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('values', values);
-
     try {
       const response = await axios.patch(`/api/courses/${courseId}/modules/${moduleId}`, values);
       if (response.status === 200) {

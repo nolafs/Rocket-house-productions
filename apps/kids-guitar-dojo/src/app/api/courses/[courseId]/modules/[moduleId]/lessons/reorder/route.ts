@@ -32,8 +32,6 @@ export async function PUT(req: Request, { params }: { params: { courseId: string
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    console.log('list', list);
-
     for (const item of list) {
       await db.lesson.update({
         where: { id: item.id },
@@ -43,7 +41,7 @@ export async function PUT(req: Request, { params }: { params: { courseId: string
 
     return new NextResponse('Success', { status: 200 });
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_CHAPTERS_REORDER]', error);
+    console.error('[COURSES_COURSE-ID_CHAPTERS_REORDER]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

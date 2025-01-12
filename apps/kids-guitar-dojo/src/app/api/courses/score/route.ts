@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
 
     return new NextResponse(JSON.stringify(response), { status: 200 });
   } catch (error) {
-    console.log('[COURSES PROGRESS]', error);
+    console.error('[COURSES PROGRESS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
 
     return new NextResponse(JSON.stringify(score), { status: 200 });
   } catch (error) {
-    console.log('[COURSES PROGRESS]', error);
+    console.error('[COURSES PROGRESS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

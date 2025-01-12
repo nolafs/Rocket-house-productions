@@ -196,7 +196,6 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
                       <FormControl>
                         <FileImageUpload
                           onChange={file => {
-                            console.log('[IMAGE FORM]', file, field);
                             if (file) {
                               setIsEditingImage(false);
                               setTempImage(file);

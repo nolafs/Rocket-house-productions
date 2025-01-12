@@ -71,7 +71,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedLesson);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID]', error);
+    console.error('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -108,8 +108,6 @@ export async function PATCH(
     if (!moduleSection) {
       return new NextResponse('Not found', { status: 404 });
     }
-
-    console.log('[COURSES_COURSE-ID_MOLDULE_LESSON-ID] values', values);
 
     const lesson = await db.lesson.update({
       where: {
@@ -149,7 +147,7 @@ export async function PATCH(
 
     return NextResponse.json(lesson);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_MOLDULE_LESSON-ID]', error);
+    console.error('[COURSES_COURSE-ID_MODULE_LESSON-ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

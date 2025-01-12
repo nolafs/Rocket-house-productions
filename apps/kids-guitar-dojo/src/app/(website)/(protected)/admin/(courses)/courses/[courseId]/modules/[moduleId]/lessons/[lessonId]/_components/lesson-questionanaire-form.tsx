@@ -66,8 +66,6 @@ const LessonQuestionanaireForm = ({ initialData, moduleId, courseId, lessonId }:
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('values', values);
-
     try {
       await axios.post(`/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire`, values);
       toast.success('Lesson Questionanaire created');

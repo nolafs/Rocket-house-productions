@@ -47,7 +47,7 @@ export async function PUT(
 
     return NextResponse.json(userProgress);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_CHAPTERS_CHAPTER-ID_PROGRESS]', error);
+    console.error('[COURSES_COURSE-ID_CHAPTERS_CHAPTER-ID_PROGRESS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

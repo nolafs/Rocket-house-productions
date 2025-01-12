@@ -11,8 +11,6 @@ export async function POST(req: NextRequest) {
     throw new Error('Unauthorized');
   }
 
-  console.log('[CHECK URL FOR PURCHASE]', data);
-
   if (!data.courseId) {
     return new NextResponse('Missing required parameters', { status: 400 });
   }

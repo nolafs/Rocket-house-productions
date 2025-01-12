@@ -9,10 +9,7 @@ export const uploadFileAction = async (formData: FormData) => {
   // zod validate
   const validated = UploadFileSchema.safeParse(formDataObject);
 
-  console.log('[uploadFileAction] validated', formDataObject);
-
   if (!validated.success) {
-    console.log('[uploadFileAction] error', validated.error);
     return {
       status: 'error',
       validationErrors: validated?.error.issues,
