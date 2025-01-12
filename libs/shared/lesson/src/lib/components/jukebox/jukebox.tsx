@@ -44,9 +44,6 @@ type Attachment = {
 
 export function Jukebox({ course, purchaseType }: JukeboxProps) {
   const isMobile = useClientMediaQuery('(max-width: 430px)');
-
-  console.log('[Jukebox] isMobile', isMobile);
-
   if (!isMobile) {
     return (
       <Dialog>
@@ -103,7 +100,7 @@ export function Jukebox({ course, purchaseType }: JukeboxProps) {
                 <h2 className={'font-lesson-heading text-pink-500'}>Jukebox</h2>
               </DrawerTitle>
             </DrawerHeader>
-            <div className="p-4 pb-0">
+            <div className="px-4 pb-5 pt-4">
               <JukePlayer course={course} purchaseType={purchaseType} />
             </div>
           </div>
@@ -158,7 +155,11 @@ const JukePlayer = ({ course, purchaseType }: JukeboxProps) => {
           </Link>
         </>
       )}
-      {purchaseType === 'charge' && playList && <Player trackList={playList} customColorScheme={colors} />}
+      {purchaseType === 'charge' && playList && (
+        <div className={'max-h-[600px]'}>
+          <Player trackList={playList} customColorScheme={colors} />
+        </div>
+      )}
     </>
   );
 };
