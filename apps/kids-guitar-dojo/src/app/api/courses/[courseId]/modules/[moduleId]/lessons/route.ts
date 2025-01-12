@@ -53,7 +53,7 @@ export async function POST(req: Request, { params }: { params: { courseId: strin
 
     return NextResponse.json(lesson);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_LESSON]', error);
+    console.error('[COURSES_COURSE-ID_LESSON]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

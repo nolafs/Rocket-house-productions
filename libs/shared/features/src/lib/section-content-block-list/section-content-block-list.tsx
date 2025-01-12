@@ -18,8 +18,6 @@ interface SectionContentBlockListProps {
 }
 
 export function SectionContentBlockList({ data }: SectionContentBlockListProps) {
-  console.log('SectionContentBlockList', data);
-
   return (
     <div>
       {data && <SectionTitle subtitle={data.subtitle} title={data?.title} align="center" titleSize="large" />}

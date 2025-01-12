@@ -45,8 +45,6 @@ export async function PUT(
       return new NextResponse('Lesson not found', { status: 401 });
     }
 
-    console.log('[COURSE list]', list);
-
     for (const item of list) {
       await db.questionary.update({
         where: { id: item.id },
@@ -56,7 +54,7 @@ export async function PUT(
 
     return new NextResponse('Success', { status: 200 });
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_LESSON_QUESTION_REORDER]', error);
+    console.error('[COURSES_COURSE-ID_LESSON_QUESTION_REORDER]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

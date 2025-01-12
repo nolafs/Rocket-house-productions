@@ -11,7 +11,7 @@ export default async function Layout({ children, params }: LayoutProps) {
   return (
     <div className={'lesson'}>
       <NavbarSimple backToUrl={'/courses'} backToText={'< Back to course'} />
-      {children}
+      <div className={'w-full pt-20 md:pt-0'}>{children}</div>
     </div>
   );
 }

@@ -64,7 +64,6 @@ export function ContactForm({ items }: ContactFormInputProps) {
         toast.error('There was an error sending your message. Please try again later.');
       }
     } catch (error) {
-      console.log('error', error);
       setIsSubmitting(false);
       toast.error('There was an error sending your message. Please try again later.');
       return;

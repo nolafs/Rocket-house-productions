@@ -39,7 +39,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
 
     return NextResponse.json(publishedModule);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_MODULE-ID_PUBLISH]', error);
+    console.error('[COURSES_COURSE-ID_MODULE-ID_PUBLISH]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

@@ -1,12 +1,4 @@
-import {
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../dialog-layout/dialog';
+import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../dialog-layout/dialog';
 import {
   ScrollArea,
   Accordion,
@@ -21,7 +13,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@rocket-house-productions/shadcn-ui';
-import { ChevronRightIcon, Disc3, MenuIcon } from 'lucide-react';
+import { ChevronRightIcon, MenuIcon } from 'lucide-react';
 import Link from 'next/link';
 import cn from 'classnames';
 import Image from 'next/image';
@@ -36,7 +28,7 @@ interface CourseQuickNavigationProps {
 
 export function CourseQuickNavigation({ course, role }: CourseQuickNavigationProps) {
   const isMobile = useClientMediaQuery('(max-width: 424px)');
-  const courseCompleted = useCourseProgressionStore(store => store.getCourseProgress(course.id));
+  const courseCompleted: number | null = useCourseProgressionStore(store => store.getCourseProgress(course.id));
 
   if (courseCompleted === 100 || role === 'admin') {
     if (!isMobile) {
@@ -173,7 +165,7 @@ const QuickNavigation = ({ course, role }: CourseQuickNavigationProps) => {
                     <div>
                       <div className={'mb-4 font-bold'}>Awards</div>
                       <ul>
-                        {module.availableAwards.map((item: any, idx: number) => {
+                        {module.availableAwards.map((item: any) => {
                           return (
                             <li key={'award' + item.awardType.id} className={'flex space-x-1.5'}>
                               {item.awardType.badgeUrl && (

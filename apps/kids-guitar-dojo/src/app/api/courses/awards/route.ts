@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
 
     return new NextResponse(JSON.stringify(response), { status: 200 });
   } catch (error) {
-    console.log('[COURSES AWARDS]', error);
+    console.error('[COURSES AWARDS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -90,7 +90,7 @@ export async function GET(req: NextRequest) {
 
     return new NextResponse(JSON.stringify(award), { status: 200 });
   } catch (error) {
-    console.log('[COURSES AWARDS]', error);
+    console.error('[COURSES AWARDS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

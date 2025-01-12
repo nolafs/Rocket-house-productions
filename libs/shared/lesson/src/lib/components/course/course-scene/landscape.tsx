@@ -60,8 +60,6 @@ export const Landscape = ({
 
   const { contextSafe } = useGSAP(
     () => {
-      console.log('[Landscape] useGSAP', display);
-
       if (setupComplete.current) {
         return;
       }
@@ -86,7 +84,6 @@ export const Landscape = ({
 
       if (prevDisplayRef.current) {
         if (prevDisplayRef.current.total === display.total) {
-          console.log('[Landscape] useGSAP - No Change in Display');
           return;
         }
       }
@@ -95,8 +92,6 @@ export const Landscape = ({
       const tl = gsap.timeline({ paused: false });
 
       const mm = gsap.matchMedia();
-
-      console.log('[Landscape] useGSAP - setup scroll');
 
       mm.add('(max-width: 767px)', () => {
         if (!camera) {
@@ -164,8 +159,6 @@ export const Landscape = ({
         }
       }
 
-      console.log('[Landscape] useGSAP - setup scroll done');
-
       onReady && onReady(true);
 
       return () => {
@@ -185,7 +178,6 @@ export const Landscape = ({
     const position = display.buttons[lesson.num - 1].position;
     const target = new THREE.Vector3(position.x, position.y + 10, position.z);
     const currentLookAt = new THREE.Vector3(camera.position.x, camera.position.y, -1000);
-    console.log('[Landscape] handleOnLesson', lesson);
 
     function updateLookAt() {
       currentLookAt.lerp(target, 0.1); // Adjust the second parameter for smoothness
@@ -206,8 +198,6 @@ export const Landscape = ({
   });
 
   const handleOnBackToCurrentLesson = contextSafe(() => {
-    console.log('[Landscape] handleOnBackToCurrentLesson');
-
     if (!display.pathLength) {
       return;
     }
@@ -228,7 +218,7 @@ export const Landscape = ({
     }
   });
 
-  useFrame((state, delta) => {
+  useFrame(state => {
     const { pointer } = state;
     // Rotate the camera around its own center based on pointer movement
     const rotationSpeed = 0.01; // Adjust this for sensitivity

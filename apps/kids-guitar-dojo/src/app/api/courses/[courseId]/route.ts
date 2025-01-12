@@ -29,7 +29,7 @@ export async function GET(req: Request, { params }: { params: { courseId: string
 
     return NextResponse.json(course);
   } catch (error) {
-    console.log('[COURSE_ID_GET]', error);
+    console.error('[COURSE_ID_GET]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -60,14 +60,13 @@ export async function DELETE(req: Request, { params }: { params: { courseId: str
 
     return NextResponse.json(deletedCourse);
   } catch (error) {
-    console.log('[COURSE_ID_DELETE]', error);
+    console.error('[COURSE_ID_DELETE]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
 
 export async function PATCH(req: Request, { params }: { params: { courseId: string } }) {
   try {
-    console.log('PATCH', params);
     const { userId } = await auth();
     const { courseId } = params;
     const values = await req.json();
@@ -87,7 +86,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
 
     return NextResponse.json(course);
   } catch (error) {
-    console.log('[COURSE_ID_PATCH]', error);
+    console.error('[COURSE_ID_PATCH]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

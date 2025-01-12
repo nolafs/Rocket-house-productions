@@ -31,8 +31,6 @@ export default async function Page({ params }: PageProps) {
     lessonSlug: params.lesson_slug,
   });
 
-  console.log('[QUIZ]', data);
-
   return (
     <>
       <LessonHeader lessonId={data.lesson.id} module={data.module} hasProgress={false} />
