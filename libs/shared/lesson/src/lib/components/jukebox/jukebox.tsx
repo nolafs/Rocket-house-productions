@@ -43,8 +43,7 @@ type Attachment = {
 };
 
 export function Jukebox({ course, purchaseType }: JukeboxProps) {
-  const isMobile = useClientMediaQuery('(max-width: 424px)');
-
+  const isMobile = useClientMediaQuery('(max-width: 430px)');
   if (!isMobile) {
     return (
       <Dialog>
@@ -101,7 +100,7 @@ export function Jukebox({ course, purchaseType }: JukeboxProps) {
                 <h2 className={'font-lesson-heading text-pink-500'}>Jukebox</h2>
               </DrawerTitle>
             </DrawerHeader>
-            <div className="p-4 pb-0">
+            <div className="px-4 pb-5 pt-4">
               <JukePlayer course={course} purchaseType={purchaseType} />
             </div>
           </div>
@@ -147,18 +146,20 @@ const JukePlayer = ({ course, purchaseType }: JukeboxProps) => {
     <>
       {purchaseType === 'free' && (
         <>
-          <DialogDescription>
-            Unlock the full potential of your course with a paid account! Get instant access to exclusive audio files.
-            Upgrade today to explore these valuable resources and take your learning journey to the next level!
-          </DialogDescription>
+          Unlock the full potential of your course with a paid account! Get instant access to exclusive audio files.
+          Upgrade today to explore these valuable resources and take your learning journey to the next level!
           <Link
             href={'/courses/upgrade'}
-            className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'mt-10 w-full')}>
+            className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'my-10 w-full')}>
             Upgrade now!
           </Link>
         </>
       )}
-      {purchaseType === 'charge' && playList && <Player trackList={playList} customColorScheme={colors} />}
+      {purchaseType === 'charge' && playList && (
+        <div className={'max-h-[600px]'}>
+          <Player trackList={playList} customColorScheme={colors} />
+        </div>
+      )}
     </>
   );
 };
