@@ -63,7 +63,7 @@ export async function PATCH(
 
     return NextResponse.json(unPublishedLesson);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID_UNPUBLISH]', error);
+    console.error('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID_UNPUBLISH]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

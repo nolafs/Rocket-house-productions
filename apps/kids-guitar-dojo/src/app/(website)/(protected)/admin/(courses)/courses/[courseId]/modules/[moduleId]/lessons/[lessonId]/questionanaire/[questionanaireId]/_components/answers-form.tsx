@@ -68,8 +68,6 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('[AnswersForm] onSubmit', values);
-
     try {
       await axios.post(
         `/api/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/questionnaire/${questionanaireId}/answers`,
@@ -85,8 +83,6 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
   };
 
   const onReorder = async (updateData: { id: string; position: number }[]) => {
-    console.log('[AnswersForm] onReorder', updateData);
-
     try {
       setIsUpdating(true);
 

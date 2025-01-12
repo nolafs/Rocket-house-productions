@@ -41,7 +41,6 @@ export function QuizScoreDisplay({
   };
 
   const onHandleTimerStop = (time: number) => {
-    console.log('Stoppend timer', time);
     const score = calculateScore(correctCount, time);
     onScore(score || 0);
   };

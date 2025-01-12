@@ -39,16 +39,12 @@ export async function MailerList(data: MailerListType) {
     notify: data.notify,
   };
 
-  console.log('[MAILER-LITE] fields', fields);
-
   try {
     // check if user is already subscribed
     const checkResponse = await mailerlite.subscribers.find(data.email);
 
     if (checkResponse?.data) {
       const checkRsp = checkResponse.data.data;
-
-      console.log('[MAILER-LITE] data', checkRsp);
 
       //check fields and if exists or is different update fields from checkResponse fields
       if (checkRsp.fields) {
@@ -67,8 +63,6 @@ export async function MailerList(data: MailerListType) {
         }
       }
 
-      console.log('[MAILER-LITE] FIELD', fields);
-
       if (checkRsp.groups && checkRsp.groups.length) {
         checkRsp.groups.forEach((group: GroupObject) => {
           groups.push(group.id);
@@ -86,8 +80,6 @@ export async function MailerList(data: MailerListType) {
           groups.push(MEMBER_GROUP_ID);
         }
       }
-
-      console.log('[MAILER-LITE] groups', groups);
     } else {
       //sign up with mailer-lite
       if (data.newsletterGroup) {
@@ -104,8 +96,6 @@ export async function MailerList(data: MailerListType) {
       status: 'active',
       fields: fields,
     });
-
-    console.log('[MAILER-LITE] response', response);
 
     return response;
   } catch (error) {

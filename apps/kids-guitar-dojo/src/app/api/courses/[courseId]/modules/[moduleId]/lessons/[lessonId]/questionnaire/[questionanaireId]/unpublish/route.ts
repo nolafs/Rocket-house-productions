@@ -56,7 +56,7 @@ export async function PATCH(
 
     return NextResponse.json(unPublishedQuestion);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_MODULE-LESSON-ID-QUESTION_UNPUBLISH]', error);
+    console.error('[COURSES_COURSE-ID_MODULE-LESSON-ID-QUESTION_UNPUBLISH]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

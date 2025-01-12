@@ -24,10 +24,8 @@ export async function POST(req: NextRequest) {
     let response = {};
 
     if (progress) {
-      console.log('[COURSES PROGRESS] Updating progress');
       /// update progress
       if (!data.isCompleted) {
-        console.log('[COURSES PROGRESS] Updating progress is not completed');
         response = await db.childProgress.update({
           where: {
             childId_lessonId: {
@@ -43,7 +41,6 @@ export async function POST(req: NextRequest) {
           },
         });
       } else {
-        console.log('[COURSES PROGRESS] Updating progress is completed');
         response = await db.childProgress.update({
           where: {
             childId_lessonId: {
@@ -61,7 +58,7 @@ export async function POST(req: NextRequest) {
       }
     } else {
       /// create progress
-      console.log('[COURSES PROGRESS] Creating new progress');
+
       response = await db.childProgress.create({
         data: {
           childId: data.childId,
@@ -76,7 +73,7 @@ export async function POST(req: NextRequest) {
 
     return new NextResponse(JSON.stringify(response), { status: 200 });
   } catch (error) {
-    console.log('[COURSES PROGRESS]', error);
+    console.error('[COURSES PROGRESS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -132,7 +129,7 @@ export async function GET(req: NextRequest) {
 
     return new NextResponse(JSON.stringify(progress), { status: 200 });
   } catch (error) {
-    console.log('[COURSES PROGRESS]', error);
+    console.error('[COURSES PROGRESS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

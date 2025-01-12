@@ -33,8 +33,6 @@ export default async function Page({ params }: { params: { userId: string } }) {
     },
   });
 
-  console.log('USER', user);
-
   return (
     <>
       {!user?.purchases.length && <Banner variant="warning" label="No purchases found for the customer" />}

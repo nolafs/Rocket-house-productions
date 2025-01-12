@@ -64,7 +64,7 @@ export async function DELETE(
 
     return NextResponse.json(deletedQuestionary);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID]', error);
+    console.error('[COURSES_COURSE-ID_CHAPTERS_CHPATER-ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -136,7 +136,7 @@ export async function PATCH(
 
     return NextResponse.json(questionUpdate);
   } catch (error) {
-    console.log('[COURSES_COURSE-ID_MOLDULE_LESSON-QUESTION-Update-ID]', error);
+    console.error('[COURSES_COURSE-ID_MODULE_LESSON-QUESTION-Update-ID]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

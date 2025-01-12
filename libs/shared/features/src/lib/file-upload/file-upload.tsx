@@ -15,11 +15,10 @@ export const FileUpload = ({ onChange }: FileUploadProps) => {
   const [file, setFile] = useState<any>(null);
 
   const onFileUpload = async (files: File[]) => {
-    console.log('[FileUpload] files', files);
     setError(null);
     setFile(null);
     if (files.length === 0) {
-      console.log('No files selected');
+      console.warn('No files selected');
     }
 
     setLoading(true);
@@ -31,7 +30,6 @@ export const FileUpload = ({ onChange }: FileUploadProps) => {
 
     const response = await uploadFileAction(formData);
     if (response?.status === 'success') {
-      console.log('[FileUpload] response', response);
       setLoading(false);
       setFile(response.file);
       onChange(response.file);

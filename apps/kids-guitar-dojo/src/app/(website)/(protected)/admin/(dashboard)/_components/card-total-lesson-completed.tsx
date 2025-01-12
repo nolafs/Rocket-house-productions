@@ -12,8 +12,6 @@ export async function CardTotalLessonCompleted() {
     },
   });
 
-  console.log('[CardTotalLessonCompleted]', childProgression);
-
   return (
     <Card x-chunk="dashboard-01-chunk-3">
       <CardHeader className="flex !flex-row items-center justify-between space-y-0 pb-2">

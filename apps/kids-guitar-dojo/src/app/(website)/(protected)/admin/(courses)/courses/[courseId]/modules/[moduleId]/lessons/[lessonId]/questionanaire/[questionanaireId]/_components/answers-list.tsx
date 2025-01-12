@@ -59,8 +59,6 @@ export const AnswersList = ({
   }, [items]);
 
   const onPublish = async (isPublished: boolean, questionId: string) => {
-    console.log('[AnswersList] isPublished', isPublished);
-
     try {
       setIsLoading(true);
 
@@ -85,8 +83,6 @@ export const AnswersList = ({
   };
 
   const onDelete = async (questionId: string) => {
-    console.log('[AnswersList] onDelete', questionId);
-
     try {
       setIsLoading(true);
 
@@ -104,8 +100,6 @@ export const AnswersList = ({
   };
 
   const onDragEnd = (result: DropResult) => {
-    console.log('[AnswersList] onDragEnd', result);
-
     if (!result.destination) return;
 
     const items = Array.from(question);

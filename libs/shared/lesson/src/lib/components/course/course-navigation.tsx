@@ -77,58 +77,55 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     let next: number | null = null;
     const modulePosition: ModulePosition[] = [];
 
-    const buttonList: ModuleButtonPosition[] = course.modules.reduce(
-      (acc: ModuleButtonPosition[], item, moduleIndex) => {
-        return [
-          ...acc,
-          ...item.lessons.map((lesson: LessonType, lessonIndex: number) => {
-            const count = acc.length + lessonIndex + 1;
-            const complete = lessonState.getLessonCompleted(lesson.id);
+    const buttonList: ModuleButtonPosition[] = course.modules.reduce((acc: ModuleButtonPosition[], item) => {
+      return [
+        ...acc,
+        ...item.lessons.map((lesson: LessonType, lessonIndex: number) => {
+          const count = acc.length + lessonIndex + 1;
+          const complete = lessonState.getLessonCompleted(lesson.id);
 
-            let moduleSection = null;
+          let moduleSection = null;
 
-            if (currentModule.current?.id !== item.id) {
-              currentModule.current = item;
-              moduleSection = item;
-              modulePosition.push({
-                id: item.id,
-                name: item.title,
-                position: new THREE.Vector3(0, LESSON_SPACING * count - 3.5, 0),
-              });
+          if (currentModule.current?.id !== item.id) {
+            currentModule.current = item;
+            moduleSection = item;
+            modulePosition.push({
+              id: item.id,
+              name: item.title,
+              position: new THREE.Vector3(0, LESSON_SPACING * count - 3.5, 0),
+            });
+          }
+
+          if (!complete) {
+            if (!current) {
+              current = count - 1;
             }
-
-            if (!complete) {
-              if (!current) {
-                current = count - 1;
-              }
-              if (!next) {
-                next = count;
-              }
+            if (!next) {
+              next = count;
             }
+          }
 
-            return {
-              id: lesson.id,
-              name: lesson.title,
-              count,
-              active: complete || next === count,
-              next: next === count,
-              module: moduleSection,
-              color: item.color || 'white',
-              type: lesson.category.name,
-              slug: lesson.slug || '',
-              isFree: lesson.isFree || false,
-              moduleSlug: item.slug || '',
-              position: {
-                x: lessonIndex % 2 ? -1 : 1,
-                y: LESSON_SPACING * count,
-                z: 0,
-              },
-            };
-          }),
-        ];
-      },
-      [],
-    );
+          return {
+            id: lesson.id,
+            name: lesson.title,
+            count,
+            active: complete || next === count,
+            next: next === count,
+            module: moduleSection,
+            color: item.color || 'white',
+            type: lesson.category.name,
+            slug: lesson.slug || '',
+            isFree: lesson.isFree || false,
+            moduleSlug: item.slug || '',
+            position: {
+              x: lessonIndex % 2 ? -1 : 1,
+              y: LESSON_SPACING * count,
+              z: 0,
+            },
+          };
+        }),
+      ];
+    }, []);
 
     return {
       buttons: buttonList,
@@ -330,9 +327,6 @@ const ZoomControl = forwardRef((_, ref) => {
 
         return newZoom;
       });
-    },
-    handleReset() {
-      setZoom(baseZoom); // Reset to baseZoom
     },
   }));
 

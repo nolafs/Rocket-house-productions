@@ -106,7 +106,7 @@ export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps)
             }}
             onSubmit={evt => {
               evt.preventDefault();
-              console.log('submitting form', new FormData(formRef.current!).get('gender'));
+
               form.handleSubmit(() => {
                 formAction(new FormData(formRef.current!));
               })(evt);

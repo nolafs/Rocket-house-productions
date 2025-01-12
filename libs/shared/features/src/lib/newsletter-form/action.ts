@@ -26,8 +26,6 @@ export async function handleSubscription(prevState: any, formData: FormData) {
 
       const rsp = await response.json();
 
-      console.log(rsp);
-
       return {
         status: 'success',
         message: 'Thank you for subscribing!',
@@ -41,8 +39,6 @@ export async function handleSubscription(prevState: any, formData: FormData) {
       };
     }
   } else {
-    console.log(validation);
-
     return {
       status: 'failed',
       message: 'Something went wrong!',

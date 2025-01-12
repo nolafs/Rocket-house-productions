@@ -63,8 +63,6 @@ export function ModuleAwardItem({ award, courseId, moduleId }: ModuleAwardItemPr
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log('[ModuleAwardItem]', values);
-
     try {
       await axios.patch(`/api/courses/${courseId}/modules/${moduleId}/awards/${award.awardType.id}`, values);
       toast.success('Award created');
@@ -193,7 +191,6 @@ export function ModuleAwardItem({ award, courseId, moduleId }: ModuleAwardItemPr
                       <FormControl>
                         <FileImageUpload
                           onChange={file => {
-                            console.log('[IMAGE FORM]', file, field);
                             if (file) {
                               setIsEditingImage(false);
                               setTempImage(file);

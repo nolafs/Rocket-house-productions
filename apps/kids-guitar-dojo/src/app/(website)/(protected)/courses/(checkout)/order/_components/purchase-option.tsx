@@ -22,16 +22,12 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
   const router = useRouter();
 
   useEffect(() => {
-    console.log('[PurchaseOption]', user, isLoading, isError, isValidating, productId, courseId, type);
-
     if (user && !isLoading && !isValidating && !isError) {
       if (type === 'free') {
         const createFreeAccount = async () => {
           const res = await axios.post('/api/stripe/checkfree', {
             courseId: courseId,
           });
-
-          console.log('[PurchaseOption]', res.data);
 
           if (res.data) {
             router.push('/courses/success');
