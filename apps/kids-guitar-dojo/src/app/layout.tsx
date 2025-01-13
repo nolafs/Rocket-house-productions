@@ -1,4 +1,3 @@
-import '../styles/navbar.scss';
 import './global.scss';
 import { Raleway, Mochiy_Pop_One, Nunito } from 'next/font/google';
 
@@ -32,7 +31,7 @@ const mochiyPopOne = Mochiy_Pop_One({
   variable: '--font-mochiy-pop-one',
 });
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'kidsguitardojo.com/';
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'kidsguitardojo.com';
 
 type Props = {
   params: { id: string };
@@ -59,10 +58,10 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     metadataBase: new URL(
       (isURL(settings.data?.canonical_url) && settings.data?.canonical_url) ||
         process.env.NEXT_PUBLIC_SITE_URL ||
-        'https://www.kidsguitardojo.com/',
+        'https://www.kidsguitardojo.com',
     ),
     alternates: {
-      canonical: settings.data?.canonical_url || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.kidsguitardojo.com/',
+      canonical: settings.data?.canonical_url || process.env.NEXT_PUBLIC_BASE_URL || 'https://www.kidsguitardojo.com',
     },
     title: settings?.data.meta_title || (await parent).title || '-= Kids Guitar Dojo =-',
     description: settings?.data.meta_description || (await parent).description,
