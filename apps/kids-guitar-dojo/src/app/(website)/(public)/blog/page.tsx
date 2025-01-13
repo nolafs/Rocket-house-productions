@@ -40,6 +40,7 @@ export default async function Page({ searchParams }: { searchParams: { page: str
 
   const client = createClient();
   const blogPage = await client.getSingle('blog').catch(() => notFound());
+
   const pages = await client.getByType('blog_post', {
     pageSize: limit,
     page: pageNum,
