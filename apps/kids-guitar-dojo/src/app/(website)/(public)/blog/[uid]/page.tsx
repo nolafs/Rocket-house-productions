@@ -7,12 +7,9 @@ import { HeaderSimple } from '@rocket-house-productions/layout';
 import { PrismicNextImage } from '@prismicio/next';
 import { BackButton, DateDisplay } from '@rocket-house-productions/ui';
 import { BlogList, SharePage } from '@rocket-house-productions/features';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
-import Link from 'next/link';
-import { ChevronLeftIcon, Share2Icon } from 'lucide-react';
+import { Share2Icon } from 'lucide-react';
 import { ImageFieldImage } from '@prismicio/types';
 import * as prismic from '@prismicio/client';
-import { Bounded } from '@components/Bounded';
 type Params = { uid: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
@@ -56,6 +53,9 @@ export default async function Page({ params }: { params: Params }) {
   const client = createClient();
   const page = await client
     .getByUID('blog_post', params.uid, {
+      fetchOptions: {
+        cache: 'force-cache',
+      },
       fetchLinks: ['author.name', 'author.profile_image', 'blog_category.category'],
     })
     .catch(() => notFound());
@@ -69,6 +69,10 @@ export default async function Page({ params }: { params: Params }) {
 
   const relatedPosts = await client.getByType('blog_post', {
     pageSize: 3,
+    fetchOptions: {
+      cache: 'force-cache',
+      next: { tags: ['prismic', 'blog_posts'] },
+    },
     fetchLinks: ['blog_category.category'],
     filters: [prismic.filter.at('my.blog_post.category', categoryId)],
     orderings: {
@@ -95,7 +99,8 @@ export default async function Page({ params }: { params: Params }) {
               field={page.data.feature_image}
               width={896}
               height={400}
-              imgixParams={{ fm: 'webp', fit: 'crop', crop: ['focalpoint'], width: 1140, height: 600 }}
+              priority={true}
+              imgixParams={{ fm: 'webp', fit: 'crop', crop: ['focalpoint'], width: 1140, height: 600, q: 70 }}
             />
             <div className={'absolute bottom-5 mx-auto hidden w-full max-w-4xl grid-cols-2 px-8 md:grid'}>
               <div className={'flex space-x-5'}>
