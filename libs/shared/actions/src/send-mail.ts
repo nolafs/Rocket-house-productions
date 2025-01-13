@@ -33,7 +33,7 @@ export async function sendMail(prevState: any, formData: FormData) {
     });
 
     const sentFrom = new Sender(`noreply@${process.env.MAILERSEND_DOMAIN}`, 'Paul');
-    const recipients: Recipient[] = [new Recipient('rockethouse1@gmail.com', 'Contact Form Website')];
+    const recipients: Recipient[] = [new Recipient('kidsguitardojo@gmail.com', 'Contact Form Website')];
 
     if (validatedFields) {
       const emailParams = new EmailParams()
