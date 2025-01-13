@@ -26,6 +26,7 @@ export const BlogCard = forwardRef<HTMLDivElement, TProps>(
         <figure className="relative isolate block max-h-[300px] w-full overflow-hidden">
           <PrismicNextImage
             field={feature_image}
+            loading="lazy"
             width={500}
             height={300}
             fill
@@ -33,9 +34,11 @@ export const BlogCard = forwardRef<HTMLDivElement, TProps>(
             imgixParams={{
               fm: 'webp',
               fit: 'fill',
+
               crop: ['focalpoint'],
               w: 500,
               h: 300,
+              q: 70,
             }}
             className="z-1 h-full w-full object-cover"
           />

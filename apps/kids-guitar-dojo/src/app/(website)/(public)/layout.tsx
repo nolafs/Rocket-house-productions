@@ -1,4 +1,3 @@
-import '../../../styles/navbar.scss';
 import { Suspense } from 'react';
 import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
