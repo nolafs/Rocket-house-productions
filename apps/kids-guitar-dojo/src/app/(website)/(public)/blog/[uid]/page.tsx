@@ -50,12 +50,14 @@ interface PageData {
 }
 
 export default async function Page({ params }: { params: Params }) {
-  const client = createClient();
+  const client = createClient({
+    fetchOptions: {
+      next: { tags: ['blog_posts', 'blog_post'] },
+      cache: 'force-cache',
+    },
+  });
   const page = await client
     .getByUID('blog_post', params.uid, {
-      fetchOptions: {
-        cache: 'force-cache',
-      },
       fetchLinks: ['author.name', 'author.profile_image', 'blog_category.category'],
     })
     .catch(() => notFound());
@@ -69,10 +71,6 @@ export default async function Page({ params }: { params: Params }) {
 
   const relatedPosts = await client.getByType('blog_post', {
     pageSize: 3,
-    fetchOptions: {
-      cache: 'force-cache',
-      next: { tags: ['prismic', 'blog_posts'] },
-    },
     fetchLinks: ['blog_category.category'],
     filters: [prismic.filter.at('my.blog_post.category', categoryId)],
     orderings: {
@@ -180,7 +178,12 @@ export default async function Page({ params }: { params: Params }) {
 }
 
 export async function generateStaticParams() {
-  const client = createClient();
+  const client = createClient({
+    fetchOptions: {
+      next: { tags: ['blog_posts', 'blog_post'] },
+      cache: 'force-cache',
+    },
+  });
 
   const pages = await client.getAllByType('blog_post');
 
