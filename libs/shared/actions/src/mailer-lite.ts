@@ -23,6 +23,8 @@ const MEMBER_GROUP_ID = '132777840291612505';
 const NEWSLETTER_GROUP_ID = '133521141153137963';
 
 export async function MailerList(data: MailerListType) {
+  console.log('[MAILER-LITE] DATA', data);
+
   if (!data.email) {
     throw new Error('Email is required');
   }
@@ -39,9 +41,13 @@ export async function MailerList(data: MailerListType) {
     notify: data.notify,
   };
 
+  console.log('[MAILER-LITE] FIELDS', fields);
+
   try {
     // check if user is already subscribed
     const checkResponse = await mailerlite.subscribers.find(data.email);
+
+    console.log('[MAILER-LITE] CHECK RESPONSE', checkResponse);
 
     if (checkResponse?.data) {
       const checkRsp = checkResponse.data.data;
@@ -101,6 +107,7 @@ export async function MailerList(data: MailerListType) {
 
     return response;
   } catch (error) {
+    console.error('[MAILER-LITE] ERROR', error);
     return error;
   }
 }
