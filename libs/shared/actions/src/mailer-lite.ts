@@ -90,6 +90,8 @@ export async function MailerList(data: MailerListType) {
       }
     }
 
+    console.log('[MAILER-LITE] SUBSCRIBER FIELDS', fields, data.email);
+
     const response = await mailerlite.subscribers.createOrUpdate({
       email: data.email,
       groups: [...groups],
