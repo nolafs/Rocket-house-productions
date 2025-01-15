@@ -50,12 +50,7 @@ interface PageData {
 }
 
 export default async function Page({ params }: { params: Params }) {
-  const client = createClient({
-    fetchOptions: {
-      next: { tags: ['blog_posts', 'blog_post'] },
-      cache: 'force-cache',
-    },
-  });
+  const client = createClient();
   const page = await client
     .getByUID('blog_post', params.uid, {
       fetchLinks: ['author.name', 'author.profile_image', 'blog_category.category'],
@@ -178,12 +173,7 @@ export default async function Page({ params }: { params: Params }) {
 }
 
 export async function generateStaticParams() {
-  const client = createClient({
-    fetchOptions: {
-      next: { tags: ['blog_posts', 'blog_post'] },
-      cache: 'force-cache',
-    },
-  });
+  const client = createClient();
 
   const pages = await client.getAllByType('blog_post');
 
