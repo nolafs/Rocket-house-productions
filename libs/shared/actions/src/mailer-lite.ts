@@ -43,13 +43,23 @@ export async function MailerList(data: MailerListType) {
 
   console.log('[MAILER-LITE] FIELDS', fields);
 
+  let checkResponse: any | null = null;
+
+  mailerlite.subscribers
+    .find(data.email)
+    .then(response => {
+      console.log(response.data);
+      checkResponse = response;
+    })
+    .catch(error => {
+      if (error.response) console.log(error.response.data);
+    });
+
+  console.log('[MAILER-LITE] CHECK RESPONSE', checkResponse);
+
   try {
     // check if user is already subscribed
-    const checkResponse = await mailerlite.subscribers.find(data.email);
-
-    console.log('[MAILER-LITE] CHECK RESPONSE', checkResponse);
-
-    if (checkResponse?.data) {
+    if (checkResponse !== null) {
       const checkRsp = checkResponse.data.data;
 
       //check fields and if exists or is different update fields from checkResponse fields
