@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 
       // update Mailer-lite
 
-      console.log('[CHECKOUT FREE] ACCOUNT EMAIL', purchase);
+      console.log('[CHECKOUT FREE] ACCOUNT EMAIL', account);
 
       if (account.email) {
         await MailerList({
