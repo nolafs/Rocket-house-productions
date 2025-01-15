@@ -47,6 +47,8 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    console.log('[CHECKOUT FREE] PURCHASE', purchase);
+
     // check if ok and redirect to success page
     if (purchase) {
       const client = await clerkClient();
@@ -58,6 +60,8 @@ export async function POST(req: NextRequest) {
       });
 
       // update Mailer-lite
+
+      console.log('[CHECKOUT FREE] ACCOUNT EMAIL', purchase);
 
       if (account.email) {
         await MailerList({
