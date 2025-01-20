@@ -71,12 +71,6 @@ export async function MailerList(data: MailerListType) {
         if (checkFields?.last_name !== null && checkFields?.last_name !== fields.last_name) {
           fields.last_name = checkFields.last_name;
         }
-        if (checkFields?.member_type !== null && checkFields?.member_type === fields.member_type) {
-          fields.member_type = checkFields.member_type;
-        }
-        if (checkFields?.notify !== null && checkFields?.notify === fields.notify) {
-          fields.notify = checkFields?.notify;
-        }
       }
 
       if (checkRsp.groups && checkRsp.groups.length) {
