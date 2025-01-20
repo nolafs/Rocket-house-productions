@@ -8,7 +8,7 @@ export type MailerListType = {
   email: string;
   newsletterGroup: boolean;
   membershipGroup: boolean;
-  memberType?: 'free' | 'paid' | 'undefined' | null;
+  memberType?: 'free' | 'paid' | null;
   notify?: boolean | null;
 };
 
@@ -37,7 +37,7 @@ export async function MailerList(data: MailerListType) {
   const fields: MailerListSubscriberFields = {
     name: data.firstName || null,
     last_name: data.lastName || null,
-    member_type: data?.memberType || 'undefined',
+    member_type: data?.memberType || null,
     notify: data.notify,
   };
 
@@ -71,10 +71,10 @@ export async function MailerList(data: MailerListType) {
         if (checkFields?.last_name !== null && checkFields?.last_name !== fields.last_name) {
           fields.last_name = checkFields.last_name;
         }
-        if (checkFields?.member_type !== null && checkFields?.member_type !== fields.member_type) {
+        if (checkFields?.member_type !== null && checkFields?.member_type === fields.member_type) {
           fields.member_type = checkFields.member_type;
         }
-        if (checkFields?.notify !== null && checkFields?.notify !== fields.notify) {
+        if (checkFields?.notify !== null && checkFields?.notify === fields.notify) {
           fields.notify = checkFields?.notify;
         }
       }
