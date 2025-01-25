@@ -179,7 +179,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <PrismicPreview repositoryName={repositoryName} />
             </body>
             {/* Analytics */}
-            <GoogleAnalytics gaId={process.env.NEXT_GOOGLE_ANALYTICS_ID || ''} />
+            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''} />
             {/* Cookie consent */}
             <CookieConsent />
           </html>
