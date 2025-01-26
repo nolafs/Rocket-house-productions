@@ -17,6 +17,55 @@
   status = 200
   force = true
 
+[[redirects]]
+  from = "/techniques-for-dyslexics-learning-music-kids-guitar-dojo-leads-the-way/"
+  to = "/blog/techniques-for-dyslexics-learning-music-kids-guitar-dojo-leads-the-way"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/easy-chords-for-tiny-fingers-strumming-lessons-for-a-five-year-old/"
+  to = "/blog/fun-and-easy-ways-to-teach-a-child-guitar-chords"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/what-size-guitar-is-best-for-my-child/"
+  to = "/blog/whats-the-best-sized-guitar-for-a-child"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/privacy-policy-terms/"
+  to = "/legal/privacy-notice-for-kids-guitar-dojo"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/about/"
+  to = "/our-story"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/home/"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/terms-conditions/"
+  to = "/legal/agreement-to-our-legal-terms"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/faq/"
+  to = "/pricing" # Adjust if a new location is required
+  status = 301
+  force = true
+
+
 [[headers]]
     for = "/*"
     [headers.values]

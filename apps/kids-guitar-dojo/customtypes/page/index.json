@@ -26,6 +26,7 @@
         "config": {
           "label": "Parent",
           "placeholder": "",
+          "allowTargetBlank": false,
           "select": null
         }
       },
