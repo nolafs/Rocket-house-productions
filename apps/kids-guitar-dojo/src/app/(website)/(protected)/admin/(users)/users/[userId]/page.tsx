@@ -88,18 +88,6 @@ export default async function Page({ params }: { params: { userId: string } }) {
                 <span className={'text-sm font-bold'}>Clerk Id</span>
                 <p>{user?.userId}</p>
               </div>
-              <div className="grid gap-3 border-b border-b-gray-100 pb-5">
-                <span className={'text-sm font-bold'}>Clerk Status</span>
-                <p>{sessionClaims.metadata.role}</p>
-              </div>
-              <div className="grid gap-3 border-b border-b-gray-100 pb-5">
-                <span className={'text-sm font-bold'}>Clerk Status</span>
-                <p>{sessionClaims.metadata.status}</p>
-              </div>
-              <div className="grid gap-3 border-b border-b-gray-100 pb-5">
-                <span className={'text-sm font-bold'}>Clerk Purchase Status</span>
-                <p>{sessionClaims.metadata.type}</p>
-              </div>
             </CardContent>
           </Card>
         </div>
