@@ -35,7 +35,7 @@ export function Pagination({ total = 0, currentPage = 0, limit = 9, prevDisabled
   const pageLinks = () => {
     const links: Array<any> = [];
 
-    for (let i = 1; i <= totalPages; i++) {
+    for (let i = 1; i <= Math.round(totalPages / limit) + 1; i++) {
       links.push(
         <Link
           key={'page=' + i}
@@ -55,7 +55,7 @@ export function Pagination({ total = 0, currentPage = 0, limit = 9, prevDisabled
   };
 
   return (
-    <div className="container mx-auto mt-10">
+    <div className="container mx-auto mb-10">
       <nav className="flex flex-row justify-center">
         <div className={'flex rounded-md border border-gray-200'}>
           <div className={'p-3'}>
