@@ -57,6 +57,8 @@ export default async function Page({ searchParams }: { searchParams: { page: str
     return notFound();
   }
 
+  console.log('', pages);
+
   return (
     <main>
       {/* Header */}
@@ -69,7 +71,7 @@ export default async function Page({ searchParams }: { searchParams: { page: str
       />
       {/* Blog Post */}
       <BlogList posts={pages.results} />
-      <Pagination total={pages.total_pages} currentPage={pages.page} limit={limit} />
+      <Pagination total={pages.total_results_size} currentPage={pages.page} limit={limit} />
     </main>
   );
 }
