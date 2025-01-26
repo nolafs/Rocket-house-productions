@@ -195,7 +195,7 @@ export const columns: ColumnDef<Child>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <Link href={`/admin/users/${id}`}>
+            <Link href={`/admin/enrolment/${id}`}>
               <DropdownMenuItem>
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
