@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import Link from 'next/link';
 
 import {
   ColumnDef,
@@ -15,8 +14,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { PlusCircle } from 'lucide-react';
-
 // Components
 import {
   Table,
@@ -26,7 +23,6 @@ import {
   TableHeader,
   TableRow,
   Button,
-  Input,
 } from '@rocket-house-productions/shadcn-ui';
 
 interface DataTableProps<TData, TValue> {

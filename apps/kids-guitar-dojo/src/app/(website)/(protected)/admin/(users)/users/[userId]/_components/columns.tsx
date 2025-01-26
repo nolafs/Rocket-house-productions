@@ -77,7 +77,7 @@ export const columns: ColumnDef<Purchase>[] = [
       const child = row.getValue('childId');
       return child ? (
         <div className="flex items-center gap-x-2">
-          <Link href={`/admin/enrolled/${child}`}>
+          <Link href={`/admin/enrolment/${child}`}>
             <Button variant="ghost">View</Button>
           </Link>
           <Badge variant="default">Enrolled</Badge>
