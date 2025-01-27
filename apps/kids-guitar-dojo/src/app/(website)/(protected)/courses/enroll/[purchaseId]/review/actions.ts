@@ -111,7 +111,7 @@ export const submitOnBoardingAction = async (
         const memberType: 'free' | 'paid' | null | undefined =
           purchase?.type === 'free' || purchase?.type === 'paid' ? purchase.type : null;
 
-        const mailerList = await MailerList({
+        await MailerList({
           email: account.email,
           firstName: onboarding.firstName || '',
           lastName: onboarding.lastName || '',
