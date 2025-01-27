@@ -92,7 +92,7 @@ export default async function Page({ params }: { params: Params }) {
               field={page.data.feature_image}
               width={896}
               height={400}
-              priority={true}
+              loading={'lazy'}
               imgixParams={{ fm: 'webp', fit: 'crop', crop: ['focalpoint'], width: 1140, height: 600, q: 70 }}
             />
             <div className={'absolute bottom-5 mx-auto hidden w-full max-w-4xl grid-cols-2 px-8 md:grid'}>
@@ -109,6 +109,7 @@ export default async function Page({ params }: { params: Params }) {
                               field={author.profile_image}
                               width={32}
                               height={32}
+                              loading={'lazy'}
                               className={'h-8 w-8 rounded-full'}
                               imgixParams={{
                                 fm: 'webp',
