@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@rocket-house-productions/shadcn-ui';
-import { ArrowUpDown } from 'lucide-react';
 import Link from 'next/link';
 export default async function Page({ params }: { params: { childId: string } }) {
   const { userId, sessionClaims } = await auth();
