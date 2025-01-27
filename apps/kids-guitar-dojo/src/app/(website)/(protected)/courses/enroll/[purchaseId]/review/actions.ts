@@ -53,6 +53,7 @@ export const submitOnBoardingAction = async (
       where: {
         userId: userId,
       },
+      include: {},
     });
 
     if (!account) {
@@ -70,18 +71,6 @@ export const submitOnBoardingAction = async (
         lastName: onboarding.lastName,
       },
     });
-
-    //Update MailerList
-    if (account.email) {
-      const mailerList = await MailerList({
-        email: account.email,
-        firstName: onboarding.firstName || '',
-        lastName: onboarding.lastName || '',
-        membershipGroup: true,
-        newsletterGroup: onboarding.newsletter || false,
-        notify: onboarding.notify || false,
-      });
-    }
 
     const child = await db.child.create({
       data: {
@@ -116,6 +105,22 @@ export const submitOnBoardingAction = async (
           childId: child.id,
         },
       });
+
+      //Update MailerList
+      if (account.email) {
+        const memberType: 'free' | 'paid' | null | undefined =
+          purchase?.type === 'free' || purchase?.type === 'paid' ? purchase.type : null;
+
+        await MailerList({
+          email: account.email,
+          firstName: onboarding.firstName || '',
+          lastName: onboarding.lastName || '',
+          membershipGroup: true,
+          newsletterGroup: onboarding.newsletter || false,
+          memberType: memberType,
+          notify: onboarding.notify || false,
+        });
+      }
     } else {
       console.error('[ONBOARDING] [REVIEW] Already enrolled a child on purchase');
     }
