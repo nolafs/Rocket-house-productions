@@ -103,7 +103,7 @@
     "valibot": "^0.37.0",
     "valtio": "^2.0.0",
     "vaul": "^0.9.1",
-    "zod": "^3.23.8",
+    "zod": "^3.24.1",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
