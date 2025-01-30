@@ -1239,7 +1239,7 @@ export interface SettingsDocumentDataSocialMediaItem {
    * - **API ID Path**: settings.social_media[].type
    * - **Documentation**: https://prismic.io/docs/field#select
    */
-  type: prismic.SelectField<'facebook' | 'instagram' | 'twitter' | 'gitHub' | 'youtube' | 'tiktok'>;
+  type: prismic.SelectField<'facebook' | 'instagram' | 'twitter' | 'gitHub' | 'youtube' | 'tiktok' | 'linkedin'>;
 
   /**
    * Name field in *Settings → Social Media*
