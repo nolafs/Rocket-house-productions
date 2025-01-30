@@ -36,6 +36,13 @@
   force = true
 
 [[redirects]]
+  from = "/guitar-lessons-for-kids-exciting-new-program-mums-love"
+  to = "/blog"
+  status = 301
+  force = true
+
+
+[[redirects]]
   from = "/best-online-guitar-lessons-for-kids"
   to = "/"
   status = 301
