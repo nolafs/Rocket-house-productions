@@ -20,22 +20,7 @@ export interface ContentVideoProps {
   controls?: boolean;
 }
 
-export function VideoPlayer({
-  autoplay = true,
-  controls = false,
-  width,
-  height,
-  html,
-  mode,
-  provider_url,
-  provider_name,
-  thumbnail_url,
-  loading,
-  embed_url,
-  title,
-  image,
-  id,
-}: ContentVideoProps) {
+export function VideoPlayer({ provider_name, loading, embed_url, title, image, id }: ContentVideoProps) {
   if (!embed_url) {
     return <NotificationBlock body={'No video source found'} type={'error'} />;
   }
