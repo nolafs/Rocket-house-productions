@@ -1,6 +1,7 @@
 import * as prismic from '@prismicio/client';
 import * as prismicNext from '@prismicio/next';
 import config from '../slicemachine.config.json';
+import { ClientConfig } from '@prismicio/client';
 
 /**
  * The project's Prismic repository name.
@@ -29,7 +30,7 @@ const routes: prismic.ClientConfig['routes'] = [
  *
  * @param config - Configuration for the Prismic client.
  */
-export const createClient = (config: prismicNext.CreateClientConfig = {}) => {
+export const createClient = (config: ClientConfig = {}) => {
   const client = prismic.createClient(repositoryName, {
     routes,
     fetchOptions:
@@ -39,11 +40,7 @@ export const createClient = (config: prismicNext.CreateClientConfig = {}) => {
     ...config,
   });
 
-  prismicNext.enableAutoPreviews({
-    client,
-    previewData: config.previewData,
-    req: config.req,
-  });
+  prismicNext.enableAutoPreviews({ client });
 
   return client;
 };
