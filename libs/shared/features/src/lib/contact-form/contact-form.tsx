@@ -30,7 +30,7 @@ export function ContactForm({ items }: ContactFormInputProps) {
   //const captchaRef: any = useRef(null)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submissionSuccess, setSubmissionSuccess] = useState<boolean>(false);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
   const [isVerified, setIsVerified] = useState(false);
 
   const {
