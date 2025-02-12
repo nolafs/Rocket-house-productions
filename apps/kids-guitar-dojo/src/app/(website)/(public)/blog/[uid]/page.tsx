@@ -16,30 +16,50 @@ type Params = { uid: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const client = createClient();
-  const page = await client
+  const post = await client
     .getByUID('blog_post', params.uid, {
       fetchLinks: ['author.name', 'blog_category.category'],
     })
     .catch(() => notFound());
 
-  if (page.data?.feature_image?.url) {
-    page.data.feature_image.url = `${page.data.feature_image.url}?w=1200&h=630&fit=crop&auto=format,compress`;
+  if (post.data?.feature_image?.url) {
+    post.data.feature_image.url = `${post.data.feature_image.url}?w=1200&h=630&fit=crop&auto=format,compress`;
   }
 
-  const author = (page.data.author as ContentRelationshipField<Author>).data as AuthorData;
+  const author = (post.data.author as ContentRelationshipField<Author>).data as AuthorData;
+
+  let tags = post.data.tags.map(item => {
+    const tag = item && 'tag' in item && (item.tag as { data: { name: string } }).data?.name;
+    return tag ?? '';
+  });
+
+  if (post.data.keywords) {
+    const postKeywords: string[] = post.data.keywords.map(item => {
+      const keyword = item;
+      return keyword.word! ?? '';
+    });
+    if (postKeywords.length) {
+      tags = [...tags, ...postKeywords];
+    }
+  }
 
   return {
-    title: page.data?.title,
-    description: page.data.meta_description || page.data.description,
-    authors: [{ name: author?.name }],
+    title: post.data.title,
+    description: post.data.description ?? '',
+    authors: [{ name: author?.name ?? '' }],
     alternates: {
       canonical: `/blog/${params.uid}`,
     },
     creator: author?.name,
     publisher: author?.name,
+    keywords: tags.filter(tag => tag !== false).length ? tags.filter(tag => tag !== false) : null,
     openGraph: {
-      title: page.data.meta_title ?? undefined,
-      images: [{ url: page.data.meta_image.url ?? page.data.feature_image.url ?? '' }],
+      title: post.data.meta_title ?? undefined,
+      description:
+        typeof post.data.meta_description === 'string'
+          ? post.data.meta_description
+          : (post.data.meta_description ?? post.data.description ?? ''),
+      images: [{ url: post.data.meta_image.url ?? post.data.feature_image.url ?? '' }],
     },
   };
 }
