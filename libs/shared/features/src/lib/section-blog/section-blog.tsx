@@ -10,7 +10,7 @@ interface SectionBlogProps {
     title: RichTextField | null | undefined;
     subtitle: KeyTextField | string | null | undefined;
   };
-  link?: LinkField;
+  link?: LinkField | undefined;
   label: KeyTextField | string | null | undefined;
 }
 

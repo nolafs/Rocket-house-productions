@@ -66,7 +66,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
         `https://${process.env.NEXT_PUBLIC_BASE_URL}` ||
         'https://www.kidsguitardojo.com',
       types: {
-        'application/rss+xml': `https://${process.env.NEXT_PUBLIC_BASE_URL}feed.xml`,
+        'application/rss+xml': `https://${process.env.NEXT_PUBLIC_BASE_URL}/feed.xml`,
       },
     },
     title: settings?.data.meta_title || (await parent).title || '-= Kids Guitar Dojo =-',

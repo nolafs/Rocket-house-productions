@@ -23,6 +23,7 @@ const BlogList = async ({ slice }: BlogListProps) => {
 
     return pages;
   };
+
   const posts = await getBlogPosts();
 
   if (!posts) return null;
@@ -32,7 +33,7 @@ const BlogList = async ({ slice }: BlogListProps) => {
       <SectionBlog
         posts={posts}
         section={{ ...slice.primary }}
-        link={slice.primary?.link}
+        link={slice.primary.link && 'url' in slice.primary.link ? slice.primary.link : undefined}
         label={slice.primary.label}
       />
     </Bounded>

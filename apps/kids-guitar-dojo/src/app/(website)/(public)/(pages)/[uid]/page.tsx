@@ -25,6 +25,9 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
   return {
     title: asText(page.data?.title) || parentMeta.title,
     description: page.data.meta_description || parentMeta.description,
+    alternates: {
+      canonical: `/${params.uid}`,
+    },
     openGraph: {
       title: page.data.meta_title ?? parentMeta.title ?? undefined,
       images: [
