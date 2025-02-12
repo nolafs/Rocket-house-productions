@@ -67,6 +67,23 @@
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
         }
       },
+      "tags": {
+        "type": "Group",
+        "config": {
+          "label": "Tags",
+          "repeat": true,
+          "fields": {
+            "tag": {
+              "type": "Link",
+              "config": {
+                "label": "tag",
+                "select": "document",
+                "customtypes": ["blog_tags"]
+              }
+            }
+          }
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
@@ -110,6 +127,22 @@
           "thumbnails": []
         },
         "type": "Image"
+      },
+      "keywords": {
+        "type": "Group",
+        "config": {
+          "label": "Keywords",
+          "repeat": true,
+          "fields": {
+            "word": {
+              "type": "Text",
+              "config": {
+                "label": "word",
+                "placeholder": ""
+              }
+            }
+          }
+        }
       },
       "slices1": {
         "type": "Slices",

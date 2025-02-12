@@ -10,19 +10,33 @@ import { BlogList, SharePage } from '@rocket-house-productions/features';
 import { Share2Icon } from 'lucide-react';
 import { ImageFieldImage } from '@prismicio/types';
 import * as prismic from '@prismicio/client';
+import { Author } from 'next/dist/lib/metadata/types/metadata-types';
+import { WithContext, BlogPosting } from 'schema-dts';
 type Params = { uid: string };
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const client = createClient();
-  const page = await client.getByUID('blog_post', params.uid).catch(() => notFound());
+  const page = await client
+    .getByUID('blog_post', params.uid, {
+      fetchLinks: ['author.name', 'blog_category.category'],
+    })
+    .catch(() => notFound());
 
   if (page.data?.feature_image?.url) {
     page.data.feature_image.url = `${page.data.feature_image.url}?w=1200&h=630&fit=crop&auto=format,compress`;
   }
 
+  const author = (page.data.author as ContentRelationshipField<Author>).data as AuthorData;
+
   return {
     title: page.data?.title,
     description: page.data.meta_description || page.data.description,
+    authors: [{ name: author?.name }],
+    alternates: {
+      canonical: `/blog/${params.uid}`,
+    },
+    creator: author?.name,
+    publisher: author?.name,
     openGraph: {
       title: page.data.meta_title ?? undefined,
       images: [{ url: page.data.meta_image.url ?? page.data.feature_image.url ?? '' }],
@@ -73,6 +87,22 @@ export default async function Page({ params }: { params: Params }) {
       direction: 'desc',
     },
   });
+
+  const jsonLd: WithContext<BlogPosting> = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: page.data.title || '',
+    image: page.data.feature_image?.url || '',
+    author: {
+      '@type': 'Person',
+      name: author?.name || '',
+      // The full URL must be provided, including the website's domain.
+      url: 'https://kidsguitardojo.com',
+    },
+    description: page.data.description || '',
+    datePublished: page.data.publishing_date || '',
+    dateModified: page.data.publishing_date || '',
+  };
 
   return (
     <main>
@@ -169,6 +199,9 @@ export default async function Page({ params }: { params: Params }) {
         <h2 className="mb-10 px-5 text-5xl font-extrabold tracking-tight text-gray-900">You May Also Like...</h2>
         <BlogList posts={relatedPosts.results} />
       </section>
+
+      {/* Add JSON-LD to your page */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </main>
   );
 }

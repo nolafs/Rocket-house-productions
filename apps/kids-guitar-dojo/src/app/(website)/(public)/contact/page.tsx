@@ -28,6 +28,9 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
   return {
     title: 'Contact',
     description: page.data.meta_description || parentMeta.description || 'Contact us for more information',
+    alternates: {
+      canonical: `/contact`,
+    },
     openGraph: {
       title: page.data.meta_title ?? parentMeta.title ?? undefined,
       images: [

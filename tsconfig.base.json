@@ -18,6 +18,9 @@
     "baseUrl": ".",
     "typeRoots": ["./node_modules/@types", "./types"],
     "paths": {
+      "react": [
+        "./node_modules/@types/react"
+      ],
       "@/*": ["apps/kids-guitar-dojo/src/*"],
       "@assets/*": ["apps/kids-guitar-dojo/src/assets/*"],
       "@components/*": ["apps/kids-guitar-dojo/src/components/*"],
