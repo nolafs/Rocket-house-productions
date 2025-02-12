@@ -1,0 +1,24 @@
+{
+  "format": "custom",
+  "id": "blog_tags",
+  "label": "Blog Tags",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "config": {
+          "label": "UID"
+        },
+        "type": "UID"
+      },
+      "name": {
+        "type": "Text",
+        "config": {
+          "label": "name",
+          "placeholder": ""
+        }
+      }
+    }
+  }
+}

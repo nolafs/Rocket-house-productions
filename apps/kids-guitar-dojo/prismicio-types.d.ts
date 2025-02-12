@@ -163,7 +163,37 @@ export type BlogCategoryDocument<Lang extends string = string> = prismic.Prismic
   Lang
 >;
 
+/**
+ * Item in *Blog Post → Tags*
+ */
+export interface BlogPostDocumentDataTagsItem {
+  /**
+   * tag field in *Blog Post → Tags*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_post.tags[].tag
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  tag: prismic.ContentRelationshipField<'blog_tags'>;
+}
+
 type BlogPostDocumentDataSlicesSlice = RichTextSliceSlice | FaqsSlice | CallToActionSlice;
+
+/**
+ * Item in *Blog Post → Keywords*
+ */
+export interface BlogPostDocumentDataKeywordsItem {
+  /**
+   * word field in *Blog Post → Keywords*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_post.keywords[].word
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  word: prismic.KeyTextField;
+}
 
 type BlogPostDocumentDataSlices1Slice = never;
 
@@ -249,6 +279,17 @@ interface BlogPostDocumentData {
   main: prismic.RichTextField;
 
   /**
+   * Tags field in *Blog Post*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_post.tags[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  tags: prismic.GroupField<Simplify<BlogPostDocumentDataTagsItem>>;
+
+  /**
    * Slice Zone field in *Blog Post*
    *
    * - **Field Type**: Slice Zone
@@ -291,6 +332,17 @@ interface BlogPostDocumentData {
   meta_image: prismic.ImageField<never>;
 
   /**
+   * Keywords field in *Blog Post*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_post.keywords[]
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  keywords: prismic.GroupField<Simplify<BlogPostDocumentDataKeywordsItem>>;
+
+  /**
    * Slice Zone field in *Blog Post*
    *
    * - **Field Type**: Slice Zone
@@ -314,6 +366,37 @@ interface BlogPostDocumentData {
 export type BlogPostDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
   Simplify<BlogPostDocumentData>,
   'blog_post',
+  Lang
+>;
+
+/**
+ * Content for Blog Tags documents
+ */
+interface BlogTagsDocumentData {
+  /**
+   * name field in *Blog Tags*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blog_tags.name
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+}
+
+/**
+ * Blog Tags document from Prismic
+ *
+ * - **API ID**: `blog_tags`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BlogTagsDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+  Simplify<BlogTagsDocumentData>,
+  'blog_tags',
   Lang
 >;
 
@@ -1430,6 +1513,7 @@ export type AllDocumentTypes =
   | BlogDocument
   | BlogCategoryDocument
   | BlogPostDocument
+  | BlogTagsDocument
   | ContactDocument
   | FaqDocument
   | HomeDocument
@@ -4054,8 +4138,12 @@ declare module '@prismicio/client' {
       BlogCategoryDocumentData,
       BlogPostDocument,
       BlogPostDocumentData,
+      BlogPostDocumentDataTagsItem,
       BlogPostDocumentDataSlicesSlice,
+      BlogPostDocumentDataKeywordsItem,
       BlogPostDocumentDataSlices1Slice,
+      BlogTagsDocument,
+      BlogTagsDocumentData,
       ContactDocument,
       ContactDocumentData,
       ContactDocumentDataSlicesSlice,
