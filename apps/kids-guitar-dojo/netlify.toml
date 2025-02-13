@@ -64,6 +64,12 @@
   force = true
 
 [[redirects]]
+  from = "/about"
+  to = "/our-story"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/guitar-lessons-for-kids-exciting-new-program-mums-love"
   to = "/blog/guitar-lessons-for-kids--exciting-new-program-mums-love"
   status = 301
