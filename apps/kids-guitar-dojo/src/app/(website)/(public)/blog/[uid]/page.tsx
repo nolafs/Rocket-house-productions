@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 
   return {
-    title: post.data.title,
+    title: 'Kids Guitar dojo -' + post.data.title,
     description: post.data.description ?? '',
     authors: [{ name: author?.name ?? '' }],
     alternates: {
