@@ -43,6 +43,15 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     }
   }
 
+  let description =
+    typeof post.data.meta_description === 'string'
+      ? post.data.meta_description
+      : (post.data.meta_description ?? post.data.description ?? '');
+
+  if (description.length > 160) {
+    description = description.substring(0, 160) + '...';
+  }
+
   return {
     title: post.data.title,
     description: post.data.description ?? '',
@@ -55,10 +64,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     keywords: tags.filter(tag => tag !== false).length ? tags.filter(tag => tag !== false) : null,
     openGraph: {
       title: post.data.meta_title ?? undefined,
-      description:
-        typeof post.data.meta_description === 'string'
-          ? post.data.meta_description
-          : (post.data.meta_description ?? post.data.description ?? ''),
+      description: description,
       images: [{ url: post.data.meta_image.url ?? post.data.feature_image.url ?? '' }],
     },
   };
