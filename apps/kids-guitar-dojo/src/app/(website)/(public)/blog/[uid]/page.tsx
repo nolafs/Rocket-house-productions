@@ -48,13 +48,17 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
       ? post.data.meta_description
       : (post.data.meta_description ?? post.data.description ?? '');
 
+  console.log('description', description, description.length, description.length > 160);
+
   if (description.length > 160) {
     description = description.substring(0, 160) + '...';
   }
 
+  console.log('description', description);
+
   return {
     title: 'Kids Guitar dojo -' + post.data.title,
-    description: post.data.description ?? '',
+    description: description,
     authors: [{ name: author?.name ?? '' }],
     alternates: {
       canonical: `/blog/${params.uid}`,
