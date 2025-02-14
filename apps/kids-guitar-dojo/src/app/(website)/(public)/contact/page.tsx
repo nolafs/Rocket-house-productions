@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
   }
 
   return {
-    title: 'Contact',
+    title: 'Kids Guitar dojo - Contact',
     description: page.data.meta_description || parentMeta.description || 'Contact us for more information',
     alternates: {
       canonical: `/contact`,
