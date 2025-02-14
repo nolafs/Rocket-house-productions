@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const page = await client.getByUID('legal', params.uid).catch(() => notFound());
 
   return {
-    title: page.data?.title,
+    title: 'Kids Guitar dojo -' + page.data?.title,
     description: page.data.meta_description,
     openGraph: {
       title: page.data.meta_title ?? undefined,
