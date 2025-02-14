@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 import { PrismicRichText, SliceZone } from '@prismicio/react';
 import { createClient } from '@/prismicio';
@@ -12,9 +12,10 @@ import { ImageFieldImage } from '@prismicio/types';
 import * as prismic from '@prismicio/client';
 import { Author } from 'next/dist/lib/metadata/types/metadata-types';
 import { WithContext, BlogPosting } from 'schema-dts';
+import { BlogCategoryDocumentData } from '../../../../../../prismicio-types';
 type Params = { uid: string };
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Params }, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
   const post = await client
     .getByUID('blog_post', params.uid, {
@@ -28,36 +29,83 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   const author = (post.data.author as ContentRelationshipField<Author>).data as AuthorData;
 
-  let tags = post.data.tags.map(item => {
+  // Extract tags if available
+  const tags = post.data.tags.map(item => {
     const tag = item && 'tag' in item && (item.tag as { data: { name: string } }).data?.name;
     return tag ?? '';
   });
 
+  // Extract manually assigned keywords
+  let postKeywords: string[] = [];
   if (post.data.keywords) {
-    const postKeywords: string[] = post.data.keywords.map(item => {
-      const keyword = item;
-      return keyword.word! ?? '';
-    });
-    if (postKeywords.length) {
-      tags = [...tags, ...postKeywords];
-    }
+    postKeywords = post.data.keywords.map(item => item.word! ?? '');
   }
 
+  const parentMeta = await parent;
+  let parentKeywords: string[] = [];
+  if (parentMeta.keywords) {
+    parentKeywords = [...parentMeta.keywords];
+  }
+
+  // Generate dynamic keywords from title, category, and description
+  function generateDynamicKeywords(title: string, category: string, description: string): string[] {
+    const extractedKeywords: string[] = [];
+
+    // Extract key terms from title
+    if (title) {
+      extractedKeywords.push(
+        ...title
+          .toLowerCase()
+          .split(/\s+/)
+          .filter(word => word.length > 3),
+      );
+    }
+
+    // Include category
+    if (category) {
+      extractedKeywords.push(category.toLowerCase());
+    }
+
+    // Extract key terms from description (basic NLP filtering)
+    if (description) {
+      const descriptionWords = description.toLowerCase().match(/\b\w{4,}\b/g) || [];
+      const importantWords = descriptionWords.filter(
+        word => !['with', 'that', 'this', 'from', 'your', 'which', 'their', 'have'].includes(word),
+      );
+      extractedKeywords.push(...importantWords.slice(0, 10)); // Limit to 10 words
+    }
+
+    return [...new Set(extractedKeywords)]; // Remove duplicates
+  }
+
+  // Get category name
+  const category = (post.data.category as ContentRelationshipField<BlogCategoryDocumentData>).data.category ?? '';
+
+  // Generate dynamic keywords
+  const dynamicKeywords = generateDynamicKeywords(
+    post.data.title ?? '',
+    category,
+    post.data.meta_description ?? post.data.description ?? '',
+  );
+
+  // Finalize keyword list
+  let finalKeywords = [...tags, ...postKeywords, ...dynamicKeywords, ...parentKeywords].filter(Boolean); // Remove empty values
+  finalKeywords = [...new Set(finalKeywords)]; // Remove duplicates
+
+  finalKeywords = finalKeywords.slice(0, 15); // Limit to 15 keywords
+
+  // Process and trim description
   let description =
     typeof post.data.meta_description === 'string'
       ? post.data.meta_description
       : (post.data.meta_description ?? post.data.description ?? '');
 
-  console.log('description', description, description.length, description.length > 160);
-
   if (description.length > 160) {
-    description = description.substring(0, 160) + '...';
+    description = description.substring(0, 157) + '...'; // Keep within 160 chars
   }
 
-  console.log('description', description);
-
   return {
-    title: 'Kids Guitar dojo -' + post.data.title,
+    title: 'Kids Guitar Dojo - ' + post.data.title,
     description: description,
     authors: [{ name: author?.name ?? '' }],
     alternates: {
@@ -65,7 +113,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     },
     creator: author?.name,
     publisher: author?.name,
-    keywords: tags.filter(tag => tag !== false).length ? tags.filter(tag => tag !== false) : null,
+    keywords: finalKeywords.length ? finalKeywords.filter((keyword): keyword is string => Boolean(keyword)) : null,
     openGraph: {
       title: post.data.meta_title ?? undefined,
       description: description,
