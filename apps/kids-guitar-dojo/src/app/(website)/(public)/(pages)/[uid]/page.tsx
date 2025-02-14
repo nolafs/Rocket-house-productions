@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
   }
 
   return {
-    title: asText(page.data?.title) || parentMeta.title,
+    title: `Kids Guitar dojo - ${asText(page.data?.title) || parentMeta.title}`,
     description: page.data.meta_description || parentMeta.description,
     alternates: {
       canonical: `/${params.uid}`,
