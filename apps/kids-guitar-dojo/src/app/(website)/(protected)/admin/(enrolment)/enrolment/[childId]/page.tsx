@@ -12,7 +12,8 @@ import {
   CardTitle,
 } from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
-export default async function Page({ params }: { params: { childId: string } }) {
+export default async function Page(props: { params: Promise<{ childId: string }> }) {
+  const params = await props.params;
   const { userId, sessionClaims } = await auth();
 
   if (!userId) {

@@ -4,8 +4,9 @@ import { db } from '@rocket-house-productions/integration';
 
 export async function PUT(
   req: Request,
-  { params }: { params: { courseId: string; moduleId: string; lessonId: string; childId: string } },
+  props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string; childId: string }> }
 ) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
     const { isCompleted } = await req.json();
