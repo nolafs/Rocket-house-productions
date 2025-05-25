@@ -34,7 +34,8 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
   };
 }
 
-export default async function Page({ searchParams }: { searchParams: { page: string; category: string } }) {
+export default async function Page(props: { searchParams: Promise<{ page: string; category: string }> }) {
+  const searchParams = await props.searchParams;
   const pageNum = Number(searchParams?.page) || 0;
   const limit = 9;
 

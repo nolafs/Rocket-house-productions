@@ -14,7 +14,7 @@ export const metadata = {
 };
 
 export async function generateViewport(): Promise<Viewport> {
-  const userAgent = headers().get('user-agent');
+  const userAgent = (await headers()).get('user-agent');
   const isiPhone = /iphone/i.test(userAgent ?? '');
   return isiPhone
     ? {
@@ -27,10 +27,16 @@ export async function generateViewport(): Promise<Viewport> {
 
 interface LayoutProps {
   children: ReactNode;
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default async function Layout({ children, params }: LayoutProps) {
+export default async function Layout(props: LayoutProps) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const child = await getChild(params.slug);
 
   if (!child) {

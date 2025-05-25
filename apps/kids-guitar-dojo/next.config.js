@@ -30,18 +30,24 @@ const nextConfig = {
   ...(process.env.NEXT_PUBLIC_PRODUCTION && headers),
   images: {
     formats: ['image/avif', 'image/webp'],
-    remotePatterns: [
+     remotePatterns : [
       {
-        protocol: 'https',
-        hostname: 'img.clerk.com',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'kids-guitar-dojo.b-cdn.net',
-        port: '',
-      },
-    ],
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+    }],
+    // remotePatterns: [
+    //   {
+    //     protocol: 'https',
+    //     hostname: 'img.clerk.com',
+    //     port: '',
+    //   },
+    //   {
+    //     protocol: 'https',
+    //     hostname: 'kids-guitar-dojo.b-cdn.net',
+    //     port: '',
+    //   },
+    // ],
   },
 };
 
