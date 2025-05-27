@@ -23,7 +23,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
-  transpilePackages: ['three'],
+  transpilePackages: ['three','@react-three/fiber', '@react-three/drei'],
   experimental: {
     taint: true,
   },
