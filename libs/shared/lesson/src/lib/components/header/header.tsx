@@ -94,6 +94,12 @@ export function Header({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
 
+                <DropdownMenuItem>
+                  <Link href={'/all-courses'}>All courses</Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+                
                 {purchaseType === 'free' && (
                   <>
                     <DropdownMenuItem>

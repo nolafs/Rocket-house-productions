@@ -1,0 +1,50 @@
+{
+  "format": "custom",
+  "id": "courses",
+  "label": "Courses",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "type": "UID",
+        "config": {
+          "label": "UID"
+        }
+      },
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": "The Course Title"
+        }
+      },
+      "course_description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Course Description",
+          "placeholder": "Course Description",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "featured_image": {
+        "type": "Image",
+        "config": {
+          "label": "Featured Image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
+      "subscription_type": {
+        "type": "Select",
+        "config": {
+          "label": "Subscription Type",
+          "placeholder": "",
+          "options": ["Free", "Standard", "Premium"],
+          "default_value": "Free"
+        }
+      }
+    }
+  }
+}

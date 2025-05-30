@@ -1,7 +1,17 @@
 import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { getAccount } from '@rocket-house-productions/actions/server';
 import { NextResponse } from 'next/server';
+import { db } from '@rocket-house-productions/integration';
+import PurchaseOption from './app/(website)/(protected)/courses/(checkout)/order/_components/purchase-option';
 
 const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
+
+interface Purchase {
+  id: string;
+  courseId: string;
+  childId?: string | null;
+  // other fields
+}
 
 export default clerkMiddleware(
   async (auth, req) => {
@@ -139,24 +149,46 @@ export default clerkMiddleware(
               console.info('[MIDDLEWARE COURSE]  UPGRADE');
               return NextResponse.next();
             }
+            //Adjusted for many purchases 
+            if (userDb.purchases.length > 1) {
+              // Find purchase matching the course slug in the URL
+              const purchaseForCourse = userDb.purchases.find(async (purchase: Purchase) => {
+                const courseResp = await fetch(`${req.nextUrl.origin}/api/courses/${purchase.courseId}`);
+                const course = await courseResp.json();
+                return course.slug === product; // product is extracted from URL
+              });
+
+              if (purchaseForCourse) {
+                // Allow access if enrolled
+                if (purchaseForCourse.childId) {
+                  return NextResponse.next();
+                } else {
+                  // Redirect to enrollment for that purchase
+                  return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${purchaseForCourse.id}/intro`);
+                }
+              } else {
+                // Redirect to course selection or error if course not purchased
+                return NextResponse.redirect(`${req.nextUrl.origin}/courses`);
+              }
+            }
 
             // All purchases are enrolled
-            if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
-              // Only one purchase, and it's enrolled
+            // if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
+            //   // Only one purchase, and it's enrolled
 
-              const courseResp = await fetch(`${req.nextUrl.origin}/api/courses/${userDb.purchases[0].courseId}`);
-              const course = await courseResp.json();
+            //   const courseResp = await fetch(`${req.nextUrl.origin}/api/courses/${userDb.purchases[0].courseId}`);
+            //   const course = await courseResp.json();
 
-              console.info('[MIDDLEWARE COURSE]  SINGLE PURCHASE ENROLLED - GO TO LESSON');
+            //   console.info('[MIDDLEWARE COURSE]  SINGLE PURCHASE ENROLLED - GO TO LESSON');
 
-              if (url.startsWith(`/courses/${course?.slug}`)) {
-                return NextResponse.next();
-              }
-              return NextResponse.redirect(`${req.nextUrl.origin}/courses/${course?.slug}`);
-            } else {
-              console.info('[MIDDLEWARE COURSE]  ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
-              // todo: go to course selection
-            }
+            //   if (url.startsWith(`/courses/${course?.slug}`)) {
+            //     return NextResponse.next();
+            //   }
+            //   return NextResponse.redirect(`${req.nextUrl.origin}/courses/${course?.slug}`);
+            // } else {
+            //   console.info('[MIDDLEWARE COURSE]  ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
+            //   // todo: go to course selection
+            // }
           } else if (unEnrolledPurchases.length === 1) {
             // Only one purchase is not enrolled
             console.log('[MIDDLEWARE COURSE]  PURCHASE SINGLE NOT ENROLLED - GO TO ENROLLMENT', unEnrolledPurchases[0]);
@@ -184,7 +216,16 @@ export default clerkMiddleware(
           );
         }
       }
+
+    if (url.startsWith('/all-courses/')) {
+      const { userId } = await auth();
+      
+      if (!userId) {
+        return NextResponse.redirect(`${req.nextUrl.origin}/courses/error?status=unauthorized`);
+      }
+  
     }
+  }
   },
   { debug: false },
 );

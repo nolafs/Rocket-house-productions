@@ -542,6 +542,71 @@ export type ContactDocument<Lang extends string = string> = prismic.PrismicDocum
 >;
 
 /**
+ * Content for Courses documents
+ */
+interface CoursesDocumentData {
+  /**
+   * Title field in *Courses*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: The Course Title
+   * - **API ID Path**: courses.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Course Description field in *Courses*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Course Description
+   * - **API ID Path**: courses.course_description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  course_description: prismic.RichTextField;
+
+  /**
+   * Featured Image field in *Courses*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: courses.featured_image
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  featured_image: prismic.ImageField<never>;
+
+  /**
+   * Subscription Type field in *Courses*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: Free
+   * - **API ID Path**: courses.subscription_type
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  subscription_type: prismic.SelectField<'Free' | 'Standard' | 'Premium', 'filled'>;
+}
+
+/**
+ * Courses document from Prismic
+ *
+ * - **API ID**: `courses`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type CoursesDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<
+  Simplify<CoursesDocumentData>,
+  'courses',
+  Lang
+>;
+
+/**
  * Content for Faq documents
  */
 interface FaqDocumentData {
@@ -829,7 +894,7 @@ export interface NavigationDocumentDataLinksItem {
    * - **API ID Path**: navigation.links[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
 /**
@@ -1052,7 +1117,7 @@ interface PageDocumentData {
    * - **Tab**: Main
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  parent: prismic.LinkField;
+  parent: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Slice Zone field in *Page*
@@ -1307,7 +1372,7 @@ export interface SettingsDocumentDataSecondaryNavigationItem {
    * - **API ID Path**: settings.secondary_navigation[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
 /**
@@ -1342,7 +1407,7 @@ export interface SettingsDocumentDataSocialMediaItem {
    * - **API ID Path**: settings.social_media[].url
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  url: prismic.LinkField;
+  url: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
 /**
@@ -1515,6 +1580,7 @@ export type AllDocumentTypes =
   | BlogPostDocument
   | BlogTagsDocument
   | ContactDocument
+  | CoursesDocument
   | FaqDocument
   | HomeDocument
   | LegalDocument
@@ -1577,7 +1643,7 @@ export interface BlogListSliceDefaultPrimary {
    * - **API ID Path**: blog_list.default.primary.link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 }
 
 /**
@@ -1629,7 +1695,7 @@ export interface CallToActionSliceDefaultPrimaryButtonsItem {
    * - **API ID Path**: call_to_action.default.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Type field in *CallToAction → Default → Primary → Buttons*
@@ -1674,7 +1740,7 @@ export interface CallToActionSliceImagePrimaryButtonsItem {
    * - **API ID Path**: call_to_action.image.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Type field in *CallToAction → Image → Primary → Buttons*
@@ -1719,7 +1785,7 @@ export interface CallToActionSliceCenterPrimaryButtonsItem {
    * - **API ID Path**: call_to_action.center.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Type field in *CallToAction → Center → Primary → Buttons*
@@ -1764,7 +1830,7 @@ export interface CallToActionSliceTextTwoColumnPrimaryButtonsItem {
    * - **API ID Path**: call_to_action.textTwoColumn.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Type field in *CallToAction → Text Two Column → Primary → Buttons*
@@ -2360,7 +2426,7 @@ export interface FeaturesSliceDefaultPrimaryButtonsItem {
    * - **API ID Path**: features.default.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Type field in *Features → Default → Primary → Buttons*
@@ -2440,7 +2506,7 @@ export interface FeaturesSliceWhitePrimaryButtonsItem {
    * - **API ID Path**: features.white.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Type field in *Features → white → Primary → Buttons*
@@ -2656,7 +2722,7 @@ export interface HeroSliceDefaultPrimaryButtonsItem {
    * - **API ID Path**: hero.default.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Label field in *Hero → Default → Primary → Buttons*
@@ -2701,7 +2767,7 @@ export interface HeroSliceThunderDecorationPrimaryButtonsItem {
    * - **API ID Path**: hero.thunderDecoration.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Label field in *Hero → Thunder Decoration → Primary → Buttons*
@@ -2746,7 +2812,7 @@ export interface HeroSliceCenteredPrimaryButtonsItem {
    * - **API ID Path**: hero.centered.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Label field in *Hero → Centered → Primary → Buttons*
@@ -3601,7 +3667,7 @@ export interface SectionHeadersSliceWithButtonsPrimaryButtonsItem {
    * - **API ID Path**: section_headers.withButtons.primary.buttons[].link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Type field in *SectionHeaders → With Buttons → Primary → Buttons*
@@ -4127,6 +4193,14 @@ declare module '@prismicio/client' {
     (repositoryNameOrEndpoint: string, options?: prismic.ClientConfig): prismic.Client<AllDocumentTypes>;
   }
 
+  interface CreateWriteClient {
+    (repositoryNameOrEndpoint: string, options: prismic.WriteClientConfig): prismic.WriteClient<AllDocumentTypes>;
+  }
+
+  interface CreateMigration {
+    (): prismic.Migration<AllDocumentTypes>;
+  }
+
   namespace Content {
     export type {
       AuthorDocument,
@@ -4147,6 +4221,8 @@ declare module '@prismicio/client' {
       ContactDocument,
       ContactDocumentData,
       ContactDocumentDataSlicesSlice,
+      CoursesDocument,
+      CoursesDocumentData,
       FaqDocument,
       FaqDocumentData,
       HomeDocument,
