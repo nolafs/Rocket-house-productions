@@ -27,11 +27,11 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
   }, [quizCompleted]);
 
   if (!lesson || !module || !course) {
-    console.warn('LessonNext: Missing lesson, module or course');
+    console.warn('[LessonNext]: Missing lesson, module or course');
     return null;
   }
 
-  const nextLesson = module?.lessons?.length ? module?.lessons?.[position + 1] : null;
+  const nextLesson = module?.lessons?.find(l => l.position === position + 1);
 
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {

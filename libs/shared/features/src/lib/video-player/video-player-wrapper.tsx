@@ -21,6 +21,12 @@ export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleRe
 
   useGSAP(
     () => {
+      //check if target is defined
+      if (!ref.current) {
+        console.error('VideoPlayerWrapper: ref.current is null');
+        return;
+      }
+
       gsap.fromTo(
         '.video',
         { opacity: 0 },
@@ -56,7 +62,7 @@ export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleRe
 
   return (
     <div ref={ref} className={'relative'}>
-      {children}
+      <div className={'video'}>{children}</div>
     </div>
   );
 }
