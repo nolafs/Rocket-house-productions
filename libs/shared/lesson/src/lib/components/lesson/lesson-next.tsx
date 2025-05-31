@@ -76,7 +76,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
     }
   }, [getLessonProgress(lesson.id), lessonCompleted]);
 
-  const nextLesson = module?.lessons?.length ? module?.lessons?.[position + 1] : null;
+  const nextLesson = module?.lessons?.find(l => l.position === position + 1);
 
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {
