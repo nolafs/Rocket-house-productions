@@ -10,6 +10,7 @@ export { getLesson } from './get-lesson';
 export { getVideoList } from './get-video-list';
 export { downloadPdf } from './downlod-pdf';
 export { getChild } from './get-child';
+export { getEnrolledChild } from './get-enrolled-child';
 export { getQuiz } from './get-quiz';
 export { getCourse } from './get-course';
 export { freeCheckout } from './free-checkout';

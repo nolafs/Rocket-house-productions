@@ -68,9 +68,9 @@ export const Landscape = ({
         return;
       }
 
-      if (!display?.pathLength) {
-        return;
-      }
+      // if (!display?.pathLength) {
+      //   return;
+      // }
 
       if (!camera) {
         return;
@@ -118,6 +118,9 @@ export const Landscape = ({
         });
       });
 
+      const hasLessons = display.buttons && display.buttons.length > 0;
+
+      if (hasLessons && display.pathLength) {
       if (!courseCompleted) {
         tl.to(camera.position, {
           y: display.pathLength,
@@ -158,6 +161,7 @@ export const Landscape = ({
           });
         }
       }
+    }
 
       onReady && onReady(true);
 
@@ -175,7 +179,14 @@ export const Landscape = ({
     if (!camera) {
       return;
     }
-    const position = display.buttons[lesson.num - 1].position;
+
+    const button = display.buttons?.[lesson.num - 1];
+    if (!button) {
+      console.warn('Lesson button not found:', lesson.num, display.buttons);
+      return;
+    }
+    const position = button.position;
+    // const position = display.buttons[lesson.num - 1].position;
     const target = new THREE.Vector3(position.x, position.y + 10, position.z);
     const currentLookAt = new THREE.Vector3(camera.position.x, camera.position.y, -1000);
 
@@ -198,14 +209,27 @@ export const Landscape = ({
   });
 
   const handleOnBackToCurrentLesson = contextSafe(() => {
-    if (!display.pathLength) {
+    if (!display.buttons?.length || !display.pathLength) {
       return;
     }
+    const currentLessonData = display.buttons[display.next || 0];
+    if (!currentLessonData) return;
 
     if (typeof window !== 'undefined') {
-      const currentLesson = (display.buttons[display.next || 0].position.y + 10) * SCROLL_FACTOR;
+
+      //COMMENTED OUT TO ADJUST FOR WHEN LESSONS ARE EMPTY
+    
+      // const currentLesson = (display.buttons[display.next || 0].position.y + 10) * SCROLL_FACTOR;
+      // const scrollLength = display.pathLength * SCROLL_FACTOR;
+      // const percentage = (currentLesson / scrollLength) * 100;
+
+      // const positionFromPercent = (percentage / 100) * scrollLength;
+      // const offset = window.innerHeight * 0.35;
+
+      const currentLessonY = currentLessonData.position.y;
       const scrollLength = display.pathLength * SCROLL_FACTOR;
-      const percentage = (currentLesson / scrollLength) * 100;
+      const currentLessonScroll = (currentLessonY + 10) * SCROLL_FACTOR;
+      const percentage = (currentLessonScroll / scrollLength) * 100;
 
       const positionFromPercent = (percentage / 100) * scrollLength;
       const offset = window.innerHeight * 0.35;

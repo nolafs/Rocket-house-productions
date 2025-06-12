@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: { product: string[]; pu
 
   let userPurchasedCourseIds: any[] = [];
 
-  let isPremiumUser = false;
+  let isCapableUser = false;
   // check if params contain childId and account
 
   if (!params.purchaseId) {
@@ -85,9 +85,11 @@ export default async function Page({ params }: { params: { product: string[]; pu
       },
     }).then((purchases) => purchases.map((purchase) => purchase.course.id));  
 
+    console.log("PURCHASED COURSES ", userPurchasedCourseIds);
 
-    if (purchase.category === 'premium') {
-        isPremiumUser = true;
+
+    if (purchase.category === 'premium' || purchase.category === 'standard') {
+        isCapableUser = true;
     }
   }
 
@@ -108,7 +110,7 @@ export default async function Page({ params }: { params: { product: string[]; pu
         <CourseCard 
           key={course.id}
           course={course} 
-          isPremiumUser={isPremiumUser}
+          isCapableUser={isCapableUser}
           hasPurchasedCourse={userPurchasedCourseIds.includes(course.id)}
         />
       ))}

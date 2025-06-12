@@ -1,5 +1,5 @@
 import { CourseProgressionProvider } from '@rocket-house-productions/providers';
-import { getChild, getCourse } from '@rocket-house-productions/actions/server';
+import { getEnrolledChild, getCourse } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
@@ -31,7 +31,7 @@ interface LayoutProps {
 }
 
 export default async function Layout({ children, params }: LayoutProps) {
-  const child = await getChild(params.slug);
+  const child = await getEnrolledChild(params.slug);
 
   if (!child) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);

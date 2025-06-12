@@ -17,12 +17,12 @@ interface Course {
 
 interface CourseCardProps{
   course: Course;
-  isPremiumUser: boolean;
+  isCapableUser: boolean;
   hasPurchasedCourse: boolean;
 }
 
-export function CourseCard ({ course,isPremiumUser, hasPurchasedCourse}: CourseCardProps) {
-  const isLocked = !isPremiumUser && !hasPurchasedCourse;
+export function CourseCard ({ course,isCapableUser, hasPurchasedCourse}: CourseCardProps) {
+  const isLocked = !isCapableUser && !hasPurchasedCourse;
 
   return (
     <div className="border p-4 rounded-md aspect-[4/3]">

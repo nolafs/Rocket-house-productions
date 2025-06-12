@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { LessonHeader, Quiz } from '@rocket-house-productions/lesson';
-import { getChild, getQuiz } from '@rocket-house-productions/actions/server';
+import { getEnrolledChild, getQuiz } from '@rocket-house-productions/actions/server';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 
 interface PageProps {
@@ -19,7 +19,7 @@ export default async function Page({ params }: PageProps) {
     return redirect('/');
   }
 
-  const child = await getChild(params.slug);
+  const child = await getEnrolledChild(params.slug);
 
   if (!child) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);

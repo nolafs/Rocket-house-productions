@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { notFound, redirect } from 'next/navigation';
-import { getChild, getLesson } from '@rocket-house-productions/actions/server';
+import { getEnrolledChild, getLesson } from '@rocket-house-productions/actions/server';
 import { createClient } from '@/prismicio';
 import dynamic from 'next/dynamic';
 
@@ -27,7 +27,7 @@ export default async function Page({ params }: PageProps) {
     return redirect('/');
   }
 
-  const child = await getChild(params.slug);
+  const child = await getEnrolledChild(params.slug);
 
   if (!child) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);

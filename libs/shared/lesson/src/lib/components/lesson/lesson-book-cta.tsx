@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { getChild } from '@rocket-house-productions/actions/server';
+import { getEnrolledChild } from '@rocket-house-productions/actions/server';
 import { SectionCourse } from '@rocket-house-productions/types';
 import Image from 'next/image';
 
@@ -22,7 +22,7 @@ export function LessonBookCta({ course, bookCta, bookMessage }: LessonBookCtaPro
     if (bookCta) {
       const fetchPurchaseType = async () => {
         try {
-          const child = await getChild(course.slug);
+          const child = await getEnrolledChild(course.slug);
           setPurchaseCategory(child.purchaseCategory);
         } catch (error) {
           console.error('Error fetching purchase type:', error);

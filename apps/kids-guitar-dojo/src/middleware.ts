@@ -61,6 +61,8 @@ export default clerkMiddleware(
           return NextResponse.redirect(`${req.nextUrl.origin}/courses/error?status=unauthorized`);
         }
 
+        
+
         if (user?.publicMetadata.status === 'pending') {
           console.info('[MIDDLEWARE COURSE] PENDING');
 
@@ -121,6 +123,15 @@ export default clerkMiddleware(
           }
           return NextResponse.redirect(`${req.nextUrl.origin}/courses/success`);
         }
+
+        const hasPremium = userDb.purchases.some((p: any) => p.category === 'premium');
+
+        if (hasPremium) {
+          // Grant access to all courses for premium users
+          return NextResponse.next();
+        }
+
+        console.log("Users number of purchase: ",userDb._count?.purchases);
 
         // CHECK USER HAS PURCHASED COURSE
 

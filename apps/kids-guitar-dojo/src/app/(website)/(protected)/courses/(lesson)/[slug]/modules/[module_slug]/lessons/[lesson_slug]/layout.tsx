@@ -1,5 +1,5 @@
 import { ScrollToProvider } from '@rocket-house-productions/providers';
-import { getChild, getLesson } from '@rocket-house-productions/actions/server';
+import { getEnrolledChild, getLesson } from '@rocket-house-productions/actions/server';
 import { notFound, redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 import { LessonData } from '@rocket-house-productions/lesson';
@@ -22,7 +22,7 @@ export default async function Layout({ children, params }: LayoutProps) {
     return redirect('/');
   }
 
-  const child = await getChild(params.slug);
+  const child = await getEnrolledChild(params.slug);
 
   if (!child) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);

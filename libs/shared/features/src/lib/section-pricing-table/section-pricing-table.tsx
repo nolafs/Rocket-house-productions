@@ -26,6 +26,8 @@ export function SectionPricingTable({
     return null;
   }
 
+  console.log("It is an upgrade", upgrade);
+
   if (upgrade) {
     // remove free tier
     if (upgrade === 'basic') {
