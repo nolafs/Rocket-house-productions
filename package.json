@@ -10,6 +10,10 @@
     "clerk-tunnel": "lt --port 3000",
     "prepare": "husky"
   },
+  "resolutions": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
   "dependencies": {
     "@clerk/nextjs": "^6.8.0",
     "@ducanh2912/next-pwa": "^10.2.9",
