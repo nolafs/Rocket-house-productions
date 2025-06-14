@@ -1,0 +1,15 @@
+# In your ROOT directory (the very top level of your project)
+
+# This section defines the build settings.
+[build]
+  # The command to build your specific Next.js app within the NX workspace.
+  command = "npx nx build kids-guitar-dojo"
+  
+  # The directory where the final build output is located, relative to the root.
+  publish = "apps/kids-guitar-dojo"
+
+# This section explicitly tells Netlify to use its powerful Next.js runtime.
+# While this is usually auto-detected, declaring it explicitly can solve
+# many monorepo-related routing and serving issues.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
