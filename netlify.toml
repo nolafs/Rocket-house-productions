@@ -3,7 +3,7 @@
 # This section defines the build settings.
 [build]
   # The command to build your specific Next.js app within the NX workspace.
-  command = "npx nx build kids-guitar-dojo"
+  command = "nx build kids-guitar-dojo"
   
   # The directory where the final build output is located, relative to the root.
   publish = "apps/kids-guitar-dojo"
