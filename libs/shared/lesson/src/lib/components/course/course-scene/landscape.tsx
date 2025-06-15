@@ -203,7 +203,7 @@ export const Landscape = ({
     }
 
     if (typeof window !== 'undefined') {
-      const currentLesson = (display.buttons[display.next || 0].position.y + 10) * SCROLL_FACTOR;
+      const currentLesson = ((display.buttons[display.next || 0]?.position.y || 0) + 10) * SCROLL_FACTOR;
       const scrollLength = display.pathLength * SCROLL_FACTOR;
       const percentage = (currentLesson / scrollLength) * 100;
 
