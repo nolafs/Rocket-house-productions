@@ -12,10 +12,16 @@ export const metadata = {
 
 interface LayoutProps {
   children: ReactNode;
-  params: { slug: string; module_slug: string; lesson_slug: string };
+  params: Promise<{ slug: string; module_slug: string; lesson_slug: string }>;
 }
 
-export default async function Layout({ children, params }: LayoutProps) {
+export default async function Layout(props: LayoutProps) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const { userId } = await auth();
 
   if (!userId) {

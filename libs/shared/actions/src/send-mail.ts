@@ -2,13 +2,8 @@
 
 import { EmailParams, MailerSend, Recipient, Sender } from 'mailersend';
 import { z } from 'zod';
-
-export const transformZodErrors = (error: z.ZodError) => {
-  return error.issues.map(issue => ({
-    path: issue.path.join('.'),
-    message: issue.message,
-  }));
-};
+import { transformZodErrors } from '@rocket-house-productions/util';
+// adjust path if needed
 
 const emailSchema = z.object({
   name: z.string().min(1, 'Please enter your name'),
@@ -29,26 +24,24 @@ export async function sendMail(prevState: any, formData: FormData) {
       email: formData.get('email'),
       enquiryType: formData.get('enquiryType'),
       message: formData.get('message'),
-      agreeToTerms: formData.get('agreeToTerms') === 'true' ? true : false,
+      agreeToTerms: formData.get('agreeToTerms') === 'true',
     });
 
     const sentFrom = new Sender(`noreply@${process.env.MAILERSEND_DOMAIN}`, 'Paul');
     const recipients: Recipient[] = [new Recipient('kidsguitardojo@gmail.com', 'Contact Form Website')];
 
-    if (validatedFields) {
-      const emailParams = new EmailParams()
-        .setFrom(sentFrom)
-        .setTo(recipients)
-        .setReplyTo(sentFrom)
-        .setSubject(`Contact submission: ${formData.get('enquiryType')}`)
-        .setText(`Name: ${formData.get('name')}`)
-        .setText(`Email: ${formData.get('email')}`)
-        .setText(`Enquiry Type: ${formData.get('enquiryType')}`)
-        .setText('Message:')
-        .setHtml(`${formData.get('message') || ''}`);
+    const emailParams = new EmailParams()
+      .setFrom(sentFrom)
+      .setTo(recipients)
+      .setReplyTo(sentFrom)
+      .setSubject(`Contact submission: ${validatedFields.enquiryType}`)
+      .setText(`Name: ${validatedFields.name}`)
+      .setText(`Email: ${validatedFields.email}`)
+      .setText(`Enquiry Type: ${validatedFields.enquiryType}`)
+      .setText('Message:')
+      .setHtml(validatedFields.message);
 
-      const mailer = await mailerSend.email.send(emailParams);
-    }
+    await mailerSend.email.send(emailParams);
 
     return {
       errors: null,
@@ -64,7 +57,7 @@ export async function sendMail(prevState: any, formData: FormData) {
 
     return {
       errors: error,
-      data: 'data received and mutated',
+      data: null,
     };
   }
 }

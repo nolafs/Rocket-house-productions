@@ -13,10 +13,11 @@ const LessonHeader = dynamic(() => import('@rocket-house-productions/lesson').th
 });
 
 interface PageProps {
-  params: { slug: string; module_slug: string; lesson_slug: string };
+  params: Promise<{ slug: string; module_slug: string; lesson_slug: string }>;
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page(props: PageProps) {
+  const params = await props.params;
   if (!params.slug || !params.module_slug || !params.lesson_slug) {
     return notFound();
   }

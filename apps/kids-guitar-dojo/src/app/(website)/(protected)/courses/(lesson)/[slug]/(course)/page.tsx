@@ -4,10 +4,11 @@ import { auth } from '@clerk/nextjs/server';
 import CourseNavigationPage from './_components/courseNavigationPage';
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page(props: PageProps) {
+  const params = await props.params;
   const { userId, sessionClaims } = await auth();
 
   if (!userId) {

@@ -1,9 +1,9 @@
-
+@use "../styles/navbar.scss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "../styles/navbar.scss";
+
 
 @layer base {
   :root {

@@ -16,12 +16,38 @@ const nextConfig = {
       config.plugins = [...config.plugins, new PrismaPlugin()];
     }
 
+    // Manual SVGR configuration to replace deprecated NX SVGR
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            typescript: true,
+            ext: 'tsx',
+            svgoConfig: {
+              plugins: [
+                {
+                  name: 'preset-default',
+                  params: {
+                    overrides: {
+                      removeViewBox: false,
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        },
+      ],
+    });
+
     return config;
   },
   nx: {
-    // Set this to true if you would like to use SVGR
-    // See: https://github.com/gregberge/svgr
-    svgr: true,
+    // Removed deprecated SVGR setting
+    // svgr: true,
   },
   transpilePackages: ['three'],
   experimental: {

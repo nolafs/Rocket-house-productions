@@ -8,7 +8,7 @@ const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || ``;
 
 async function validateRequest(request: Request) {
   const payloadString = await request.text();
-  const headerPayload = headers();
+  const headerPayload = await headers();
 
   const svixHeaders = {
     'svix-id': headerPayload.get('svix-id')!,
@@ -20,7 +20,7 @@ async function validateRequest(request: Request) {
 }
 
 export async function POST(req: Request, res: Response) {
-  const headersList = headers();
+  const headersList = await headers();
 
   if (!WEBHOOK_SECRET) {
     return NextResponse.json({ message: 'Webhook secret not set' }, { status: 400 });
