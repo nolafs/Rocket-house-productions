@@ -124,14 +124,10 @@ export default clerkMiddleware(
           return NextResponse.redirect(`${req.nextUrl.origin}/courses/success`);
         }
 
-        const hasPremium = userDb.purchases.some((p: any) => p.category === 'premium');
+        const hasPremium = userDb?.purchases.some((p: any) => p.category === 'premium' || p.category === 'standard');
 
-        if (hasPremium) {
-          // Grant access to all courses for premium users
-          return NextResponse.next();
-        }
-
-        console.log("Users number of purchase: ",userDb._count?.purchases);
+    
+        console.log("Users number of purchase: ",userDb?._count?.purchases);
 
         // CHECK USER HAS PURCHASED COURSE
 
@@ -147,12 +143,17 @@ export default clerkMiddleware(
           );
         }
 
+        // if (hasPremium) {
+        //   // Grant access to all courses for premium users
+        //   return NextResponse.next();
+        // }
+
         // CHECK USER HAS PURCHASED COURSE ENROLLMENT
 
         if (userDb?._count?.purchases) {
           const unEnrolledPurchases = userDb.purchases.filter((purchase: any) => !purchase.childId);
 
-          console.info('[MIDDLEWARE COURSE]  PURCHASES', unEnrolledPurchases);
+          console.info('[MIDDLEWARE COURSE] UNENROLLED PURCHASES', unEnrolledPurchases);
 
           if (unEnrolledPurchases.length === 0) {
             // check if User wants to upgrade
@@ -160,16 +161,18 @@ export default clerkMiddleware(
               console.info('[MIDDLEWARE COURSE]  UPGRADE');
               return NextResponse.next();
             }
+          
             //Adjusted for many purchases 
-            if (userDb.purchases.length > 1) {
+            if (userDb.purchases.length >= 1) {
               // Find purchase matching the course slug in the URL
               const purchaseForCourse = userDb.purchases.find(async (purchase: Purchase) => {
+                
                 const courseResp = await fetch(`${req.nextUrl.origin}/api/courses/${purchase.courseId}`);
                 const course = await courseResp.json();
                 return course.slug === product; // product is extracted from URL
               });
-
-              if (purchaseForCourse) {
+              
+              if (purchaseForCourse && product) {
                 // Allow access if enrolled
                 if (purchaseForCourse.childId) {
                   return NextResponse.next();
@@ -179,7 +182,7 @@ export default clerkMiddleware(
                 }
               } else {
                 // Redirect to course selection or error if course not purchased
-                return NextResponse.redirect(`${req.nextUrl.origin}/courses`);
+                return NextResponse.redirect(`${req.nextUrl.origin}/all-courses`);
               }
             }
 
