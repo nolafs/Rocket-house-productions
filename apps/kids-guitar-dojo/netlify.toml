@@ -58,12 +58,6 @@
   force = true
 
 [[redirects]]
-  from = "/all-courses"
-  to = "/the-course"
-  status = 301
-  force = true
-
-[[redirects]]
   from = "/about"
   to = "/our-story"
   status = 301
