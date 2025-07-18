@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
-import { extend, Object3DNode, MaterialNode } from '@react-three/fiber';
+import { extend, Object3DNode, MaterialNode, useThree } from '@react-three/fiber';
 import { LessonButton, ModulePosition } from './course.types';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
@@ -55,6 +55,36 @@ export const ModulePath: React.FC<{
   purchaseType?: string | null;
   onOpenLesson?: (lesson: LessonButton) => void;
 }> = ({ display, lessonSpacing = 7, courseCompleted, onBackToCurrentLesson, onOpenLesson, purchaseType = null }) => {
+  const { scene } = useThree();
+
+  useEffect(() => {
+    return () => {
+      // Clean up the scene when the component unmounts
+      scene.traverse(object => {
+        if (object instanceof THREE.Mesh) {
+          if (object.geometry) {
+            object.geometry.dispose();
+          }
+        
+          if (object.material) {
+            if (Array.isArray(object.material)) {
+              object.material.forEach(material => {
+                if (material.map) material.map.dispose();
+                if (material.normalMap) material.normalMap.dispose();
+                // Add any other texture maps here
+                material.dispose();
+              });
+            }else{
+              if (object.material.map) object.material.map.dispose();
+              if (object.material.normalMap) object.material.normalMap.dispose();
+              // Add any other texture maps here
+              object.material.dispose();
+            }
+          }
+        }
+      });
+    };
+  }, [scene]);
   if (!display) {
     return null;
   }

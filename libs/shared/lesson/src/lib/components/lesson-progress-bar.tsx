@@ -24,6 +24,7 @@ interface LessonProgressBarProps {
 
 export const LessonProgressBar: FC<LessonProgressBarProps> = memo(
   ({ currentProgress, variation = 'default', type = 'default' }) => {
+  
     if (type === 'radial') {
       return (
         <div className="relative h-20 w-20">

@@ -18,6 +18,7 @@ export const PreviewPrismic = async ({ value }: PreviewPrismicProps) => {
   try {
     const client = createClient();
     page = await client.getByUID('lesson', value);
+  
   } catch (error) {
     console.error('Error fetching lesson page', error);
     return (

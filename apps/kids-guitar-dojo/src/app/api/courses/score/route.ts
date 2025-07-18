@@ -72,6 +72,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
+
     return new NextResponse(JSON.stringify(score), { status: 200 });
   } catch (error) {
     console.error('[COURSES PROGRESS]', error);
