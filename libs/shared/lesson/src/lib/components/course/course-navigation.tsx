@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import React, { forwardRef, Suspense, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
+import { ScrollTrigger } from 'gsap/ScrollTrigger'; 
 import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
 import { Landscape } from './course-scene/landscape';
 import { Course } from '@prisma/client';
@@ -52,6 +53,14 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     isMounted.current = true;
     return () => {
       isMounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+
+    return () => {
+      console.log("CourseNavigation is unmounting. Killing all ScrollTriggers.");
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
@@ -141,13 +150,15 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     () => {
       if (containerRef.current === null) return;
 
+      let tl: gsap.core.Timeline;
+
       gsap.set('.lesson-load', { autoAlpha: 0 });
 
       if (lesson !== null) {
         const lessonName = new SplitText('.lesson-name', { type: 'chars' });
         const chars = lessonName.chars;
 
-        const tl = gsap.timeline({
+        tl = gsap.timeline({
           onComplete: () => {
             router.push(`/courses/${course.slug}/modules/${lesson.moduleSlug}/lessons/${lesson.slug}`);
           },
@@ -168,6 +179,11 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         tl.fromTo('.lesson-num', { autoAlpha: 0, y: -100 }, { autoAlpha: 1, y: 0, duration: 0.2 });
         tl.fromTo('.lesson-loader', { autoAlpha: 0, y: 100 }, { autoAlpha: 1, y: 0, duration: 0.2 }, '-=0.2');
       }
+      return () => {
+        if (tl) {
+          tl.kill();
+        }
+      };
     },
     { scope: containerRef, dependencies: [lesson] },
   );
