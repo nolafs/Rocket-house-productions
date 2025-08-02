@@ -64,6 +64,7 @@
     "ismounted": "^0.1.8",
     "leva": "^0.9.35",
     "lodash": "^4.17.21",
+    "logrocket": "^10.1.0",
     "lucide-react": "^0.445.0",
     "maath": "^0.10.8",
     "mailersend": "^2.3.0",
