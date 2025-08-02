@@ -11,6 +11,7 @@ import { ConfettiProvider } from '@rocket-house-productions/providers';
 import PlausibleProvider from 'next-plausible';
 import { CookieConsent } from '@rocket-house-productions/features';
 import { Toaster } from 'react-hot-toast';
+import { LogRocketComponent } from '../../../../libs/shared/util/src/lib/logRocketComponent';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -173,6 +174,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <PlausibleProvider domain={DOMAIN} customDomain={'https://plausible.biffify.com'}>
       <ClerkProvider afterSignOutUrl={'/'}>
+        <LogRocketComponent />
+
         <UIProvider>
           <html
             lang="en"

@@ -5675,6 +5675,7 @@ __metadata:
     jest-environment-node: "npm:^29.4.1"
     leva: "npm:^0.9.35"
     lodash: "npm:^4.17.21"
+    logrocket: "npm:^10.1.0"
     lucide-react: "npm:^0.445.0"
     maath: "npm:^0.10.8"
     mailersend: "npm:^2.3.0"
@@ -15556,6 +15557,13 @@ __metadata:
     rfdc: "npm:^1.3.0"
     streamroller: "npm:^3.1.5"
   checksum: 10c0/05846e48f72d662800c8189bd178c42b4aa2f0c574cfc90a1942cf90b76f621c44019e26796c8fd88da1b6f0fe8272cba607cbaad6ae6ede50a7a096b58197ea
+  languageName: node
+  linkType: hard
+
+"logrocket@npm:^10.1.0":
+  version: 10.1.0
+  resolution: "logrocket@npm:10.1.0"
+  checksum: 10c0/7b45166da9a7392ae5eb36fd635cf8d15f6424303de252b0124e506ac3afdf1416a850330a54feddb61f860ff8de23ef8495bb52655666178945c25345e557a9
   languageName: node
   linkType: hard
 
