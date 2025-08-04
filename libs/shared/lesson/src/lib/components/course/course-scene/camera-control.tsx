@@ -5,7 +5,7 @@ import { button, buttonGroup, folder, useControls } from 'leva';
 import { DEG2RAD } from 'three/src/math/MathUtils';
 
 export function CameraController() {
-  const cameraControlsRef = useRef<any>();
+  const cameraControlsRef = useRef<any>(undefined);
 
   const { camera } = useThree();
 

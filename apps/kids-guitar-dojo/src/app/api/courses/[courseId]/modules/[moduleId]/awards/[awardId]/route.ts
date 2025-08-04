@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration';
 
-export async function DELETE(req: Request, { params }: { params: { courseId: string; awardId: string } }) {
+export async function DELETE(
+  req: Request,
+  props: { params: Promise<{ courseId: string; awardId: string }> }
+) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
 
@@ -25,12 +29,11 @@ export async function DELETE(req: Request, { params }: { params: { courseId: str
 
 export async function PATCH(
   req: Request,
-  {
-    params,
-  }: {
-    params: { awardId: string };
-  },
+  props: {
+    params: Promise<{ awardId: string }>;
+  }
 ) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
     const values = await req.json();

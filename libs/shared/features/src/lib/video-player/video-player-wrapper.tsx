@@ -1,12 +1,12 @@
-/* eslint-disable-next-line */
 'use client';
-
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { ReactNode, useRef, useState } from 'react';
+import { type ReactNode, useRef, useState } from 'react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export interface VideoProps {
   children: ReactNode;
@@ -16,14 +16,15 @@ export interface VideoProps {
 }
 
 export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleReplay }: VideoProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const [ready, setReady] = useState(false);
 
   useGSAP(
     () => {
-      //check if target is defined
-      if (!ref.current) {
-        console.error('VideoPlayerWrapper: ref.current is null');
+      if (!ref.current) return;
+
+      // gsap check if .video element is already present
+      if (!document.querySelector('.video')) {
         return;
       }
 
@@ -35,11 +36,10 @@ export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleRe
           y: 0,
           duration: 1,
           scrollTrigger: {
-            //toggleActions: 'play pause resume reset',
-            //markers: true,
             trigger: ref.current,
             start: 'top 70%',
             end: 'bottom 30%',
+            markers: false,
             onEnter: () => {
               setReady(true);
               handlePlay();
@@ -56,13 +56,20 @@ export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleRe
           },
         },
       );
+
+      return () => {
+        if (ref.current) {
+          gsap.killTweensOf('.video');
+          ScrollTrigger.getById(ref.current.id)?.kill();
+        }
+      };
     },
     { scope: ref },
   );
 
   return (
-    <div ref={ref} className={'relative'}>
-      <div className={'video'}>{children}</div>
+    <div ref={ref} className={'relative bg-black'}>
+      {children}
     </div>
   );
 }

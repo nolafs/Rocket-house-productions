@@ -17,12 +17,11 @@ import {
   DatePicker,
 } from '@rocket-house-productions/shadcn-ui';
 import { FormErrors } from '../../_component/path-types';
-import { useFormState } from 'react-dom';
 import stepTwoFormAction from '../action';
 import { useForm } from 'react-hook-form';
 import { stepTwoSchema } from '../../_component/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useActionState } from 'react';
 import z from 'zod';
 import { PrevButton } from '../../_component/button-prev';
 import { XIcon } from 'lucide-react';
@@ -41,7 +40,7 @@ interface StepTwoFormProps {
 }
 
 export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps) {
-  const [serverError, formAction] = useFormState(stepTwoFormAction, initialState);
+  const [serverError, formAction] = useActionState(stepTwoFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
   const setActive = useMenuActive(state => state.setActive);
 

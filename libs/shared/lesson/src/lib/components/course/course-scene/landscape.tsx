@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import React, { MutableRefObject, useRef } from 'react';
+import React, { MutableRefObject, Suspense, useRef } from 'react';
 import { Center, Plane, Text3D, useTexture } from '@react-three/drei';
 
 import { useFrame, useThree } from '@react-three/fiber';
@@ -51,6 +51,7 @@ export const Landscape = ({
   const guitar = useTexture('/images/course/guitar.webp');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
+
   const ref = React.useRef<THREE.Group>(null);
   const setupComplete = useRef(false);
   const prevDisplayRef = useRef<ModuleButtonDisplay | null>(null);

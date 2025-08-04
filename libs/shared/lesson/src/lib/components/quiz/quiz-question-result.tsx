@@ -14,7 +14,7 @@ interface QuizQuestionResultProps {
 }
 
 export function QuizQuestionResult({ show, isCorrect }: QuizQuestionResultProps) {
-  const ref = useRef<any>();
+  const ref = useRef<any>(undefined);
 
   useGSAP(
     () => {

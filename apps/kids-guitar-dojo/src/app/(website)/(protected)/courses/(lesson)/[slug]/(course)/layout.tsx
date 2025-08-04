@@ -5,10 +5,16 @@ import { getChild } from '@rocket-house-productions/actions/server';
 
 interface LayoutProps {
   children: ReactNode;
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default async function Layout({ children, params }: LayoutProps) {
+export default async function Layout(props: LayoutProps) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   // find purchase by course slug
   const child = await getChild(params.slug);
 

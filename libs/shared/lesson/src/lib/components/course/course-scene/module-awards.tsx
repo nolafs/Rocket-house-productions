@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Plane, useCursor, useTexture } from '@react-three/drei';
 import { useCourseProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { AvailableAward } from '@rocket-house-productions/store';
 import { ModuleAttachmemtType } from '@prisma/client';
 import axios from 'axios';
@@ -208,12 +208,14 @@ export function ModuleAwards({ display = null }: ModuleAwardsProps) {
           return (
             <group key={item.id} position={awardCollection[idx + 1]?.position || [0, display?.pathLength, 0]}>
               {item.certificates.map((attachment, idx) => (
-                <DownloadPlane
-                  key={attachment.id}
-                  url={attachment.url}
-                  filename={attachment.name}
-                  imageUrl={['/images/course/button_cert_1.png', '/images/course/button_cert_2.png']}
-                />
+                <Suspense key={attachment.id} fallback={null}>
+                  <DownloadPlane
+                    key={attachment.id}
+                    url={attachment.url}
+                    filename={attachment.name}
+                    imageUrl={['/images/course/button_cert_1.png', '/images/course/button_cert_2.png']}
+                  />
+                </Suspense>
               ))}
             </group>
           );
@@ -227,12 +229,14 @@ export function ModuleAwards({ display = null }: ModuleAwardsProps) {
           return (
             <group key={'download-' + idx} position={[2, downloadCollection[idx]?.position.y + 7, 0]}>
               {item.downloads.map((attachment, idx) => (
-                <DownloadPlane
-                  key={attachment.id}
-                  url={attachment.url}
-                  filename={attachment.name}
-                  imageUrl={['/images/course/button_chart_1.png', '/images/course/button_chart_2.png']}
-                />
+                <Suspense key={attachment.id} fallback={null}>
+                  <DownloadPlane
+                    key={attachment.id}
+                    url={attachment.url}
+                    filename={attachment.name}
+                    imageUrl={['/images/course/button_chart_1.png', '/images/course/button_chart_2.png']}
+                  />
+                </Suspense>
               ))}
             </group>
           );

@@ -3,6 +3,8 @@ import { PrismicRichText, SliceComponentProps } from '@prismicio/react';
 import cn from 'classnames';
 import { PrismicNextImage } from '@prismicio/next';
 
+import type { JSX } from "react";
+
 /**
  * Props for `LessonRickText`.
  */
