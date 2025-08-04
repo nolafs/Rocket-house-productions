@@ -3,7 +3,6 @@ import { DialogLayout } from '@rocket-house-productions/lesson';
 import { FormErrors } from '../../_component/path-types';
 import { PrevButton } from '../../_component/button-prev';
 import { useForm } from 'react-hook-form';
-import { useFormState } from 'react-dom';
 import stepOneFormAction from '../action';
 import {
   Button,
@@ -19,7 +18,7 @@ import {
 import z from 'zod';
 import { stepOneSchema } from '../../_component/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useActionState } from 'react';
 import { XIcon } from 'lucide-react';
 import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import ButtonSubmit from '../../_component/button-submit';
@@ -45,7 +44,7 @@ interface StepOneFormProps {
 }
 
 export default function StepOneForm({ baseUrl, purchase, header, body }: StepOneFormProps) {
-  const [serverError, formAction] = useFormState(stepOneFormAction, initialState);
+  const [serverError, formAction] = useActionState(stepOneFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
   const setActive = useMenuActive(state => state.setActive);
 

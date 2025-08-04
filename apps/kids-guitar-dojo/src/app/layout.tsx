@@ -6,7 +6,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
-import { ClerkProvider } from '@clerk/nextjs';
+import { ClerkProvider, SignedOut } from '@clerk/nextjs';
 import { ConfettiProvider } from '@rocket-house-productions/providers';
 import PlausibleProvider from 'next-plausible';
 import { CookieConsent } from '@rocket-house-productions/features';
@@ -186,7 +186,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <ConfettiProvider />
               {/* Toaster */}
               <Toaster position="bottom-center" />
-
               {children}
               {/* Preview */}
               <PrismicPreview repositoryName={repositoryName} />

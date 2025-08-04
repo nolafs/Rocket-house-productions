@@ -1,6 +1,5 @@
 'use client';
-import React from 'react';
-import { useFormState } from 'react-dom';
+import React, { useActionState } from 'react';
 import NewsletterFormStatus from './newsletter-form-status';
 import { handleSubscription } from './action';
 
@@ -11,7 +10,7 @@ const initialState = {
 };
 
 export function NewsletterForm() {
-  const [state, formAction] = useFormState(handleSubscription, initialState);
+  const [state, formAction] = useActionState(handleSubscription, initialState);
   return (
     <form action={formAction} className="mt-6 flex flex-col">
       <div className={'flex flex-col md:flex-row'}>

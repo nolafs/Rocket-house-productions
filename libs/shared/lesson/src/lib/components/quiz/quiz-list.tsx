@@ -22,7 +22,7 @@ interface GetQuizProps {
 let displayTimeout: ReturnType<typeof setTimeout>;
 
 export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, onSlideIndexChange }: GetQuizProps) {
-  const ref = useRef<any>();
+  const ref = useRef<any>(undefined);
   const [slideIndex, setSlideIndex] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isLastQuestion, setIsLastQuestion] = useState(questionaries.length === 1 ? true : false);

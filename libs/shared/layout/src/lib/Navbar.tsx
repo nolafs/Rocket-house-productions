@@ -20,6 +20,7 @@ export function Navbar({ navigation, logo, isAdmin = false }: HeaderProps) {
   const currentRoute = usePathname();
 
   // Sticky Navbar
+
   useEffect(() => {
     const elementId = document.getElementById('navbar');
 

@@ -3,6 +3,8 @@ import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '../../components/Bounded';
 import { ContentBlockImage, SectionContentBlockList } from '@rocket-house-productions/features';
 
+import type { JSX } from "react";
+
 /**
  * Props for `ContentImageSlice`.
  */

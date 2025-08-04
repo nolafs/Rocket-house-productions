@@ -3,7 +3,8 @@ import { stripeCheckoutSessionStatus } from '@rocket-house-productions/integrati
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
-export default async function Page({ params }: { params: { verify: string[] } }) {
+export default async function Page(props: { params: Promise<{ verify: string[] }> }) {
+  const params = await props.params;
   const { userId } = await auth();
 
   if (!userId) {

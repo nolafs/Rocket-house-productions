@@ -134,6 +134,29 @@ class ThreeErrorBoundary extends React.Component<
 
 // Safe Texture Loading Component
 export function SafeSkyBox() {
+  const [fallback, setFallback] = React.useState(false);
+
+  if (fallback) {
+    return (
+      <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
+        <meshStandardMaterial color="#87CEEB" side={THREE.BackSide} />
+      </Box>
+    );
+  }
+
+  return (
+    <Suspense
+      fallback={
+        <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
+          <meshStandardMaterial color="#87CEEB" side={THREE.BackSide} />
+        </Box>
+      }>
+      <SkyBoxWithTexture onError={() => setFallback(true)} />
+    </Suspense>
+  );
+}
+
+function SkyBoxWithTexture({ onError }: { onError: () => void }) {
   try {
     const texture = useTexture('/images/course/sky.webp');
     return (
@@ -142,13 +165,11 @@ export function SafeSkyBox() {
       </Box>
     );
   } catch (error) {
-    // If texture loading fails, return fallback
-    console.warn('Sky texture failed, using color fallback');
-    return (
-      <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
-        <meshStandardMaterial color="#87CEEB" side={THREE.BackSide} />
-      </Box>
-    );
+    console.warn('Sky texture failed to load:', error);
+    React.useEffect(() => {
+      onError();
+    }, [onError]);
+    throw error; // Let Suspense handle it
   }
 }
 
@@ -185,7 +206,7 @@ export function SafeLoader() {
 }
 
 // Safe wrapper for ModuleAwards
-function SafeModuleAwards({ display }: { display: any }) {
+export function SafeModuleAwards({ display }: { display: any }) {
   try {
     return <ModuleAwards display={display} />;
   } catch (error) {
@@ -212,11 +233,10 @@ export function SafeCourseNavigation({
         setSkipAwards(true); // Disable awards when user skips
       }}>
       <Canvas {...canvasProps}>
-        <Suspense fallback={<SafeLoader />}>
-          {children}
-          {/* Only render ModuleAwards if user hasn't skipped and we have display data */}
-          {moduleAwardsDisplay && !skipAwards && <SafeModuleAwards display={moduleAwardsDisplay} />}
-        </Suspense>
+        <SafeLoader />
+        {children}
+        {/* Only render ModuleAwards if user hasn't skipped and we have display data */}
+        {moduleAwardsDisplay && !skipAwards && <SafeModuleAwards display={moduleAwardsDisplay} />}
         <Preload all />
       </Canvas>
     </ThreeErrorBoundary>

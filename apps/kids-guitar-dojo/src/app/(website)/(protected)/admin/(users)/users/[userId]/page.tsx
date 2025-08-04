@@ -9,7 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@rock
 import Actions from './_components/actions';
 import ActionRole from './_components/action-role';
 
-export default async function Page({ params }: { params: { userId: string } }) {
+export default async function Page(props: { params: Promise<{ userId: string }> }) {
+  const params = await props.params;
   const { userId, sessionClaims } = await auth();
 
   if (!userId) {

@@ -19,7 +19,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui';
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
 import { Module } from '@prisma/client';
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
-import { SafeCourseNavigation, SafeSkyBox } from '../../util/three-error-boundary';
+import { SafeCourseNavigation, SafeModuleAwards, SafeSkyBox } from '../../util/three-error-boundary';
 gsap.registerPlugin(SplitText);
 
 interface CourseNavigationProps {
@@ -232,6 +232,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         moduleAwardsDisplay={display}
         camera={{ position: [0, 0, 130], fov: 15 }}>
         <ambientLight intensity={0.6} />
+
         <SafeSkyBox />
 
         {/* rest of your 3D content */}
@@ -265,6 +266,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
         <CloudCover position={[0, 5, -30]} />
         <ZoomControl ref={zoomControlRef} />
+
+        <SafeModuleAwards display={display} />
       </SafeCourseNavigation>
     </div>
   );

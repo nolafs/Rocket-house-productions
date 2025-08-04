@@ -11,13 +11,12 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import { FormErrors } from '../../_component/path-types';
 import stepThreeFormAction from '../action';
-import { useFormState } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { stepThreeSchema } from '../../_component/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { XIcon } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useActionState } from 'react';
 import { PrevButton } from '../../_component/button-prev';
 import Image from 'next/image';
 import checked from './_assets/checked.png';
@@ -38,7 +37,7 @@ interface StepThreeFormProps {
 }
 
 export default function StepThreeForm({ baseUrl, header, body }: StepThreeFormProps) {
-  const [serverError, formAction] = useFormState(stepThreeFormAction, initialState);
+  const [serverError, formAction] = useActionState(stepThreeFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
   const [name, setName] = useState<string | null>('');
   const setActive = useMenuActive(state => state.setActive);
