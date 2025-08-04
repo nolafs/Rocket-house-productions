@@ -14,11 +14,12 @@ import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/SplitText';
 import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
 import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
-import ModuleAwards from './course-scene/module-awards';
+
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
 import { Module } from '@prisma/client';
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
+import { SafeCourseNavigation, SafeSkyBox } from '../../util/three-error-boundary';
 gsap.registerPlugin(SplitText);
 
 interface CourseNavigationProps {
@@ -225,47 +226,46 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         </div>
       </div>
 
-      <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
-        <Suspense fallback={<Loader />}>
-          <ambientLight intensity={0.6} />
+      <SafeCourseNavigation
+        className={'fixed h-screen w-full'}
+        shadows={true}
+        moduleAwardsDisplay={display}
+        camera={{ position: [0, 0, 130], fov: 15 }}>
+        <ambientLight intensity={0.6} />
+        <SafeSkyBox />
 
-          <SkyBox />
+        {/* rest of your 3D content */}
+        <directionalLight
+          shadow-mapSize-width={1024 * (isMobile ? 2 : 4)}
+          shadow-mapSize-height={1024 * (isMobile ? 2 : 4)}
+          shadow-camera-far={500}
+          shadow-camera-left={-100}
+          shadow-camera-right={100}
+          shadow-camera-top={500}
+          shadow-camera-bottom={-100}
+          position={[-40, 100, 250]}
+          intensity={2.5}
+          castShadow
+        />
 
-          <directionalLight
-            shadow-mapSize-width={1024 * (isMobile ? 2 : 4)}
-            shadow-mapSize-height={1024 * (isMobile ? 2 : 4)}
-            shadow-camera-far={500}
-            shadow-camera-left={-100}
-            shadow-camera-right={100}
-            shadow-camera-top={500}
-            shadow-camera-bottom={-100}
-            position={[-40, 100, 250]}
-            intensity={2.5}
-            castShadow></directionalLight>
+        <Landscape
+          lessonSpacing={LESSON_SPACING}
+          courseCompleted={previousProgress.current === 100}
+          position={[0, 0, 0]}
+          container={containerRef}
+          purchaseType={purchaseType}
+          onOpenLesson={handleOpenLesson}
+          display={display}
+          onReady={load => handleLoaded(load)}
+        />
 
-          <Landscape
-            lessonSpacing={LESSON_SPACING}
-            courseCompleted={previousProgress.current === 100}
-            position={[0, 0, 0]}
-            container={containerRef}
-            purchaseType={purchaseType}
-            onOpenLesson={handleOpenLesson}
-            display={display}
-            onReady={load => handleLoaded(load)}
-          />
+        <group position={[0, 300, -300]}>
+          <Clouds width={80} height={300} depth={300} numClouds={100} />
+        </group>
 
-          <group position={[0, 300, -300]}>
-            <Clouds width={80} height={300} depth={300} numClouds={100} />
-          </group>
-
-          <CloudCover position={[0, 5, -30]} />
-
-          <ZoomControl ref={zoomControlRef} />
-          <Preload all />
-        </Suspense>
-
-        <ModuleAwards display={display} />
-      </Canvas>
+        <CloudCover position={[0, 5, -30]} />
+        <ZoomControl ref={zoomControlRef} />
+      </SafeCourseNavigation>
     </div>
   );
 }
