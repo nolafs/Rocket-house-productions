@@ -26,11 +26,7 @@ export default async function Page({ params }: { params: { product: string[] } }
           <div>
             <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} />
           </div>
-          <SignUp
-            signInUrl={'/sign-in'}
-            signInFallbackRedirectUrl={'/courses/order'}
-            forceRedirectUrl={'/courses/order'}
-          />
+          <SignUp />
         </div>
       </div>
     </main>

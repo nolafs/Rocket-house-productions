@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
 import SectionTimelineItem from './section-timeline-item';
 
-const AnimatedSectionTitle = motion(SectionTitle);
+const AnimatedSectionTitle = motion.create(SectionTitle);
 
 type SectionTimelineProps = {
   data: {
