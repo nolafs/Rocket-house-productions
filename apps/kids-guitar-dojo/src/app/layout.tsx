@@ -173,7 +173,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <PlausibleProvider domain={DOMAIN} customDomain={'https://plausible.biffify.com'}>
-      <ClerkProvider afterSignOutUrl={'/'}>
+      <ClerkProvider>
         <LogRocketComponent />
 
         <UIProvider>
