@@ -46,12 +46,10 @@ export const OnBoardingContextProvider = ({ children }: { children: React.ReactN
     }
   }, [onBoardingData, dataLoaded]);
 
-  const updateOnBoardingDetails = useCallback(
-    (onBoardingDetails: Partial<OnBoardingType>) => {
-      setOnBoardingData({ ...setOnBoardingData, ...onBoardingDetails });
-    },
-    [onBoardingData],
-  );
+  // Fixed: Use functional update and removed dependency
+  const updateOnBoardingDetails = useCallback((onBoardingDetails: Partial<OnBoardingType>) => {
+    setOnBoardingData(prev => ({ ...prev, ...onBoardingDetails }));
+  }, []);
 
   const saveDataToLocalStorage = (currentDealData: OnBoardingInitialValuesType) => {
     if (typeof window !== 'undefined') {
@@ -75,8 +73,11 @@ export const OnBoardingContextProvider = ({ children }: { children: React.ReactN
     }
   };
 
+  // Fixed: Added window check before accessing localStorage
   const resetLocalStorage = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    }
     setOnBoardingData(defaultOnBoarding);
   };
 
