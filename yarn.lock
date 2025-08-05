@@ -5930,8 +5930,6 @@ __metadata:
     "@types/jest": "npm:^29.5.14"
     "@types/lodash": "npm:^4.17.13"
     "@types/node": "npm:18.16.9"
-    "@types/react": "npm:19.1.9"
-    "@types/react-dom": "npm:19.1.7"
     "@types/react-google-recaptcha": "npm:^2.1.9"
     "@types/rss": "npm:^0.0.32"
     "@types/three": "npm:^0.178.1"
@@ -5948,7 +5946,7 @@ __metadata:
     cypress: "npm:^13.13.0"
     date-fns: "npm:^3.6.0"
     dayjs: "npm:^1.11.13"
-    eslint: "npm:~8.57.0"
+    eslint: "npm:8.57.1"
     eslint-config-next: "npm:14.2.3"
     eslint-config-prettier: "npm:^9.0.0"
     eslint-plugin-cypress: "npm:^2.13.4"
@@ -11817,7 +11815,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.0.0, eslint@npm:~8.57.0":
+"eslint@npm:8.57.1, eslint@npm:^8.0.0":
   version: 8.57.1
   resolution: "eslint@npm:8.57.1"
   dependencies:
