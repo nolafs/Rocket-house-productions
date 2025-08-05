@@ -3,12 +3,7 @@ import dynamic from 'next/dynamic';
 import { BASE_URL } from '../_component/path-types';
 import { db } from '@rocket-house-productions/integration';
 import { createClient } from '@/prismicio';
-
-// Dynamically import with SSR disabled
-const StepOneForm = dynamic(() => import('./_components/step-one-form'), {
-  ssr: false,
-  loading: () => <div>Loading...</div>,
-});
+import StepOneForm from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/step-one/_components/step-one-form';
 
 export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {
   const params = await props.params;
@@ -27,7 +22,7 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
   const { data } = await client.getSingle('onboarding');
 
   return (
-    <div>
+    <div suppressHydrationWarning>
       <StepOneForm
         baseUrl={baseUrl}
         purchase={{
