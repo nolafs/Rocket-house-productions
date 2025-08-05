@@ -4,15 +4,15 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
-import { extend, Object3DNode, MaterialNode } from '@react-three/fiber';
+import { extend } from '@react-three/fiber';
 import { LessonButton, ModulePosition } from './course.types';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    meshLineGeometry: Object3DNode<MeshLineGeometry, typeof MeshLineGeometry>;
-    meshLineMaterial: MaterialNode<MeshLineMaterial, typeof MeshLineMaterial>;
+    meshLineGeometry: any;
+    meshLineMaterial: any;
   }
 }
 
@@ -148,7 +148,6 @@ const Path: React.FC<{
     <group frustumCulled={false}>
       {curvePath && (
         <mesh>
-          {/* @ts-expect-error type not register */}
           <meshLineGeometry isMeshLine={true} frustumCulled={false} points={curvePath.curvePoints} />
 
           <meshLineMaterial

@@ -11,9 +11,12 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { ResolvedOpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
 import { OGImage } from '@rocket-house-productions/types';
 
-type Params = { uid: string };
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export async function generateMetadata({ params }: { params: Params }, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
   const page = await client.getSingle('contact').catch(() => notFound());
 
