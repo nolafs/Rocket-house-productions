@@ -1,6 +1,6 @@
 'use client';
 import React, { Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useLoader } from '@react-three/fiber';
 import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
 
 import { Loader2 } from 'lucide-react';
@@ -157,20 +157,15 @@ export function SafeSkyBox() {
 }
 
 function SkyBoxWithTexture({ onError }: { onError: () => void }) {
-  try {
-    const texture = useTexture('/images/course/sky.webp');
-    return (
-      <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
-        <meshStandardMaterial map={texture} side={THREE.BackSide} />
-      </Box>
-    );
-  } catch (error) {
-    console.warn('Sky texture failed to load:', error);
-    React.useEffect(() => {
-      onError();
-    }, [onError]);
-    throw error; // Let Suspense handle it
-  }
+  const texture = useLoader(THREE.TextureLoader, '/images/course/sky.webp', (loader) => {
+    loader.manager.onError = onError;
+  });
+
+  return (
+    <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
+      <meshStandardMaterial map={texture} side={THREE.BackSide} />
+    </Box>
+  );
 }
 
 // Enhanced Loader with Error Handling
