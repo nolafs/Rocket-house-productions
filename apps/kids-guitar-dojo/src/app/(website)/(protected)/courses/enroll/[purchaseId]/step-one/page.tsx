@@ -21,22 +21,5 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
   const client = createClient();
   const { data } = await client.getSingle('onboarding');
 
-  return (
-    <div suppressHydrationWarning>
-      <StepOneForm
-        baseUrl={baseUrl}
-        purchase={{
-          id: purchase?.id,
-          account: {
-            id: purchase?.account.id,
-            firstName: purchase?.account.firstName,
-            lastName: purchase?.account.lastName,
-            email: purchase?.account.email,
-          },
-        }}
-        header={data.onboarding_step_one_header}
-        body={data?.onboarding_step_one_body}
-      />
-    </div>
-  );
+  return <div suppressHydrationWarning>test</div>;
 }
