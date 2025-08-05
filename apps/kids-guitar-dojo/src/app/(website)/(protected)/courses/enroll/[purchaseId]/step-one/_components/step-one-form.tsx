@@ -28,7 +28,6 @@ import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purch
 import { isFilled } from '@prismicio/client';
  */
 import { KeyTextField, RichTextField } from '@prismicio/types';
-import { PrismicRichText } from '@prismicio/react';
 
 //const initialState: FormErrors = {};
 
