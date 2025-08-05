@@ -19,7 +19,7 @@ async function validateRequest(request: Request) {
   return wh.verify(payloadString, svixHeaders) as WebhookEvent;
 }
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   const headersList = await headers();
 
   if (!WEBHOOK_SECRET) {
