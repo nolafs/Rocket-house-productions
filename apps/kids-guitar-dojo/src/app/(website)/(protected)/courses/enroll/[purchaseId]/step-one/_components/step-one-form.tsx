@@ -1,6 +1,6 @@
 'use client';
 import { DialogLayout } from '@rocket-house-productions/lesson';
-import { FormErrors } from '../../_component/path-types';
+//import { FormErrors } from '../../_component/path-types';
 /*
 import { PrevButton } from '../../_component/button-prev';
 import { useForm } from 'react-hook-form';
@@ -30,7 +30,7 @@ import { isFilled } from '@prismicio/client';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
 
-const initialState: FormErrors = {};
+//const initialState: FormErrors = {};
 
 interface StepOneFormProps {
   baseUrl: string;
