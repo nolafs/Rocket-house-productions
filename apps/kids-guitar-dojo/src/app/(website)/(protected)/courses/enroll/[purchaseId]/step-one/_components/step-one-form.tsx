@@ -25,9 +25,8 @@ import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import ButtonSubmit from '../../_component/button-submit';
 
 import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
-
- */
 import { isFilled } from '@prismicio/client';
+ */
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
 
@@ -49,9 +48,5 @@ interface StepOneFormProps {
 }
 
 export default function StepOneForm({ baseUrl, purchase, header, body }: StepOneFormProps) {
-  return (
-    <DialogLayout title={header || "🎸 Parent's Jam Session 🎸"}>
-      {isFilled.richText(body) && <div className="body">{<PrismicRichText field={body} />}</div>}
-    </DialogLayout>
-  );
+  return <DialogLayout title={header || "🎸 Parent's Jam Session 🎸"}>test</DialogLayout>;
 }
