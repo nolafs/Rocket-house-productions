@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { PrismicRichText, SliceZone } from '@prismicio/react';
 import { createClient } from '@/prismicio';
@@ -15,7 +15,7 @@ import { WithContext, BlogPosting } from 'schema-dts';
 import { BlogCategoryDocumentData } from '../../../../../../prismicio-types';
 type Params = { uid: string };
 
-export async function generateMetadata(props: { params: Promise<Params> }, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<Params> }, parent: Metadata): Promise<Metadata> {
   const params = await props.params;
   const client = createClient();
   const post = await client
