@@ -157,7 +157,7 @@ export function SafeSkyBox() {
 }
 
 function SkyBoxWithTexture({ onError }: { onError: () => void }) {
-  const texture = useLoader(THREE.TextureLoader, '/images/course/sky.webp', (loader) => {
+  const texture = useLoader(THREE.TextureLoader, '/images/course/sky.webp', loader => {
     loader.manager.onError = onError;
   });
 
@@ -175,8 +175,15 @@ export function SafeLoader() {
   // Check if there are loading errors
   const hasErrors = errors && errors.length > 0;
 
+  console.log('LOADER PROGRESS:', progress, loaded === total && !hasErrors);
+
+  // is all loaded
+  if (loaded === total && !hasErrors) {
+    return null; // Don't show loader if everything loaded successfully
+  }
+
   return (
-    <Html fullscreen zIndexRange={[100, 100]}>
+    <Html fullscreen zIndexRange={[1000, 1000]}>
       <div className="z-50 flex h-screen w-full flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center">
           {hasErrors ? (
@@ -228,11 +235,12 @@ export function SafeCourseNavigation({
         setSkipAwards(true); // Disable awards when user skips
       }}>
       <Canvas {...canvasProps}>
-        <SafeLoader />
         {children}
         {/* Only render ModuleAwards if user hasn't skipped and we have display data */}
         {moduleAwardsDisplay && !skipAwards && <SafeModuleAwards display={moduleAwardsDisplay} />}
         <Preload all />
+
+        <SafeLoader />
       </Canvas>
     </ThreeErrorBoundary>
   );

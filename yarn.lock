@@ -6021,7 +6021,7 @@ __metadata:
     valtio: "npm:^2.0.0"
     vaul: "npm:^0.9.1"
     zod: "npm:^3.23.8"
-    zustand: "npm:^4.5.4"
+    zustand: "npm:^5.0.7"
   languageName: unknown
   linkType: soft
 
@@ -24303,7 +24303,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.3.2, zustand@npm:^4.5.4":
+"zustand@npm:^4.3.2":
   version: 4.5.7
   resolution: "zustand@npm:4.5.7"
   dependencies:
@@ -24323,7 +24323,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^5.0.1, zustand@npm:^5.0.3":
+"zustand@npm:^5.0.1, zustand@npm:^5.0.3, zustand@npm:^5.0.7":
   version: 5.0.7
   resolution: "zustand@npm:5.0.7"
   peerDependencies:
