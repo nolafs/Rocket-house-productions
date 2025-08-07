@@ -58,6 +58,10 @@ const fontProps = {
   'material-toneMapped': false,
 };
 
+// Preload all GLTF models at module level
+useGLTF.preload('/images/course/button.gltf');
+useGLTF.preload('/images/course/bookmark.gltf');
+
 export const Button3d = ({
   rotation,
   position,

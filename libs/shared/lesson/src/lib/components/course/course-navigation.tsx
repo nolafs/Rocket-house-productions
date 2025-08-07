@@ -273,35 +273,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   );
 }
 
-function Loader() {
-  const { progress, loaded, total } = useProgress();
-
-  return (
-    <Html fullscreen zIndexRange={[100, 100]}>
-      <div className={'z-50 flex h-screen w-full flex-col items-center justify-center'}>
-        <div className={'flex flex-col items-center justify-center'}>
-          <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
-          <div className={'font-lesson-heading mt-5 w-full text-center text-white'}>{Math.round(progress)} %</div>
-          <div className={'w-full text-center text-sm text-white'}>
-            Item: {loaded} / {total}
-          </div>
-        </div>
-      </div>
-    </Html>
-  );
-}
-
-function SkyBox() {
-  // highlight-start
-  const texture = useTexture('/images/course/sky.webp');
-
-  return (
-    <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
-      <meshStandardMaterial map={texture} side={THREE.BackSide} />
-    </Box>
-  );
-}
-
 const ZoomControl = forwardRef((_, ref) => {
   const baseZoom = 120;
   const { camera } = useThree();
