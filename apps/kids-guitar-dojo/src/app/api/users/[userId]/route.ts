@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ userId:
     return new NextResponse('Unauthorized operation', { status: 401 });
   }
 
-  const params = (await context.params);
+  const params = await context.params;
 
   if (!params?.userId) {
     throw new Error('No user id');
@@ -46,6 +46,8 @@ export async function GET(req: NextRequest, context: { params: Promise<{ userId:
         children: true,
       },
     });
+
+    console.log('[USER GET]', response);
 
     return NextResponse.json(response);
   } catch (error) {

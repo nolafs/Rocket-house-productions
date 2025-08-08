@@ -13,9 +13,9 @@ export default clerkMiddleware(
     }
 
     if (isProtectedRoute(req)) {
-      auth.protect();
+      const authProtected =  await auth.protect();
 
-      console.info('[MIDDLEWARE COURSE]', 'Protected Route');
+      console.info('[MIDDLEWARE COURSE]', 'Protected Route', authProtected);
 
       if (url.startsWith('/courses')) {
         console.info('[MIDDLEWARE COURSE]', 'Courses Route');
@@ -68,6 +68,8 @@ export default clerkMiddleware(
           },
         });
 
+        console.log('[MIDDLEWARE COURSE] userResponse');
+
         if (!userResponse.ok) {
           console.info('[MIDDLEWARE COURSE] USER DB NOT FOUND');
 
@@ -89,7 +91,7 @@ export default clerkMiddleware(
           if (url.startsWith(`/courses/error`)) {
             return NextResponse.next();
           }
-          NextResponse.redirect(
+          return NextResponse.redirect(
             `${req.nextUrl.origin}/courses/error?status=error&message=No%20user%20found%20in%20Database`,
           );
         }

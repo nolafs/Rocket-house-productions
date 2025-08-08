@@ -102,13 +102,6 @@ export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps)
                 ...onBoardingData,
                 ...formUpdate,
               });
-            }}
-            onSubmit={evt => {
-              evt.preventDefault();
-
-              form.handleSubmit(() => {
-                formAction(new FormData(formRef.current!));
-              })(evt);
             }}>
             <div className="relative pt-5">
               <div className={'grid grid-cols-1 gap-x-3 md:grid-cols-2'}>
