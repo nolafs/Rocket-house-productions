@@ -28,7 +28,7 @@ import { isFilled } from '@prismicio/client';
 
 const initialState: FormErrors = {};
 
-interface StepOneFormProps {
+export interface StepOneFormProps {
   baseUrl: string;
   purchase?: {
     id: string | undefined;

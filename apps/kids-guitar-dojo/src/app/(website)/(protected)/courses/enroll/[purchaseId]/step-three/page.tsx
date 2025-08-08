@@ -2,6 +2,7 @@ import React from 'react';
 import StepThreeForm from './_components/step-three-form';
 import { BASE_URL } from '../_component/path-types';
 import { createClient } from '@/prismicio';
+import StepThreeWrapper from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/step-three/_components/StepThreeWrapper';
 
 export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {
   const params = await props.params;
@@ -12,7 +13,7 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
 
   return (
     <div suppressHydrationWarning>
-      <StepThreeForm
+      <StepThreeWrapper
         baseUrl={baseUrl}
         header={data.onboarding_step_three_header}
         body={data?.onboarding_step_three_body}
