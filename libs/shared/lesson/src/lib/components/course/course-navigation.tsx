@@ -1,8 +1,7 @@
 'use client';
 import * as THREE from 'three';
-import React, { forwardRef, Suspense, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { useThree } from '@react-three/fiber';
 import { Landscape } from './course-scene/landscape';
 import { Course } from '@prisma/client';
 import Clouds from './course-scene/cloud-scene';

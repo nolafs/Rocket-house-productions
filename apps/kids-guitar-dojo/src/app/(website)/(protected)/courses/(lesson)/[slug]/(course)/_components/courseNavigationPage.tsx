@@ -8,7 +8,10 @@ import { useGSAP } from '@gsap/react';
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
 
 const CourseNavigation = dynamic(
-  () => import('@rocket-house-productions/lesson').then(module => module.CourseNavigation),
+  () =>
+    import('../../../../../../../../../../../libs/shared/lesson/src/lib/components/course/course-navigation').then(
+      module => module.CourseNavigation,
+    ),
   { ssr: false }, // Optional: Disable SSR if necessary
 );
 
