@@ -4,6 +4,8 @@ import { PrismicRichText, SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '../../components/Bounded';
 import cn from 'classnames';
 
+import type { JSX } from "react";
+
 /**
  * Props for `RichTextSlice`.
  */

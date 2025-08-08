@@ -6,11 +6,12 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
-import { ClerkProvider } from '@clerk/nextjs';
+import { ClerkProvider, SignedOut } from '@clerk/nextjs';
 import { ConfettiProvider } from '@rocket-house-productions/providers';
 import PlausibleProvider from 'next-plausible';
 import { CookieConsent } from '@rocket-house-productions/features';
 import { Toaster } from 'react-hot-toast';
+import { LogRocketComponent } from '../../../../libs/shared/util/src/lib/logRocketComponent';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -172,7 +173,9 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <PlausibleProvider domain={DOMAIN} customDomain={'https://plausible.biffify.com'}>
-      <ClerkProvider afterSignOutUrl={'/'}>
+      <ClerkProvider>
+        <LogRocketComponent />
+
         <UIProvider>
           <html
             lang="en"
@@ -183,7 +186,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <ConfettiProvider />
               {/* Toaster */}
               <Toaster position="bottom-center" />
-
               {children}
               {/* Preview */}
               <PrismicPreview repositoryName={repositoryName} />

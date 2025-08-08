@@ -2,21 +2,15 @@ import { auth } from '@clerk/nextjs/server';
 import { notFound, redirect } from 'next/navigation';
 import { getChild, getLesson } from '@rocket-house-productions/actions/server';
 import { createClient } from '@/prismicio';
-import dynamic from 'next/dynamic';
-
-const LessonComponent = dynamic(() => import('./_components/lessonComponent'), {
-  ssr: true,
-});
-
-const LessonHeader = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonHeader), {
-  ssr: false,
-});
+import { LessonHeader } from '@rocket-house-productions/lesson';
+import LessonComponent from '@/app/(website)/(protected)/courses/(lesson)/[slug]/modules/[module_slug]/lessons/[lesson_slug]/_components/lessonComponent';
 
 interface PageProps {
-  params: { slug: string; module_slug: string; lesson_slug: string };
+  params: Promise<{ slug: string; module_slug: string; lesson_slug: string }>;
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page(props: PageProps) {
+  const params = await props.params;
   if (!params.slug || !params.module_slug || !params.lesson_slug) {
     return notFound();
   }

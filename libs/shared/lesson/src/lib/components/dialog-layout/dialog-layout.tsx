@@ -1,3 +1,4 @@
+'use client';
 import { ReactNode } from 'react';
 import { cn } from '@rocket-house-productions/util';
 
@@ -18,7 +19,7 @@ export function DialogLayout({ title, children, classNames }: DialogLayoutProps)
           className={
             'text-shadow font-lesson-heading bg-dialog-lesson relative flex h-[100px] flex-col items-center justify-center space-y-1.5 overflow-hidden rounded-t-xl bg-pink-500 bg-repeat sm:rounded-t-xl'
           }>
-          <h2 className="text-center text-xl font-semibold leading-[38px] leading-none tracking-tight text-white md:text-2xl lg:text-3xl">
+          <h2 className="text-center text-xl font-semibold leading-none tracking-tight text-white md:text-2xl lg:text-3xl">
             {title}
           </h2>
         </header>

@@ -4,10 +4,9 @@ import { db } from '@rocket-house-productions/integration';
 
 export async function PATCH(
   req: Request,
-  {
-    params,
-  }: { params: { courseId: string; moduleId: string; lessonId: string; questionanaireId: string; answerId: string } },
+  props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string; questionanaireId: string; answerId: string }> }
 ) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
 

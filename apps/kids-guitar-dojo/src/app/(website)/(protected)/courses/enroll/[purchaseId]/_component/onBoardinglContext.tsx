@@ -46,31 +46,38 @@ export const OnBoardingContextProvider = ({ children }: { children: React.ReactN
     }
   }, [onBoardingData, dataLoaded]);
 
-  const updateOnBoardingDetails = useCallback(
-    (onBoardingDetails: Partial<OnBoardingType>) => {
-      setOnBoardingData({ ...setOnBoardingData, ...onBoardingDetails });
-    },
-    [onBoardingData],
-  );
+  // Fixed: Use functional update and removed dependency
+  const updateOnBoardingDetails = useCallback((onBoardingDetails: Partial<OnBoardingType>) => {
+    setOnBoardingData(prev => ({ ...prev, ...onBoardingDetails }));
+  }, []);
 
   const saveDataToLocalStorage = (currentDealData: OnBoardingInitialValuesType) => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(currentDealData));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(currentDealData));
+    }
   };
 
   const readFromLocalStorage = () => {
-    const loadedDataString = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (!loadedDataString) return setOnBoardingData(defaultOnBoarding);
-    const validated = onBoardingInitialValuesSchema.safeParse(JSON.parse(loadedDataString));
+    if (typeof window !== 'undefined') {
+      const loadedDataString = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (!loadedDataString) return setOnBoardingData(defaultOnBoarding);
+      const validated = onBoardingInitialValuesSchema.safeParse(JSON.parse(loadedDataString));
 
-    if (validated.success) {
-      setOnBoardingData(validated.data);
+      if (validated.success) {
+        setOnBoardingData(validated.data);
+      } else {
+        setOnBoardingData(defaultOnBoarding);
+      }
     } else {
       setOnBoardingData(defaultOnBoarding);
     }
   };
 
+  // Fixed: Added window check before accessing localStorage
   const resetLocalStorage = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    }
     setOnBoardingData(defaultOnBoarding);
   };
 

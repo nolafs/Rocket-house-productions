@@ -3,6 +3,8 @@ import { SliceComponentProps } from '@prismicio/react';
 import { HeroCenter, HeroColumns, HeroSimple } from '@rocket-house-productions/features';
 import { Bounded } from '@components/Bounded';
 
+import type { JSX } from 'react';
+
 /**
  * Props for `Hero`.
  */

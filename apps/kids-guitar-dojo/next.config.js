@@ -14,10 +14,12 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.plugins = [...config.plugins, new PrismaPlugin()];
+      config.devtool = 'source-map';
     }
 
     return config;
   },
+  productionBrowserSourceMaps: true,
   nx: {
     // Set this to true if you would like to use SVGR
     // See: https://github.com/gregberge/svgr
