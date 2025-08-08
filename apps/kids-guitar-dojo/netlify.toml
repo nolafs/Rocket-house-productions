@@ -1,5 +1,14 @@
 #[build.environment]
 #  NEXT_USE_NETLIFY_EDGE = "false"
+[build]
+  command = "nx run kids-guitar-dojo:build-with-types"
+  functions = "apps/kids-guitar-dojo/netlify/function"
+  publish = "apps/kids-guitar-dojo/.next"
+
+[build.environment]
+  NODE_VERSION = "20"
+  YARN_VERSION = "4.4.0"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
@@ -120,14 +129,8 @@
         X-Frame-Options = "DENY"
         X-XSS-Protection = "1; mode=block"
         X-Content-Type-Options = "nosniff"
-        Strict-Transport-Security = "max-age=31536000; includeSubDomains"
-[[headers]]
-    for = "/*"
-    [headers.values]
-        Strict-Transport-Security = '''
-            max-age=63072000;
-            includeSubDomains;
-            preload'''
+        Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+
 [[headers]]
   for = "/images/*"
   [headers.values]
