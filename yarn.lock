@@ -1491,56 +1491,56 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clerk/backend@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "@clerk/backend@npm:2.6.2"
+"@clerk/backend@npm:^2.6.3":
+  version: 2.6.3
+  resolution: "@clerk/backend@npm:2.6.3"
   dependencies:
-    "@clerk/shared": "npm:^3.17.0"
-    "@clerk/types": "npm:^4.72.0"
+    "@clerk/shared": "npm:^3.18.0"
+    "@clerk/types": "npm:^4.73.0"
     cookie: "npm:1.0.2"
     standardwebhooks: "npm:^1.0.0"
     tslib: "npm:2.8.1"
-  checksum: 10c0/49ce90d73a3635ca060df2c5ec38096865595feae434183d13d1af42a536520184ad1139aba8a4ccf5c2a2d020089341ac7b72e0123cc68422f26767e545351d
+  checksum: 10c0/aea3fa57e2c08754bc4d6cd625324b56b96fb91cbebe02f957400a989de25b7a80612b4c95fe9519ff43000ef7be042e6386da6ea56643ec03fa0e369fc5fa0d
   languageName: node
   linkType: hard
 
-"@clerk/clerk-react@npm:^5.38.1":
-  version: 5.38.1
-  resolution: "@clerk/clerk-react@npm:5.38.1"
+"@clerk/clerk-react@npm:^5.39.0":
+  version: 5.39.0
+  resolution: "@clerk/clerk-react@npm:5.39.0"
   dependencies:
-    "@clerk/shared": "npm:^3.17.0"
-    "@clerk/types": "npm:^4.72.0"
+    "@clerk/shared": "npm:^3.18.0"
+    "@clerk/types": "npm:^4.73.0"
     tslib: "npm:2.8.1"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
     react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
-  checksum: 10c0/92a7d0c726a12e12d9aca83560ffaa42ca71fa9d01d5bd2ff87eb7dda5f03295461107ad88b2172f5151e6b88c83037b45b59b8c8d6fbe912e08fe7322b52de4
+  checksum: 10c0/4d33541d0852e82e704e2258cf3db14c99967a755d40c063bfcf09043d14656228584839f75197845dee6d20957fef4a15c499533d2c1299bf52b6c36c56ea96
   languageName: node
   linkType: hard
 
 "@clerk/nextjs@npm:^6.28.1":
-  version: 6.28.1
-  resolution: "@clerk/nextjs@npm:6.28.1"
+  version: 6.29.0
+  resolution: "@clerk/nextjs@npm:6.29.0"
   dependencies:
-    "@clerk/backend": "npm:^2.6.2"
-    "@clerk/clerk-react": "npm:^5.38.1"
-    "@clerk/shared": "npm:^3.17.0"
-    "@clerk/types": "npm:^4.72.0"
+    "@clerk/backend": "npm:^2.6.3"
+    "@clerk/clerk-react": "npm:^5.39.0"
+    "@clerk/shared": "npm:^3.18.0"
+    "@clerk/types": "npm:^4.73.0"
     server-only: "npm:0.0.1"
     tslib: "npm:2.8.1"
   peerDependencies:
     next: ^13.5.7 || ^14.2.25 || ^15.2.3
     react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
     react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
-  checksum: 10c0/8846201fd86de0697e940ae08aee1587f9fad18c251918d9b85e45a9c9c64bb3526d8021e7198a933df23f6c1540fbb8955bfa08362b49993985c59bb8a8f1ac
+  checksum: 10c0/3410792f042be8ae5a392fb7659726a6cf25defd86313044801478a516a8b62548226fc1282943944707c496de0ef6f69ccfd05eae413368414f1c1016489fa0
   languageName: node
   linkType: hard
 
-"@clerk/shared@npm:^3.17.0":
-  version: 3.17.0
-  resolution: "@clerk/shared@npm:3.17.0"
+"@clerk/shared@npm:^3.18.0":
+  version: 3.18.0
+  resolution: "@clerk/shared@npm:3.18.0"
   dependencies:
-    "@clerk/types": "npm:^4.72.0"
+    "@clerk/types": "npm:^4.73.0"
     dequal: "npm:2.0.3"
     glob-to-regexp: "npm:0.4.1"
     js-cookie: "npm:3.0.5"
@@ -1554,16 +1554,16 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/c4bfa95cf9845a874e46bd7dee4a72d24d76e4130c2c23eb19f30f28c2cacc644a11ceea438015d290039f2c2dbffe2d67cba45793978472643582ae62e8b85f
+  checksum: 10c0/5870f4a0d8b5d93d820db5a744089becaec9e38a35f470f87dfc475bce9a7fca3d2c90e18f8fa4e43db5e6e0fb095dfc77b3c3f28ee4fb40b246eba65a2708da
   languageName: node
   linkType: hard
 
-"@clerk/types@npm:^4.72.0":
-  version: 4.72.0
-  resolution: "@clerk/types@npm:4.72.0"
+"@clerk/types@npm:^4.73.0":
+  version: 4.73.0
+  resolution: "@clerk/types@npm:4.73.0"
   dependencies:
     csstype: "npm:3.1.3"
-  checksum: 10c0/57dc33852306823152af338debf479e68a83b66e283f3756936c5c2e8ba1166d5932ae4bf5c2932f5c62b9cfae4656fb12cfdc8a87480da46411528d6024b98d
+  checksum: 10c0/4b3fa73820e4e2d35a45eb1838d02fde2b86030cec17fd5b683a8364aa3b953484ea099a4ae29a724c29ba1e113cf6512619fa27354d783c44bc242930d94ee9
   languageName: node
   linkType: hard
 
@@ -6288,12 +6288,12 @@ __metadata:
   linkType: hard
 
 "@slicemachine/adapter-next@npm:^0.3.45":
-  version: 0.3.81
-  resolution: "@slicemachine/adapter-next@npm:0.3.81"
+  version: 0.3.82
+  resolution: "@slicemachine/adapter-next@npm:0.3.82"
   dependencies:
     "@prismicio/simulator": "npm:^0.1.4"
     "@prismicio/types-internal": "npm:3.11.2"
-    "@slicemachine/plugin-kit": "npm:0.4.79"
+    "@slicemachine/plugin-kit": "npm:0.4.80"
     common-tags: "npm:^1.8.2"
     fp-ts: "npm:^2.13.1"
     io-ts: "npm:^2.2.20"
@@ -6305,13 +6305,13 @@ __metadata:
   peerDependencies:
     next: ^11 || ^12 || ^13 || ^14 || ^15.0.0-rc.0
     react: ^17 || ^18 || ^19.0.0-rc.0
-  checksum: 10c0/f60cf8d192c4b346ad5db4270ad995834cfeb3d4395a78a7c932083cbd7ec04a6a2fed8b041902212c3a3c500ceb871bfb7ec23febff14b41cf380672ae698ba
+  checksum: 10c0/8463a1f1464270fa9ae25c96c3e63615bf88f4240df70b67ea710dd26bce389a5c3c2b8a5938d4dd97190e5a607581065785422892bdbba8e53a2c42d1648924
   languageName: node
   linkType: hard
 
-"@slicemachine/manager@npm:0.25.1":
-  version: 0.25.1
-  resolution: "@slicemachine/manager@npm:0.25.1"
+"@slicemachine/manager@npm:0.25.2":
+  version: 0.25.2
+  resolution: "@slicemachine/manager@npm:0.25.2"
   dependencies:
     "@antfu/ni": "npm:^0.20.0"
     "@prismicio/client": "npm:7.17.0"
@@ -6319,7 +6319,7 @@ __metadata:
     "@prismicio/mocks": "npm:2.14.0"
     "@prismicio/types-internal": "npm:3.11.2"
     "@segment/analytics-node": "npm:^2.1.2"
-    "@slicemachine/plugin-kit": "npm:0.4.79"
+    "@slicemachine/plugin-kit": "npm:0.4.80"
     cookie: "npm:^1.0.1"
     cors: "npm:^2.8.5"
     execa: "npm:^7.1.1"
@@ -6344,13 +6344,13 @@ __metadata:
   peerDependenciesMeta:
     msw:
       optional: true
-  checksum: 10c0/f0a86e6565af2f1ed66326ff5bb93ffde03708edfcb25efdb5e0b0dfd10e005cc6c77ee927e9c9fca9fc9549dd4d1d5d53d494adebbd04c2f2b08415d58147f1
+  checksum: 10c0/4189607da1775e6b7af616a542ae936d99ee0dbfca44ca11fe134f697bbab943f2490caa85c58ccb57616e72a425774d51e16840aeadc936f0c6abdb30243483
   languageName: node
   linkType: hard
 
-"@slicemachine/plugin-kit@npm:0.4.79":
-  version: 0.4.79
-  resolution: "@slicemachine/plugin-kit@npm:0.4.79"
+"@slicemachine/plugin-kit@npm:0.4.80":
+  version: 0.4.80
+  resolution: "@slicemachine/plugin-kit@npm:0.4.80"
   dependencies:
     "@prismicio/client": "npm:7.17.0"
     common-tags: "npm:^1.8.2"
@@ -6363,7 +6363,7 @@ __metadata:
     p-limit: "npm:^4.0.0"
     prettier: "npm:^3.0.3"
     prismic-ts-codegen: "npm:0.1.27"
-  checksum: 10c0/868f33b80df72347396a07612ddd45ea8d033846c3cf85e699ef00c7a06ae14fcd0ac047eaf0a5e1dc8071155a70ca0f83573d9aefd1ff021eec1a26b7bbcbe0
+  checksum: 10c0/8317b99dfba8ee75acdc789c8ac702c681fd957e122053ef6cff0775a062a124fbf41a9582cc95670cafe7660de458c188d29685587ccafdda4ddb1e0dbbee6c
   languageName: node
   linkType: hard
 
@@ -6771,11 +6771,11 @@ __metadata:
   linkType: hard
 
 "@swc/types@npm:^0.1.8":
-  version: 0.1.23
-  resolution: "@swc/types@npm:0.1.23"
+  version: 0.1.24
+  resolution: "@swc/types@npm:0.1.24"
   dependencies:
     "@swc/counter": "npm:^0.1.3"
-  checksum: 10c0/edbfe4a72257f40137e27b537bc17d47ccab28de7727471b859c00a1e67f5feac5e01e4b4e0a2365907ce024bb8c3de4b26b6260733e1b601094db54ae9b7477
+  checksum: 10c0/4ca95a338f070f48303e705996bacfc1219f606c45274bed4f6e3488b86b7b20397bd52792e58fdea0fa924fc939695b5eb5ff7f3ff4737382148fe6097e235a
   languageName: node
   linkType: hard
 
@@ -7542,7 +7542,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/three@npm:*, @types/three@npm:^0.178.1":
+"@types/three@npm:*":
+  version: 0.179.0
+  resolution: "@types/three@npm:0.179.0"
+  dependencies:
+    "@dimforge/rapier3d-compat": "npm:~0.12.0"
+    "@tweenjs/tween.js": "npm:~23.1.3"
+    "@types/stats.js": "npm:*"
+    "@types/webxr": "npm:*"
+    "@webgpu/types": "npm:*"
+    fflate: "npm:~0.8.2"
+    meshoptimizer: "npm:~0.22.0"
+  checksum: 10c0/b06d8a883d27376d4bb11cf572bb6f0cdcc7089f097cfd9ec011c597d026484d82038c37ee71cb20f554161fc63e1ef30c0fd3e07810e9ff5f39cd8462f56183
+  languageName: node
+  linkType: hard
+
+"@types/three@npm:^0.178.1":
   version: 0.178.1
   resolution: "@types/three@npm:0.178.1"
   dependencies:
@@ -9436,9 +9451,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001579, caniuse-lite@npm:^1.0.30001702, caniuse-lite@npm:^1.0.30001726":
-  version: 1.0.30001731
-  resolution: "caniuse-lite@npm:1.0.30001731"
-  checksum: 10c0/d8cddf817d5bec8e7c2106affdbf1bfc3923463ca16697c992b2efeb043e6a5d9dcb70cda913bc6acf9112fd66f9e80279316c08e7800359116925066a63fdfa
+  version: 1.0.30001733
+  resolution: "caniuse-lite@npm:1.0.30001733"
+  checksum: 10c0/2c03ad3362be7c93c09537f3853156ade5c70fb131888971dd538631971873ba27b83c5aad48dd06b6cde005fe57caae2db5d0f467d0c63a315391add70f01f5
   languageName: node
   linkType: hard
 
@@ -10061,11 +10076,11 @@ __metadata:
   linkType: hard
 
 "core-js-compat@npm:^3.43.0":
-  version: 3.44.0
-  resolution: "core-js-compat@npm:3.44.0"
+  version: 3.45.0
+  resolution: "core-js-compat@npm:3.45.0"
   dependencies:
     browserslist: "npm:^4.25.1"
-  checksum: 10c0/5de4b042b8bb232b8390be3079030de5c7354610f136ed3eb91310a44455a78df02cfcf49b2fd05d5a5aa2695460620abf1b400784715f7482ed4770d40a68b2
+  checksum: 10c0/3515955d2c83846f0bf8c4a0f96fc514a6b711e9b3ee19a8df3683a6b0720d762fef60a63bb5c07907f9d18aa00c5904ef690dd4150bc39e2d47e01f05154fda
   languageName: node
   linkType: hard
 
@@ -11148,9 +11163,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.173":
-  version: 1.5.194
-  resolution: "electron-to-chromium@npm:1.5.194"
-  checksum: 10c0/7d72617857055d54552380b34be411933966fa1156dc8653e321d14e82e2af84114bac607e9e2926f885d560b2697a324981e4204d3da4e0f9604d4a468eeba1
+  version: 1.5.199
+  resolution: "electron-to-chromium@npm:1.5.199"
+  checksum: 10c0/5586d20455407edc583e33422e370bbdc07913d8f5c73da2ae1c6adcc79c3be7384ecaf893978027cb26a410c1354f199a05edb99b1ab03dd0346e2201525148
   languageName: node
   linkType: hard
 
@@ -11215,12 +11230,12 @@ __metadata:
   linkType: hard
 
 "enhanced-resolve@npm:^5.0.0, enhanced-resolve@npm:^5.10.0, enhanced-resolve@npm:^5.17.2, enhanced-resolve@npm:^5.7.0":
-  version: 5.18.2
-  resolution: "enhanced-resolve@npm:5.18.2"
+  version: 5.18.3
+  resolution: "enhanced-resolve@npm:5.18.3"
   dependencies:
     graceful-fs: "npm:^4.2.4"
     tapable: "npm:^2.2.0"
-  checksum: 10c0/2a45105daded694304b0298d1c0351a981842249a9867513d55e41321a4ccf37dfd35b0c1e9ceae290eab73654b09aa7a910d618ea6f9441e97c52bc424a2372
+  checksum: 10c0/d413c23c2d494e4c1c9c9ac7d60b812083dc6d446699ed495e69c920988af0a3c66bf3f8d0e7a45cb1686c2d4c1df9f4e7352d973f5b56fe63d8d711dd0ccc54
   languageName: node
   linkType: hard
 
@@ -12828,13 +12843,13 @@ __metadata:
   linkType: hard
 
 "fs-extra@npm:^11.1.0":
-  version: 11.3.0
-  resolution: "fs-extra@npm:11.3.0"
+  version: 11.3.1
+  resolution: "fs-extra@npm:11.3.1"
   dependencies:
     graceful-fs: "npm:^4.2.0"
     jsonfile: "npm:^6.0.1"
     universalify: "npm:^2.0.0"
-  checksum: 10c0/5f95e996186ff45463059feb115a22fb048bdaf7e487ecee8a8646c78ed8fdca63630e3077d4c16ce677051f5e60d3355a06f3cd61f3ca43f48cc58822a44d0a
+  checksum: 10c0/61e5b7285b1ca72c68dfe1058b2514294a922683afac2a80aa90540f9bd85370763d675e3b408ef500077d355956fece3bd24b546790e261c3d3015967e2b2d9
   languageName: node
   linkType: hard
 
@@ -13454,9 +13469,9 @@ __metadata:
   linkType: hard
 
 "hls.js@npm:^1.5.17":
-  version: 1.6.7
-  resolution: "hls.js@npm:1.6.7"
-  checksum: 10c0/e2b9c9e39dcceae54fb7b6a8aa2cafd3a8c3c96e99f484d03e79fee624a542c0a90c6cfdf95d5055fd70970dd76b16ba25b71837ec934e505afa3d2c0fbad5a4
+  version: 1.6.9
+  resolution: "hls.js@npm:1.6.9"
+  checksum: 10c0/dfba52d19077a08cd2dc9e81f711d5076a768d59253bd305bfba4208c059a8bf227bc5b61c339ac8723b60c11421b57c215205cfbad48cad0354a8f8b8037311
   languageName: node
   linkType: hard
 
@@ -15691,12 +15706,12 @@ __metadata:
   linkType: hard
 
 "launch-editor@npm:^2.6.0":
-  version: 2.11.0
-  resolution: "launch-editor@npm:2.11.0"
+  version: 2.11.1
+  resolution: "launch-editor@npm:2.11.1"
   dependencies:
     picocolors: "npm:^1.1.1"
     shell-quote: "npm:^1.8.3"
-  checksum: 10c0/999b7816941398089bbf97919aeacab3dfac80230c5e59d491f23327786ee1ad24058b017eafb9e2d8f84384bb017a7b525ead718a30517b0efae9889a00fcc0
+  checksum: 10c0/b1aad04eef3a675aa35e82498bedaaeb790b9a02834a9cff79987dd7c6f5d92fd8f79ff7a8a4cd61681e0d462069de30d0bc65b41a936a7e3d700a4fdac1090e
   languageName: node
   linkType: hard
 
@@ -16473,6 +16488,13 @@ __metadata:
   version: 0.18.1
   resolution: "meshoptimizer@npm:0.18.1"
   checksum: 10c0/8a825c58b20b65585e8d00788843929b60c66ba4297e89afaa49f7c51ab9a0f7b9130f90cc9ad1b9b48b3d1bee3beb1bc93608acba0d73e78995c3e6e5ca436b
+  languageName: node
+  linkType: hard
+
+"meshoptimizer@npm:~0.22.0":
+  version: 0.22.0
+  resolution: "meshoptimizer@npm:0.22.0"
+  checksum: 10c0/df5c10c897a9eea3085cd2ae077dd4b904df3d71855eb3cbaa624d05e62eb4e893b3e2492cae070122561addb90fbfe092c53b7e68fdd391d0009f267af3f348
   languageName: node
   linkType: hard
 
@@ -20411,8 +20433,8 @@ __metadata:
   linkType: hard
 
 "sass@npm:^1.42.1":
-  version: 1.89.2
-  resolution: "sass@npm:1.89.2"
+  version: 1.90.0
+  resolution: "sass@npm:1.90.0"
   dependencies:
     "@parcel/watcher": "npm:^2.4.1"
     chokidar: "npm:^4.0.0"
@@ -20423,7 +20445,7 @@ __metadata:
       optional: true
   bin:
     sass: sass.js
-  checksum: 10c0/752ccc7581b0c6395f63918116c20924e99943a86d79e94f5c4a0d41b1e981fe1f0ecd1ee82fff21496f81dbc91f68fb35a498166562ec8ec53e7aad7c3dbd9d
+  checksum: 10c0/cd882a61811447c079cdc78b41f3be8164f2a2ced56e0b256b33da2de383a5f10e11ed15f8080bd832e6df302238e11649b07eb5f6e7d257d9b6982a8325d269
   languageName: node
   linkType: hard
 
@@ -21048,14 +21070,14 @@ __metadata:
   linkType: hard
 
 "slice-machine-ui@npm:^2.17.1":
-  version: 2.17.1
-  resolution: "slice-machine-ui@npm:2.17.1"
+  version: 2.18.0
+  resolution: "slice-machine-ui@npm:2.18.0"
   dependencies:
-    "@slicemachine/manager": "npm:0.25.1"
-    start-slicemachine: "npm:0.12.59"
+    "@slicemachine/manager": "npm:0.25.2"
+    start-slicemachine: "npm:0.12.60"
   bin:
     start-slicemachine: ./bin/start-slicemachine.cjs
-  checksum: 10c0/00edeb9f206ed7caf2b669a579551041ee1a2cd1f42dce5b51deaf41b0ea8437cee3a709dbd853a8d57f52a945d38cecb83942aba8a780410231585bd0f53b22
+  checksum: 10c0/dd8d948fa8fdb0ff4c5833f9b4ba2d0e7210578d62d88b354ef3cf2d4e583079c77fe03976ee8ab85bf2d1f61fc010c792369df39871c73791297fba0a45a0ac
   languageName: node
   linkType: hard
 
@@ -21275,9 +21297,9 @@ __metadata:
   linkType: hard
 
 "spdx-license-ids@npm:^3.0.0":
-  version: 3.0.21
-  resolution: "spdx-license-ids@npm:3.0.21"
-  checksum: 10c0/ecb24c698d8496aa9efe23e0b1f751f8a7a89faedcdfcbfabae772b546c2db46ccde8f3bc447a238eb86bbcd4f73fea88720ef3b8394f7896381bec3d7736411
+  version: 3.0.22
+  resolution: "spdx-license-ids@npm:3.0.22"
+  checksum: 10c0/4a85e44c2ccfc06eebe63239193f526508ebec1abc7cf7bca8ee43923755636234395447c2c87f40fb672cf580a9c8e684513a676bfb2da3d38a4983684bbb38
   languageName: node
   linkType: hard
 
@@ -21387,13 +21409,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"start-slicemachine@npm:0.12.59":
-  version: 0.12.59
-  resolution: "start-slicemachine@npm:0.12.59"
+"start-slicemachine@npm:0.12.60":
+  version: 0.12.60
+  resolution: "start-slicemachine@npm:0.12.60"
   dependencies:
     "@prismicio/mocks": "npm:2.14.0"
     "@prismicio/types-internal": "npm:3.11.2"
-    "@slicemachine/manager": "npm:0.25.1"
+    "@slicemachine/manager": "npm:0.25.2"
     body-parser: "npm:^1.20.3"
     chalk: "npm:^4.1.2"
     cors: "npm:^2.8.5"
@@ -21410,7 +21432,7 @@ __metadata:
     serve-static: "npm:^1.15.0"
   bin:
     start-slicemachine: ./bin/start-slicemachine.js
-  checksum: 10c0/d22ec40f1c97d21e8be6b9bb4c6c729967a45aeef9abd3ad8ff1ae10394b289ab37790c270a62a67b6480e5bea66ccae0a5a2b9f45f2366dc30e38642602b9f7
+  checksum: 10c0/7da09af514307eaaf7c904e494ff1e4cb9b7bd800597e0bdc2339f80d1daab314ddf8d5d7fa202192ecf6675b9ccd4e5203e3d5f57dc82c5901d99f03acb7529
   languageName: node
   linkType: hard
 
@@ -21899,8 +21921,8 @@ __metadata:
   linkType: hard
 
 "svix@npm:^1.35.0":
-  version: 1.70.0
-  resolution: "svix@npm:1.70.0"
+  version: 1.71.0
+  resolution: "svix@npm:1.71.0"
   dependencies:
     "@stablelib/base64": "npm:^1.0.0"
     "@types/node": "npm:^22.7.5"
@@ -21909,7 +21931,7 @@ __metadata:
     svix-fetch: "npm:^3.0.0"
     url-parse: "npm:^1.5.10"
     uuid: "npm:^10.0.0"
-  checksum: 10c0/322c86324fd72470cb8b54f92644658be61bee7a8b2647f0ddd7c7ed8c12a38f973bbf0c7ea2695e81d3d4df6953a13b2f186a3e560bdfb1a11ebe64a04965f1
+  checksum: 10c0/ad33835d76172f070d71f0a3b13eed855ad36fb71028a82f39660224d74f3e785787af27e51cd1596c05dfefdc08368695e4d424fd4f6e8f981b59a59f7cbbc7
   languageName: node
   linkType: hard
 
@@ -22251,9 +22273,9 @@ __metadata:
   linkType: hard
 
 "tmp@npm:~0.2.1, tmp@npm:~0.2.3":
-  version: 0.2.3
-  resolution: "tmp@npm:0.2.3"
-  checksum: 10c0/3e809d9c2f46817475b452725c2aaa5d11985cf18d32a7a970ff25b568438e2c076c2e8609224feef3b7923fa9749b74428e3e634f6b8e520c534eef2fd24125
+  version: 0.2.4
+  resolution: "tmp@npm:0.2.4"
+  checksum: 10c0/ac4a7538a9ddb89ead6f4ee019bc23c28ce31549a0bd0ba499a64f81e0804b1e9a3a758622b33807a1f9644dbde9a0205637985f9450abdba1d5062704f98782
   languageName: node
   linkType: hard
 
@@ -24216,11 +24238,11 @@ __metadata:
   linkType: hard
 
 "yaml@npm:^2.3.4":
-  version: 2.8.0
-  resolution: "yaml@npm:2.8.0"
+  version: 2.8.1
+  resolution: "yaml@npm:2.8.1"
   bin:
     yaml: bin.mjs
-  checksum: 10c0/f6f7310cf7264a8107e72c1376f4de37389945d2fb4656f8060eca83f01d2d703f9d1b925dd8f39852a57034fafefde6225409ddd9f22aebfda16c6141b71858
+  checksum: 10c0/7c587be00d9303d2ae1566e03bc5bc7fe978ba0d9bf39cc418c3139d37929dfcb93a230d9749f2cb578b6aa5d9ebebc322415e4b653cb83acd8bc0bc321707f3
   languageName: node
   linkType: hard
 
