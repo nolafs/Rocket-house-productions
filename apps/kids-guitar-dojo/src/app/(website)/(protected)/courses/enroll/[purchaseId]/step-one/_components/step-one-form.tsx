@@ -48,6 +48,7 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
   const setActive = useMenuActive(state => state.setActive);
   const formRef = useRef<HTMLFormElement>(null);
+
   useEffect(() => {
     setActive(true);
   }, []);
@@ -109,12 +110,6 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
                 notify: formUpdate.notify === 'on' ? true : false,
                 newsletter: formUpdate.newsletter === 'on' ? true : false,
               });
-            }}
-            onSubmit={evt => {
-              evt.preventDefault();
-              form.handleSubmit(() => {
-                formAction(new FormData(formRef.current!));
-              })(evt);
             }}>
             <div className={'grid grid-cols-1 items-center justify-center gap-x-3 md:grid-cols-2'}>
               <FormField
