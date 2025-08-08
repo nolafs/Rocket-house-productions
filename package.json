@@ -118,7 +118,6 @@
     "@nx/eslint-plugin": "19.5.1",
     "@nx/jest": "19.5.1",
     "@nx/js": "19.5.1",
-    "@nx/netlify": "^17.2.3",
     "@nx/next": "19.5.1",
     "@nx/react": "19.5.1",
     "@nx/workspace": "19.5.1",

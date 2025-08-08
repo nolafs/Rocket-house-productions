@@ -43,6 +43,21 @@
         "command": "ANALYZE=true nx build kids-guitar-dojo"
       }
     },
+    "dev-with-types": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "nx run kids-guitar-dojo:generate-types-no-engine"
+          },
+          {
+            "command": "nx run kids-guitar-dojo:dev"
+          }
+
+        ],
+        "parallel": false
+      }
+    },
     "build-with-types": {
       "executor": "nx:run-commands",
       "options": {
