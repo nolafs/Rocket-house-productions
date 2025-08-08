@@ -15,7 +15,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
   return (
     <>
       {/* Loading-bar */}
-      <NextTopLoader color={'hsl(var(--accent))'} height={5} showSpinner={false} shadow={false} zIndex={99999} />
 
       {/* Menu header */}
       <Navbar
