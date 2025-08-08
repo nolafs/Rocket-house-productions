@@ -1,4 +1,6 @@
 node_modules
+.netlify
+.netlify/**
 .next/*
 .vscode
 .husky/*
@@ -8,3 +10,4 @@ out
 out/*
 _next/*
 .nx
+.yarn

@@ -174,6 +174,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <PlausibleProvider domain={DOMAIN} customDomain={'https://plausible.biffify.com'}>
       <ClerkProvider>
+        <LogRocketComponent />
+
         <UIProvider>
           <html
             lang="en"
