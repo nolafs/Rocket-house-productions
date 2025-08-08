@@ -10,7 +10,8 @@ import { getAccount } from '@rocket-house-productions/actions/server';
 
 import { db } from '@rocket-house-productions/integration';
 
-export default async function Page({ params }: { params: { product: string[]; purchaseId: string } }) {
+export default async function Page(props: { params: Promise<{ product: string[]; purchaseId: string }> }) {
+  const params = await props.params;
   const { userId } = await auth();
 
   if (!userId) {

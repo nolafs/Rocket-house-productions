@@ -20,7 +20,10 @@ import { PreviewPrismic } from '@rocket-house-productions/features/server';
 import LessonQuestionanaireForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-questionanaire-form';
 import LessonBookCtaForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-book-cta-form';
 
-const LessonIdPage = async ({ params }: { params: { courseId: string; moduleId: string; lessonId: string } }) => {
+const LessonIdPage = async (
+  props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string }> }
+) => {
+  const params = await props.params;
   const { userId } = await auth();
 
   if (!userId) {

@@ -15,7 +15,8 @@ import Actions from './_components/actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
 
-const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
+const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) => {
+  const params = await props.params;
   // To verify if the course creator, is the one editing it
   const { userId }: { userId: string | null } = await auth();
 

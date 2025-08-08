@@ -1,347 +1,201 @@
 import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
-import { NextRequest, NextResponse } from 'next/server';
-import type { User } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
-// Type definitions
-interface Purchase {
-  id: string;
-  courseId: string;
-  childId?: string | null;
-}
-
-interface UserDb {
-  id: string;
-  status: 'active' | 'inactive' | 'pending';
-  purchases: Purchase[];
-  _count: {
-    purchases: number;
-  };
-}
-
-interface Course {
-  id: string;
-  slug: string;
-  title?: string;
-}
-
-interface UserCacheData {
-  userId: string;
-  status: 'active' | 'inactive' | 'pending';
-  hasAccess: boolean;
-  defaultRoute?: string;
-  enrollmentStatus: 'none' | 'partial' | 'complete';
-  timestamp: number;
-  courseSlugs?: string[]; // For enrolled courses
-}
-
-// Constants
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-const COOKIE_NAME = 'course_access_cache';
 const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
 
-// Helper functions
-const createRedirect = (origin: string, path: string): NextResponse => {
-  return NextResponse.redirect(`${origin}${path}`);
-};
-
-const createErrorRedirect = (origin: string, status: string, message?: string): NextResponse => {
-  const params = new URLSearchParams({ status, ...(message && { message }) });
-  return createRedirect(origin, `/courses/error?${params.toString()}`);
-};
-
-// Cookie management
-const getCachedUserData = (req: NextRequest): UserCacheData | null => {
-  try {
-    const cookieValue = req.cookies.get(COOKIE_NAME)?.value;
-    if (!cookieValue) return null;
-
-    const cached: UserCacheData = JSON.parse(decodeURIComponent(cookieValue));
-
-    // Check if cache is expired
-    if (Date.now() - cached.timestamp > CACHE_DURATION) {
-      return null;
-    }
-
-    return cached;
-  } catch (error) {
-    console.error('[MIDDLEWARE] Error parsing cache cookie:', error);
-    return null;
-  }
-};
-
-const setCachedUserData = (response: NextResponse, cacheData: UserCacheData): void => {
-  const cookieValue = encodeURIComponent(JSON.stringify(cacheData));
-  response.cookies.set(COOKIE_NAME, cookieValue, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    maxAge: CACHE_DURATION / 1000, // Convert to seconds
-    path: '/courses',
-  });
-};
-
-const clearCachedUserData = (response: NextResponse): void => {
-  response.cookies.delete(COOKIE_NAME);
-};
-
-// Fast path: Check if user can access current route based on cache
-const canAccessRouteFromCache = (cached: UserCacheData, url: string): boolean => {
-  // Always allow error pages
-  if (url.startsWith('/courses/error')) return true;
-
-  // Check based on cached status
-  switch (cached.status) {
-    case 'inactive':
-      return url.startsWith('/courses/order');
-
-    case 'pending':
-      return url.startsWith('/courses/success');
-
-    case 'active':
-      if (cached.enrollmentStatus === 'none') {
-        return url.startsWith('/courses/order');
-      }
-      if (cached.enrollmentStatus === 'partial') {
-        return url.startsWith('/courses/enroll') || url.startsWith('/courses/upgrade');
-      }
-      if (cached.enrollmentStatus === 'complete') {
-        // Check if accessing an enrolled course
-        if (cached.courseSlugs && cached.courseSlugs.length > 0) {
-          return (
-            cached.courseSlugs.some(slug => url.startsWith(`/courses/${slug}`)) || url.startsWith('/courses/upgrade')
-          );
-        }
-      }
-      return true;
-
-    default:
-      return false;
-  }
-};
-
-// Get redirect URL from cache
-const getRedirectFromCache = (cached: UserCacheData, origin: string, currentUrl: string): string | null => {
-  // Don't redirect if already on correct page
-  if (canAccessRouteFromCache(cached, currentUrl)) {
-    return null;
-  }
-
-  // Return cached default route or determine from status
-  if (cached.defaultRoute) {
-    return cached.defaultRoute;
-  }
-
-  switch (cached.status) {
-    case 'inactive':
-      return '/courses/order';
-    case 'pending':
-      return '/courses/success';
-    case 'active':
-      if (cached.enrollmentStatus === 'none') {
-        return '/courses/order';
-      }
-      if (cached.enrollmentStatus === 'partial') {
-        // Would need purchase ID for this - fallback to full check
-        return null;
-      }
-      if (cached.enrollmentStatus === 'complete' && cached.courseSlugs?.[0]) {
-        return `/courses/${cached.courseSlugs[0]}`;
-      }
-      break;
-  }
-
-  return null;
-};
-
-// Build cache data from user and database info
-const buildCacheData = async (
-  userId: string,
-  clerkUser: User,
-  userDb: UserDb,
-  origin: string,
-): Promise<UserCacheData> => {
-  const cacheData: UserCacheData = {
-    userId,
-    status: userDb.status,
-    hasAccess: userDb.status === 'active',
-    enrollmentStatus: 'none',
-    timestamp: Date.now(),
-  };
-
-  // Determine enrollment status
-  if (userDb._count?.purchases > 0) {
-    const unenrolledPurchases = userDb.purchases?.filter(p => !p.childId) || [];
-
-    if (unenrolledPurchases.length === 0) {
-      cacheData.enrollmentStatus = 'complete';
-
-      // Get course slugs for enrolled courses
-      try {
-        const coursePromises = userDb.purchases.map(async purchase => {
-          const response = await fetch(`${origin}/api/courses/${purchase.courseId}`);
-          if (response.ok) {
-            const course = await response.json();
-            return course.slug;
-          }
-          return null;
-        });
-
-        const courseSlugs = (await Promise.all(coursePromises)).filter(Boolean);
-        cacheData.courseSlugs = courseSlugs;
-
-        // Set default route for single course
-        if (courseSlugs.length === 1) {
-          cacheData.defaultRoute = `/courses/${courseSlugs[0]}`;
-        }
-      } catch (error) {
-        console.error('[MIDDLEWARE] Error fetching course slugs:', error);
-      }
-    } else {
-      cacheData.enrollmentStatus = 'partial';
-      // For partial enrollment, we'd need to store purchase IDs too
-      // For now, fallback to full middleware check
-    }
-  }
-
-  return cacheData;
-};
-
-// Full middleware check (when cache miss or invalid)
-const performFullCheck = async (req: NextRequest, userId: string): Promise<NextResponse> => {
-  const url = req.nextUrl.pathname;
-  const origin = req.nextUrl.origin;
-
-  try {
-    console.info('[MIDDLEWARE] Performing full user check');
-
-    const client = await clerkClient();
-    const clerkUser: User = await client.users.getUser(userId);
-
-    if (!clerkUser) {
-      const response = createErrorRedirect(origin, 'unauthorized');
-      clearCachedUserData(response);
-      return response;
-    }
-
-    // Handle Clerk pending status
-    if (clerkUser.publicMetadata?.status === 'pending') {
-      const cacheData: UserCacheData = {
-        userId,
-        status: 'pending',
-        hasAccess: false,
-        enrollmentStatus: 'none',
-        timestamp: Date.now(),
-      };
-
-      if (!url.startsWith('/courses/success')) {
-        const response = createRedirect(origin, '/courses/success');
-        setCachedUserData(response, cacheData);
-        return response;
-      }
-
-      const response = NextResponse.next();
-      setCachedUserData(response, cacheData);
-      return response;
-    }
-
-    // Fetch from database
-    const userResponse = await fetch(`${origin}/api/users/${userId}`, {
-      headers: { Cookie: req.headers.get('Cookie') || '' },
-    });
-
-    if (!userResponse.ok || !userResponse) {
-      const response = createErrorRedirect(origin, 'error', 'User not found');
-      clearCachedUserData(response);
-      return response;
-    }
-
-    const userDb: UserDb = await userResponse.json();
-
-    if (!userDb) {
-      const response = createErrorRedirect(origin, 'error', 'User not found');
-      clearCachedUserData(response);
-      return response;
-    }
-
-    // Build and cache user data
-    const cacheData = await buildCacheData(userId, clerkUser, userDb, origin);
-
-    // Determine if redirect is needed
-    const redirectUrl = getRedirectFromCache(cacheData, origin, url);
-
-    if (redirectUrl) {
-      const response = createRedirect(origin, redirectUrl);
-      setCachedUserData(response, cacheData);
-      return response;
-    }
-
-    // Allow access and cache the data
-    const response = NextResponse.next();
-    setCachedUserData(response, cacheData);
-    return response;
-  } catch (error) {
-    console.error('[MIDDLEWARE] Error in full check:', error);
-    const response = createErrorRedirect(origin, 'error', 'System error');
-    clearCachedUserData(response);
-    return response;
-  }
-};
-
 export default clerkMiddleware(
-  async (auth, req: NextRequest): Promise<NextResponse> => {
+  async (auth, req) => {
     const url = req.nextUrl.pathname;
 
-    // Skip processing for slice-simulator
-    if (url.startsWith('/slice-simulator')) {
-      return NextResponse.next();
+    // Skip Clerk processing for /slice-simulator and its sub-paths
+    if (url.startsWith('slice-simulator')) {
+      return;
     }
 
     if (isProtectedRoute(req)) {
-      auth.protect();
+      const authProtected =  await auth.protect();
+
+      console.info('[MIDDLEWARE COURSE]', 'Protected Route', authProtected);
 
       if (url.startsWith('/courses')) {
-        console.info('[MIDDLEWARE] Processing courses route');
+        console.info('[MIDDLEWARE COURSE]', 'Courses Route');
 
-        const { userId } = await auth();
+        const { userId, sessionClaims } = await auth();
+
+        const match = url.match(/^\/courses\/([^/]+)(.*)?$/);
+        const product = match ? match[1] : null;
+
+        let userDb = null;
+
+        console.info('[MIDDLEWARE COURSE] User', userId, sessionClaims);
 
         if (!userId) {
-          if (!url.startsWith('/courses/error')) {
-            return createErrorRedirect(req.nextUrl.origin, 'unauthorized');
+          console.error('[MIDDLEWARE COURSE]', 'USER NOT AUTHENTICATED');
+
+          if (url.startsWith(`/courses/error`)) {
+            return NextResponse.next();
           }
-          return NextResponse.next();
+          return NextResponse.redirect(`${req.nextUrl.origin}/courses/error?status=unauthorized`);
         }
 
-        // Try cache first
-        const cached = getCachedUserData(req);
+        const client = await clerkClient();
+        const user = await client.users.getUser(userId);
 
-        if (cached && cached.userId === userId) {
-          console.info('[MIDDLEWARE] Using cached user data');
+        if (!user) {
+          console.error('[MIDDLEWARE COURSE]', 'CLERK USER NOT FOUND');
 
-          // Fast path: check if current route is allowed
-          if (canAccessRouteFromCache(cached, url)) {
+          if (url.startsWith(`${req.nextUrl.origin}/courses/error`)) {
             return NextResponse.next();
           }
 
-          // Fast redirect based on cache
-          const redirectUrl = getRedirectFromCache(cached, req.nextUrl.origin, url);
-          if (redirectUrl) {
-            return createRedirect(req.nextUrl.origin, redirectUrl);
-          }
+          return NextResponse.redirect(`${req.nextUrl.origin}/courses/error?status=unauthorized`);
         }
 
-        // Cache miss or invalid - perform full check
-        return await performFullCheck(req, userId);
+        if (user?.publicMetadata.status === 'pending') {
+          console.info('[MIDDLEWARE COURSE] PENDING');
+
+          if (url.startsWith(`/courses/success`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(`${req.nextUrl.origin}/courses/success`);
+        }
+
+        // CHECK USER IS ACTIVE
+        //const accountRes = await fetch(`${req.nextUrl.origin}/api/getAccount?userId=${userId}`);
+        const userResponse = await fetch(`${req.nextUrl.origin}/api/users/${userId}`, {
+          headers: {
+            Cookie: req.headers.get('Cookie') || '',
+          },
+        });
+
+        console.log('[MIDDLEWARE COURSE] userResponse');
+
+        if (!userResponse.ok) {
+          console.info('[MIDDLEWARE COURSE] USER DB NOT FOUND');
+
+          if (url.startsWith(`/courses/error`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(
+            `${req.nextUrl.origin}/courses/error?status=error&message=No%20user%20found%20in%20Database`,
+          );
+        }
+
+        userDb = await userResponse.json();
+
+        //todo: check if userDb is null it does not go to an error page
+
+        if (!userDb) {
+          console.info('[MIDDLEWARE COURSE] USER DB IS NULL');
+
+          if (url.startsWith(`/courses/error`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(
+            `${req.nextUrl.origin}/courses/error?status=error&message=No%20user%20found%20in%20Database`,
+          );
+        }
+
+        if (userDb?.status === 'inactive') {
+          console.info('[MIDDLEWARE COURSE] ACCOUNT INACTIVE');
+          if (url.startsWith(`/courses/order`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(
+            product ? `${req.nextUrl.origin}/courses/order?product=${product}` : `${req.nextUrl.origin}/courses/order`,
+          );
+        }
+
+        if (userDb?.status === 'pending') {
+          console.info('[MIDDLEWARE COURSE] ACCOUNT PENDING');
+          if (url.startsWith(`/courses/success`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(`${req.nextUrl.origin}/courses/success`);
+        }
+
+        // CHECK USER HAS PURCHASED COURSE
+
+        if (!userDb?._count?.purchases) {
+          console.info('[MIDDLEWARE COURSE]  NO PURCHASES');
+
+          if (url.startsWith(`/courses/order`)) {
+            return NextResponse.next();
+          }
+
+          return NextResponse.redirect(
+            product ? `${req.nextUrl.origin}/courses/order?product=${product}` : `${req.nextUrl.origin}/courses/order`,
+          );
+        }
+
+        // CHECK USER HAS PURCHASED COURSE ENROLLMENT
+
+        if (userDb?._count?.purchases) {
+          const unEnrolledPurchases = userDb.purchases.filter((purchase: any) => !purchase.childId);
+
+          console.info('[MIDDLEWARE COURSE]  PURCHASES', unEnrolledPurchases);
+
+          if (unEnrolledPurchases.length === 0) {
+            // check if User wants to upgrade
+            if (url.startsWith(`/courses/upgrade`)) {
+              console.info('[MIDDLEWARE COURSE]  UPGRADE');
+              return NextResponse.next();
+            }
+
+            // All purchases are enrolled
+            if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
+              // Only one purchase, and it's enrolled
+
+              const courseResp = await fetch(`${req.nextUrl.origin}/api/courses/${userDb.purchases[0].courseId}`);
+              const course = await courseResp.json();
+
+              console.info('[MIDDLEWARE COURSE]  SINGLE PURCHASE ENROLLED - GO TO LESSON');
+
+              if (url.startsWith(`/courses/${course?.slug}`)) {
+                return NextResponse.next();
+              }
+              return NextResponse.redirect(`${req.nextUrl.origin}/courses/${course?.slug}`);
+            } else {
+              console.info('[MIDDLEWARE COURSE]  ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
+              // todo: go to course selection
+            }
+          } else if (unEnrolledPurchases.length === 1) {
+            // Only one purchase is not enrolled
+            console.log('[MIDDLEWARE COURSE]  PURCHASE SINGLE NOT ENROLLED - GO TO ENROLLMENT', unEnrolledPurchases[0]);
+            if (url.startsWith(`/courses/enroll/${unEnrolledPurchases[0].id}`)) {
+              return NextResponse.next();
+            }
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}/intro`);
+          } else {
+            // More than one purchase is not enrolled
+            console.info('[MIDDLEWARE COURSE]  PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
+            // todo: select your purchase to [module_slug]
+            if (url.startsWith(`/courses/enroll/${unEnrolledPurchases[0].id}`)) {
+              return NextResponse.next();
+            }
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}/intro`);
+          }
+        } else {
+          console.info('[MIDDLEWARE COURSE]  NO PURCHASES FOUND');
+          // Handle the case where there are no purchases
+          if (url.startsWith(`/courses/order`)) {
+            return NextResponse.next();
+          }
+          return NextResponse.redirect(
+            product ? `${req.nextUrl.origin}/courses/order?product=${product}` : '/courses/order',
+          );
+        }
       }
     }
-
-    return NextResponse.next();
   },
   { debug: false },
 );
 
 export const config = {
   matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
     '/((?!_next|slice-simulator|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Always run for API routes
     '/(api|trpc)(.*)',
   ],
 };

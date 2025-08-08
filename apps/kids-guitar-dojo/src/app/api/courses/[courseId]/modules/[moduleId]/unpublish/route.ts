@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration';
 
-export async function PATCH(req: Request, { params }: { params: { courseId: string; chapterId: string } }) {
+export async function PATCH(
+  req: Request,
+  props: { params: Promise<{ courseId: string; chapterId: string }> }
+) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
 

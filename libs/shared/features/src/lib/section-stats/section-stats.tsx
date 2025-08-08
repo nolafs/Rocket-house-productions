@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import StatsItem from './stats-item';
 import SectionTitle from '../section-title/section-title';
 
-const AnimatedSectionTitle = motion(SectionTitle);
-const AnimatedStatsFact = motion(StatsItem);
+const AnimatedSectionTitle = motion.create(SectionTitle);
+const AnimatedStatsFact = motion.create(StatsItem);
 
 type SectionStatsProps = {
   data: {

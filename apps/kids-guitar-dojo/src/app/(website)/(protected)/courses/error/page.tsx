@@ -4,7 +4,8 @@ import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
 
-export default function Page({ searchParams }: { searchParams?: { [key: string]: string | undefined } }) {
+export default async function Page(props: { searchParams?: Promise<{ [key: string]: string | undefined }> }) {
+  const searchParams = await props.searchParams;
   return (
     <main className="flex min-h-full w-full flex-col justify-center bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">

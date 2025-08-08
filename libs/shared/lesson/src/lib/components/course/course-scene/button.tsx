@@ -58,6 +58,10 @@ const fontProps = {
   'material-toneMapped': false,
 };
 
+// Preload all GLTF models at module level
+useGLTF.preload('/images/course/button.gltf');
+useGLTF.preload('/images/course/bookmark.gltf');
+
 export const Button3d = ({
   rotation,
   position,
@@ -82,7 +86,13 @@ export const Button3d = ({
   useCursor(hovered);
 
   const button = useRef<THREE.Group>(null);
-  const { nodes } = useGLTF('/images/course/button.gltf');
+  const gltf = useGLTF('/images/course/button.gltf') as unknown as {
+    nodes: {
+      button: THREE.Mesh;
+    };
+  };
+
+  const { nodes } = gltf;
   const lessonProgress = useLessonProgressionStore(store => store.getLessonCompleted(lesson.id));
 
   let lessonTypeSize = 1;
@@ -320,7 +330,13 @@ const CurrentIndicatorRings = ({ delay = 0 }: { delay: number }) => {
 };
 
 const CompleteLessonIcon = () => {
-  const { nodes } = useGLTF('/images/course/button.gltf');
+  const gltf = useGLTF('/images/course/button.gltf') as unknown as {
+    nodes: {
+      button: THREE.Mesh;
+    };
+  };
+
+  const { nodes } = gltf;
   return (
     <group position={[1, 0.5, -1]}>
       <Center>
@@ -377,7 +393,13 @@ const ScrollToCurrentLesson = ({
   isVisible,
   onScrollToCurrentLesson,
 }: ScrollToButtonProps) => {
-  const { nodes } = useGLTF('/images/course/bookmark.gltf');
+  const gltf = useGLTF('/images/course/bookmark.gltf') as unknown as {
+    nodes: {
+      bookmark: THREE.Mesh;
+    };
+  };
+
+  const { nodes } = gltf;
   const [hovered, hover] = useState(false);
   const button = useRef<THREE.Group>(null);
 
