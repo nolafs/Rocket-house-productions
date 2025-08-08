@@ -30,7 +30,7 @@ const initialState: FormErrors = {};
 
 const avatarOptions = ['kimono', 'bonsai', 'carpFish', 'daruma', 'samurai', 'temple_1', 'yukata'];
 
-interface StepThreeFormProps {
+export interface StepThreeFormProps {
   baseUrl: string;
   header?: KeyTextField | string | null | undefined;
   body?: RichTextField | string | null | undefined;

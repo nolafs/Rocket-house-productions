@@ -36,11 +36,15 @@ export const OnBoardingContextProvider = ({ children }: { children: React.ReactN
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     readFromLocalStorage();
     setDataLoaded(true);
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     if (dataLoaded) {
       saveDataToLocalStorage(onBoardingData);
     }

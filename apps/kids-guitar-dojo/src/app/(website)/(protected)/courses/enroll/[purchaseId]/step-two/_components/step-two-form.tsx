@@ -33,7 +33,7 @@ import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purch
 
 const initialState: FormErrors = {};
 
-interface StepTwoFormProps {
+export interface StepTwoFormProps {
   baseUrl: string;
   header?: KeyTextField | string | null | undefined;
   body?: RichTextField | string | null | undefined;
