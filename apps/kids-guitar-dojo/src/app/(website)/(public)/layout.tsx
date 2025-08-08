@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
 import { createClient } from '@/prismicio';
-import NextTopLoader from 'nextjs-toploader';
+//import NextTopLoader from 'nextjs-toploader';
 import { auth } from '@clerk/nextjs/server';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
