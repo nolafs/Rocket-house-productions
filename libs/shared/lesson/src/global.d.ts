@@ -8,4 +8,14 @@ declare module '@react-three/fiber' {
   }
 }
 
+// Fallback (in case module augmentation isn’t picked up)
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      meshLineGeometry?: any;
+      meshLineMaterial?: any;
+    }
+  }
+}
+
 export {};
