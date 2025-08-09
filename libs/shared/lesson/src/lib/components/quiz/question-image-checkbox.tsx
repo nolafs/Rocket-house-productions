@@ -1,3 +1,4 @@
+'use client';
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import { Checkbox, FormControl, FormField, FormItem, FormLabel } from '@rocket-house-productions/shadcn-ui';
 import Image from 'next/image';
