@@ -1,4 +1,3 @@
-import NextTopLoader from 'nextjs-toploader';
 import Logo from '@assets/svgs/logo.svg';
 import Image from 'next/image';
 import Navigation from './_components/navigation';
@@ -27,9 +26,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
   return (
     <div>
-      {/* Loading-bar */}
-      <NextTopLoader color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
-
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <div className="bg-primary flex grow flex-col gap-y-5 overflow-y-auto px-6">
           <div className="flex h-16 shrink-0 items-center fill-white">

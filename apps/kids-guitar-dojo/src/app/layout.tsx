@@ -12,6 +12,7 @@ import PlausibleProvider from 'next-plausible';
 import { CookieConsent } from '@rocket-house-productions/features';
 import { Toaster } from 'react-hot-toast';
 import { LogRocketComponent } from '../../../../libs/shared/util/src/lib/logRocketComponent';
+import ClientProviders from '@components/clientProvider';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -172,31 +173,19 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <PlausibleProvider domain={DOMAIN} customDomain={'https://plausible.biffify.com'}>
-      <ClerkProvider>
-        <LogRocketComponent />
-
-        <UIProvider>
-          <html
-            lang="en"
-            className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
-            suppressHydrationWarning={true}>
-            <body className={'bg-background min-h-screen font-sans antialiased'} suppressHydrationWarning>
-              {/* Confetti */}
-              <ConfettiProvider />
-              {/* Toaster */}
-              <Toaster position="bottom-center" />
-              {children}
-              {/* Preview */}
-              <PrismicPreview repositoryName={repositoryName} />
-              {/* Cookie consent */}
-              <CookieConsent />
-            </body>
-            {/* Analytics */}
-            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''} />
-          </html>
-        </UIProvider>
-      </ClerkProvider>
-    </PlausibleProvider>
+    <html
+      lang="en"
+      className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
+      suppressHydrationWarning={true}>
+      <body className={'bg-background min-h-screen font-sans antialiased'} suppressHydrationWarning>
+        <ClientProviders domain={'https://plausible.biffify.com'}>{children}</ClientProviders>
+        {/* Preview */}
+        <PrismicPreview repositoryName={repositoryName} />
+        {/* Cookie consent */}
+        <CookieConsent />
+      </body>
+      {/* Analytics */}
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''} />
+    </html>
   );
 }
