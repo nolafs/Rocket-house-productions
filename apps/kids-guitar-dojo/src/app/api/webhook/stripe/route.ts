@@ -5,7 +5,7 @@ import { db, stripe } from '@rocket-house-productions/integration';
 import { clerkClient } from '@clerk/nextjs/server';
 import { MailerList } from '@rocket-house-productions/actions/server';
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   let event: Stripe.Event;
 
   try {

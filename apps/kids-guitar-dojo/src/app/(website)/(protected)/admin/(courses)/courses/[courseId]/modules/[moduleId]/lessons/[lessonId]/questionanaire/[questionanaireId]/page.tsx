@@ -15,11 +15,12 @@ import QuestionPointsForm from './_components/question-points-form';
 import QuestionImageForm from './_components/question-image-form';
 import QuestionTypeForm from './_components/question-type-form';
 
-const QuestionnaireIdPage = async ({
-  params,
-}: {
-  params: { courseId: string; moduleId: string; lessonId: string; questionanaireId: string };
-}) => {
+const QuestionnaireIdPage = async (
+  props: {
+    params: Promise<{ courseId: string; moduleId: string; lessonId: string; questionanaireId: string }>;
+  }
+) => {
+  const params = await props.params;
   const { userId } = await auth();
 
   if (!userId) {
