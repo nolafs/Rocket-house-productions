@@ -4,11 +4,7 @@
     "outDir": "../../../dist/out-tsc",
     "types": [
       "node",
-      "@nx/react/typings/module.d.ts",
-      "@nx/react/typings/image.d.ts",
-      "next",
-      "@nx/next/typings/image.d.ts",
-      "@nx/next/typings/svg.d.ts",
+
     ]
   },
   "exclude": [
