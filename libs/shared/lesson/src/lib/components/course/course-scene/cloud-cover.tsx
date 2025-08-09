@@ -1,8 +1,6 @@
-import { useRef } from 'react';
-import { useControls } from 'leva';
-import { useFrame } from '@react-three/fiber';
+'use client';
 import * as THREE from 'three';
-import { Cloud, Clouds, Gltf, useGLTF } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 
 export const CloudCover = ({ ...props }) => {
   const clouds = useGLTF('/images/course/cloud.glb');

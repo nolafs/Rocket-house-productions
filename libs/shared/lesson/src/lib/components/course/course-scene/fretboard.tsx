@@ -1,3 +1,4 @@
+'use client';
 import { useTexture } from '@react-three/drei';
 import React, { useMemo, useRef } from 'react';
 
