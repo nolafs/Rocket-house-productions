@@ -1,6 +1,5 @@
 'use client';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
-import { LessonBookCta, LessonNext } from '@rocket-house-productions/lesson';
 import { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
@@ -10,6 +9,14 @@ const LessonContent = dynamic(() => import('@rocket-house-productions/lesson').t
 });
 
 const LessonVideo = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonVideo), {
+  ssr: false,
+});
+
+const LessonBookCta = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonBookCta), {
+  ssr: false,
+});
+
+const LessonNext = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonNext), {
   ssr: false,
 });
 
