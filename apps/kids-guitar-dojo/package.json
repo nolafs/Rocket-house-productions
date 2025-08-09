@@ -85,10 +85,10 @@
     "tailwind-merge": "2.6.0",
     "tailwindcss-animate": "1.0.7",
     "three": "0.179.1",
+    "typescript": "5.5.4",
     "vaul": "0.9.9",
     "zod": "3.25.76",
-    "zustand": "5.0.7",
-    "typescript": "5.5.4"
+    "zustand": "5.0.7"
   },
   "packageManager": "yarn@4.4.0",
   "resolutions": {
