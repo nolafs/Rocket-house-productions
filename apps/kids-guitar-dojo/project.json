@@ -14,11 +14,11 @@
   "targets": {
     "build": {
       "executor": "@nrwl/next:build",
-      "outputs": ["{workspaceRoot}/dist/apps/kids-guitar-dojo"],
+      "outputs": ["{workspaceRoot}/apps/kids-guitar-dojo"],
       "defaultConfiguration": "production",
       "options": {
         "root": "apps/kids-guitar-dojo",
-        "outputPath": "dist/apps/kids-guitar-dojo",
+        "outputPath": "apps/kids-guitar-dojo",
         "buildLibsFromSource": true
       },
       "configurations": {
