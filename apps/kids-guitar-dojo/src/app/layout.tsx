@@ -1,17 +1,10 @@
 import './global.scss';
 import { Raleway, Mochiy_Pop_One, Nunito } from 'next/font/google';
-
-import { UIProvider } from '@rocket-house-productions/hooks';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
-import { ClerkProvider, SignedOut } from '@clerk/nextjs';
-import { ConfettiProvider } from '@rocket-house-productions/providers';
-import PlausibleProvider from 'next-plausible';
 import { CookieConsent } from '@rocket-house-productions/features';
-import { Toaster } from 'react-hot-toast';
-import { LogRocketComponent } from '../../../../libs/shared/util/src/lib/logRocketComponent';
 import ClientProviders from '@components/clientProvider';
 
 const raleway = Raleway({
@@ -33,13 +26,6 @@ const mochiyPopOne = Mochiy_Pop_One({
   variable: '--font-mochiy-pop-one',
 });
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'kidsguitardojo.com';
-
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 function isURL(string: string | null | undefined): boolean {
   if (!string) return false;
 
@@ -47,7 +33,7 @@ function isURL(string: string | null | undefined): boolean {
   return pattern.test(string);
 }
 
-export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(_props: any, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
   const settings = await client.getSingle('settings');
   const defaultImages = ['/share.png'];
