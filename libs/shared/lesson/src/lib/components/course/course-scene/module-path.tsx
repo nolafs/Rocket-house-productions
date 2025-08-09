@@ -5,6 +5,7 @@ import React, { useMemo } from 'react';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { LessonButton, ModulePosition } from './course.types';
+import '../../../util/mesh-extender';
 
 interface Point {
   x: number;
