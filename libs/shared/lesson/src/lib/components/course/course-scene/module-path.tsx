@@ -1,21 +1,12 @@
 'use client';
 import { Module } from '@prisma/client';
 import * as THREE from 'three';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
-import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
-import { extend } from '@react-three/fiber';
 import { LessonButton, ModulePosition } from './course.types';
-
-extend({ MeshLineGeometry, MeshLineMaterial });
-
-declare module '@react-three/fiber' {
-  interface ThreeElements {
-    meshLineGeometry: any;
-    meshLineMaterial: any;
-  }
-}
+import { extend } from '@react-three/fiber';
+import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
 interface Point {
   x: number;
@@ -56,6 +47,11 @@ export const ModulePath: React.FC<{
   purchaseType?: string | null;
   onOpenLesson?: (lesson: LessonButton) => void;
 }> = ({ display, lessonSpacing = 7, courseCompleted, onBackToCurrentLesson, onOpenLesson, purchaseType = null }) => {
+
+  useEffect(() => {
+    extend({ MeshLineGeometry, MeshLineMaterial });
+  }, []);
+
   if (!display) {
     return null;
   }
