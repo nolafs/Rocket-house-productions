@@ -10,13 +10,6 @@ import { useGSAP } from '@gsap/react';
 import { useFrame, extend } from '@react-three/fiber';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
-declare module '@react-three/fiber' {
-  interface ThreeElements {
-    meshLineGeometry: any;
-    meshLineMaterial: any;
-  }
-}
-
 interface FinalSceneProps {
   position?: [number, number, number];
   rotation?: [number, number, number];
