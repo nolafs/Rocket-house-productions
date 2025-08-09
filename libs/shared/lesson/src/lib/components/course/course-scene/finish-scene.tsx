@@ -21,8 +21,6 @@ interface FinalSceneProps {
   courseCompleted?: boolean;
 }
 
-//extend({ MeshLineGeometry, MeshLineMaterial });
-
 export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0, ...rest }: FinalSceneProps) => {
   const ref = useRef<Group | null>(null);
   const confettiRef = useRef<Group | null>(null);

@@ -11,10 +11,12 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { LessonButton, ModulePosition } from './course.types';
 
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+if (typeof window !== 'undefined') {
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP);
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP);
+}
 
 interface LandscapeProps {
   rotation?: [number, number, number];
