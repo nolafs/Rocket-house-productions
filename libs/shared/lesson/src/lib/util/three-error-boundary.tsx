@@ -1,7 +1,7 @@
 'use client';
 import React, { Suspense } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
-import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
+import { Box, Html, Preload, useProgress } from '@react-three/drei';
 
 import { Loader2 } from 'lucide-react';
 import * as THREE from 'three';
