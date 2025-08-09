@@ -10,6 +10,10 @@ import { useGSAP } from '@gsap/react';
 import { useFrame, extend } from '@react-three/fiber';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
+if (typeof window !== 'undefined') {
+  extend({ MeshLineGeometry, MeshLineMaterial });
+}
+
 interface FinalSceneProps {
   position?: [number, number, number];
   rotation?: [number, number, number];
@@ -17,7 +21,7 @@ interface FinalSceneProps {
   courseCompleted?: boolean;
 }
 
-extend({ MeshLineGeometry, MeshLineMaterial });
+//extend({ MeshLineGeometry, MeshLineMaterial });
 
 export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0, ...rest }: FinalSceneProps) => {
   const ref = useRef<Group | null>(null);
@@ -27,8 +31,6 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
   const guitarHead = useTexture('/images/course/guitar-head.webp');
   const sun = useTexture('/images/course/finish.png');
   const ninja = useTexture('/images/course/ninja.png');
-
-  useEffect(() => {}, []);
 
   const dash = 0.98;
   const count = 100;

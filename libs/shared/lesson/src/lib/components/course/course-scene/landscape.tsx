@@ -1,7 +1,7 @@
 'use client';
 
 import * as THREE from 'three';
-import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
+import React, { MutableRefObject, useRef, useState } from 'react';
 import { Center, Plane, Text3D, useTexture } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { FretBoard } from './fretboard';
