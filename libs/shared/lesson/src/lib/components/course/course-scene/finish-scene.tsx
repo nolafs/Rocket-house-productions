@@ -17,6 +17,8 @@ interface FinalSceneProps {
   courseCompleted?: boolean;
 }
 
+extend({ MeshLineGeometry, MeshLineMaterial });
+
 export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0, ...rest }: FinalSceneProps) => {
   const ref = useRef<Group | null>(null);
   const confettiRef = useRef<Group | null>(null);
@@ -26,9 +28,7 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
   const sun = useTexture('/images/course/finish.png');
   const ninja = useTexture('/images/course/ninja.png');
 
-  useEffect(() => {
-    extend({ MeshLineGeometry, MeshLineMaterial });
-  }, []);
+  useEffect(() => {}, []);
 
   const dash = 0.98;
   const count = 100;

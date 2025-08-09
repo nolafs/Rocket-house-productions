@@ -11,6 +11,11 @@ import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { LessonButton, ModulePosition } from './course.types';
 
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP);
+
 interface LandscapeProps {
   rotation?: [number, number, number];
   position?: [number, number, number];
@@ -50,36 +55,11 @@ export const Landscape = ({
   const prevDisplayRef = useRef<ModuleButtonDisplay | null>(null);
   const { camera } = useThree();
 
-  const [pluginsReady, setPluginsReady] = useState(false);
   const scrollTriggerRef = useRef<unknown>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    if (typeof window === 'undefined') return;
-    (async () => {
-      try {
-        const [{ ScrollTrigger }, { ScrollToPlugin }] = await Promise.all([
-          import('gsap/ScrollTrigger'),
-          import('gsap/ScrollToPlugin'),
-        ]);
-        if (!mounted) return;
-        scrollTriggerRef.current = ScrollTrigger;
-        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-        gsap.registerPlugin(useGSAP); // ensure useGSAP plugin registration client-side
-        setPluginsReady(true);
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.warn('Failed loading gsap plugins', e);
-      }
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
 
   const { contextSafe } = useGSAP(
     () => {
-      if (!pluginsReady) return;
+      if (typeof window === 'undefined') return;
 
       if (setupComplete.current) {
         return;
@@ -97,7 +77,11 @@ export const Landscape = ({
         return;
       }
 
-      if (scrollTriggerRef.current && typeof scrollTriggerRef.current === 'object' && 'kill' in scrollTriggerRef.current) {
+      if (
+        scrollTriggerRef.current &&
+        typeof scrollTriggerRef.current === 'object' &&
+        'kill' in scrollTriggerRef.current
+      ) {
         (scrollTriggerRef.current as { kill: () => void }).kill();
       }
 
@@ -189,7 +173,7 @@ export const Landscape = ({
         prevDisplayRef.current = null;
       };
     },
-    { scope: container, dependencies: [display, courseCompleted, pluginsReady] },
+    { scope: container, dependencies: [display, courseCompleted] },
   );
 
   const handleOnLesson = contextSafe((lesson: LessonButton) => {
@@ -251,69 +235,69 @@ export const Landscape = ({
   });
 
   return (
-      <group ref={ref} position={position} rotation={rotation} {...rest}>
-        <Plane args={[22, 19]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]} receiveShadow={true}>
-          <meshPhongMaterial map={guitar} transparent={true} />
-        </Plane>
-        <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
-          <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
-        </Plane>
-        <Plane args={[17, 10]} position={[0, 2, 10]} scale={4} rotation={[0, 0, 0]}>
-          <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
-        </Plane>
+    <group ref={ref} position={position} rotation={rotation} {...rest}>
+      <Plane args={[22, 19]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]} receiveShadow={true}>
+        <meshPhongMaterial map={guitar} transparent={true} />
+      </Plane>
+      <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
+        <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
+      </Plane>
+      <Plane args={[17, 10]} position={[0, 2, 10]} scale={4} rotation={[0, 0, 0]}>
+        <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
+      </Plane>
 
-        <group position={[0, 10, 5]} scale={1}>
-          <Center>
-            <Text3D
-              castShadow={false}
-              font={'/images/course/font.json'}
-              curveSegments={32}
-              bevelEnabled
-              bevelSize={0.04}
-              bevelThickness={1.5}
-              height={0.5}
-              lineHeight={0.5}
-              letterSpacing={-0.06}
-              size={2}>
-              LET'S ROCK AND ROLL
-              <meshStandardMaterial color="#EC4899" />
-            </Text3D>
-          </Center>
-          <Center position={[0, -2.5, 0]}>
-            <Text3D
-              castShadow={false}
-              font={'/images/course/font.json'}
-              curveSegments={32}
-              bevelEnabled
-              bevelSize={0.05}
-              bevelThickness={1.5}
-              height={0.5}
-              lineHeight={0.5}
-              letterSpacing={-0.06}
-              size={2}>
-              NINJA STYLE!
-              <meshStandardMaterial color="#DE0BF5" />
-            </Text3D>
-          </Center>
-        </group>
-
-        <FretBoard
-          position={[0, 27.9, 0]}
-          lessonSpacing={lessonSpacing}
-          lessonNumber={display.buttons.length}
-          pathLength={display.pathLength}
-        />
-
-        <FinalScene pathLength={display.pathLength} courseCompleted={courseCompleted} />
-
-        <ModulePath
-          display={display}
-          lessonSpacing={lessonSpacing}
-          courseCompleted={courseCompleted}
-          purchaseType={purchaseType}
-          onBackToCurrentLesson={handleOnBackToCurrentLesson}
-          onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
-        />
+      <group position={[0, 10, 5]} scale={1}>
+        <Center>
+          <Text3D
+            castShadow={false}
+            font={'/images/course/font.json'}
+            curveSegments={32}
+            bevelEnabled
+            bevelSize={0.04}
+            bevelThickness={1.5}
+            height={0.5}
+            lineHeight={0.5}
+            letterSpacing={-0.06}
+            size={2}>
+            LET'S ROCK AND ROLL
+            <meshStandardMaterial color="#EC4899" />
+          </Text3D>
+        </Center>
+        <Center position={[0, -2.5, 0]}>
+          <Text3D
+            castShadow={false}
+            font={'/images/course/font.json'}
+            curveSegments={32}
+            bevelEnabled
+            bevelSize={0.05}
+            bevelThickness={1.5}
+            height={0.5}
+            lineHeight={0.5}
+            letterSpacing={-0.06}
+            size={2}>
+            NINJA STYLE!
+            <meshStandardMaterial color="#DE0BF5" />
+          </Text3D>
+        </Center>
       </group>
+
+      <FretBoard
+        position={[0, 27.9, 0]}
+        lessonSpacing={lessonSpacing}
+        lessonNumber={display.buttons.length}
+        pathLength={display.pathLength}
+      />
+
+      <FinalScene pathLength={display.pathLength} courseCompleted={courseCompleted} />
+
+      <ModulePath
+        display={display}
+        lessonSpacing={lessonSpacing}
+        courseCompleted={courseCompleted}
+        purchaseType={purchaseType}
+        onBackToCurrentLesson={handleOnBackToCurrentLesson}
+        onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
+      />
+    </group>
   );
 };
