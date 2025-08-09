@@ -1,12 +1,7 @@
 'use client';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { type ReactNode, useRef, useState } from 'react';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { type ReactNode, useRef, useState, useEffect } from 'react';
 
 export interface VideoProps {
   children: ReactNode;
@@ -17,16 +12,32 @@ export interface VideoProps {
 
 export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleReplay }: VideoProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const [ready, setReady] = useState(false);
+  const [scrollTriggerReady, setScrollTriggerReady] = useState(false);
+  // Use a generic type for ScrollTrigger instance reference (unknown until loaded)
+  const scrollTriggerRef = useRef<{
+    getById?: (id: string) => { kill: () => void } | undefined;
+  } | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    if (typeof window === 'undefined') return;
+    (async () => {
+      const mod = await import('gsap/ScrollTrigger');
+      if (!mounted) return;
+      scrollTriggerRef.current = mod.ScrollTrigger;
+      gsap.registerPlugin(mod.ScrollTrigger);
+      setScrollTriggerReady(true);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useGSAP(
     () => {
+      if (!scrollTriggerReady) return; // wait until ScrollTrigger is loaded
       if (!ref.current) return;
-
-      // gsap check if .video element is already present
-      if (!document.querySelector('.video')) {
-        return;
-      }
+      if (typeof document === 'undefined' || !document.querySelector('.video')) return;
 
       gsap.fromTo(
         '.video',
@@ -41,7 +52,6 @@ export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleRe
             end: 'bottom 30%',
             markers: false,
             onEnter: () => {
-              setReady(true);
               handlePlay();
             },
             onEnterBack: () => {
@@ -58,13 +68,14 @@ export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleRe
       );
 
       return () => {
-        if (ref.current) {
-          gsap.killTweensOf('.video');
-          ScrollTrigger.getById(ref.current.id)?.kill();
+        gsap.killTweensOf('.video');
+        const id = ref.current?.id;
+        if (id && scrollTriggerRef.current?.getById) {
+          scrollTriggerRef.current.getById(id)?.kill();
         }
       };
     },
-    { scope: ref },
+    { scope: ref, dependencies: [scrollTriggerReady] },
   );
 
   return (
