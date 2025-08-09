@@ -1,17 +1,15 @@
 'use client';
 import { useMemo, useRef } from 'react';
-import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { useTexture, Html, Plane } from '@react-three/drei';
 import { Group, PlaneGeometry } from 'three';
-import { useFrame, extend } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import Image from 'next/image';
 import * as THREE from 'three';
 import kidDojo from '../../../assets/kgd-circle.png';
+import '../../../util/mesh-extender';
 
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
-
-extend({ MeshLineGeometry, MeshLineMaterial });
 
 interface FinalSceneProps {
   position?: [number, number, number];
