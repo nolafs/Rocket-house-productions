@@ -8,7 +8,9 @@ import { LessonButton, ModulePosition } from './course.types';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { extend } from '@react-three/fiber';
 
-extend({ MeshLineGeometry, MeshLineMaterial });
+if (typeof window !== 'undefined') {
+  extend({ MeshLineGeometry, MeshLineMaterial });
+}
 
 interface Point {
   x: number;
