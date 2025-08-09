@@ -6,7 +6,7 @@
   publish = "apps/kids-guitar-dojo/.next"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "20.19.4"
   YARN_VERSION = "4.4.0"
 
 [[plugins]]
