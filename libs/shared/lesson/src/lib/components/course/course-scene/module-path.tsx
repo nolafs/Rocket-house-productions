@@ -1,7 +1,7 @@
 'use client';
 import { Module } from '@prisma/client';
 import * as THREE from 'three';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';

@@ -1,8 +1,7 @@
 {
   "devDependencies": {
-    "@slicemachine/adapter-next": "^0.3.66",
-    "next": "14.2.5",
-    "slice-machine-ui": "^2.12.3"
+    "@slicemachine/adapter-next": "^0.3.45",
+    "slice-machine-ui": "^2.4.1"
   },
   "scripts": {
     "slicemachine": "start-slicemachine"
@@ -10,6 +9,8 @@
   "dependencies": {
     "@prismicio/client": "^7.6.0",
     "@prismicio/next": "^1.6.0",
+    "@prismicio/react": "^2.8.0",
     "@prismicio/react": "^2.8.0"
+
   }
 }
