@@ -22,3 +22,4 @@ export * from './lib/components/dialog-layout/dialog-layout';
 export * from './lib/components/dialog-layout/dialog-layout';
 export { ParallaxScene } from './lib/components/parallax-scene';
 export { LessonVideo } from './lib/components/lesson/lesson-video';
+export { LessonContent } from './lib/components/lesson/lesson-content';

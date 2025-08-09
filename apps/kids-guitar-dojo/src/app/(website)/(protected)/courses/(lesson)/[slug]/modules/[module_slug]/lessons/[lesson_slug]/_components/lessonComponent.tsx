@@ -1,7 +1,17 @@
 'use client';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
-import { LessonContent } from '@rocket-house-productions/lesson/server';
-import { LessonBookCta, LessonNext, LessonVideo } from '@rocket-house-productions/lesson';
+import { LessonBookCta, LessonNext } from '@rocket-house-productions/lesson';
+import { useEffect } from 'react';
+
+import dynamic from 'next/dynamic';
+
+const LessonContent = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonContent), {
+  ssr: false,
+});
+
+const LessonVideo = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonVideo), {
+  ssr: false,
+});
 
 interface LessonComponentProps {
   data: { course: any; module: any; lesson: any };
@@ -10,11 +20,13 @@ interface LessonComponentProps {
 }
 
 export function LessonComponent({ data, child, page }: LessonComponentProps) {
-  if (typeof window !== 'undefined') {
-    console.info('Window is defined here');
-  } else {
-    console.warn('Window is undefined here');
-  }
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.info('Window is defined here');
+    } else {
+      console.warn('Window is undefined here');
+    }
+  }, []);
 
   return (
     <>
