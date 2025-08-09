@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
 import { createClient } from '@/prismicio';
-//import NextTopLoader from 'nextjs-toploader';
+import NextTopLoader from 'nextjs-toploader';
 import { auth } from '@clerk/nextjs/server';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -15,7 +15,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
   return (
     <>
       {/* Loading-bar */}
-
+      <NextTopLoader color={'hsl(var(--accent))'} height={5} showSpinner={false} shadow={false} zIndex={99999} />
       {/* Menu header */}
       <Navbar
         navigation={{ items: navigation.data.links }}
