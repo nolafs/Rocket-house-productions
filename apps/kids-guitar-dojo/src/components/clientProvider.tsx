@@ -28,7 +28,7 @@ export function ClientProviders({ children, domain }: ClientProvidersProps) {
       <PlausibleProvider domain={domain}>
         <UIProvider>
           <ConfettiProvider />
-          <NextTopLoader zIndex={500} color="var(--color-primary)" height={5} showSpinner={false} shadow={false} />
+          <NextTopLoader zIndex={999999} color="var(--color-primary)" height={5} showSpinner={false} shadow={false} />
           {children}
           <Toaster position="bottom-center" />
           <LogRocketComponent />
