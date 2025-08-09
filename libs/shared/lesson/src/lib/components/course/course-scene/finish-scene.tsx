@@ -1,3 +1,4 @@
+'use client';
 import { useMemo, useRef } from 'react';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { useTexture, Html, Plane } from '@react-three/drei';

@@ -1,3 +1,4 @@
+'use client';
 import { CameraControls } from '@react-three/drei';
 import React, { useRef } from 'react';
 import { useThree } from '@react-three/fiber';

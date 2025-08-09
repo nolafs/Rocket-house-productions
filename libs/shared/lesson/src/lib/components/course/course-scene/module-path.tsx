@@ -1,3 +1,4 @@
+'use client';
 import { Module } from '@prisma/client';
 import * as THREE from 'three';
 import React, { useEffect, useMemo, useRef } from 'react';

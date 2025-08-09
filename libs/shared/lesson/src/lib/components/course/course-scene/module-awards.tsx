@@ -1,3 +1,4 @@
+'use client';
 import * as THREE from 'three';
 import { Plane, useCursor } from '@react-three/drei';
 import { useLoader } from '@react-three/fiber';
