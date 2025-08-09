@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
@@ -12,30 +12,34 @@ import cn from 'classnames';
 
 interface HeaderProps {
   navigation: NavigationProps;
-  logo: string | import('next/image').StaticImageData;
+  logo: any;
   isAdmin?: boolean;
 }
 
 export function Navbar({ navigation, logo, isAdmin = false }: HeaderProps) {
   const currentRoute = usePathname();
 
+  // Sticky Navbar
+
   useEffect(() => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') return;
     const elementId = document.getElementById('navbar');
 
-    const onScroll = () => {
+    document.addEventListener('scroll', () => {
       if (window.scrollY > 5) {
         elementId?.classList.add('isSticky');
       } else {
         elementId?.classList.remove('isSticky');
       }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    });
 
     return () => {
-      window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('scroll', () => {
+        if (window.scrollY > 5) {
+          elementId?.classList.add('isSticky');
+        } else {
+          elementId?.classList.remove('isSticky');
+        }
+      });
     };
   }, []);
 
