@@ -21,8 +21,6 @@ import { useClientMediaQuery } from '@rocket-house-productions/hooks';
 
 import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
 
-import { SafeCourseNavigation, SafeModuleAwards, SafeSkyBox } from '../../util/three-error-boundary';
-
 import dynamic from 'next/dynamic';
 
 const Landscape = dynamic(() => import('./course-scene/landscape').then(mod => mod.Landscape), {
@@ -37,7 +35,24 @@ const Clouds = dynamic(() => import('./course-scene/cloud-scene').then(mod => mo
   ssr: false,
 });
 
-gsap.registerPlugin(SplitText);
+const SafeCourseNavigation = dynamic(
+  () => import('../../util/three-error-boundary').then(mod => mod.SafeCourseNavigation),
+  {
+    ssr: false,
+  },
+);
+
+const SafeSkyBox = dynamic(() => import('../../util/three-error-boundary').then(mod => mod.SafeSkyBox), {
+  ssr: false,
+});
+
+const SafeModuleAwards = dynamic(() => import('../../util/three-error-boundary').then(mod => mod.SafeModuleAwards), {
+  ssr: false,
+});
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(SplitText);
+}
 
 interface CourseNavigationProps {
   course: Course & { modules: any[] };
