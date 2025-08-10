@@ -2,23 +2,41 @@
 import * as THREE from 'three';
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useThree } from '@react-three/fiber';
-import { Landscape } from './course-scene/landscape';
+
 import { Course } from '@prisma/client';
-import Clouds from './course-scene/cloud-scene';
+
 import { Loader2 } from 'lucide-react';
-import { CloudCover } from './course-scene/cloud-cover';
+
 import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/SplitText';
-import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
+
 import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
 
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
 import { Module } from '@prisma/client';
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
+
+import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
+
 import { SafeCourseNavigation, SafeModuleAwards, SafeSkyBox } from '../../util/three-error-boundary';
+
+import dynamic from 'next/dynamic';
+
+const Landscape = dynamic(() => import('./course-scene/landscape').then(mod => mod.Landscape), {
+  ssr: false,
+});
+
+const CloudCover = dynamic(() => import('./course-scene/cloud-cover').then(mod => mod.CloudCover), {
+  ssr: false,
+});
+
+const Clouds = dynamic(() => import('./course-scene/cloud-scene').then(mod => mod.Clouds), {
+  ssr: false,
+});
+
 gsap.registerPlugin(SplitText);
 
 interface CourseNavigationProps {
