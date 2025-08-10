@@ -1,19 +1,10 @@
 'use client';
-import {
-  Dialog,
-  DialogBody,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../dialog-layout/dialog';
+import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../dialog-layout/dialog';
 import {
   Button,
   buttonVariants,
   Drawer,
   DrawerContent,
-  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { useTexture, Html, Plane } from '@react-three/drei';
 import { Group, PlaneGeometry } from 'three';
 import Image from 'next/image';
