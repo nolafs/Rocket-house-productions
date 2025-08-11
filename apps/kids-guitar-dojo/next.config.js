@@ -26,6 +26,14 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: true,
   },
+  serverExternalPackages: [
+    '@prisma/client',
+    'html2canvas',
+    'video.js',
+    '@react-three/fiber',
+    '@react-three/drei',
+    'three',
+  ],
   transpilePackages: ['three'],
   experimental: {
     taint: true,
