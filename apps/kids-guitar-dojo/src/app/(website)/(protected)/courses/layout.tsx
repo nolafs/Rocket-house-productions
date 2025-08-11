@@ -1,5 +1,4 @@
 import '../../../../styles/lesson.scss';
-import NextTopLoader from 'nextjs-toploader';
 
 export const metadata = {
   title: 'Welcome to Kids Guitar Dojo courses',
@@ -7,11 +6,5 @@ export const metadata = {
 };
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      {/* Loading-bar */}
-      <NextTopLoader zIndex={500} color={'var(--color-primary)'} height={5} showSpinner={false} shadow={false} />
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

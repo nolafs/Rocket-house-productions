@@ -1,7 +1,7 @@
 'use client';
 import React, { Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { Box, Html, Preload, useProgress } from '@react-three/drei';
 
 import { Loader2 } from 'lucide-react';
 import * as THREE from 'three';
@@ -134,22 +134,38 @@ class ThreeErrorBoundary extends React.Component<
 
 // Safe Texture Loading Component
 export function SafeSkyBox() {
-  try {
-    const texture = useTexture('/images/course/sky.webp');
-    return (
-      <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
-        <meshStandardMaterial map={texture} side={THREE.BackSide} />
-      </Box>
-    );
-  } catch (error) {
-    // If texture loading fails, return fallback
-    console.warn('Sky texture failed, using color fallback');
+  const [fallback, setFallback] = React.useState(false);
+
+  if (fallback) {
     return (
       <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
         <meshStandardMaterial color="#87CEEB" side={THREE.BackSide} />
       </Box>
     );
   }
+
+  return (
+    <Suspense
+      fallback={
+        <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
+          <meshStandardMaterial color="#87CEEB" side={THREE.BackSide} />
+        </Box>
+      }>
+      <SkyBoxWithTexture onError={() => setFallback(true)} />
+    </Suspense>
+  );
+}
+
+function SkyBoxWithTexture({ onError }: { onError: () => void }) {
+  const texture = useLoader(THREE.TextureLoader, '/images/course/sky.webp', loader => {
+    loader.manager.onError = onError;
+  });
+
+  return (
+    <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
+      <meshStandardMaterial map={texture} side={THREE.BackSide} />
+    </Box>
+  );
 }
 
 // Enhanced Loader with Error Handling
@@ -159,8 +175,15 @@ export function SafeLoader() {
   // Check if there are loading errors
   const hasErrors = errors && errors.length > 0;
 
+  console.log('LOADER PROGRESS:', progress, loaded === total && !hasErrors);
+
+  // is all loaded
+  if (loaded === total && !hasErrors) {
+    return null; // Don't show loader if everything loaded successfully
+  }
+
   return (
-    <Html fullscreen zIndexRange={[100, 100]}>
+    <Html fullscreen zIndexRange={[1000, 1000]}>
       <div className="z-50 flex h-screen w-full flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center">
           {hasErrors ? (
@@ -185,7 +208,7 @@ export function SafeLoader() {
 }
 
 // Safe wrapper for ModuleAwards
-function SafeModuleAwards({ display }: { display: any }) {
+export function SafeModuleAwards({ display }: { display: any }) {
   try {
     return <ModuleAwards display={display} />;
   } catch (error) {
@@ -212,12 +235,12 @@ export function SafeCourseNavigation({
         setSkipAwards(true); // Disable awards when user skips
       }}>
       <Canvas {...canvasProps}>
-        <Suspense fallback={<SafeLoader />}>
-          {children}
-          {/* Only render ModuleAwards if user hasn't skipped and we have display data */}
-          {moduleAwardsDisplay && !skipAwards && <SafeModuleAwards display={moduleAwardsDisplay} />}
-        </Suspense>
+        {children}
+        {/* Only render ModuleAwards if user hasn't skipped and we have display data */}
+        {moduleAwardsDisplay && !skipAwards && <SafeModuleAwards display={moduleAwardsDisplay} />}
         <Preload all />
+
+        <SafeLoader />
       </Canvas>
     </ThreeErrorBoundary>
   );

@@ -3,7 +3,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { stripeCheckout } from '@rocket-house-productions/integration';
 
-export const stripeCheckoutAction = async (data: FormData) => {
+export const stripeCheckoutAction = async (data: FormData): Promise<void> => {
   const productId = data.get('productId');
   let purchaseId = data.get('purchaseId');
 
@@ -18,7 +18,7 @@ export const stripeCheckoutAction = async (data: FormData) => {
   const { userId } = await auth();
 
   if (!userId) {
-    return null;
+    redirect('/sign-in');
   }
 
   const checkoutSession = await stripeCheckout(productId, purchaseId);

@@ -4,13 +4,13 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2017",
     "module": "esnext",
     "lib": ["es2020", "dom", "dom.iterable"],
     "skipLibCheck": true,
@@ -18,9 +18,6 @@
     "baseUrl": ".",
     "typeRoots": ["./node_modules/@types", "./types"],
     "paths": {
-      "react": [
-        "./node_modules/@types/react"
-      ],
       "@/*": ["apps/kids-guitar-dojo/src/*"],
       "@assets/*": ["apps/kids-guitar-dojo/src/assets/*"],
       "@components/*": ["apps/kids-guitar-dojo/src/components/*"],

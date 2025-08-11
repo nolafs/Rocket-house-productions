@@ -20,7 +20,20 @@ export interface ContentVideoProps {
   controls?: boolean;
 }
 
-export function VideoPlayer({ provider_name, loading, embed_url, title, image, id }: ContentVideoProps) {
+// ✅ Move dynamic imports OUTSIDE the component
+const Youtube = dynamic(() => import('./video-players/youtube'), { ssr: false });
+const Vimeo = dynamic(() => import('./video-players/vimeo'), { ssr: false });
+
+export function VideoPlayer({
+  provider_name,
+  loading,
+  embed_url,
+  title,
+  image,
+  id,
+  width = 944,
+  height = 531,
+}: ContentVideoProps) {
   if (!embed_url) {
     return <NotificationBlock body={'No video source found'} type={'error'} />;
   }
@@ -30,16 +43,20 @@ export function VideoPlayer({ provider_name, loading, embed_url, title, image, i
   }
 
   if (provider_name === 'YouTube') {
-    const Youtube = dynamic(() => import('./video-players/youtube'));
-
     return (
-      <Youtube id={id} title={title || id} poster={image} src={embed_url} width={944} loading={loading} height={531} />
+      <Youtube
+        id={id}
+        title={title || id}
+        poster={image}
+        src={embed_url}
+        width={width}
+        loading={loading}
+        height={height}
+      />
     );
   }
 
   if (provider_name === 'Vimeo') {
-    const Vimeo = dynamic(() => import('./video-players/vimeo'));
-
     return <Vimeo id={id} title={title || id} poster={image} loading={loading} src={embed_url} />;
   }
 

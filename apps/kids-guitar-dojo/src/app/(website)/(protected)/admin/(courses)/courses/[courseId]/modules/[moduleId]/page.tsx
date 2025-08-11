@@ -16,7 +16,8 @@ import ModuleColorForm from './_components/module-color-form';
 import ModuleAttachementForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-attachement-form';
 import ModuleAwardForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-award-form';
 
-const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: string } }) => {
+const ModuleIdPage = async (props: { params: Promise<{ courseId: string; moduleId: string }> }) => {
+  const params = await props.params;
   const { userId } = await auth();
 
   if (!userId) {
