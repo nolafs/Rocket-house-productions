@@ -3,7 +3,7 @@ import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '../../components/Bounded';
 import { ContentBlockImage, SectionContentBlockList } from '@rocket-house-productions/features';
 
-import type { JSX } from "react";
+import type { JSX } from 'react';
 
 /**
  * Props for `ContentImageSlice`.
@@ -17,7 +17,7 @@ const ContentImageSlice = ({ slice }: ContentImageSliceProps): JSX.Element => {
   if (slice.variation === 'sectionContentImage') {
     return (
       <Bounded as="section" className="mx-auto" yPadding={'md'}>
-        <SectionContentBlockList data={{ ...slice.primary }} />
+        <SectionContentBlockList data={{ ...slice.primary, id: slice.id }} />
       </Bounded>
     );
   }

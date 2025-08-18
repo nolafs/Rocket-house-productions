@@ -4,11 +4,11 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { ClerkProvider } from '@clerk/nextjs';
 import PlausibleProvider from 'next-plausible';
-import NextTopLoader from 'nextjs-toploader';
 import { Toaster } from 'react-hot-toast';
 
 import { UIProvider } from '@rocket-house-productions/hooks';
 import { ConfettiProvider } from '@rocket-house-productions/providers';
+import NextTopLoader from 'nextjs-toploader';
 
 const LogRocketComponent = dynamic(() => import('@rocket-house-productions/util').then(m => m.LogRocketComponent), {
   ssr: false,

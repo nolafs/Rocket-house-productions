@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
 import { createClient } from '@/prismicio';

@@ -36,7 +36,8 @@
       "executor": "@nrwl/next:server",
       "options": {
         "buildTarget": "kids-guitar-dojo:build:development",
-        "dev": true
+        "dev": true,
+        "turbo": false
       },
       "configurations": {
         "production": {
