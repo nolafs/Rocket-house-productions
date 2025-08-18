@@ -11,11 +11,13 @@ const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      config.externals.push({ html2canvas: 'commonjs html2canvas', 'video.js': 'commonjs video.js' });
-      config.plugins = [...config.plugins, new PrismaPlugin()];
-      config.devtool = 'source-map';
+  webpack: (config, { isServer, dev }) => {
+    if (!dev) {
+      if (isServer) {
+        config.externals.push({ html2canvas: 'commonjs html2canvas', 'video.js': 'commonjs video.js' });
+        config.plugins = [...config.plugins, new PrismaPlugin()];
+        config.devtool = 'source-map';
+      }
     }
 
     return config;
