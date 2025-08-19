@@ -71,7 +71,9 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const previousProgress = useRef<unknown | null>(null);
 
   const [lesson, setLesson] = useState<LessonButton | null>(null);
+
   const [courseProgression, setCourseProgression] = useState<number | null>(null);
+
   const currentModule = useRef<Module | null>(null);
   const router = useRouter();
   const zoomDirectionRef = useRef<number>(0); // To store zoom direction
@@ -91,6 +93,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   useEffect(() => {
     // Calculate the current course progress
     const newProgress = courseState.getCourseProgress(course.id);
+    console.log('[COURSENAVIGATION]', newProgress);
+
     // Update only if the progression data has actually changed
     if (newProgress !== previousProgress.current) {
       setCourseProgression(newProgress);

@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { Box, Html, Preload, useProgress } from '@react-three/drei';
 
@@ -170,21 +170,55 @@ function SkyBoxWithTexture({ onError }: { onError: () => void }) {
 
 // Enhanced Loader with Error Handling
 export function SafeLoader() {
-  const { progress, loaded, total, errors } = useProgress();
+  const { progress, loaded, total, errors, active, item } = useProgress();
+  const [isVisible, setIsVisible] = useState(true);
+  const [debouncedActive, setDebouncedActive] = useState(false);
 
-  // Check if there are loading errors
+  ///console.log('[SafeLoader] Progress:', progress, loaded, total, errors, active, item);
+
+  // Debounce the active state to prevent flickering
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (active) {
+      setDebouncedActive(true);
+    } else {
+      // Only set to false after a delay
+      timeoutId = setTimeout(() => {
+        setDebouncedActive(false);
+      }, 1000);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [active]);
+
+  // Hide loader when everything is complete
+  useEffect(() => {
+    if (loaded === total && total > 0 && !debouncedActive) {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [loaded, total, debouncedActive]);
+
   const hasErrors = errors && errors.length > 0;
 
-  console.log('LOADER PROGRESS:', progress, loaded === total && !hasErrors);
+  // Show loader if we have items to load and haven't finished
+  const shouldShowLoader = total > 0 && (loaded < total || debouncedActive || hasErrors) && isVisible;
 
-  // is all loaded
-  if (loaded === total && !hasErrors) {
-    return null; // Don't show loader if everything loaded successfully
+  if (!shouldShowLoader) {
+    return null;
   }
 
   return (
     <Html fullscreen zIndexRange={[1000, 1000]}>
-      <div className="z-50 flex h-screen w-full flex-col items-center justify-center">
+      <div className="flex h-screen w-full flex-col items-center justify-center bg-[#e8c996]">
         <div className="flex flex-col items-center justify-center">
           {hasErrors ? (
             <div className="text-center">
@@ -195,11 +229,16 @@ export function SafeLoader() {
           ) : (
             <>
               <Loader2 className="mb-5 h-12 w-12 animate-spin text-white" />
-              <div className="font-lesson-heading mt-5 w-full text-center text-white">{Math.round(progress)} %</div>
+              <div className="font-lesson-heading mt-5 w-full text-center text-white">{Math.round(progress)}%</div>
             </>
           )}
           <div className="w-full text-center text-sm text-white">
             Item: {loaded} / {total}
+          </div>
+
+          {/* Show loading state indicator */}
+          <div className="mt-2 w-full text-center text-xs text-white/70">
+            {debouncedActive ? 'Loading...' : 'Finalizing...'}
           </div>
         </div>
       </div>

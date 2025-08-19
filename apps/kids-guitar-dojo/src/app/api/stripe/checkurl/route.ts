@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db, stripeCheckout } from '@rocket-house-productions/integration';
+import { db, stripeCheckout } from '@rocket-house-productions/integration/server';
 import { clerkClient } from '@clerk/nextjs/server';
 
 export async function POST(req: NextRequest) {

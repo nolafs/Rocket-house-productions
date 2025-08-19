@@ -9,7 +9,8 @@ interface LayoutProps {
 export default async function Layout({ children }: LayoutProps) {
   return (
     <div className={'lesson'}>
-      <NavbarSimple backToUrl={'/courses'} backToText={'< Back to course'} />
+      <NavbarSimple backToUrl={'/refresh'} backToText={'< Back to course'} classNames={'bg-white drop-shadow'} />
+
       <div className={'w-full pt-20 md:pt-0'}>{children}</div>
     </div>
   );

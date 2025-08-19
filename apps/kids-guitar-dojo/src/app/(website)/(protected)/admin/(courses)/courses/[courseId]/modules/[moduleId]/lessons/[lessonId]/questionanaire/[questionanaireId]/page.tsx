@@ -1,4 +1,3 @@
-'user server';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
@@ -9,7 +8,7 @@ import { db } from '@rocket-house-productions/integration/server';
 // Components
 import QuestionTitleForm from './_components/question-title-form';
 import QuestionActions from './_components/question-actions';
-import { Banner, IconBadge } from '@rocket-house-productions/features';
+import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { auth } from '@clerk/nextjs/server';
 import AnswersForm from './_components/answers-form';
 import QuestionPointsForm from './_components/question-points-form';

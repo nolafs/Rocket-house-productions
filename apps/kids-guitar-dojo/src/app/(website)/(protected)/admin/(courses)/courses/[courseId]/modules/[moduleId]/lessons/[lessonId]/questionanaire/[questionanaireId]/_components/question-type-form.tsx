@@ -28,7 +28,6 @@ import {
   SelectLabel,
   SelectItem,
 } from '@rocket-house-productions/shadcn-ui';
-import { SlugFormControl } from '@rocket-house-productions/lesson';
 
 interface QuestionFormProps {
   initialData: {

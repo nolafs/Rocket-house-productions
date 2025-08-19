@@ -1,10 +1,7 @@
 import { redirect } from 'next/navigation';
 import { File, LayoutDashboard, ListChecks } from 'lucide-react';
-
 import { db } from '@rocket-house-productions/integration/server';
-
 // Components
-
 import TitleForm from './_components/title-form';
 import DescriptionForm from './_components/description-form';
 import ImageForm from './_components/image-form';
@@ -12,7 +9,7 @@ import CategoryForm from './_components/category-form';
 import AttachmentForm from './_components/attachment-form';
 import ModulesForm from './_components/modules-form';
 import Actions from './_components/actions';
-import { Banner, IconBadge } from '@rocket-house-productions/features';
+import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { auth } from '@clerk/nextjs/server';
 
 const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) => {

@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { Viewport } from 'next';
+import ModuleWrapper from '@/app/(website)/(protected)/courses/(lesson)/[slug]/_components/moduleWrapper';
 const Header = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.Header));
 const ModuleAwards = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.ModuleAwards));
 
@@ -33,9 +34,7 @@ interface LayoutProps {
 export default async function Layout(props: LayoutProps) {
   const params = await props.params;
 
-  const {
-    children
-  } = props;
+  const { children } = props;
 
   const child = await getChild(params.slug);
 
@@ -50,8 +49,8 @@ export default async function Layout(props: LayoutProps) {
   }
 
   return (
-    <div className={'lesson min-h-screen w-full'} style={{ backgroundColor: '#e8c996' }}>
-      <CourseProgressionProvider userId={child.id} course={course}>
+    <CourseProgressionProvider userId={child.id} course={course}>
+      <ModuleWrapper>
         <Header
           childId={child.id}
           avatar={child?.profilePicture}
@@ -61,7 +60,7 @@ export default async function Layout(props: LayoutProps) {
         />
         <ModuleAwards />
         {children}
-      </CourseProgressionProvider>
-    </div>
+      </ModuleWrapper>
+    </CourseProgressionProvider>
   );
 }
