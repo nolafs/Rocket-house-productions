@@ -42,11 +42,11 @@ interface ModuleDescriptionFormProps {
 }
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().min(1),
-  points: z.coerce.number(),
-  condition: z.string().min(1),
-  badgeUrl: z.string().optional(),
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().min(1, 'Description is required'),
+  points: z.number().min(0, 'Points must be at least 0'),
+  condition: z.string().min(1, 'Condition is required'),
+  badgeUrl: z.string().nullable().optional(),
 });
 
 const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescriptionFormProps) => {
