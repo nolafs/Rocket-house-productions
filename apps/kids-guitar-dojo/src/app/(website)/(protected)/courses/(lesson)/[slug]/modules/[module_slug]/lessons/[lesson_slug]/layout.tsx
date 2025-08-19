@@ -43,7 +43,7 @@ export default async function Layout(props: LayoutProps) {
   }
 
   return (
-    <LessonPageWrapper color={data.module.color}>
+    <LessonPageWrapper>
       <LessonData lesson={data.lesson.id} module={data.module} />
       {children}
     </LessonPageWrapper>

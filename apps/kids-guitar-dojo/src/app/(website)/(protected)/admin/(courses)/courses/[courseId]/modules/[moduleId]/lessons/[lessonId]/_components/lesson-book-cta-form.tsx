@@ -35,7 +35,7 @@ interface ChapterAccessFormProps {
 }
 
 const formSchema = z.object({
-  bookCta: z.boolean().default(false),
+  bookCta: z.boolean(),
   bookMessage: z.string().optional(),
 });
 

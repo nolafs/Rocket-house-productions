@@ -42,7 +42,7 @@ interface QuestionFormProps {
 
 const formSchema = z.object({
   type: z.string().min(1, 'Type is required'),
-  boardSize: z.preprocess(val => (val === '' ? undefined : Number(val)), z.number().optional()),
+  boardSize: z.number().nullable(),
 });
 
 const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questionanaireId }: QuestionFormProps) => {
@@ -57,7 +57,7 @@ const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questiona
     resolver: zodResolver(formSchema),
     defaultValues: {
       type: type,
-      boardSize: initialData.boardSize || undefined,
+      boardSize: initialData.boardSize || null,
     },
   });
 
