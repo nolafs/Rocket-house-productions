@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { ArrowLeft, Eye, LayoutDashboard, ListChecks, Video } from 'lucide-react';
+import { ArrowLeft, Eye, LayoutDashboard, ListChecks } from 'lucide-react';
 
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 // Components
 import ModuleTitleForm from './_components/module-title-form';

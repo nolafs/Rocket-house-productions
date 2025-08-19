@@ -1,10 +1,18 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 export async function PATCH(
   req: Request,
-  props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string; questionanaireId: string; answerId: string }> }
+  props: {
+    params: Promise<{
+      courseId: string;
+      moduleId: string;
+      lessonId: string;
+      questionanaireId: string;
+      answerId: string;
+    }>;
+  },
 ) {
   const params = await props.params;
   try {

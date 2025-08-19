@@ -8,7 +8,7 @@ import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
 import { getAccount } from '@rocket-house-productions/actions/server';
 
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 export default async function Page(props: { params: Promise<{ product: string[]; purchaseId: string }> }) {
   const params = await props.params;

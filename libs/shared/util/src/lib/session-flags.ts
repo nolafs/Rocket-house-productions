@@ -1,4 +1,5 @@
-import { db } from '@rocket-house-productions/integration';
+'use server';
+import { db } from '@rocket-house-productions/integration/server';
 import { Purchase } from '@prisma/client';
 
 // lib/sessionFlags.ts

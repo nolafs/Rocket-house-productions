@@ -1,7 +1,7 @@
 'use server';
 import { OnBoardingType, stepTwoSchema, stepOneSchema, stepThreeSchema } from '../_component/schemas';
 import { OnBoardingRoutes } from '../_component/path-types';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { MailerList } from '@rocket-house-productions/actions/server';

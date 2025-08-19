@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { isDynamicServerError } from 'next/dist/client/components/hooks-server-context';
 

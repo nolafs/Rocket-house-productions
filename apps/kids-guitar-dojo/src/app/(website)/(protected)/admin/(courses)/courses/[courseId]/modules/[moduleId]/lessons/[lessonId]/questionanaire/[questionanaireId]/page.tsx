@@ -1,9 +1,10 @@
+'user server';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { ArrowLeft, CircleHelpIcon, LayoutDashboard } from 'lucide-react';
 
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 // Components
 import QuestionTitleForm from './_components/question-title-form';
@@ -15,11 +16,9 @@ import QuestionPointsForm from './_components/question-points-form';
 import QuestionImageForm from './_components/question-image-form';
 import QuestionTypeForm from './_components/question-type-form';
 
-const QuestionnaireIdPage = async (
-  props: {
-    params: Promise<{ courseId: string; moduleId: string; lessonId: string; questionanaireId: string }>;
-  }
-) => {
+const QuestionnaireIdPage = async (props: {
+  params: Promise<{ courseId: string; moduleId: string; lessonId: string; questionanaireId: string }>;
+}) => {
   const params = await props.params;
   const { userId } = await auth();
 

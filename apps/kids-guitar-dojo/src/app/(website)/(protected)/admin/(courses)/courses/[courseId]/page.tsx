@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { File, LayoutDashboard, ListChecks } from 'lucide-react';
 
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 // Components
 

@@ -1,8 +1,8 @@
 'use server';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
-import { computeFlagsFromUserDb } from '../../util/src/lib/session-flags';
 import { SignJWT } from 'jose';
+import { computeFlagsFromUserDb } from '@rocket-house-productions/util';
 
 const secret = new TextEncoder().encode(process.env.SESSION_FLAGS_SECRET);
 

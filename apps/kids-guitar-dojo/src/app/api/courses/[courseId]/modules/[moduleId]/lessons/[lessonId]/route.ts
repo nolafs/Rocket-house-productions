@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 export async function DELETE(
   req: Request,
-  props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string }> }
+  props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string }> },
 ) {
   const params = await props.params;
   try {
@@ -79,7 +79,7 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string }> }
+  props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string }> },
 ) {
   const params = await props.params;
   try {

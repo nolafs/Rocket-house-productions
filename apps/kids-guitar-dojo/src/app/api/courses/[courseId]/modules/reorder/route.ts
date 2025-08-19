@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 export async function PUT(req: Request, props: { params: Promise<{ courseId: string }> }) {
   const params = await props.params;

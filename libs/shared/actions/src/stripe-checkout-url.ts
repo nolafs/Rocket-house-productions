@@ -1,5 +1,5 @@
 'use server';
-import { stripeCheckout } from '@rocket-house-productions/integration';
+import { stripeCheckout } from '@rocket-house-productions/integration/server';
 import { redirect } from 'next/navigation';
 
 export const checkoutUrl = async (productId: string, userId: string, email = '') => {

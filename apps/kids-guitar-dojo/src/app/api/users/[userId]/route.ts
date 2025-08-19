@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 export async function GET(req: NextRequest, context: { params: Promise<{ userId: string }> }) {
   // get userid from route
