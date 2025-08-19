@@ -45,7 +45,7 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
             </SignedOut>
             <SignedIn>
               <div className={'flex space-x-1'}>
-                <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
+                <Link href="/refresh" className={buttonVariants({ variant: 'outline' })}>
                   Go to Course
                 </Link>
                 {isAdmin && (
@@ -115,8 +115,8 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
                     </Link>
                   </SignedOut>
                   <SignedIn>
-                    <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
-                      Go to Lesson
+                    <Link href="/refresh" className={buttonVariants({ variant: 'outline' })}>
+                      Go to Course
                     </Link>
                     {isAdmin && (
                       <Link href="/admin" className={buttonVariants({ variant: 'outline' })}>

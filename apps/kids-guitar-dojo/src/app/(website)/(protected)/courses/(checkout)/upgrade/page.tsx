@@ -46,6 +46,8 @@ export default async function Page(props: { params: Promise<{ product: string[];
       return redirect('/courses');
     }
     params.purchaseId = purchase.id;
+
+    //console.log('[UPGRADE]', account);
   }
 
   const client = createClient();
@@ -57,6 +59,10 @@ export default async function Page(props: { params: Promise<{ product: string[];
       },
     ],
   });
+
+  //console.log('[UPGRADE]', tiers.length);
+  //console.log('[UPGRADE]', purchase?.category);
+  //console.log('[UPGRADE]', purchase);
 
   return (
     <main>

@@ -18,7 +18,6 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import { Pencil } from 'lucide-react';
 import cn from 'classnames';
-import { Preview } from '@rocket-house-productions/features';
 
 interface ModuleColorFormProps {
   initialData: Module;

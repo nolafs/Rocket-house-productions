@@ -31,7 +31,7 @@ export default clerkMiddleware(
           return NextResponse.redirect(`${req.nextUrl.origin}/`);
         }
 
-        console.info('[MIDDLEWARE COURSE] sessionClaim', sessionClaims);
+        console.info('[MIDDLEWARE COURSE] sessionClaim');
 
         let flags = (sessionClaims as any)?.metadata ?? (sessionClaims as any)?.metadata;
 
@@ -48,7 +48,7 @@ export default clerkMiddleware(
           }
         }
 
-        console.info('[MIDDLEWARE COURSE] flags', flags);
+        console.info('[MIDDLEWARE COURSE] flags');
 
         // If still missing, let the request pass; first page can call /api/session
         if (!flags) {
