@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Webhook } from 'svix';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { headers } from 'next/headers';
 

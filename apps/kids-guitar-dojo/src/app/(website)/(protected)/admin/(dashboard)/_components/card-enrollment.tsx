@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
-import { CreditCard, GraduationCapIcon } from 'lucide-react';
-import { db } from '@rocket-house-productions/integration';
+import { GraduationCapIcon } from 'lucide-react';
+import { db } from '@rocket-house-productions/integration/server';
 
 export async function CardEnrollment() {
   const childrenCount = await db.child.count();

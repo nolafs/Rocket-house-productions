@@ -1,7 +1,7 @@
 'use server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { stripeCheckout } from '@rocket-house-productions/integration';
+import { stripeCheckout } from '@rocket-house-productions/integration/server';
 
 export const stripeCheckoutAction = async (data: FormData): Promise<void> => {
   const productId = data.get('productId');

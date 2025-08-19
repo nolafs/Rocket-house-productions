@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { ArrowLeft, Eye, LayoutDashboard, Video, FileQuestionIcon, MegaphoneIcon } from 'lucide-react';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 // Components
 import LessonTitleForm from './_components/lesson-title-form';
 import LessonDescriptionForm from './_components/lesson-description-form';

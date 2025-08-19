@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { BASE_URL } from '../_component/path-types';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { createClient } from '@/prismicio';
 import StepOneForm from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/step-one/_components/step-one-form';
 import StepOneWrapper from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/step-one/_components/StepOneWrapper';
