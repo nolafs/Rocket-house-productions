@@ -1,12 +1,8 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { Lesson } from '@prisma/client';
-
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
-
 import { Grip, Pencil } from 'lucide-react';
-
 import cn from 'classnames';
 import { Badge } from '@rocket-house-productions/shadcn-ui';
 

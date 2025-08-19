@@ -4,7 +4,7 @@ import { DataTable } from './_components/data-table';
 import { columns } from './_components/columns';
 import { redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration/server';
-import { Banner } from '@rocket-house-productions/features';
+import { Banner } from '@rocket-house-productions/features/ui';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
 import Actions from './_components/actions';
 import ActionRole from './_components/action-role';
