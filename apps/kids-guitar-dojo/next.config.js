@@ -13,7 +13,11 @@ const nextConfig = {
   webpack: (config, { isServer, dev }) => {
     if (!dev) {
       if (isServer) {
-        config.externals.push({ html2canvas: 'commonjs html2canvas', 'video.js': 'commonjs video.js' });
+        config.externals.push({
+          html2canvas: 'commonjs html2canvas',
+          'video.js': 'commonjs video.js',
+          'player.js': 'commonjs player.js',
+        });
         config.plugins = [...config.plugins, new PrismaPlugin()];
         config.devtool = 'source-map';
       }
@@ -31,6 +35,7 @@ const nextConfig = {
     '@prisma/client',
     'html2canvas',
     'video.js',
+    'player.js',
     '@react-three/fiber',
     '@react-three/drei',
     'gsap',

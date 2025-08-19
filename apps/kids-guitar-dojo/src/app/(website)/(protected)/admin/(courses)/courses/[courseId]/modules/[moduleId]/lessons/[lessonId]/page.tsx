@@ -2,20 +2,24 @@ import Link from 'next/link';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { ArrowLeft, Eye, LayoutDashboard, Video, FileQuestionIcon, MegaphoneIcon } from 'lucide-react';
-import { db } from '@rocket-house-productions/integration/server';
+
 // Components
 import LessonTitleForm from './_components/lesson-title-form';
 import LessonDescriptionForm from './_components/lesson-description-form';
 import LessonAccessForm from './_components/lesson-access-form';
 import LessonVideoForm from './_components/lesson-video-form';
 import LessonActions from './_components/lesson-actions';
-import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
+
 import LessonCategoryForm from './_components/lesson-category-form';
 import { createClient } from '@/prismicio';
 import LessonPrismicForm from './_components/lesson-prismic-form';
-import { PreviewPrismic } from '@rocket-house-productions/integration/server';
+
 import LessonQuestionanaireForm from './_components/lesson-questionanaire-form';
 import LessonBookCtaForm from './_components/lesson-book-cta-form';
+
+import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
+import { PreviewPrismic } from '@rocket-house-productions/integration/server';
+import { db } from '@rocket-house-productions/integration/server';
 
 const LessonIdPage = async (props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string }> }) => {
   const params = await props.params;

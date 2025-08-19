@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -7,12 +6,9 @@ import * as z from 'zod';
 import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-
 import { Loader2, PlusCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
-
 import { LessonList } from './lesson-list';
-
 import cn from 'classnames';
 
 import { Module, Lesson } from '@prisma/client';
@@ -26,6 +22,7 @@ import {
   FormMessage,
   Input,
 } from '@rocket-house-productions/shadcn-ui';
+
 import { SlugFormControl } from '@rocket-house-productions/lesson';
 
 interface LessonsFormProps {

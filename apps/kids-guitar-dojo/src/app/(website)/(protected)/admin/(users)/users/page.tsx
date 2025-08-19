@@ -1,5 +1,5 @@
 'use server';
-import { auth, clerkClient } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
 import { DataTable } from './_components/data-table';
 import { columns } from './_components/columns';
 import { redirect } from 'next/navigation';
