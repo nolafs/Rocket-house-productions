@@ -15,7 +15,8 @@ import { Form, FormControl, FormField, FormItem, FormMessage, Button } from '@ro
 import cn from 'classnames';
 
 import { Lesson } from '@prisma/client';
-import { Preview, Editor } from '@rocket-house-productions/features';
+import { Editor } from '@rocket-house-productions/features';
+import { Preview } from '@rocket-house-productions/integration';
 
 interface LessonDescriptionFormProps {
   initialData: Lesson;

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   useGLTF,
   Svg,
@@ -35,7 +37,7 @@ interface ButtonProps {
 }
 
 interface TooltipProps {
-  children: any;
+  children: React.ReactNode;
   position: [number, number, number];
   rotation: [number, number, number];
   scale?: number;
@@ -57,6 +59,10 @@ const fontProps = {
   lineHeight: 1,
   'material-toneMapped': false,
 };
+
+// Preload all GLTF models at module level
+useGLTF.preload('/images/course/button.gltf');
+useGLTF.preload('/images/course/bookmark.gltf');
 
 export const Button3d = ({
   rotation,
@@ -82,7 +88,13 @@ export const Button3d = ({
   useCursor(hovered);
 
   const button = useRef<THREE.Group>(null);
-  const { nodes } = useGLTF('/images/course/button.gltf');
+  const gltf = useGLTF('/images/course/button.gltf') as unknown as {
+    nodes: {
+      button: THREE.Mesh;
+    };
+  };
+
+  const { nodes } = gltf;
   const lessonProgress = useLessonProgressionStore(store => store.getLessonCompleted(lesson.id));
 
   let lessonTypeSize = 1;
@@ -91,6 +103,9 @@ export const Button3d = ({
 
   useGSAP(
     () => {
+      // Ensure running on client and ScrollTrigger exists
+      if (typeof window === 'undefined') return;
+      if (typeof ScrollTrigger === 'undefined') return;
       ScrollTrigger.addEventListener('scrollEnd', () => setIsScrolling(false));
       ScrollTrigger.addEventListener('scrollStart', () => setIsScrolling(true));
 
@@ -163,18 +178,6 @@ export const Button3d = ({
 
   const handleScrollToCurrentLesson = () => {
     onBackToCurrentLesson && onBackToCurrentLesson();
-  };
-
-  const calculateRelativeWorldPosition = () => {
-    const targetPoint = new THREE.Vector3();
-    const point = {
-      x: position[0],
-      y: position[1],
-      z: position[2],
-    };
-    const relativePoint = new THREE.Vector3(point.x, point.y, point.z); // Create a vector to store the world position
-    const target = button.current?.localToWorld(targetPoint.copy(relativePoint));
-    return target;
   };
 
   return (
@@ -320,7 +323,13 @@ const CurrentIndicatorRings = ({ delay = 0 }: { delay: number }) => {
 };
 
 const CompleteLessonIcon = () => {
-  const { nodes } = useGLTF('/images/course/button.gltf');
+  const gltf = useGLTF('/images/course/button.gltf') as unknown as {
+    nodes: {
+      button: THREE.Mesh;
+    };
+  };
+
+  const { nodes } = gltf;
   return (
     <group position={[1, 0.5, -1]}>
       <Center>
@@ -377,7 +386,13 @@ const ScrollToCurrentLesson = ({
   isVisible,
   onScrollToCurrentLesson,
 }: ScrollToButtonProps) => {
-  const { nodes } = useGLTF('/images/course/bookmark.gltf');
+  const gltf = useGLTF('/images/course/bookmark.gltf') as unknown as {
+    nodes: {
+      bookmark: THREE.Mesh;
+    };
+  };
+
+  const { nodes } = gltf;
   const [hovered, hover] = useState(false);
   const button = useRef<THREE.Group>(null);
 

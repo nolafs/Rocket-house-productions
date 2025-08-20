@@ -53,7 +53,7 @@ export function Quiz({ course, lesson, module, questionaries }: QuizProps) {
   const [timer, setTimer] = useState(true);
   const [count, setCount] = useState(1);
   const [score, setScore] = useState(0);
-  const ref = useRef<any>();
+  const ref = useRef<any>(undefined);
 
   const handleQuizCompleted = () => {
     setTimer(false);

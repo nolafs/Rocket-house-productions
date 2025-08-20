@@ -27,6 +27,8 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
   const playerRef = useRef<any | null>(null);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') return;
+
     if (!ref.current && !isMounted.current) return;
 
     let player = new playerJs.Player(ref.current);
@@ -56,7 +58,7 @@ export function LessonVideo({ lesson, module }: LessonContentProps) {
 
       player.on('ended', () => {
         setLessonComplete(lesson.id);
-        addPoints(100 || 0);
+        addPoints(100);
         calculateModuleProgress(module?.id || '');
       });
     });

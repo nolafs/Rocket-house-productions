@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
 import { Users } from 'lucide-react';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 export async function CardAccounts() {
   const accountCount = await db.account.count({

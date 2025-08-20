@@ -1,6 +1,6 @@
 'use server';
-import { db } from '@rocket-house-productions/integration';
-import { notFound, redirect } from 'next/navigation';
+import { db } from '@rocket-house-productions/integration/server';
+import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import getAccount from './get-account';
 

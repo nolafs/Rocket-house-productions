@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@rocket-house-productions/shadcn-ui';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 function ItemCard({
   firstName,

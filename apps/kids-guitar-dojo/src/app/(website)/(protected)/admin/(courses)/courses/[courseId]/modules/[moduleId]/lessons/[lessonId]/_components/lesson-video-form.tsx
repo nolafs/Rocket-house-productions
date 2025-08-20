@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 
 import { Lesson, BunnyData } from '@prisma/client';
 import { Button } from '@rocket-house-productions/shadcn-ui';
-import { Banner, FileUpload } from '@rocket-house-productions/features';
+import { Banner } from '@rocket-house-productions/features/ui';
 import LessonVideoListDialog from './lesson-video-list-dialog';
 import ReactPlayer from 'react-player';
 
@@ -94,7 +94,7 @@ const LessonVideoForm = ({ initialData, courseId, moduleId, lessonId }: LessonVi
         <div className="text-muted-foreground mt-2 text-xs">
           <div className={'video aspect-w-16 aspect-h-9 mb-5'}>
             <ReactPlayer
-              url={`https://${process.env.NEXT_PUBLIC_BUNNYCDN_STREAM_HOSTNAME}/${initialData.videoId}/playlist.m3u8`}
+              src={`https://${process.env.NEXT_PUBLIC_BUNNYCDN_STREAM_HOSTNAME}/${initialData.videoId}/playlist.m3u8`}
               controls={true}
               width="100%"
               height="100%"

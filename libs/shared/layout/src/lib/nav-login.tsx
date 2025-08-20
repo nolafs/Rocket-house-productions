@@ -20,6 +20,7 @@ import { PrismicText } from '@prismicio/react';
 
 export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; navigation: NavigationProps; logo: any }) {
   const [open, setOpen] = useState(false);
+
   return (
     <>
       <div className="other-options hidden self-center pb-[10px] pt-[20px] md:block xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
@@ -44,7 +45,7 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
             </SignedOut>
             <SignedIn>
               <div className={'flex space-x-1'}>
-                <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
+                <Link href="/refresh" className={buttonVariants({ variant: 'outline' })}>
                   Go to Course
                 </Link>
                 {isAdmin && (
@@ -114,8 +115,8 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
                     </Link>
                   </SignedOut>
                   <SignedIn>
-                    <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
-                      Go to Lesson
+                    <Link href="/refresh" className={buttonVariants({ variant: 'outline' })}>
+                      Go to Course
                     </Link>
                     {isAdmin && (
                       <Link href="/admin" className={buttonVariants({ variant: 'outline' })}>

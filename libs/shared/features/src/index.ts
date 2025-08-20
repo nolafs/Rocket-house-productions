@@ -30,10 +30,7 @@ export { ContentBlockImage } from './lib/content-block-image/content-block-image
 export * from './lib/social-list/social-list';
 export { BlogList } from './lib/blog/blog-list';
 export { SocialList } from './lib/social-list/social-list';
-export { Banner } from './lib/banner/banner';
-export { IconBadge } from './lib/icon-badge/icon-badge';
 export { FileUpload } from './lib/file-upload/file-upload';
 export { FileImageUpload } from './lib/file-upload/file-image-upload';
 export * from './lib/modals/confirm-modal';
-export { Preview } from './lib/preview/preview';
 export { Editor } from './lib/editor/editor';

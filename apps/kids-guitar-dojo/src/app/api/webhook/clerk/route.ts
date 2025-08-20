@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Webhook } from 'svix';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { headers } from 'next/headers';
 
@@ -19,7 +19,7 @@ async function validateRequest(request: Request) {
   return wh.verify(payloadString, svixHeaders) as WebhookEvent;
 }
 
-export async function POST(req: Request, res: Response) {
+export async function POST(req: Request) {
   const headersList = await headers();
 
   if (!WEBHOOK_SECRET) {

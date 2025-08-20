@@ -129,7 +129,7 @@ export const stripeCheckoutSessionStatus = async (sessionId: string, userId: str
             stripeChargeId: checkoutSession?.id,
             amount: checkoutSession.amount_total || 0,
             type: 'charge',
-            billingAddress: JSON.stringify(checkoutSession.shipping_details as Stripe.Address),
+            billingAddress: JSON.stringify(checkoutSession.customer_details?.address || {}),
           },
         });
       }
