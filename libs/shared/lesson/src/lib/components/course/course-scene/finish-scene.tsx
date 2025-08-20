@@ -26,6 +26,7 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
   const confettiRef = useRef<Group | null>(null);
   const ninjaRef = useRef<Group | null>(null);
   const ninjaRef2 = useRef<Group | null>(null);
+
   const guitarHead = useTexture('/images/course/guitar-head.webp');
   const sun = useTexture('/images/course/finish.png');
   const ninja = useTexture('/images/course/ninja.png');

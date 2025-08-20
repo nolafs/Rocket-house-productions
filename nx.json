@@ -40,7 +40,7 @@
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint",
-        "exclude": ["**/*.next/**", "**/out/**"]
+        "exclude": ["**/.next/**", "**/out/**"]
       }
     },
     {
@@ -61,7 +61,6 @@
       "library": {}
     }
   },
-  "nxCloudAccessToken": "NDAxM2IxMmMtYmZmMy00YTMyLTk1NmMtMDUxYzFlZTRjMjAyfHJlYWQtd3JpdGU=",
   "targetDefaults": {
     "@nx/js:tsc": {
       "cache": true,

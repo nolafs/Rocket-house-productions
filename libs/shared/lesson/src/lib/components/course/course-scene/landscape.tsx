@@ -283,7 +283,7 @@ export const Landscape = ({
       </group>
 
       <FretBoard
-        position={[0, 27.9, 0]}
+        position={[0, 0, 0]}
         lessonSpacing={lessonSpacing}
         lessonNumber={display.buttons.length}
         pathLength={display.pathLength}
