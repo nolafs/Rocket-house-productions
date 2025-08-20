@@ -8,7 +8,7 @@ import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { ImageIcon, Loader2, Pencil, PlusCircle } from 'lucide-react';
+import { ImageIcon, Loader2, PlusCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import {
@@ -30,9 +30,9 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import cn from 'classnames';
 
-import { AwardType, Module, ModuleAwardType } from '@prisma/client';
+import { Module, ModuleAwardType } from '@prisma/client';
 import { Editor, FileImageUpload } from '@rocket-house-productions/features';
-import ModuleAwardItem from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-award-item';
+import ModuleAwardItem from './module-award-item';
 import Image from 'next/image';
 
 interface ModuleDescriptionFormProps {
@@ -42,11 +42,11 @@ interface ModuleDescriptionFormProps {
 }
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().min(1),
-  points: z.coerce.number(),
-  condition: z.string().min(1),
-  badgeUrl: z.string().optional(),
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().min(1, 'Description is required'),
+  points: z.number().min(0, 'Points must be at least 0'),
+  condition: z.string().min(1, 'Condition is required'),
+  badgeUrl: z.string().nullable().optional(),
 });
 
 const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescriptionFormProps) => {

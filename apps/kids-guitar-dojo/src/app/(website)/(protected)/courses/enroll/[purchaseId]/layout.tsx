@@ -31,9 +31,7 @@ export async function generateViewport(): Promise<Viewport> {
 export default async function Layout(props: LayoutProps) {
   const params = await props.params;
 
-  const {
-    children
-  } = props;
+  const { children } = props;
 
   const { userId } = await auth();
 
@@ -47,8 +45,10 @@ export default async function Layout(props: LayoutProps) {
     <div className={'lesson'}>
       <NavbarSimple logo={logo} />
       <ParallaxScene>
-        <OnBoardingContextProvider>{children}</OnBoardingContextProvider>
-        <StepNavigation baseUrl={baseUrl} />
+        <OnBoardingContextProvider>
+          {children}
+          <StepNavigation baseUrl={baseUrl} />
+        </OnBoardingContextProvider>
       </ParallaxScene>
     </div>
   );

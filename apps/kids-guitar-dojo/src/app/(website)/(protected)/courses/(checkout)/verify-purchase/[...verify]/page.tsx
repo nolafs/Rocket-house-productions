@@ -1,5 +1,5 @@
 import { Loader2 } from 'lucide-react';
-import { stripeCheckoutSessionStatus } from '@rocket-house-productions/integration';
+import { stripeCheckoutSessionStatus } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 

@@ -1,25 +1,58 @@
 'use client';
 import * as THREE from 'three';
-import React, { forwardRef, Suspense, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
-import { Landscape } from './course-scene/landscape';
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { useThree } from '@react-three/fiber';
+
 import { Course } from '@prisma/client';
-import Clouds from './course-scene/cloud-scene';
+
 import { Loader2 } from 'lucide-react';
-import { CloudCover } from './course-scene/cloud-cover';
+
 import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/SplitText';
-import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
+
 import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
-import ModuleAwards from './course-scene/module-awards';
+
 import { Button } from '@rocket-house-productions/shadcn-ui';
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
 import { Module } from '@prisma/client';
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
-gsap.registerPlugin(SplitText);
+
+import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
+
+import dynamic from 'next/dynamic';
+
+const Landscape = dynamic(() => import('./course-scene/landscape').then(mod => mod.Landscape), {
+  ssr: false,
+});
+
+const CloudCover = dynamic(() => import('./course-scene/cloud-cover').then(mod => mod.CloudCover), {
+  ssr: false,
+});
+
+const Clouds = dynamic(() => import('./course-scene/cloud-scene').then(mod => mod.Clouds), {
+  ssr: false,
+});
+
+const SafeCourseNavigation = dynamic(
+  () => import('../../util/three-error-boundary').then(mod => mod.SafeCourseNavigation),
+  {
+    ssr: false,
+  },
+);
+
+const SafeSkyBox = dynamic(() => import('../../util/three-error-boundary').then(mod => mod.SafeSkyBox), {
+  ssr: false,
+});
+
+const SafeModuleAwards = dynamic(() => import('../../util/three-error-boundary').then(mod => mod.SafeModuleAwards), {
+  ssr: false,
+});
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(SplitText);
+}
 
 interface CourseNavigationProps {
   course: Course & { modules: any[] };
@@ -38,7 +71,9 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const previousProgress = useRef<unknown | null>(null);
 
   const [lesson, setLesson] = useState<LessonButton | null>(null);
+
   const [courseProgression, setCourseProgression] = useState<number | null>(null);
+
   const currentModule = useRef<Module | null>(null);
   const router = useRouter();
   const zoomDirectionRef = useRef<number>(0); // To store zoom direction
@@ -58,6 +93,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   useEffect(() => {
     // Calculate the current course progress
     const newProgress = courseState.getCourseProgress(course.id);
+    console.log('[COURSENAVIGATION]', newProgress);
+
     // Update only if the progression data has actually changed
     if (newProgress !== previousProgress.current) {
       setCourseProgression(newProgress);
@@ -225,77 +262,50 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         </div>
       </div>
 
-      <Canvas className={'fixed h-screen w-full'} shadows={true} camera={{ position: [0, 0, 130], fov: 15 }}>
-        <Suspense fallback={<Loader />}>
-          <ambientLight intensity={0.6} />
+      <SafeCourseNavigation
+        className={'fixed h-screen w-full'}
+        shadows={true}
+        moduleAwardsDisplay={display}
+        camera={{ position: [0, 0, 130], fov: 15 }}>
+        <ambientLight intensity={0.6} />
 
-          <SkyBox />
+        <SafeSkyBox />
 
-          <directionalLight
-            shadow-mapSize-width={1024 * (isMobile ? 2 : 4)}
-            shadow-mapSize-height={1024 * (isMobile ? 2 : 4)}
-            shadow-camera-far={500}
-            shadow-camera-left={-100}
-            shadow-camera-right={100}
-            shadow-camera-top={500}
-            shadow-camera-bottom={-100}
-            position={[-40, 100, 250]}
-            intensity={2.5}
-            castShadow></directionalLight>
+        {/* rest of your 3D content */}
+        <directionalLight
+          shadow-mapSize-width={1024 * (isMobile ? 2 : 4)}
+          shadow-mapSize-height={1024 * (isMobile ? 2 : 4)}
+          shadow-camera-far={500}
+          shadow-camera-left={-100}
+          shadow-camera-right={100}
+          shadow-camera-top={500}
+          shadow-camera-bottom={-100}
+          position={[-40, 100, 250]}
+          intensity={2.5}
+          castShadow
+        />
 
-          <Landscape
-            lessonSpacing={LESSON_SPACING}
-            courseCompleted={previousProgress.current === 100}
-            position={[0, 0, 0]}
-            container={containerRef}
-            purchaseType={purchaseType}
-            onOpenLesson={handleOpenLesson}
-            display={display}
-            onReady={load => handleLoaded(load)}
-          />
+        <Landscape
+          lessonSpacing={LESSON_SPACING}
+          courseCompleted={previousProgress.current === 100}
+          position={[0, 0, 0]}
+          container={containerRef}
+          purchaseType={purchaseType}
+          onOpenLesson={handleOpenLesson}
+          display={display}
+          onReady={load => handleLoaded(load)}
+        />
 
-          <group position={[0, 300, -300]}>
-            <Clouds width={80} height={300} depth={300} numClouds={100} />
-          </group>
+        <group position={[0, 300, -300]}>
+          <Clouds width={80} height={300} depth={300} numClouds={100} />
+        </group>
 
-          <CloudCover position={[0, 5, -30]} />
+        <CloudCover position={[0, 5, -30]} />
+        <ZoomControl ref={zoomControlRef} />
 
-          <ZoomControl ref={zoomControlRef} />
-          <Preload all />
-        </Suspense>
-
-        <ModuleAwards display={display} />
-      </Canvas>
+        <SafeModuleAwards display={display} />
+      </SafeCourseNavigation>
     </div>
-  );
-}
-
-function Loader() {
-  const { progress, loaded, total } = useProgress();
-
-  return (
-    <Html fullscreen zIndexRange={[100, 100]}>
-      <div className={'z-50 flex h-screen w-full flex-col items-center justify-center'}>
-        <div className={'flex flex-col items-center justify-center'}>
-          <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
-          <div className={'font-lesson-heading mt-5 w-full text-center text-white'}>{Math.round(progress)} %</div>
-          <div className={'w-full text-center text-sm text-white'}>
-            Item: {loaded} / {total}
-          </div>
-        </div>
-      </div>
-    </Html>
-  );
-}
-
-function SkyBox() {
-  // highlight-start
-  const texture = useTexture('/images/course/sky.webp');
-
-  return (
-    <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
-      <meshStandardMaterial map={texture} side={THREE.BackSide} />
-    </Box>
   );
 }
 

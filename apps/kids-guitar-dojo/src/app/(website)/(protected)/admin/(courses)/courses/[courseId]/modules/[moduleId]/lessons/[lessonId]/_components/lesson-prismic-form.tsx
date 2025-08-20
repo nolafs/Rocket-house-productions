@@ -23,7 +23,6 @@ import {
 import cn from 'classnames';
 
 import { Lesson } from '@prisma/client';
-import { Preview, Editor } from '@rocket-house-productions/features';
 
 interface LessonDescriptionFormProps {
   initialData: Lesson;

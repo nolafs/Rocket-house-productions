@@ -6,7 +6,7 @@ import { Bounded } from '@components/Bounded';
 import { SectionPricingTable } from '@rocket-house-productions/features';
 import { Tier } from '@rocket-house-productions/types';
 
-export default async function Page({ params }: { params: { product: string[] } }) {
+export default async function Page() {
   const { userId, sessionClaims } = await auth();
 
   if (!userId) {

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 
 export async function GET(req: Request, props: { params: Promise<{ courseId: string }> }) {
