@@ -1,22 +1,8 @@
 {
-<<<<<<< HEAD
-  "devDependencies": {
-    "@slicemachine/adapter-next": "^0.3.66",
-    "next": "^15.3.2",
-    "slice-machine-ui": "^2.16.0"
-  },
-=======
->>>>>>> 1b26ae6141eb23b07e2a18a5f13e2fd0d9557c68
   "scripts": {
     "start": "next start"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@prismicio/client": "^7.17.2",
-    "@prismicio/next": "^2.0.1",
-    "@prismicio/react": "^3.2.1",
-    "@slicemachine/init": "^2.10.33"
-=======
     "@clerk/nextjs": "6.29.0",
     "@ducanh2912/next-pwa": "10.2.9",
     "@gsap/react": "2.1.2",
@@ -109,6 +95,5 @@
   "resolutions": {
     "@types/react": "19.1.9",
     "@types/react-dom": "19.1.7"
->>>>>>> 1b26ae6141eb23b07e2a18a5f13e2fd0d9557c68
   }
 }
