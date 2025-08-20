@@ -1,6 +1,6 @@
 {
   "extends": ["plugin:@nx/react-typescript", "next", "next/core-web-vitals", "../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", ".next/**/*", "node_modules/**/*"],
+  "ignorePatterns": ["!**/*", ".next/**/*", "node_modules/**/*", "next-env.d.ts"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.d.ts"],
@@ -9,6 +9,7 @@
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-circle": "off",
         "@typescript-eslint/no-empty-interface": ["warn"],
         "@nx/enforce-module-boundaries": [
           "warn",

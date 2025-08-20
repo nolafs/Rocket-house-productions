@@ -2,15 +2,15 @@ import React, { Suspense } from 'react';
 import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
 import { createClient } from '@/prismicio';
-import NextTopLoader from 'nextjs-toploader';
-import { auth } from '@clerk/nextjs/server';
+
+//import { auth } from '@clerk/nextjs/server';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const client = createClient();
   const navigation = await client.getSingle('navigation');
   const settings = await client.getSingle('settings');
 
-  const { sessionClaims } = await auth();
+  //const { sessionClaims } = await auth();
 
   return (
     <>
@@ -18,7 +18,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
       <Navbar
         navigation={{ items: navigation.data.links }}
         logo={logo}
-        isAdmin={sessionClaims?.metadata?.role === 'admin'}
+        //isAdmin={sessionClaims?.metadata?.role === 'admin'}
       />
 
       {children}

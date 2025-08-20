@@ -13,7 +13,7 @@
   "// targets": "to see all targets run: nx show project kids-guitar-dojo --web",
   "targets": {
     "build": {
-      "executor": "@nrwl/next:build",
+      "executor": "@nx/next:build",
       "outputs": ["{workspaceRoot}/apps/kids-guitar-dojo"],
       "defaultConfiguration": "production",
       "options": {
@@ -33,11 +33,13 @@
       }
     },
     "dev": {
-      "executor": "@nrwl/next:server",
+      "executor": "@nx/next:server",
       "options": {
+        "root": "apps/kids-guitar-dojo",
+        "port": 3000,
         "buildTarget": "kids-guitar-dojo:build:development",
         "dev": true,
-        "turbo": false
+        "turbo": true
       },
       "configurations": {
         "production": {

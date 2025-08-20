@@ -9,12 +9,15 @@ export default clerkMiddleware(
   async (auth, req) => {
     const url = req.nextUrl.pathname;
 
+    console.info('[MIDDLEWARE]', 'Route', isProtectedRoute(req));
+
     // Skip Clerk processing for /slice-simulator and its sub-paths
     if (url.startsWith('/slice-simulator')) {
       return NextResponse.next();
     }
 
     if (!isProtectedRoute(req)) {
+      console.info('[MIDDLEWARE]', 'Unprotected Route');
       return NextResponse.next();
     }
 
@@ -79,6 +82,8 @@ export default clerkMiddleware(
 
         // CHECK USER HAS PURCHASED COURSE
 
+        console.log('[MIDDLEWARE COURSE] flags', flags);
+
         if (!flags?.hasPurchases) {
           console.info('[MIDDLEWARE COURSE]  NO PURCHASES');
 
@@ -127,6 +132,8 @@ export default clerkMiddleware(
     } else {
       return NextResponse.redirect(`${req.nextUrl.origin}/`);
     }
+
+    return NextResponse.next();
   },
   { debug: false },
 );
