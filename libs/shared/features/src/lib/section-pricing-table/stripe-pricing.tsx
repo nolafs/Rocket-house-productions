@@ -14,6 +14,8 @@ export async function StripePricing({ productId, sales = false }: StripePricingP
 
   const productPrices = await stripePrices(productId, sales);
 
+  console.log('[STRIPE PRICING] productPrices', productPrices);
+
   if (!productPrices) {
     return null;
   }
