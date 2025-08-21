@@ -1,6 +1,6 @@
 import React from 'react';
 import StepNavigation from './_component/StepNavigation';
-import { ParallaxScene } from '@rocket-house-productions/lesson';
+import { ParallaxScene } from '@rocket-house-productions/lesson/server';
 import { BASE_URL } from './_component/path-types';
 import { OnBoardingContextProvider } from './_component/onBoardinglContext';
 import { NavbarSimple } from '@rocket-house-productions/layout';

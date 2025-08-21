@@ -75,6 +75,7 @@
     "react-hot-toast": "2.5.2",
     "react-player": "2.16.1",
     "react-quill": "2.0.0",
+    "react-quill-new": "3.6.0",
     "react-timer-hook": "3.0.8",
     "rss": "1.2.2",
     "server-only": "0.0.1",

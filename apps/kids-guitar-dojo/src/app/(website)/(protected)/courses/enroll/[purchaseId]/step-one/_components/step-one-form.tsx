@@ -1,5 +1,5 @@
 'use client';
-import { DialogLayout } from '@rocket-house-productions/lesson';
+import { DialogLayout } from '@rocket-house-productions/lesson/server';
 import { FormErrors } from '../../_component/path-types';
 import { PrevButton } from '../../_component/button-prev';
 import { useForm } from 'react-hook-form';
