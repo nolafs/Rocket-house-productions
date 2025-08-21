@@ -42,7 +42,7 @@ export async function POST(req: Request, props: { params: Promise<{ courseId: st
       },
     });
 
-    return NextResponse.json(module);
+    return NextResponse.json(moduleSection);
   } catch (error) {
     console.error('[COURSES_COURSE-ID_MODULE]', error);
     return new NextResponse('Internal Error', { status: 500 });
