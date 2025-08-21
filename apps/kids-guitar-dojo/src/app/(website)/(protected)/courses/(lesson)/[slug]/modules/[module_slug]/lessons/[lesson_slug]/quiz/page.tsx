@@ -1,6 +1,6 @@
 import { notFound, redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import { LessonHeader, Quiz } from '@rocket-house-productions/lesson';
+import { LessonHeader, Quiz } from '@rocket-house-productions/lesson/server';
 import { getChild, getQuiz } from '@rocket-house-productions/actions/server';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 

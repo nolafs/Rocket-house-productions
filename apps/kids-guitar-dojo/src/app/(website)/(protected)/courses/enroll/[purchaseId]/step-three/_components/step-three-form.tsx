@@ -1,5 +1,5 @@
 'use client';
-import { Avatar, DialogLayout } from '@rocket-house-productions/lesson';
+import { DialogLayout } from '@rocket-house-productions/lesson/server';
 import {
   Form,
   FormControl,
@@ -26,6 +26,7 @@ import ButtonSubmit from '../../_component/button-submit';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
 import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
+import { Avatar } from '@rocket-house-productions/lesson';
 const initialState: FormErrors = {};
 
 const avatarOptions = ['kimono', 'bonsai', 'carpFish', 'daruma', 'samurai', 'temple_1', 'yukata'];
