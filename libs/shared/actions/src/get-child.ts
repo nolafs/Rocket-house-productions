@@ -80,7 +80,7 @@ export const getChild = async (slug: string) => {
   return {
     ...child,
     purchaseId: purchase?.id,
-    purchaseType: purchase?.type,
-    purchaseCategory: purchase?.category,
+    purchaseType: purchase?.type || 'free', // default to 'free' if type is not set
+    purchaseCategory: purchase?.category || 'free', // default to 'free' if category is not set
   };
 };

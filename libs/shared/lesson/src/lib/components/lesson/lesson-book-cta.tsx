@@ -23,7 +23,8 @@ export function LessonBookCta({ course, bookCta, bookMessage }: LessonBookCtaPro
       const fetchPurchaseType = async () => {
         try {
           const child = await getChild(course.slug);
-          setPurchaseCategory(child.purchaseCategory);
+          console.log('[LessonBookCta]', child);
+          setPurchaseCategory(child?.purchaseCategory);
         } catch (error) {
           console.error('Error fetching purchase type:', error);
         }
