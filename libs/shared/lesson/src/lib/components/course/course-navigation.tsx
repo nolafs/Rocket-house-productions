@@ -22,6 +22,7 @@ import { useClientMediaQuery } from '@rocket-house-productions/hooks';
 import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
 
 import dynamic from 'next/dynamic';
+import { CameraController } from './course-scene/camera-control';
 
 const Landscape = dynamic(() => import('./course-scene/landscape').then(mod => mod.Landscape), {
   ssr: false,
