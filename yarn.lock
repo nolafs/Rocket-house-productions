@@ -6072,6 +6072,7 @@ __metadata:
     "@types/lodash": "npm:^4.17.20"
     "@types/node": "npm:18.19.123"
     "@types/react": "npm:^19.1.10"
+    "@types/react-dom": "npm:^19.1.7"
     "@types/react-google-recaptcha": "npm:^2.1.9"
     "@types/rss": "npm:^0.0.32"
     "@types/three": "npm:^0.179.0"
@@ -7887,6 +7888,15 @@ __metadata:
   version: 1.2.7
   resolution: "@types/range-parser@npm:1.2.7"
   checksum: 10c0/361bb3e964ec5133fa40644a0b942279ed5df1949f21321d77de79f48b728d39253e5ce0408c9c17e4e0fd95ca7899da36841686393b9f7a1e209916e9381a3c
+  languageName: node
+  linkType: hard
+
+"@types/react-dom@npm:19.1.7":
+  version: 19.1.7
+  resolution: "@types/react-dom@npm:19.1.7"
+  peerDependencies:
+    "@types/react": ^19.0.0
+  checksum: 10c0/8db5751c1567552fe4e1ece9f5823b682f2994ec8d30ed34ba0ef984e3c8ace1435f8be93d02f55c350147e78ac8c4dbcd8ed2c3b6a60f575bc5374f588c51c9
   languageName: node
   linkType: hard
 
