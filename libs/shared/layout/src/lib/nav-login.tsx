@@ -1,5 +1,5 @@
 'use client';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import cn from 'classnames';
 import {
@@ -12,14 +12,25 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import { Menu, SettingsIcon } from 'lucide-react';
 import React, { useState } from 'react';
-import Image from 'next/image';
-import { asText } from '@prismicio/client';
-import { NavigationProps } from '@rocket-house-productions/types';
+import Image, { type StaticImageData } from 'next/image';
 import { PrismicNextLink } from '@prismicio/next';
-import { PrismicText } from '@prismicio/react';
+import { NavigationDocumentData } from '../../../../../apps/kids-guitar-dojo/prismicio-types';
+import { usePathname } from 'next/navigation';
+import { asText } from '@prismicio/client';
 
-export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; navigation: NavigationProps; logo: any }) {
+export function NavLogin({
+  navigation,
+  logo,
+}: {
+  isAdmin?: boolean;
+  navigation: NavigationDocumentData;
+  logo: StaticImageData;
+}) {
   const [open, setOpen] = useState(false);
+  const currentRoute = usePathname();
+  const { user } = useUser();
+
+  const isAdmin = user?.publicMetadata.role === 'admin';
 
   return (
     <>
@@ -86,14 +97,17 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
                   <Image src={logo} className="inline pl-5" alt="logo" />
                 </Link>
                 <ul className={'b mt-10 flex flex-col divide-y divide-gray-500/10'}>
-                  {navigation &&
-                    navigation.items.map(item => (
-                      <li key={asText(item.label)} className="group relative px-5 py-5">
+                  {navigation?.links &&
+                    navigation.links.map((item, idx) => (
+                      <li key={`nav-login-${idx}`} className="group relative px-5 py-5">
                         <PrismicNextLink
                           field={item.link}
                           onClick={() => setOpen(false)}
-                          className="hover:text-primary text-base font-medium text-gray-500 transition-all">
-                          <PrismicText field={item.label} />
+                          className={cn(
+                            'hover:text-primary text-base font-medium text-gray-500 transition-all',
+                            (item.link as { url: string }).url === currentRoute && 'text-primary',
+                          )}>
+                          {asText(item.label)}
                         </PrismicNextLink>
                       </li>
                     ))}

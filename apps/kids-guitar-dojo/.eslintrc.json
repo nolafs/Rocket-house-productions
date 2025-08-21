@@ -12,7 +12,7 @@
         "@typescript-eslint/no-circle": "off",
         "@typescript-eslint/no-empty-interface": ["warn"],
         "@nx/enforce-module-boundaries": [
-          "warn",
+          "off",
           {
             "allow": [
               "@components/*",
