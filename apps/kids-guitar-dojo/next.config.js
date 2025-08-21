@@ -48,6 +48,7 @@ const nextConfig = {
   },
   ...(process.env.NEXT_PUBLIC_PRODUCTION && headers),
   images: {
+    qualities: [25, 50, 75, 100],
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {

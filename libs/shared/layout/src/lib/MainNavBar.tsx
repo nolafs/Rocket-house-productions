@@ -1,45 +1,38 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import Image from 'next/image';
-import { asText } from '@prismicio/client';
-import { PrismicText } from '@prismicio/react';
-import { PrismicNextLink } from '@prismicio/next';
-import { NavigationProps } from '@rocket-house-productions/types';
+import React, { useEffect } from 'react';
+import Image, { type StaticImageData } from 'next/image';
 import NavLogin from './nav-login';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { NavigationDocumentData } from '../../../../../apps/kids-guitar-dojo/prismicio-types';
+import { PrismicNextLink } from '@prismicio/next';
 import cn from 'classnames';
-
+import { asText } from '@prismicio/client';
 interface HeaderProps {
-  navigation: NavigationProps;
-  logo: any;
-  isAdmin?: boolean;
+  navigation: NavigationDocumentData;
+  logo: StaticImageData;
 }
 
-export function Navbar({ navigation, logo, isAdmin = false }: HeaderProps) {
-  const currentRoute = usePathname();
+export function MainNavbar({ navigation, logo }: HeaderProps) {
+  console.log('Navigation:', navigation);
 
-  // Sticky Navbar
+  const currentRoute = usePathname();
 
   useEffect(() => {
     const elementId = document.getElementById('navbar');
 
-    document.addEventListener('scroll', () => {
+    const handleScroll = () => {
       if (window.scrollY > 5) {
         elementId?.classList.add('isSticky');
       } else {
         elementId?.classList.remove('isSticky');
       }
-    });
+    };
+
+    document.addEventListener('scroll', handleScroll);
 
     return () => {
-      document.removeEventListener('scroll', () => {
-        if (window.scrollY > 5) {
-          elementId?.classList.add('isSticky');
-        } else {
-          elementId?.classList.remove('isSticky');
-        }
-      });
+      document.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -55,30 +48,30 @@ export function Navbar({ navigation, logo, isAdmin = false }: HeaderProps) {
 
           <div className="navbar-collapse hidden grow basis-auto self-center md:flex">
             <ul className="navbar-nav mx-auto flex flex-row self-center">
-              {navigation &&
-                navigation.items.map(item => (
+              {navigation?.links &&
+                navigation.links.map((item, idx) => (
                   <li
-                    key={asText(item.label)}
+                    key={`main-nav- ${idx}`}
                     className="group relative mx-[5px] py-[10px] first:ml-0 last:mr-0 lg:py-[5px] xl:mx-[10px] xl:py-[35px] 2xl:mx-[18px] 2xl:py-[30px]">
-                    <PrismicNextLink
-                      field={item.link}
+                    <Link
+                      href={(item.link as { url: string }).url}
+                      //field={item.link}
                       className={cn(
                         'hover:text-primary text-base font-medium text-gray-500 underline-offset-4 transition-all hover:underline',
-                        item.link.url === currentRoute && 'text-primary',
+                        (item.link as { url: string }).url === currentRoute && 'text-primary',
                       )}>
-                      <PrismicText field={item.label} />
-                    </PrismicNextLink>
+                      {asText(item.label)}
+                    </Link>
                   </li>
                 ))}
             </ul>
           </div>
-
           {/* Other options */}
-          <NavLogin navigation={navigation} logo={logo} isAdmin={isAdmin} />
+          <NavLogin navigation={navigation} logo={logo} />
         </nav>
       </div>
     </div>
   );
 }
 
-export default Navbar;
+export default MainNavbar;

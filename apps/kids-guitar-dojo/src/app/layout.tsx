@@ -158,12 +158,14 @@ export async function generateMetadata(_props: any, parent: ResolvingMetadata): 
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  console.log('RootLayout rendered');
+
   return (
     <html
       lang="en"
       className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
       suppressHydrationWarning={true}>
-      <body className={'bg-background min-h-screen font-sans antialiased'} suppressHydrationWarning>
+      <body className={'bg-background min-h-screen font-sans antialiased'}>
         <ClientProviders domain={'https://plausible.biffify.com'}>{children}</ClientProviders>
         {/* Preview */}
         <PrismicPreview repositoryName={repositoryName} />

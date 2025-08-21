@@ -5,14 +5,18 @@ import React from 'react';
 import { asText } from '@prismicio/client';
 
 import Link from 'next/link';
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import { NewsletterForm, SocialList } from '@rocket-house-productions/features';
+import {
+  NavigationDocumentData,
+  SettingsDocumentDataSecondaryNavigationItem,
+} from '../../../../../apps/kids-guitar-dojo/prismicio-types';
 
 export interface FooterProps {
-  navigation: NavigationProps;
-  secondaryNavigation?: NavigationProps;
+  navigation: NavigationDocumentData;
+  secondaryNavigation?: SettingsDocumentDataSecondaryNavigationItem[];
   social?: SocialLinkItemType[] | undefined;
-  logo: any;
+  logo: StaticImageData;
   copyright: string | undefined | null;
 }
 
@@ -31,16 +35,17 @@ export function Footer({ navigation, logo, secondaryNavigation, social, copyrigh
                 <Link href="/">
                   <Image src={logo} className="inline" alt="logo" />
                 </Link>
-                <ul role="list" className="just mt-10 flex flex-col gap-8 md:flex-row">
-                  {navigation?.items?.map(item => (
-                    <li key={asText(item.label)}>
-                      <PrismicNextLink
-                        field={item.link}
-                        className="hover:text-primary text-base font-medium text-gray-400 transition-all">
-                        <PrismicText field={item.label} />
-                      </PrismicNextLink>
-                    </li>
-                  ))}
+                <ul className="just mt-10 flex flex-col gap-8 md:flex-row">
+                  {navigation?.links &&
+                    navigation.links.map((item, idx) => (
+                      <li key={`footer-main-nav- ${idx}`}>
+                        <Link
+                          href={(item.link as { url: string }).url}
+                          className="hover:text-primary text-base font-medium text-gray-400 transition-all">
+                          {asText(item.label)}
+                        </Link>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </div>
@@ -57,16 +62,17 @@ export function Footer({ navigation, logo, secondaryNavigation, social, copyrigh
         </div>
         <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 md:flex md:items-center md:justify-between lg:mt-24">
           <div className="flex space-x-6 md:order-2">
-            <ul role="list" className="flex gap-8">
-              {secondaryNavigation?.items?.map(item => (
-                <li key={asText(item.label)}>
-                  <PrismicNextLink
-                    field={item.link}
-                    className="hover:text-primary text-base font-medium text-gray-500 transition-all">
-                    <PrismicText field={item.label} />
-                  </PrismicNextLink>
-                </li>
-              ))}
+            <ul className="flex gap-8">
+              {secondaryNavigation &&
+                secondaryNavigation.map((item, idx) => (
+                  <li key={`footer-secondary-nav- ${idx}`}>
+                    <Link
+                      href={(item.link as { url: string }).url}
+                      className="hover:text-primary text-base font-medium text-gray-500 transition-all">
+                      {asText(item.label)}
+                    </Link>
+                  </li>
+                ))}
             </ul>
           </div>
           <p className="mt-8 text-base leading-5 text-gray-400 md:order-1 md:mt-0">
