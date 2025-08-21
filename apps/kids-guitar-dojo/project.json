@@ -29,6 +29,7 @@
           "sourceMap": false,
           "profile": false,
           "optimization": true
+
         }
       }
     },

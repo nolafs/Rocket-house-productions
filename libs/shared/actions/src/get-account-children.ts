@@ -9,6 +9,8 @@ type AccountWithChildren = Prisma.AccountGetPayload<{
 }>;
 
 export async function getAccountChildren(userId: string): Promise<AccountWithChildren | null> {
+  // TODO: MUST HANDLE MULTIPLE CHILDREN
+
   return db.account.findFirst({
     where: {
       userId: userId,
