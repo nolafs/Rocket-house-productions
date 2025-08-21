@@ -9,12 +9,15 @@ export default clerkMiddleware(
   async (auth, req) => {
     const url = req.nextUrl.pathname;
 
+    console.info('[MIDDLEWARE]', 'Route', isProtectedRoute(req));
+
     // Skip Clerk processing for /slice-simulator and its sub-paths
     if (url.startsWith('/slice-simulator')) {
       return NextResponse.next();
     }
 
     if (!isProtectedRoute(req)) {
+      console.info('[MIDDLEWARE]', 'Unprotected Route');
       return NextResponse.next();
     }
 
@@ -96,6 +99,11 @@ export default clerkMiddleware(
         }
 
         if (flags.purchases.length) {
+          if (flags.purchases.length > 1) {
+            console.info('[MIDDLEWARE COURSE]  MULTIPLE PURCHASES ENROLLED - GO TO COURSE SELECTION');
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses`);
+          }
+
           console.info('[MIDDLEWARE COURSE]  HAS PURCHASES', flags.purchases.length);
 
           if (flags.unenrolledCourseType) {
@@ -112,21 +120,27 @@ export default clerkMiddleware(
           if (flags.singleEnrolledCourseSlug && flags.purchases.length === 1) {
             console.info('[MIDDLEWARE COURSE]  SINGLE PURCHASE ENROLLED - GO TO LESSON');
 
+            //check user is admin
+            if (flags.role === 'admin') {
+              console.log('[MIDDLEWARE COURSE]  ADMIN USER - ALLOW ALL COURSES');
+              // check if url after /course is different from singleEnrolledCourseSlug
+              if (!url.endsWith(`${flags.singleEnrolledCourseSlug}`)) {
+                return NextResponse.next();
+              }
+            }
+
             if (url.startsWith(`/courses/${flags.singleEnrolledCourseSlug}`)) {
               return NextResponse.next();
             }
             return NextResponse.redirect(`${req.nextUrl.origin}/courses/${flags.singleEnrolledCourseSlug}`);
-          }
-
-          if (flags.purchases.length > 1) {
-            console.info('[MIDDLEWARE COURSE]  MULTIPLE PURCHASES ENROLLED - GO TO COURSE SELECTION');
-            return NextResponse.redirect(`${req.nextUrl.origin}/courses`);
           }
         }
       }
     } else {
       return NextResponse.redirect(`${req.nextUrl.origin}/`);
     }
+
+    return NextResponse.next();
   },
   { debug: false },
 );

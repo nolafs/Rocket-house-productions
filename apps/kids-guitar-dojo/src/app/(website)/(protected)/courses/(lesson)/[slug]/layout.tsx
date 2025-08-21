@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { Viewport } from 'next';
-import ModuleWrapper from '@/app/(website)/(protected)/courses/(lesson)/[slug]/_components/moduleWrapper';
+import ModuleWrapper from './_components/moduleWrapper';
 const Header = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.Header));
 const ModuleAwards = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.ModuleAwards));
 

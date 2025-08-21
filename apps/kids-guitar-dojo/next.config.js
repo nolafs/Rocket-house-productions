@@ -23,14 +23,15 @@ const nextConfig = {
       }
     }
 
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
     return config;
   },
   productionBrowserSourceMaps: true,
-  nx: {
-    // Set this to true if you would like to use SVGR
-    // See: https://github.com/gregberge/svgr
-    svgr: true,
-  },
+  nx: {},
   serverExternalPackages: [
     '@prisma/client',
     'html2canvas',
@@ -43,10 +44,11 @@ const nextConfig = {
   transpilePackages: ['three'],
   experimental: {
     taint: true,
-    serverSourceMaps: true,
+    //serverSourceMaps: true,
   },
   ...(process.env.NEXT_PUBLIC_PRODUCTION && headers),
   images: {
+    qualities: [25, 50, 75, 90, 100],
     formats: ['image/avif', 'image/webp'],
      remotePatterns : [
       {
