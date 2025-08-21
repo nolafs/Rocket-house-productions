@@ -55,7 +55,6 @@ export function MainNavbar({ navigation, logo }: HeaderProps) {
                     className="group relative mx-[5px] py-[10px] first:ml-0 last:mr-0 lg:py-[5px] xl:mx-[10px] xl:py-[35px] 2xl:mx-[18px] 2xl:py-[30px]">
                     <Link
                       href={(item.link as { url: string }).url}
-                      //field={item.link}
                       className={cn(
                         'hover:text-primary text-base font-medium text-gray-500 underline-offset-4 transition-all hover:underline',
                         (item.link as { url: string }).url === currentRoute && 'text-primary',

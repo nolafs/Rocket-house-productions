@@ -137,6 +137,7 @@
     "@types/lodash": "^4.17.20",
     "@types/node": "18.19.123",
     "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
     "@types/react-google-recaptcha": "^2.1.9",
     "@types/rss": "^0.0.32",
     "@types/three": "^0.179.0",
