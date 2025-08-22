@@ -2,7 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { notFound, redirect } from 'next/navigation';
 import { getChild, getLesson } from '@rocket-house-productions/actions/server';
 import { createClient } from '@/prismicio';
-import { LessonHeader } from '@rocket-house-productions/lesson/server';
+import { LessonHeader } from '@rocket-house-productions/lesson';
 import LessonComponent from './_components/lessonComponent';
 
 interface PageProps {

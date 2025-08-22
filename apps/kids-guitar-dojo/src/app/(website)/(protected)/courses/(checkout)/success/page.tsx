@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { DialogLayout, ParallaxScene } from '@rocket-house-productions/lesson/server';
+import { DialogLayout, ParallaxScene } from '@rocket-house-productions/lesson';
 import { createClient } from '@/prismicio';
 import { PrismicRichText } from '@prismicio/react';
 import ButtonOnboarding from './_components/button-onboarding';

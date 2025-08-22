@@ -1,4 +1,4 @@
-import { DialogLayout } from '@rocket-house-productions/lesson/server';
+import { DialogLayout } from '@rocket-house-productions/lesson';
 import NextButton from '../_component/button-next';
 import { BASE_URL } from '../_component/path-types';
 import { createClient } from '@/prismicio';
