@@ -1,7 +1,7 @@
 import { getChild, getLesson } from '@rocket-house-productions/actions/server';
 import { notFound, redirect } from 'next/navigation';
 import { ReactNode } from 'react';
-import { LessonData } from '@rocket-house-productions/lesson/server';
+import { LessonData } from '@rocket-house-productions/lesson';
 import { auth } from '@clerk/nextjs/server';
 import LessonPageWrapper from './_components/lessonPageWrapper';
 

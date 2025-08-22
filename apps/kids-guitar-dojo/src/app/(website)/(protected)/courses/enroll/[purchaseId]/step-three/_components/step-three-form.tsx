@@ -1,5 +1,5 @@
 'use client';
-import { DialogLayout } from '@rocket-house-productions/lesson/server';
+import { DialogLayout } from '@rocket-house-productions/lesson';
 import {
   Form,
   FormControl,

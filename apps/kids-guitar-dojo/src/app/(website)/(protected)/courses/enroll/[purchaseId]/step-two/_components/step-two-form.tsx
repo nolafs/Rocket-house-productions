@@ -1,5 +1,5 @@
 'use client';
-import { DialogLayout } from '@rocket-house-productions/lesson/server';
+
 import {
   Form,
   FormControl,
@@ -29,6 +29,7 @@ import ButtonSubmit from '../../_component/button-submit';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
 import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
+import { DialogLayout } from '@rocket-house-productions/lesson';
 
 const initialState: FormErrors = {};
 

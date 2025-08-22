@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import { OnBoardingType } from '../../_component/schemas';
 
-import { DialogLayout } from '@rocket-house-productions/lesson/server';
+import { DialogLayout } from '@rocket-house-productions/lesson';
 import { Avatar } from '@rocket-house-productions/lesson';
 import PrevButton from '../../_component/button-prev';
 import { CheckIcon, XIcon } from 'lucide-react';
