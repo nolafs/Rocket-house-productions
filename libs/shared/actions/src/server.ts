@@ -22,3 +22,4 @@ export { VerifyCaptcha } from './verifiy-captcha';
 export { updateUserRole } from './update-user-role';
 export { deleteUser } from './delete-user';
 export { SessionFlags } from './session';
+export { HandleSubscription } from './subscription-action';
