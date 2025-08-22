@@ -1,6 +1,5 @@
 export { CookieConsent } from './lib/cookie-consent/cookie-consent';
 export * from './lib/section-pricing-table/stripe-pricing';
-
 export { BuyButton } from './lib/checkout/buy-button';
 export { SectionContentBlockList } from './lib/section-content-block-list/section-content-block-list';
 export * from './lib/section-blog/section-blog';

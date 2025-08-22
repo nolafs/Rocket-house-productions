@@ -1,4 +1,3 @@
-'use client';
 import SectionTitle from '../section-title/section-title';
 import { asText, GroupField, RichTextField } from '@prismicio/client';
 import { motion } from 'framer-motion';
