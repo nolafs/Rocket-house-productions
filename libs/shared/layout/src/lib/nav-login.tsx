@@ -2,14 +2,9 @@
 import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import cn from 'classnames';
-import {
-  buttonVariants,
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@rocket-house-productions/shadcn-ui';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@rocket-house-productions/shadcn-ui';
+
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { Menu, SettingsIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import Image, { type StaticImageData } from 'next/image';

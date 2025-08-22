@@ -1,9 +1,7 @@
-// Use this file to export React client components (e.g. those with 'use client' directive) or other non-server utilities
-export * from './components/ui/button';
 export * from './components/ui/sheet';
 export * from './components/ui/collapsible';
 export * from './components/ui/alert-dialog';
-export * from './components/ui/badge';
+
 export * from './components/ui/card';
 export * from './components/ui/checkbox';
 export * from './components/ui/combobox';

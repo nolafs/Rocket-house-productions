@@ -2,15 +2,8 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration/server';
-import {
-  Button,
-  buttonVariants,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@rocket-house-productions/shadcn-ui';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Link from 'next/link';
 export default async function Page(props: { params: Promise<{ childId: string }> }) {
   const params = await props.params;

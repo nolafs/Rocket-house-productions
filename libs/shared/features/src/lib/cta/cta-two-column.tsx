@@ -1,7 +1,7 @@
 import { GroupField, RichTextField } from '@prismicio/client';
 import { PrismicLink, PrismicRichText } from '@prismicio/react';
 import MottoText from '../motto-text/motto-text';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 import { ButtonGroup } from '@rocket-house-productions/ui';
 

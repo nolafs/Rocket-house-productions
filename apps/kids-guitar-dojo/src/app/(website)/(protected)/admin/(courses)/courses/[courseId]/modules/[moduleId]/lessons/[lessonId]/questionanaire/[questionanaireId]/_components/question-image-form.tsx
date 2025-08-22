@@ -9,8 +9,7 @@ import * as z from 'zod';
 import { ImageIcon, Pencil, PlusCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { FileImageUpload } from '@rocket-house-productions/features';
-import { Button } from '@rocket-house-productions/shadcn-ui';
-
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Course, Questionary } from '@prisma/client';
 
 import axios from 'axios';

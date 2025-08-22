@@ -14,7 +14,7 @@ import { SplitText } from 'gsap/SplitText';
 
 import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
 
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
 import { Module } from '@prisma/client';
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';

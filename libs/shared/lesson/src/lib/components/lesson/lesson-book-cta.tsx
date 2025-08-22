@@ -5,7 +5,7 @@ import { SectionCourse } from '@rocket-house-productions/types';
 import Image from 'next/image';
 
 import bookCtaImage from '../../assets/bookcta.png';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { useRouter } from 'next/navigation';
 
 interface LessonBookCtaProps {

@@ -1,7 +1,8 @@
 import React, { Suspense } from 'react';
-import { BackToTop, Footer, MainNavbar } from '@rocket-house-productions/layout';
+import { BackToTop, MainNavbar } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
 import { createClient } from '@/prismicio';
+import { Footer } from '@rocket-house-productions/layout/server';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   console.log('[SUB Layout]');

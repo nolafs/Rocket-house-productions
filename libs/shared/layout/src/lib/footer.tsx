@@ -1,6 +1,5 @@
-import { NavigationProps, SocialLinkItemType } from '@rocket-house-productions/types';
-import { PrismicNextLink } from '@prismicio/next';
-import { PrismicText } from '@prismicio/react';
+import { SocialLinkItemType } from '@rocket-house-productions/types';
+
 import React from 'react';
 import { asText } from '@prismicio/client';
 

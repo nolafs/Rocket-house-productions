@@ -5,7 +5,6 @@ import NavLogin from './nav-login';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { NavigationDocumentData } from '../../../../../apps/kids-guitar-dojo/prismicio-types';
-import { PrismicNextLink } from '@prismicio/next';
 import cn from 'classnames';
 import { asText } from '@prismicio/client';
 interface HeaderProps {

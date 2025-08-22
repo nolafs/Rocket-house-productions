@@ -1,7 +1,5 @@
 'use client';
 import {
-  Button,
-  buttonVariants,
   Drawer,
   DrawerContent,
   DrawerHeader,
@@ -9,6 +7,7 @@ import {
   DrawerTrigger,
   ScrollArea,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../dialog-layout/dialog';
 import { CloudDownload, Disc3 } from 'lucide-react';
 import ButtonDownloadPdf from '../button-download-pdf';

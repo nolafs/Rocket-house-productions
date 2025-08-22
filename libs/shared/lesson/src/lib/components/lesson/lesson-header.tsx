@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { ArrowBigLeftIcon } from 'lucide-react';
 import LessonProgressBar from '../lesson-progress-bar';
 import { useLessonProgressionStore } from '@rocket-house-productions/providers';

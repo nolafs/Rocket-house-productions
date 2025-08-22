@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -9,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@rocket-house-productions/shadcn-ui';
-
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 type Address = {
   line1?: string;
   line2?: string;

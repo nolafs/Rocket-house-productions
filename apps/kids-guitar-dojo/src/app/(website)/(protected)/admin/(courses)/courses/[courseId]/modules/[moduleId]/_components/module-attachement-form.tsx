@@ -10,7 +10,6 @@ import { File, Loader2, PlusCircle, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import {
-  Button,
   Form,
   FormControl,
   FormField,
@@ -19,7 +18,7 @@ import {
   FormMessage,
   Input,
 } from '@rocket-house-productions/shadcn-ui';
-
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { ModuleAttachment, Module } from '@prisma/client';
 import { FileUpload } from '@rocket-house-productions/features';
 import { useForm } from 'react-hook-form';

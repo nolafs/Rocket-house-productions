@@ -1,7 +1,7 @@
 import { Loader2 } from 'lucide-react';
 import { getCourses } from '@rocket-house-productions/actions/server';
 import Link from 'next/link';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 
 export default async function Page() {
   // get all courses

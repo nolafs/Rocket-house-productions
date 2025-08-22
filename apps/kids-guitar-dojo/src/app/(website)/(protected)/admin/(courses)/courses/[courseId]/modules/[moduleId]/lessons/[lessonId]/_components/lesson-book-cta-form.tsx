@@ -17,12 +17,11 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  Button,
   Checkbox,
   Input,
   FormMessage,
 } from '@rocket-house-productions/shadcn-ui';
-
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
 import { Lesson } from '@prisma/client';

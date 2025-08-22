@@ -1,6 +1,6 @@
 'use client';
 import cn from 'classnames';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { usePurchaseStore } from '@rocket-house-productions/store';
 import { useRouter } from 'next/navigation';
 

@@ -8,7 +8,6 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import {
-  Button,
   Form,
   FormControl,
   FormField,
@@ -24,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Editor, FileImageUpload } from '@rocket-house-productions/features';
 import Image from 'next/image';
 
