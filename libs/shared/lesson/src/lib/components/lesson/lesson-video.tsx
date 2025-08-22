@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { SectionModule } from '@rocket-house-productions/types';
 import { useLessonProgressionStore, useModuleProgressStore, usePointsStore } from '@rocket-house-productions/providers';
 import useIsMounted from 'ismounted';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { RotateCcw } from 'lucide-react';
 
 interface LessonContentProps {

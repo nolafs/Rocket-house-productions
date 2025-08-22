@@ -2,7 +2,6 @@
 import Avatar from '../avatar';
 import ScoreDisplay from '../score-display';
 import {
-  Badge,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -10,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@rocket-house-productions/shadcn-ui';
+import { Badge } from '@rocket-house-productions/shadcn-ui/server';
 import {
   Dialog,
   DialogBody,

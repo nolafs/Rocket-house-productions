@@ -15,7 +15,6 @@ import cn from 'classnames';
 
 import { Questionary, Question } from '@prisma/client';
 import {
-  Button,
   Form,
   FormControl,
   FormField,
@@ -25,6 +24,7 @@ import {
   Checkbox,
   FormLabel,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { AnswersList } from './answers-list';
 import { FileImageUpload } from '@rocket-house-productions/features';
 import AnswerFretboardForm from './answer-fretboard-form';

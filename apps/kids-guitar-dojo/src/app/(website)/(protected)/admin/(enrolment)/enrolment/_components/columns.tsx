@@ -10,10 +10,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Badge,
-  Button,
   buttonVariants,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Account, Child, Purchase } from '@prisma/client';
 import dayjs from 'dayjs';
 

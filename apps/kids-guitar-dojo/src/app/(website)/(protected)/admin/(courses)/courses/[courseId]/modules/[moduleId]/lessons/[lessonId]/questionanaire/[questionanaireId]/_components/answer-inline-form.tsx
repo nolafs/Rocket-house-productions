@@ -1,6 +1,5 @@
 'use client';
 import {
-  Button,
   Checkbox,
   Form,
   FormControl,
@@ -10,6 +9,7 @@ import {
   FormMessage,
   Input,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import * as z from 'zod';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';

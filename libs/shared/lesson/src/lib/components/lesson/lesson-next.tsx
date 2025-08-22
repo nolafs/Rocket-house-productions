@@ -1,5 +1,5 @@
 'use client';
-import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { SectionModule, SectionLesson, SectionCourse } from '@rocket-house-productions/types';
 import { useLessonProgressionStore, useScrollTo } from '@rocket-house-productions/providers';
 import { ReactNode, useEffect, useMemo, useState } from 'react';

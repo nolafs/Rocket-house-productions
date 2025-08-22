@@ -1,6 +1,6 @@
 'use client';
 import { submitOnBoardingAction } from '../actions';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

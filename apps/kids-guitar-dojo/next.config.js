@@ -22,12 +22,6 @@ const nextConfig = {
         config.devtool = 'source-map';
       }
     }
-
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    });
-
     return config;
   },
   productionBrowserSourceMaps: true,
