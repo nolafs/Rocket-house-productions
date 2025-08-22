@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { scrollLeftVariants, scrollRightVariants } from '@rocket-house-productions/util';
 import { PrismicRichText } from '@prismicio/react';
 import { PrismicNextImage } from '@prismicio/next';
+import { isFilled, KeyTextField } from '@prismicio/client';
 
 export type SectionTimelineItemProps = {
   isEven: boolean;
-  title: any;
+  title?: KeyTextField | null | undefined;
   image: any;
   body: any;
   heading: any;
