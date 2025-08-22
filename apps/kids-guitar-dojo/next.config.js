@@ -38,6 +38,7 @@ const nextConfig = {
   transpilePackages: ['three'],
   experimental: {
     taint: true,
+    ppr: true,
     //serverSourceMaps: true,
   },
   ...(process.env.NEXT_PUBLIC_PRODUCTION && headers),
