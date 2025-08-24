@@ -2,7 +2,7 @@
 import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import getAccount from './get-account';
+import { getAccount } from './get-account';
 
 interface GetQuizProps {
   courseSlug: string;

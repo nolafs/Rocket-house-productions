@@ -21,5 +21,3 @@ export async function getAccountChildren(userId: string): Promise<AccountWithChi
     //cacheStrategy: { ttl: 60 },
   });
 }
-
-export default getAccountChildren;

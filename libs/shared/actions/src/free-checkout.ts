@@ -54,5 +54,3 @@ export async function freeCheckout(formData: FormData) {
     redirect('/courses/success');
   }
 }
-
-export default freeCheckout;

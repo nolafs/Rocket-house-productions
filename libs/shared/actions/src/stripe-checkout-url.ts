@@ -24,5 +24,3 @@ export const checkoutUrl = async (productId: string, userId: string, email = '')
   // Redirect to the checkout session URL
   redirect(checkoutSession.url);
 };
-
-export default checkoutUrl;

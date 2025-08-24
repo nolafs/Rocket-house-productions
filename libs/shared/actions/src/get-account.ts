@@ -52,5 +52,3 @@ export async function getAccount(userId: string): Promise<AccountWithPurchases |
     },
   });
 }
-
-export default getAccount;

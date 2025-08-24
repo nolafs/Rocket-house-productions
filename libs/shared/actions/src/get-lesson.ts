@@ -2,7 +2,7 @@
 import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import getAccountChildren from './get-account-children';
+import { getAccountChildren } from './get-account-children';
 
 interface GetLessonProps {
   courseSlug: string;
@@ -154,5 +154,3 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
     return null;
   }
 };
-
-export default getLesson;
