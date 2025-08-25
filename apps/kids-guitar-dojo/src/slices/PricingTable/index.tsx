@@ -30,6 +30,8 @@ const PricingTable = async ({ slice }: PricingTableProps) => {
     console.log('No pricing tiers found');
   }
 
+  console.log('Tier Pricing:', tierPricing);
+
   return (
     <Bounded as={'section'} yPadding={'sm'}>
       <SectionPricingTable tiers={tierPricing as Tier[]} />
