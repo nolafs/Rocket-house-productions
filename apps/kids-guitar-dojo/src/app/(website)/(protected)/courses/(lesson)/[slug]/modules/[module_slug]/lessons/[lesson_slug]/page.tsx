@@ -5,22 +5,11 @@ import { createClient } from '@/prismicio';
 import { LessonHeader } from '@rocket-house-productions/lesson';
 import LessonComponent from './_components/lessonComponent';
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ slug: string; module_slug: string; lesson_slug: string }>;
 }
-
-/*
-export const generateStaticParams = async (props: PageProps) => {
-  const params = await props.params;
-  const data = await getLesson({
-    courseSlug: params.slug,
-    moduleSlug: params.module_slug,
-    lessonSlug: params.lesson_slug,
-  });
-  return data;
-};
-
- */
 
 export default async function Page(props: PageProps) {
   const params = await props.params;

@@ -42,6 +42,8 @@ export function SectionPricingTable({
     tiers = tiers.filter(tier => tier.data.purchase_type === 'purchase');
   }
 
+  const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
+
   return (
     <div
       className={cn(
@@ -75,12 +77,15 @@ export function SectionPricingTable({
 
           {!tier.data.free ? (
             <>
-              <StripePricing productId={tier.data.stripeProductId} sales={tier.data.sales} />
+              <StripePricing
+                productId={isProduction ? tier.data.stripeProductId : tier.data.stripe_productid_dev}
+                sales={tier.data.sales}
+              />
               {checkout ? (
                 <CheckoutButton
                   type={'payed'}
                   mostPopular={tier.data.most_popular}
-                  productId={tier.data.stripeProductId}
+                  productId={process.env.PRODUCTION ? tier.data.stripeProductId : tier.data.stripe_productid_dev}
                   courseId={courseId}
                   purchaseId={purchaseId}
                 />
@@ -88,7 +93,7 @@ export function SectionPricingTable({
                 <BuyButton
                   type={'payed'}
                   mostPopular={tier.data.most_popular}
-                  productId={tier.data.stripeProductId}
+                  productId={isProduction ? tier.data.stripeProductId : tier.data.stripe_productid_dev}
                   courseId={null}
                 />
               )}
