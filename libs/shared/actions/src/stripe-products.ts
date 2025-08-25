@@ -7,5 +7,6 @@ export const stripePrices = async (productId: string, sale = false) => {
     active: true,
     limit: 100,
   });
+
   return data;
 };
