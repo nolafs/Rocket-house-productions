@@ -1,7 +1,7 @@
 #[build.environment]
 #  NEXT_USE_NETLIFY_EDGE = "false"
 [build]
-  command = "nx reset && nx run kids-guitar-dojo:build-with-types"
+  command = "nx reset && nx build kids-guitar-dojo"
   functions = "apps/kids-guitar-dojo/netlify/function"
   publish = "apps/kids-guitar-dojo/.next"
 
