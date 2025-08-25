@@ -1,5 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
-import { Activity } from 'lucide-react';
 import CardRevenue from './_components/card-revenue';
 import CardAccounts from './_components/card-accounts';
 import CardEnrollment from './_components/card-enrollment';

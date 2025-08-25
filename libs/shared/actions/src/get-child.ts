@@ -2,7 +2,7 @@
 import { db } from '@rocket-house-productions/integration/server';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import getAccount from './get-account';
+import { getAccount } from './get-account';
 
 export const getChild = async (slug: string) => {
   const { userId, sessionClaims } = await auth();

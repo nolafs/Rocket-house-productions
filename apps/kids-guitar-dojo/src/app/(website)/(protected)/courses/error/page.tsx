@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
 

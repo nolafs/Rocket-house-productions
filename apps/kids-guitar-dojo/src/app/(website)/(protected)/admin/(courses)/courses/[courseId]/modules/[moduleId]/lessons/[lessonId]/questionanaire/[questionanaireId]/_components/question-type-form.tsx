@@ -18,7 +18,6 @@ import {
   FormItem,
   FormMessage,
   Input,
-  Button,
   FormLabel,
   Select,
   SelectTrigger,
@@ -28,7 +27,7 @@ import {
   SelectLabel,
   SelectItem,
 } from '@rocket-house-productions/shadcn-ui';
-
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 interface QuestionFormProps {
   initialData: {
     type: 'text' | 'images' | 'fretboard' | string | undefined | null;

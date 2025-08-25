@@ -22,12 +22,6 @@ const nextConfig = {
         config.devtool = 'source-map';
       }
     }
-
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    });
-
     return config;
   },
   productionBrowserSourceMaps: true,
@@ -44,6 +38,7 @@ const nextConfig = {
   transpilePackages: ['three'],
   experimental: {
     taint: true,
+    ppr: false,
     //serverSourceMaps: true,
   },
   ...(process.env.NEXT_PUBLIC_PRODUCTION && headers),

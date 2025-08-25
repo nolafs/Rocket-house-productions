@@ -1,4 +1,3 @@
-'use client';
 import { stripeCheckoutAction } from '@rocket-house-productions/actions/server';
 import CheckoutButton from './checkout-button';
 import React from 'react';

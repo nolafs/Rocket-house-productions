@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { ChevronLeftIcon } from 'lucide-react';
 
 import { useRouter } from 'next/navigation';

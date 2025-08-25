@@ -29,5 +29,3 @@ export const stripeCheckoutAction = async (data: FormData): Promise<void> => {
 
   redirect(checkoutSession.url);
 };
-
-export default stripeCheckoutAction;

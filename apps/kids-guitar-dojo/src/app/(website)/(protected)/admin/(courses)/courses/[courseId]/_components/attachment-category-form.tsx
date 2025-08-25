@@ -1,5 +1,4 @@
 import {
-  Button,
   Command,
   CommandEmpty,
   CommandGroup,
@@ -12,6 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { cn } from '@rocket-house-productions/util';
 import { Check, ChevronsUpDown } from 'lucide-react';
 

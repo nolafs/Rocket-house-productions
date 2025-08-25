@@ -1,4 +1,5 @@
-import { buttonVariants, Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Link from 'next/link';
 
 type Service = {

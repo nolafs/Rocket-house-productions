@@ -1,13 +1,15 @@
 'use client';
 import { submitOnBoardingAction } from '../actions';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { useOnBoardingContext } from '../../_component/onBoardinglContext';
 import { OnBoardingType } from '../../_component/schemas';
-import { Avatar, DialogLayout } from '@rocket-house-productions/lesson';
+
+import { DialogLayout } from '@rocket-house-productions/lesson';
+import { Avatar } from '@rocket-house-productions/lesson';
 import PrevButton from '../../_component/button-prev';
 import { CheckIcon, XIcon } from 'lucide-react';
 import { PrismicRichText } from '@prismicio/react';
