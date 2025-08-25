@@ -3,14 +3,16 @@ import SectionTitle from '../section-title/section-title';
 import { motion } from 'framer-motion';
 import { scrollUpVariants } from '@rocket-house-productions/util';
 import SectionTimelineItem from './section-timeline-item';
+import { KeyTextField, RichTextField } from '@prismicio/client';
+import { TimelineSliceDefaultPrimaryItemsItem } from '../../../../../../apps/kids-guitar-dojo/prismicio-types';
 
 const AnimatedSectionTitle = motion.create(SectionTitle);
 
 type SectionTimelineProps = {
   data: {
-    title?: any;
-    category?: any;
-    items?: any[];
+    title?: RichTextField | null | undefined;
+    category?: KeyTextField;
+    items?: TimelineSliceDefaultPrimaryItemsItem[];
   };
 };
 

@@ -4,7 +4,7 @@ import Navigation from './_components/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import NavigationMobile from '@/app/(website)/(protected)/admin/_components/navigation-mobile';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Link from 'next/link';
 import cn from 'classnames';
 

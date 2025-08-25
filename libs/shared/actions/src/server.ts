@@ -1,4 +1,3 @@
-// Use this file to export React server components
 export { stripePrices } from './stripe-products';
 export { checkoutUrl } from './stripe-checkout-url';
 export { getAccount } from './get-account';
@@ -22,3 +21,4 @@ export { VerifyCaptcha } from './verifiy-captcha';
 export { updateUserRole } from './update-user-role';
 export { deleteUser } from './delete-user';
 export { SessionFlags } from './session';
+export { HandleSubscription } from './subscription-action';

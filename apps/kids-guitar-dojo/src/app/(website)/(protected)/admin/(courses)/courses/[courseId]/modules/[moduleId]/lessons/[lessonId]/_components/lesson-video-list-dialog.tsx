@@ -1,6 +1,5 @@
 'use client';
 import {
-  Button,
   Drawer,
   DrawerContent,
   DrawerDescription,
@@ -21,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { VideoLibraryList } from '@rocket-house-productions/lesson';
 import { useState } from 'react';
 import { SearchIcon } from 'lucide-react';

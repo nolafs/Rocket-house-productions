@@ -5,7 +5,7 @@ const emailSchema = z.object({
   email: z.string().email().min(1, 'Email cannot be blank'),
 });
 
-export async function handleSubscription(prevState: any, formData: FormData) {
+export async function HandleSubscription(prevState: any, formData: FormData) {
   const subscriberEmail = formData.get('email') as string;
   const validation: any = emailSchema.safeParse({ email: subscriberEmail });
 

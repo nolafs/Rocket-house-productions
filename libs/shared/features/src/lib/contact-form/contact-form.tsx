@@ -4,7 +4,7 @@ import { IContactFormInput } from '@rocket-house-productions/types';
 import React, { useRef, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { z } from 'zod';
 import cn from 'classnames';
 import { sendMail, VerifyCaptcha } from '@rocket-house-productions/actions/server';

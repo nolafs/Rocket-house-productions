@@ -35,6 +35,13 @@
           "placeholder": ""
         }
       },
+      "stripe_productid_dev": {
+        "type": "Text",
+        "config": {
+          "label": "Stripe ProductId Dev",
+          "placeholder": ""
+        }
+      },
       "purchase_type": {
         "type": "Select",
         "config": {

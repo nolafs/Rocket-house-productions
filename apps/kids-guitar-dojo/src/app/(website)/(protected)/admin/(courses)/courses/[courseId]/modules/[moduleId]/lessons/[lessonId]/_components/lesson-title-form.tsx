@@ -18,9 +18,9 @@ import {
   FormItem,
   FormMessage,
   Input,
-  Button,
   FormLabel,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { SlugFormControl } from '@rocket-house-productions/lesson';
 
 interface ChapterTitleFormProps {

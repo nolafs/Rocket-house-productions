@@ -11,16 +11,8 @@ import { useForm } from 'react-hook-form';
 import { Pencil } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-  Input,
-  Button,
-} from '@rocket-house-productions/shadcn-ui';
-
+import { Form, FormControl, FormField, FormItem, FormMessage, Input } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 interface QuestionFormProps {
   initialData: {
     points: number | null;

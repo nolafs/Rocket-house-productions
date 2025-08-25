@@ -3,17 +3,13 @@
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown, CheckIcon, MoreHorizontal, Pencil, X, XIcon } from 'lucide-react';
-
-// Components
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Badge,
-  Button,
-  buttonVariants,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { Account, Child, Purchase } from '@prisma/client';
 import dayjs from 'dayjs';
 

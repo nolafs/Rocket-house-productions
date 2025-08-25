@@ -11,6 +11,23 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
+export const generateStaticParams = async () => {
+  const client = createClient();
+  const pages = await client.getAllByType('blog_post', {
+    pageSize: 100,
+    orderings: [
+      {
+        field: 'my.blog_post.publishing_date',
+        direction: 'desc',
+      },
+    ],
+  });
+
+  return pages.map(page => ({
+    id: page.id,
+  }));
+};
+
 export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
   const page = await client.getSingle('blog').catch(() => notFound());

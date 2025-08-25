@@ -5,8 +5,7 @@ import path from 'path';
 import Link from 'next/link';
 import { STEPS } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/path-types';
 import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
-
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 interface PrevButtonProps {
   label?: string;
   baseUrl?: string;

@@ -1,14 +1,15 @@
+'use client';
 import Link from 'next/link';
-import { Home, Menu, SettingsIcon } from 'lucide-react';
-import { SignedIn, SignedOut, useAuth, UserButton } from '@clerk/nextjs';
+import { SettingsIcon } from 'lucide-react';
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
 import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
-import Image from 'next/image';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
+import Image, { type StaticImageData } from 'next/image';
 import React from 'react';
 
 interface HeaderProps {
   isAdmin?: boolean;
-  logo?: any;
+  logo?: StaticImageData | null;
   backToUrl?: string;
   backToText?: string;
   classNames?: string;

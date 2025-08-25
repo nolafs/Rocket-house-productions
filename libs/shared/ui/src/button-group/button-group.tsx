@@ -1,6 +1,6 @@
 import { PrismicLink } from '@prismicio/react';
 import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { GroupField } from '@prismicio/client';
 
 type groupButton = {

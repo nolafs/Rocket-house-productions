@@ -13,10 +13,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Badge,
-  Button,
 } from '@rocket-house-productions/shadcn-ui';
-
+import { Button, Badge } from '@rocket-house-productions/shadcn-ui/server';
 // Utils
 import cn from 'classnames';
 

@@ -1,8 +1,8 @@
-import { forwardRef, useState } from 'react';
-import { Checkbox, FormControl, FormField, FormItem, FormLabel } from '@rocket-house-productions/shadcn-ui';
+'use client';
+import { forwardRef } from 'react';
+import { Checkbox, FormField } from '@rocket-house-productions/shadcn-ui';
 import cn from 'classnames';
 import { Question } from '@prisma/client';
-import Image from 'next/image';
 
 interface QuestionCheckboxProps {
   item: Question;

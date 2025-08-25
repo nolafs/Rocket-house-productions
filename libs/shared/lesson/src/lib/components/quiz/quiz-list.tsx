@@ -4,7 +4,7 @@ import QuizListItem from './quiz-list-item';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useEffect, useRef, useState } from 'react';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import Quiz from './quiz';
 import QuizQuestionResult from './quiz-question-result';
 import Fretboard from './fretboard/fretboard';

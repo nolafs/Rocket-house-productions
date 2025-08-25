@@ -1,6 +1,6 @@
 'use client';
 import cn from 'classnames';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';

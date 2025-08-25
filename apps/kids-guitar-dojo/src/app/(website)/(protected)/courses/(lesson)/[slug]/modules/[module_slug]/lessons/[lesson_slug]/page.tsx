@@ -3,7 +3,9 @@ import { notFound, redirect } from 'next/navigation';
 import { getChild, getLesson } from '@rocket-house-productions/actions/server';
 import { createClient } from '@/prismicio';
 import { LessonHeader } from '@rocket-house-productions/lesson';
-import LessonComponent from '@/app/(website)/(protected)/courses/(lesson)/[slug]/modules/[module_slug]/lessons/[lesson_slug]/_components/lessonComponent';
+import LessonComponent from './_components/lessonComponent';
+
+export const dynamic = 'force-dynamic';
 
 interface PageProps {
   params: Promise<{ slug: string; module_slug: string; lesson_slug: string }>;

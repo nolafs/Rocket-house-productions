@@ -17,7 +17,6 @@ import {
   FormField,
   FormItem,
   FormMessage,
-  Button,
   Input,
   Select,
   SelectTrigger,
@@ -28,6 +27,8 @@ import {
   SelectItem,
   FormLabel,
 } from '@rocket-house-productions/shadcn-ui';
+
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
 import { Module, ModuleAwardType } from '@prisma/client';
