@@ -1,4 +1,3 @@
-// Use this file to export React server components
 export { stripePrices } from './stripe-products';
 export { checkoutUrl } from './stripe-checkout-url';
 export { getAccount } from './get-account';
@@ -12,6 +11,7 @@ export { downloadPdf } from './downlod-pdf';
 export { getChild } from './get-child';
 export { getQuiz } from './get-quiz';
 export { getCourse } from './get-course';
+export { getCourses } from './get-courses';
 export { freeCheckout } from './free-checkout';
 export { stripeCheckoutAction } from './stripe-checkout-action';
 export { MailerList } from './mailer-lite';
@@ -20,3 +20,5 @@ export { sendMail } from './send-mail';
 export { VerifyCaptcha } from './verifiy-captcha';
 export { updateUserRole } from './update-user-role';
 export { deleteUser } from './delete-user';
+export { SessionFlags } from './session';
+export { HandleSubscription } from './subscription-action';

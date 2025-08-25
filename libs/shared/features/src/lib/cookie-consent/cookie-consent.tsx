@@ -13,16 +13,22 @@ export function CookieConsent() {
   const [showConsent, setShowConsent] = useState(true);
 
   useEffect(() => {
-    setShowConsent(hasCookie('localConsent'));
+    const checkCookie = async () => {
+      const cookieExists = await hasCookie('localConsent');
 
-    if (hasCookie('localConsent')) {
-      const newValue = getCookie('localConsent') === 'true' ? 'granted' : 'denied';
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('consent', 'update', {
-          analytics_storage: newValue,
-        });
+      setShowConsent(cookieExists);
+
+      if (cookieExists) {
+        const newValue = getCookie('localConsent') === 'true' ? 'granted' : 'denied';
+        if (typeof window !== 'undefined' && window.gtag) {
+          window.gtag('consent', 'update', {
+            analytics_storage: newValue,
+          });
+        }
       }
-    }
+    };
+
+    void checkCookie();
   }, []);
 
   const acceptCookie = () => {

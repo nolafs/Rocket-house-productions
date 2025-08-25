@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { useFormStatus } from 'react-dom';
 import { Loader2Icon } from 'lucide-react';
 interface ButtonProps {

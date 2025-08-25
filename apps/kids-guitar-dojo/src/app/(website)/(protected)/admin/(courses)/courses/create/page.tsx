@@ -18,10 +18,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Button,
   Input,
 } from '@rocket-house-productions/shadcn-ui';
-
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 const formSchema = z.object({
   title: z.string().min(1, {
     message: 'Title is required',

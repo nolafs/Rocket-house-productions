@@ -18,7 +18,7 @@ export const ScrollToProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const isMounted = useIsMounted();
 
   const [scrollTo, setScrollTo] = useState<string | null>(null);
-  const container = useRef<any>();
+  const container = useRef<any>(undefined);
 
   const scrollToFunction = (id: string) => {
     setScrollTo(id);

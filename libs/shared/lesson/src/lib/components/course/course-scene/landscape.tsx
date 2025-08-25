@@ -1,22 +1,21 @@
+'use client';
+
 import * as THREE from 'three';
 import React, { MutableRefObject, useRef } from 'react';
 import { Center, Plane, Text3D, useTexture } from '@react-three/drei';
-
 import { useFrame, useThree } from '@react-three/fiber';
 import { FretBoard } from './fretboard';
 import { FinalScene } from './finish-scene';
 import ModulePath, { ModuleButtonDisplay } from './module-path';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
+import { LessonButton, ModulePosition } from './course.types';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { LessonButton, ModulePosition } from './course.types';
 
-gsap.registerPlugin(ScrollTrigger);
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-gsap.registerPlugin(useGSAP);
-
-gsap.registerPlugin(ScrollToPlugin);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP);
+}
 
 interface LandscapeProps {
   rotation?: [number, number, number];
@@ -51,15 +50,18 @@ export const Landscape = ({
   const guitar = useTexture('/images/course/guitar.webp');
   const midGround = useTexture('/images/course/lessons-mid.webp');
   const foreGround = useTexture('/images/course/lessons-fore.webp');
+
   const ref = React.useRef<THREE.Group>(null);
   const setupComplete = useRef(false);
   const prevDisplayRef = useRef<ModuleButtonDisplay | null>(null);
   const { camera } = useThree();
 
-  const scrollTriggerRef = useRef<ScrollTrigger | null>(null);
+  const scrollTriggerRef = useRef<unknown>(null);
 
   const { contextSafe } = useGSAP(
     () => {
+      if (typeof window === 'undefined') return;
+
       if (setupComplete.current) {
         return;
       }
@@ -76,8 +78,12 @@ export const Landscape = ({
         return;
       }
 
-      if (scrollTriggerRef.current) {
-        scrollTriggerRef.current.kill();
+      if (
+        scrollTriggerRef.current &&
+        typeof scrollTriggerRef.current === 'object' &&
+        'kill' in scrollTriggerRef.current
+      ) {
+        (scrollTriggerRef.current as { kill: () => void }).kill();
       }
 
       setupComplete.current = true;
@@ -219,7 +225,7 @@ export const Landscape = ({
   });
 
   useFrame(state => {
-    const { pointer } = state;
+    const pointer = state.pointer;
     // Rotate the camera around its own center based on pointer movement
     const rotationSpeed = 0.01; // Adjust this for sensitivity
     state.camera.rotation.y = THREE.MathUtils.lerp(state.camera.rotation.y, pointer.x * rotationSpeed, 0.1); // Left/right rotation
@@ -230,71 +236,69 @@ export const Landscape = ({
   });
 
   return (
-    <>
-      <group ref={ref} position={position} rotation={rotation} {...rest}>
-        <Plane args={[22, 19]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]} receiveShadow={true}>
-          <meshPhongMaterial map={guitar} transparent={true} />
-        </Plane>
-        <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
-          <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
-        </Plane>
-        <Plane args={[17, 10]} position={[0, 2, 10]} scale={4} rotation={[0, 0, 0]}>
-          <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
-        </Plane>
+    <group ref={ref} position={position} rotation={rotation} {...rest}>
+      <Plane args={[22, 19]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]} receiveShadow={true}>
+        <meshPhongMaterial map={guitar} transparent={true} />
+      </Plane>
+      <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
+        <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
+      </Plane>
+      <Plane args={[17, 10]} position={[0, 2, 10]} scale={4} rotation={[0, 0, 0]}>
+        <meshStandardMaterial map={foreGround} transparent={true} metalness={0.4} />
+      </Plane>
 
-        <group position={[0, 10, 5]} scale={1}>
-          <Center>
-            <Text3D
-              castShadow={false}
-              font={'/images/course/font.json'}
-              curveSegments={32}
-              bevelEnabled
-              bevelSize={0.04}
-              bevelThickness={1.5}
-              height={0.5}
-              lineHeight={0.5}
-              letterSpacing={-0.06}
-              size={2}>
-              LET'S ROCK AND ROLL
-              <meshStandardMaterial color="#EC4899" />
-            </Text3D>
-          </Center>
-          <Center position={[0, -2.5, 0]}>
-            <Text3D
-              castShadow={false}
-              font={'/images/course/font.json'}
-              curveSegments={32}
-              bevelEnabled
-              bevelSize={0.05}
-              bevelThickness={1.5}
-              height={0.5}
-              lineHeight={0.5}
-              letterSpacing={-0.06}
-              size={2}>
-              NINJA STYLE!
-              <meshStandardMaterial color="#DE0BF5" />
-            </Text3D>
-          </Center>
-        </group>
-
-        <FretBoard
-          position={[0, 27.9, 0]}
-          lessonSpacing={lessonSpacing}
-          lessonNumber={display.buttons.length}
-          pathLength={display.pathLength}
-        />
-
-        <FinalScene pathLength={display.pathLength} courseCompleted={courseCompleted} />
-
-        <ModulePath
-          display={display}
-          lessonSpacing={lessonSpacing}
-          courseCompleted={courseCompleted}
-          purchaseType={purchaseType}
-          onBackToCurrentLesson={handleOnBackToCurrentLesson}
-          onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
-        />
+      <group position={[0, 10, 5]} scale={1}>
+        <Center>
+          <Text3D
+            castShadow={false}
+            font={'/images/course/font.json'}
+            curveSegments={32}
+            bevelEnabled
+            bevelSize={0.04}
+            bevelThickness={1.5}
+            height={0.5}
+            lineHeight={0.5}
+            letterSpacing={-0.06}
+            size={2}>
+            LET'S ROCK AND ROLL
+            <meshStandardMaterial color="#EC4899" />
+          </Text3D>
+        </Center>
+        <Center position={[0, -2.5, 0]}>
+          <Text3D
+            castShadow={false}
+            font={'/images/course/font.json'}
+            curveSegments={32}
+            bevelEnabled
+            bevelSize={0.05}
+            bevelThickness={1.5}
+            height={0.5}
+            lineHeight={0.5}
+            letterSpacing={-0.06}
+            size={2}>
+            NINJA STYLE!
+            <meshStandardMaterial color="#DE0BF5" />
+          </Text3D>
+        </Center>
       </group>
-    </>
+
+      <FretBoard
+        position={[0, 0, 0]}
+        lessonSpacing={lessonSpacing}
+        lessonNumber={display.buttons.length}
+        pathLength={display.pathLength}
+      />
+
+      <FinalScene pathLength={display.pathLength} courseCompleted={courseCompleted} />
+
+      <ModulePath
+        display={display}
+        lessonSpacing={lessonSpacing}
+        courseCompleted={courseCompleted}
+        purchaseType={purchaseType}
+        onBackToCurrentLesson={handleOnBackToCurrentLesson}
+        onOpenLesson={(lesson: LessonButton) => handleOnLesson(lesson)}
+      />
+    </group>
   );
 };

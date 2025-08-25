@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { ImageIcon, Pencil, PlusCircle } from 'lucide-react';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { FileImageUpload } from '@rocket-house-productions/features';
 
 interface ImageFormProps {

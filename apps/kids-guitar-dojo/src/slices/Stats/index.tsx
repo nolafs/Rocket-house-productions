@@ -3,6 +3,8 @@ import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
 import { SectionStats } from '@rocket-house-productions/features';
 
+import type { JSX } from 'react';
+
 /**
  * Props for `Stats`.
  */
@@ -24,6 +26,8 @@ const Stats = ({ slice }: StatsProps): JSX.Element => {
       />
     </Bounded>
   );
+
+  return <div>test</div>;
 };
 
 export default Stats;

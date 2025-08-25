@@ -4,6 +4,8 @@ import { Bounded } from '@components/Bounded';
 import { ButtonGroup } from '@rocket-house-productions/ui';
 import { SectionTitle, SectionVideo } from '@rocket-house-productions/features';
 
+import type { JSX } from "react";
+
 /**
  * Props for `SectionHeaders`.
  */

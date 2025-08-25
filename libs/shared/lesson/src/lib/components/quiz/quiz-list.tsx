@@ -4,7 +4,7 @@ import QuizListItem from './quiz-list-item';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useEffect, useRef, useState } from 'react';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import Quiz from './quiz';
 import QuizQuestionResult from './quiz-question-result';
 import Fretboard from './fretboard/fretboard';
@@ -22,7 +22,7 @@ interface GetQuizProps {
 let displayTimeout: ReturnType<typeof setTimeout>;
 
 export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, onSlideIndexChange }: GetQuizProps) {
-  const ref = useRef<any>();
+  const ref = useRef<any>(undefined);
   const [slideIndex, setSlideIndex] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [isLastQuestion, setIsLastQuestion] = useState(questionaries.length === 1 ? true : false);

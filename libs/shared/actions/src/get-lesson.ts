@@ -1,9 +1,8 @@
 'use server';
-import { db } from '@rocket-house-productions/integration';
-import getAccount from './get-account';
+import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import getAccountChildren from './get-account-children';
+import { getAccountChildren } from './get-account-children';
 
 interface GetLessonProps {
   courseSlug: string;
@@ -13,21 +12,20 @@ interface GetLessonProps {
 
 export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLessonProps) => {
   try {
-    const startUserId = Date.now();
-    const { userId } = await auth();
+    const { userId, sessionClaims } = await auth();
 
     if (!userId) {
       redirect('/');
     }
 
-    const startAccount = Date.now();
+    const isAdmin = (sessionClaims?.metadata as { role: string })?.role === 'admin';
+
     const account = await getAccountChildren(userId);
 
     if (!account) {
       throw new Error('Account not found');
     }
 
-    const startCourse = Date.now();
     const course = await db.course.findUnique({
       where: {
         slug: courseSlug,
@@ -45,7 +43,6 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
       throw new Error('Course not found');
     }
 
-    const startPurchase = Date.now();
     const purchase = await db.purchase.findUnique({
       where: {
         accountId_courseId_childId: {
@@ -57,11 +54,10 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
       //cacheStrategy: { ttl: 60 },
     });
 
-    if (!purchase) {
-      throw new Error('Purchase not found');
+    if (!purchase && !isAdmin) {
+      return redirect(`/courses/error?status=error&message=No%20purchase%20found`);
     }
 
-    const startModule = Date.now();
     const module = await db.module.findUnique({
       where: {
         courseId_slug: {
@@ -91,9 +87,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
           },
         },
         lessons: {
-          where: {
-            isPublished: true,
-          },
+          where: isAdmin ? undefined : { isPublished: true },
           select: {
             id: true,
             title: true,
@@ -113,7 +107,6 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
       throw new Error('Module not found');
     }
 
-    const startLesson = Date.now();
     const lesson = await db.lesson.findUnique({
       where: {
         slug_moduleId_isPublished: {
@@ -141,7 +134,6 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
       throw new Error('Lesson not found');
     }
 
-    const startChildProgress = Date.now();
     const childProgress = await db.childProgress.findUnique({
       where: {
         childId_lessonId: {
@@ -162,5 +154,3 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
     return null;
   }
 };
-
-export default getLesson;

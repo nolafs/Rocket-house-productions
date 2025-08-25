@@ -8,7 +8,6 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import {
-  Button,
   Form,
   FormControl,
   FormField,
@@ -24,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Editor, FileImageUpload } from '@rocket-house-productions/features';
 import Image from 'next/image';
 
@@ -34,10 +34,10 @@ interface ModuleAwardItemProps {
 }
 
 const formSchema = z.object({
-  name: z.string().min(1),
-  description: z.string().min(1),
-  points: z.coerce.number(),
-  condition: z.string().min(1),
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().min(1, 'Description is required'),
+  points: z.number(),
+  condition: z.string().min(1, 'Condition is required'),
   badgeUrl: z.string().optional(),
 });
 

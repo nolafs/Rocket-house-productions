@@ -1,9 +1,9 @@
 'use server';
-import { auth, clerkClient } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
 import { DataTable } from './_components/data-table';
 import { columns } from './_components/columns';
 import { redirect } from 'next/navigation';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 export default async function Page() {
   const { userId, sessionClaims } = await auth();

@@ -3,23 +3,22 @@ import { redirect } from 'next/navigation';
 
 import { ArrowLeft, CircleHelpIcon, LayoutDashboard } from 'lucide-react';
 
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 // Components
 import QuestionTitleForm from './_components/question-title-form';
 import QuestionActions from './_components/question-actions';
-import { Banner, IconBadge } from '@rocket-house-productions/features';
+import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { auth } from '@clerk/nextjs/server';
 import AnswersForm from './_components/answers-form';
 import QuestionPointsForm from './_components/question-points-form';
 import QuestionImageForm from './_components/question-image-form';
 import QuestionTypeForm from './_components/question-type-form';
 
-const QuestionnaireIdPage = async ({
-  params,
-}: {
-  params: { courseId: string; moduleId: string; lessonId: string; questionanaireId: string };
+const QuestionnaireIdPage = async (props: {
+  params: Promise<{ courseId: string; moduleId: string; lessonId: string; questionanaireId: string }>;
 }) => {
+  const params = await props.params;
   const { userId } = await auth();
 
   if (!userId) {

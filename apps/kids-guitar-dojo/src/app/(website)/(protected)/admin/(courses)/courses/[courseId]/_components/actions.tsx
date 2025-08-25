@@ -10,7 +10,7 @@ import { Trash } from 'lucide-react';
 // Components
 
 import { useConfettiStore } from '@rocket-house-productions/hooks';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { ConfirmModal } from '@rocket-house-productions/features';
 
 // Hooks

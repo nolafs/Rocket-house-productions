@@ -1,6 +1,6 @@
 'use server';
 import { auth } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { redirect } from 'next/navigation';
 
 interface GetCourseProps {

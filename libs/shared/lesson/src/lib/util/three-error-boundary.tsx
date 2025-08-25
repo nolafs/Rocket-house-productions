@@ -1,7 +1,7 @@
 'use client';
-import React, { Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { Box, Html, Preload, useProgress, useTexture } from '@react-three/drei';
+import React, { Suspense, useEffect, useState } from 'react';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { Box, Html, Preload, useProgress } from '@react-three/drei';
 
 import { Loader2 } from 'lucide-react';
 import * as THREE from 'three';
@@ -134,34 +134,91 @@ class ThreeErrorBoundary extends React.Component<
 
 // Safe Texture Loading Component
 export function SafeSkyBox() {
-  try {
-    const texture = useTexture('/images/course/sky.webp');
-    return (
-      <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
-        <meshStandardMaterial map={texture} side={THREE.BackSide} />
-      </Box>
-    );
-  } catch (error) {
-    // If texture loading fails, return fallback
-    console.warn('Sky texture failed, using color fallback');
+  const [fallback, setFallback] = React.useState(false);
+
+  if (fallback) {
     return (
       <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
         <meshStandardMaterial color="#87CEEB" side={THREE.BackSide} />
       </Box>
     );
   }
+
+  return (
+    <Suspense
+      fallback={
+        <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
+          <meshStandardMaterial color="#87CEEB" side={THREE.BackSide} />
+        </Box>
+      }>
+      <SkyBoxWithTexture onError={() => setFallback(true)} />
+    </Suspense>
+  );
+}
+
+function SkyBoxWithTexture({ onError }: { onError: () => void }) {
+  const texture = useLoader(THREE.TextureLoader, '/images/course/sky.webp', loader => {
+    loader.manager.onError = onError;
+  });
+
+  return (
+    <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
+      <meshStandardMaterial map={texture} side={THREE.BackSide} />
+    </Box>
+  );
 }
 
 // Enhanced Loader with Error Handling
 export function SafeLoader() {
-  const { progress, loaded, total, errors } = useProgress();
+  const { progress, loaded, total, errors, active, item } = useProgress();
+  const [isVisible, setIsVisible] = useState(true);
+  const [debouncedActive, setDebouncedActive] = useState(false);
 
-  // Check if there are loading errors
+  ///console.log('[SafeLoader] Progress:', progress, loaded, total, errors, active, item);
+
+  // Debounce the active state to prevent flickering
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    if (active) {
+      setDebouncedActive(true);
+    } else {
+      // Only set to false after a delay
+      timeoutId = setTimeout(() => {
+        setDebouncedActive(false);
+      }, 1000);
+    }
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [active]);
+
+  // Hide loader when everything is complete
+  useEffect(() => {
+    if (loaded === total && total > 0 && !debouncedActive) {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [loaded, total, debouncedActive]);
+
   const hasErrors = errors && errors.length > 0;
 
+  // Show loader if we have items to load and haven't finished
+  const shouldShowLoader = total > 0 && (loaded < total || debouncedActive || hasErrors) && isVisible;
+
+  if (!shouldShowLoader) {
+    return null;
+  }
+
   return (
-    <Html fullscreen zIndexRange={[100, 100]}>
-      <div className="z-50 flex h-screen w-full flex-col items-center justify-center">
+    <Html fullscreen zIndexRange={[1000, 1000]}>
+      <div className="flex h-screen w-full flex-col items-center justify-center bg-[#e8c996]">
         <div className="flex flex-col items-center justify-center">
           {hasErrors ? (
             <div className="text-center">
@@ -172,11 +229,16 @@ export function SafeLoader() {
           ) : (
             <>
               <Loader2 className="mb-5 h-12 w-12 animate-spin text-white" />
-              <div className="font-lesson-heading mt-5 w-full text-center text-white">{Math.round(progress)} %</div>
+              <div className="font-lesson-heading mt-5 w-full text-center text-white">{Math.round(progress)}%</div>
             </>
           )}
           <div className="w-full text-center text-sm text-white">
             Item: {loaded} / {total}
+          </div>
+
+          {/* Show loading state indicator */}
+          <div className="mt-2 w-full text-center text-xs text-white/70">
+            {debouncedActive ? 'Loading...' : 'Finalizing...'}
           </div>
         </div>
       </div>
@@ -185,7 +247,7 @@ export function SafeLoader() {
 }
 
 // Safe wrapper for ModuleAwards
-function SafeModuleAwards({ display }: { display: any }) {
+export function SafeModuleAwards({ display }: { display: any }) {
   try {
     return <ModuleAwards display={display} />;
   } catch (error) {
@@ -212,12 +274,12 @@ export function SafeCourseNavigation({
         setSkipAwards(true); // Disable awards when user skips
       }}>
       <Canvas {...canvasProps}>
-        <Suspense fallback={<SafeLoader />}>
-          {children}
-          {/* Only render ModuleAwards if user hasn't skipped and we have display data */}
-          {moduleAwardsDisplay && !skipAwards && <SafeModuleAwards display={moduleAwardsDisplay} />}
-        </Suspense>
+        {children}
+        {/* Only render ModuleAwards if user hasn't skipped and we have display data */}
+        {moduleAwardsDisplay && !skipAwards && <SafeModuleAwards display={moduleAwardsDisplay} />}
         <Preload all />
+
+        <SafeLoader />
       </Canvas>
     </ThreeErrorBoundary>
   );

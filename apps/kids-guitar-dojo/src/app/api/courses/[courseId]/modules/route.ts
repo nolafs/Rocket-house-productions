@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
-export async function POST(req: Request, { params }: { params: { courseId: string } }) {
+export async function POST(req: Request, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
     const { title, slug } = await req.json();
@@ -41,7 +42,7 @@ export async function POST(req: Request, { params }: { params: { courseId: strin
       },
     });
 
-    return NextResponse.json(module);
+    return NextResponse.json(moduleSection);
   } catch (error) {
     console.error('[COURSES_COURSE-ID_MODULE]', error);
     return new NextResponse('Internal Error', { status: 500 });

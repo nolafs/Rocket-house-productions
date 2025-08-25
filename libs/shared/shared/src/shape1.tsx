@@ -1,0 +1,14 @@
+export function Shape1({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="none"
+      height="100"
+      className={className}>
+      <path d="M 0 0 L100 0 Q 50 200 0 0"></path>
+    </svg>
+  );
+}
+
+export default Shape1;

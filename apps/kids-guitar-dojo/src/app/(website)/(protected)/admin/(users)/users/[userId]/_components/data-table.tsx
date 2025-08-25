@@ -15,16 +15,8 @@ import {
 } from '@tanstack/react-table';
 
 // Components
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-  Button,
-} from '@rocket-house-productions/shadcn-ui';
-
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];

@@ -9,6 +9,7 @@ export type Tier = {
     purchase_type: KeyTextField | string | null | undefined;
     most_popular?: boolean;
     stripeProductId?: string;
+    stripe_productid_dev?: string;
     course_id?: string;
     sales?: boolean;
     free?: boolean;

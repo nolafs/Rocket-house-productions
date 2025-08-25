@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
-export async function PATCH(req: Request, { params }: { params: { courseId: string; chapterId: string } }) {
+export async function PATCH(req: Request, props: { params: Promise<{ courseId: string; moduleId: string }> }) {
+  const { courseId, moduleId } = await props.params;
   try {
     const { userId } = await auth();
 
@@ -12,7 +13,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
 
     const course = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
       },
     });
 
@@ -22,8 +23,8 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
 
     const unPublishedChapter = await db.module.update({
       where: {
-        id: params.chapterId,
-        courseId: params.courseId,
+        id: moduleId,
+        courseId: courseId,
       },
       data: {
         isPublished: false,
@@ -32,7 +33,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
 
     const publishedChaptersInCourse = await db.module.findMany({
       where: {
-        courseId: params.courseId,
+        courseId: courseId,
         isPublished: true,
       },
     });
@@ -40,7 +41,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
     if (!publishedChaptersInCourse.length) {
       await db.course.update({
         where: {
-          id: params.courseId,
+          id: courseId,
         },
         data: {
           isPublished: false,

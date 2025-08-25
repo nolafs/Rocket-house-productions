@@ -7,18 +7,11 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import toast from 'react-hot-toast';
-import {
-  Button,
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-  ColorPicker,
-} from '@rocket-house-productions/shadcn-ui';
+import { Form, FormControl, FormField, FormItem, FormMessage, ColorPicker } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
+
 import { Pencil } from 'lucide-react';
 import cn from 'classnames';
-import { Preview } from '@rocket-house-productions/features';
 
 interface ModuleColorFormProps {
   initialData: Module;

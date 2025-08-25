@@ -1,7 +1,10 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "production": [
       "default",
       "!{projectRoot}/cypress/**/*",
@@ -40,13 +43,27 @@
       "plugin": "@nx/eslint/plugin",
       "options": {
         "targetName": "lint",
-        "exclude": ["**/*.next/**", "**/out/**"]
+        "exclude": [
+          "**/.next/**",
+          "**/out/**"
+        ]
       }
     },
     {
       "plugin": "@nx/jest/plugin",
       "options": {
         "targetName": "test"
+      }
+    },
+    {
+      "plugin": "@nx/react/router-plugin",
+      "options": {
+        "buildTargetName": "build",
+        "devTargetName": "dev",
+        "startTargetName": "start",
+        "watchDepsTargetName": "watch-deps",
+        "buildDepsTargetName": "build-deps",
+        "typecheckTargetName": "typecheck"
       }
     }
   ],
@@ -58,15 +75,22 @@
       }
     },
     "@nx/react": {
-      "library": {}
+      "library": {
+        "unitTestRunner": "none"
+      }
     }
   },
-  "nxCloudAccessToken": "NDAxM2IxMmMtYmZmMy00YTMyLTk1NmMtMDUxYzFlZTRjMjAyfHJlYWQtd3JpdGU=",
   "targetDefaults": {
     "@nx/js:tsc": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
     }
-  }
+  },
+  "nxCloudId": "669e01a55bf5407ce1f501e8"
 }

@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
-export async function DELETE(req: Request, { params }: { params: { courseId: string; moduleId: string } }) {
+export async function DELETE(req: Request, props: { params: Promise<{ courseId: string; moduleId: string }> }) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
 
@@ -62,7 +63,8 @@ export async function DELETE(req: Request, { params }: { params: { courseId: str
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { courseId: string; moduleId: string } }) {
+export async function PATCH(req: Request, props: { params: Promise<{ courseId: string; moduleId: string }> }) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
     const { isPublished, ...values } = await req.json();
