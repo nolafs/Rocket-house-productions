@@ -12,9 +12,9 @@ export async function StripePricing({ productId, sales = false }: StripePricingP
     return null;
   }
 
-  console.log('Fetching prices for productId:', productId, 'with sales:', sales);
-
   const productPrices = await stripePrices(productId, sales);
+
+  console.log('Fetching prices for productId:', productPrices);
 
   if (!productPrices) {
     return null;
