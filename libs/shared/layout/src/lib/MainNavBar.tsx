@@ -7,12 +7,16 @@ import Link from 'next/link';
 import { NavigationDocumentData } from '../../../../../apps/kids-guitar-dojo/prismicio-types';
 import cn from 'classnames';
 import { asText } from '@prismicio/client';
+
+import { ClerkProvider } from '@clerk/nextjs';
+
 interface HeaderProps {
   navigation: NavigationDocumentData;
   logo: StaticImageData;
+  children?: React.ReactNode;
 }
 
-export function MainNavbar({ navigation, logo }: HeaderProps) {
+export function MainNavbar({ navigation, logo, children }: HeaderProps) {
   console.log('Navigation:', navigation);
 
   const currentRoute = usePathname();
@@ -65,7 +69,7 @@ export function MainNavbar({ navigation, logo }: HeaderProps) {
             </ul>
           </div>
           {/* Other options */}
-          <NavLogin navigation={navigation} logo={logo} />
+          {children}
         </nav>
       </div>
     </div>

@@ -5,6 +5,11 @@ export const metadata = {
   description: 'Course pages for you to learn guitar with your kids.',
 };
 
-export default async function Layout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+export default async function Layout({ children, modal }: { children: React.ReactNode; modal: React.ReactNode }) {
+  return (
+    <>
+      <div>{children}</div>
+      <div>{modal}</div>
+    </>
+  );
 }

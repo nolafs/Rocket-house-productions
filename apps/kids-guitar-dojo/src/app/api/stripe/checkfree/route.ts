@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
       return new NextResponse('Failed to create purchase', { status: 500 });
     }
   } catch (error) {
-    console.error('Failed to find account', error);
+    console.error('Failed to find (.)account', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

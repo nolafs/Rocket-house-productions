@@ -75,6 +75,13 @@ export function NavbarSimple({
                   </div>
                 </SignedIn>
               </li>
+              <li>
+                <Link
+                  href="/courses/account"
+                  className={cn(buttonVariants({ variant: 'link' }), '!text-[16px] font-black font-medium')}>
+                  Account
+                </Link>
+              </li>
             </ul>
           </div>
         </nav>
