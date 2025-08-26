@@ -6,8 +6,9 @@ import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { Viewport } from 'next';
 import ModuleWrapper from './_components/moduleWrapper';
-const Header = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.Header));
-const ModuleAwards = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.ModuleAwards));
+
+//const Header = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.Header));
+//const ModuleAwards = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.ModuleAwards));
 
 export const metadata = {
   title: 'Kids Guitar Dojo course',
@@ -50,17 +51,7 @@ export default async function Layout(props: LayoutProps) {
 
   return (
     <CourseProgressionProvider userId={child.id} course={course}>
-      <ModuleWrapper>
-        <Header
-          childId={child.id}
-          avatar={child?.profilePicture}
-          name={child?.name}
-          purchaseType={child?.purchaseType}
-          purchaseCategory={child?.purchaseCategory}
-        />
-        <ModuleAwards />
-        {children}
-      </ModuleWrapper>
+      <ModuleWrapper>{children}</ModuleWrapper>
     </CourseProgressionProvider>
   );
 }
