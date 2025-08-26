@@ -2,14 +2,12 @@ import { CourseProgressionProvider } from '@rocket-house-productions/providers';
 import { getChild, getCourse } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
 import { ReactNode, Suspense } from 'react';
-import dynamic from 'next/dynamic';
 import { headers } from 'next/headers';
 import { Viewport } from 'next';
 import ModuleWrapper from './_components/moduleWrapper';
 import { ClerkProvider } from '@clerk/nextjs';
+import { Header, ModuleAwards } from '@rocket-house-productions/lesson';
 
-const Header = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.Header));
-const ModuleAwards = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.ModuleAwards));
 
 export const metadata = {
   title: 'Kids Guitar Dojo course',
