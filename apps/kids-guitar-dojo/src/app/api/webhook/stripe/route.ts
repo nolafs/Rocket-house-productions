@@ -68,7 +68,7 @@ export async function POST(req: Request) {
             throw new Error('No Course ID found');
           }
 
-          console.info('[CheckoutSession] update account', data.metadata);
+          console.info('[CheckoutSession] update (.)account', data.metadata);
 
           await db.account.update({
             where: {
