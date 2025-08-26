@@ -19,12 +19,12 @@ export default async function Page() {
 
   if (sessionClaims.metadata?.status === 'active') {
     if (sessionClaims.metadata?.type === 'free') {
-      console.info('User is already active and has a free account');
+      console.info('User is already active and has a free (.)account');
       redirect('/courses/upgrade');
     }
 
     if (sessionClaims.metadata?.type === 'paid') {
-      console.info('User is already active and has a paid account');
+      console.info('User is already active and has a paid (.)account');
       redirect('/courses');
     }
   }
