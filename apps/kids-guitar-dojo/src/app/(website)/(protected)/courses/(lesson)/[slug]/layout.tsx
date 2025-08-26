@@ -8,7 +8,6 @@ import ModuleWrapper from './_components/moduleWrapper';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Header, ModuleAwards } from '@rocket-house-productions/lesson';
 
-
 export const metadata = {
   title: 'Kids Guitar Dojo course',
   description: 'Course pages for you to learn guitar with your kids.',
