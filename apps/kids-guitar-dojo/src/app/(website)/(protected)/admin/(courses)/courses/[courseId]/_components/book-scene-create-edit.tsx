@@ -14,6 +14,9 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import { FileImageUpload } from '@rocket-house-productions/features';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const bookSceneFormSchema = z.object({
   title: z.string().trim().min(1, 'Title is required'),
@@ -24,6 +27,7 @@ const bookSceneFormSchema = z.object({
   foregroundUrl: z.string().trim().min(1, 'URL is required'),
   midgroundUrl: z.string().trim().min(1, 'URL is required'),
   backgroundUrl: z.string().trim().min(1, 'URL is required'),
+  courseId: z.string().optional().nullable(),
 });
 
 type FormValues = z.infer<typeof bookSceneFormSchema>;
@@ -42,28 +46,39 @@ function toFormValues(d?: Partial<BookScene>): FormValues {
 }
 
 interface BookSceneCreateEditProps {
-  cousreId?: string;
+  courseId?: string;
   initialData?: Partial<BookScene>;
   editMode?: boolean;
 }
 
-export function BookSceneCreateEdit({ initialData, editMode = false }: BookSceneCreateEditProps) {
+export function BookSceneCreateEdit({ initialData, editMode = false, courseId }: BookSceneCreateEditProps) {
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(editMode);
   const defaults = useMemo(() => toFormValues(initialData), [initialData]);
 
   const form = useForm<z.infer<typeof bookSceneFormSchema>>({
     resolver: zodResolver(bookSceneFormSchema),
-    defaultValues: defaults,
+    defaultValues: { ...defaults, courseId: courseId || null },
   });
 
   const onSubmit = async (data: FormValues) => {
     console.log('[BookSceneCreateEdit] onSubmit', data);
+    try {
+      await axios.post(`/api/courses/book-scene`, data);
+      toast.success('Create successful');
+      setIsEditing(false);
+      router.refresh();
+    } catch (error) {
+      toast.error('Something went wrong');
+    }
   };
 
   return (
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* hidden courseId */}
+          {courseId && <input type="hidden" {...form.register('courseId')} value={courseId} />}
           {/* Title */}
           <FormField
             control={form.control}
