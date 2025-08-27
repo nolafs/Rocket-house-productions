@@ -8,6 +8,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from '@rocket-house-productions/shadcn-ui';
 import { Badge, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import {
@@ -65,7 +69,7 @@ export function Header({
   };
 
   return (
-    <>
+    <TooltipProvider>
       <div
         className={'fixed left-0 top-0 z-[99] flex h-auto w-full flex-row justify-between p-4 transition-all'}
         style={{ backgroundColor: color }}>
@@ -73,7 +77,14 @@ export function Header({
           <div>
             <Link href={'/courses'} className={cn(buttonVariants({ variant: 'lesson', size: 'icon' }), 'mt-4')}>
               <span className={'sr-only'}>Back to courses</span>
-              <EarthIcon />
+              <Tooltip>
+                <TooltipTrigger>
+                  <EarthIcon />
+                </TooltipTrigger>
+                <TooltipContent side={'right'} align={'end'} sideOffset={20} arrowPadding={1}>
+                  <p>Back to courses</p>
+                </TooltipContent>
+              </Tooltip>
             </Link>
           </div>
           <ScoreDisplay />
@@ -150,7 +161,7 @@ export function Header({
           </Dialog>
         </div>
       </div>
-    </>
+    </TooltipProvider>
   );
 }
 
