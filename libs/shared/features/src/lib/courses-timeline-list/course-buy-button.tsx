@@ -34,14 +34,13 @@ type PriceOption = {
 
 interface CourseBuyButtonProps {
   course: CoursePayload;
-  options?: PriceOption[];
+  options: PriceOption[];
 }
 
-export function CourseBuyButton({ course }: CourseBuyButtonProps) {
+export function CourseBuyButton({ course, options }: CourseBuyButtonProps) {
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<string | undefined>(options[0]?.id);
   const [submitting, setSubmitting] = useState(false);
-  const [options, setOptions] = useState<PriceOption[]>([]);
-  const [selected, setSelected] = useState<string | null>(null);
 
   const handleCheckout = async () => {
     // Implement checkout logic here
