@@ -7,12 +7,13 @@ import { useState } from 'react';
 
 interface FileUploadProps {
   onChange: (file?: any) => void;
+  image?: string | null;
 }
 
-export const FileImageUpload = ({ onChange }: FileUploadProps) => {
+export const FileImageUpload = ({ onChange, image }: FileUploadProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null | undefined>(image);
 
   const onFileUpload = async (files: File[]) => {
     const formData = new FormData();
