@@ -88,8 +88,12 @@ const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) =>
             'mt-2 flex flex-col space-y-2 text-sm',
             (!initialData.stripeProductStandardId || !initialData.stripeProductPremiumId) && 'italic text-slate-500',
           )}>
-          <div>{initialData.stripeProductStandardId || 'No Standard Product id'}</div>
-          <div>{initialData.stripeProductPremiumId || 'No Premium Product id'}</div>
+          <div>
+            <b>Standard</b>: {initialData.stripeProductStandardId || 'No Standard Product id'}
+          </div>
+          <div>
+            <b>Premium</b>: {initialData.stripeProductPremiumId || 'No Premium Product id'}
+          </div>
         </div>
       )}
       {isEditing && (
