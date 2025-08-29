@@ -76,7 +76,7 @@ export function CourseBuyButton({ course, options }: CourseBuyButtonProps) {
           <Separator />
 
           <ScrollArea className="h-[calc(100svh-12rem)]">
-            <div className="space-y-6 p-6">
+            <div className="space-y-6 py-6">
               <div className="flex gap-4">
                 {course.imageUrl ? (
                   <Image
