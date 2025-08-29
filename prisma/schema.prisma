@@ -15,14 +15,16 @@ datasource db {
 }
 
 model Course {
-  id          String  @id @default(uuid())
-  userId      String
-  title       String  @db.Text
-  slug        String? @unique
-  description String? @db.Text
-  imageUrl    String? @db.Text
-  isPublished Boolean @default(false)
-  order       Int?    @default(0)
+  id                      String  @id @default(uuid())
+  userId                  String
+  title                   String  @db.Text
+  slug                    String? @unique
+  description             String? @db.Text
+  imageUrl                String? @db.Text
+  isPublished             Boolean @default(false)
+  order                   Int?    @default(0)
+  stripeProductPremiumId  String? @unique
+  stripeProductStandardId String? @unique
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
