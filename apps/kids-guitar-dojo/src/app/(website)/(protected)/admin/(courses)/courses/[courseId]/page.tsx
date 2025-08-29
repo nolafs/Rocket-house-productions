@@ -14,6 +14,7 @@ import { auth } from '@clerk/nextjs/server';
 import { BookSceneForm } from './_components/book-scene';
 import { Prisma } from '@prisma/client';
 import OrderForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/order-form';
+import StripeProductForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/stripe-product-form';
 
 export type CoursePayload = Prisma.CourseGetPayload<{
   include: {
@@ -128,6 +129,7 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
                 value: category.id,
               }))}
             />
+            <StripeProductForm initialData={course} courseId={course.id} />
           </div>
           <div className="space-y-6">
             <div>
