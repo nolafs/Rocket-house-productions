@@ -1,7 +1,7 @@
 export * from './components/ui/sheet';
 export * from './components/ui/collapsible';
 export * from './components/ui/alert-dialog';
-
+export * from './components/ui/radio-group';
 export * from './components/ui/card';
 export * from './components/ui/checkbox';
 export * from './components/ui/combobox';

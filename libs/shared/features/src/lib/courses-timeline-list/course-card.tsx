@@ -1,14 +1,35 @@
+'use server';
 import { CoursePayload } from './courses-timeline-list';
 import Link from 'next/link';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Image from 'next/image';
+import { db } from '@rocket-house-productions/integration/server';
+import CourseBuyButton from './course-buy-button';
+import { getPriceOptionsForProducts } from '@rocket-house-productions/actions/server';
 
 interface CourseCardProps {
   course: CoursePayload;
   idx?: number;
 }
 
-export function CourseCard({ course, idx = 0 }: CourseCardProps) {
+export async function CourseCard({ course, idx = 0 }: CourseCardProps) {
+  const purchasesByCourse = await db.purchase.findMany({
+    where: {
+      courseId: course.id,
+    },
+  });
+
+  const productIds = [
+    course.stripeProductStandardId && { id: course.stripeProductStandardId, fallbackLabel: 'Standard' },
+    course.stripeProductPremiumId && { id: course.stripeProductPremiumId, fallbackLabel: 'Premium' },
+  ].filter(Boolean) as { id: string; fallbackLabel: string }[];
+
+  const options = productIds.length
+    ? await getPriceOptionsForProducts(productIds, { currency: 'eur', oneTimeOnly: true })
+    : [];
+
+  console.log(options);
+
   return (
     <div
       className={
@@ -34,11 +55,20 @@ export function CourseCard({ course, idx = 0 }: CourseCardProps) {
         <div className={'my-4 text-center text-sm'}>{course.description}</div>
         <div
           className={
-            'flex w-full items-center justify-center rounded-xl border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5'
+            'flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5'
           }>
-          <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
-            Enter Course
-          </Link>
+          {purchasesByCourse.length ? (
+            <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
+              Enter Course
+            </Link>
+          ) : (
+            <>
+              <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
+                Preview Course
+              </Link>
+              <CourseBuyButton course={course} options={options} />
+            </>
+          )}
         </div>
       </div>
     </div>

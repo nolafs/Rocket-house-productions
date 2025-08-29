@@ -1,4 +1,4 @@
-export { stripePrices } from './stripe-products';
+export { stripePrices, getPriceOptionsForProducts } from './stripe-products';
 export { checkoutUrl } from './stripe-checkout-url';
 export { getAccount } from './get-account';
 export { getAccountChildren } from './get-account-children';
