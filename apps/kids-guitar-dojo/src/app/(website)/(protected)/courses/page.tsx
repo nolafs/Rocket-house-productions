@@ -1,13 +1,25 @@
-import { getCourses } from '@rocket-house-productions/actions/server';
+import { getCourses, SessionFlags } from '@rocket-house-productions/actions/server';
 
 import { NavbarSimple } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
 import React from 'react';
 import { CoursesTimelineList } from '@rocket-house-productions/features';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
 export default async function Page() {
   // get all courses
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect('/');
+  }
+
   const courses = await getCourses();
+
+  const userData = await SessionFlags();
+
+  console.log(userData);
 
   return (
     <div
