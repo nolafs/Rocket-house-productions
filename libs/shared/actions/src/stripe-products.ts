@@ -11,7 +11,7 @@ export type PriceOption = {
   currency: string; // e.g., 'EUR'
 };
 
-export const stripePrices = async (productId: string) => {
+export const stripePrices = async (productId: string, sales?: boolean) => {
   noStore(); // avoid caching prices
   const { data } = await stripe.prices.list({
     product: productId,
