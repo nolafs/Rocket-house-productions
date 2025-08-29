@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import axios from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 import { Pencil } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -16,6 +16,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
   Input,
   Textarea,
@@ -25,34 +26,37 @@ import cn from 'classnames';
 
 import { Course } from '@prisma/client';
 
-interface OrderFormProps {
+interface StripeProductFormProps {
   initialData: Course;
   courseId: string;
 }
 
 const formSchema = z.object({
-  order: z.coerce.number().int().min(0, { message: 'Order must be at least 0' }),
+  stripeProductPremiumId: z.string().min(1, {
+    message: 'Premium Id is required',
+  }),
+  stripeProductStandardId: z.string().min(1, {
+    message: 'Standard Id is required',
+  }),
 });
 
-type FormInput = z.input<typeof formSchema>; // { order: string | number }
-type FormOutput = z.output<typeof formSchema>; // { order: number }
-
-const OrderForm = ({ initialData, courseId }: OrderFormProps) => {
+const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing(current => !current);
 
-  const form = useForm<FormInput>({
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      order: initialData?.order || 0,
+      stripeProductStandardId: initialData?.stripeProductStandardId || '',
+      stripeProductPremiumId: initialData?.stripeProductPremiumId || '',
     },
   });
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit: SubmitHandler<FormOutput> = async values => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
       toast.success('Course updated');
@@ -66,33 +70,53 @@ const OrderForm = ({ initialData, courseId }: OrderFormProps) => {
   return (
     <div className="mt-6 rounded-md border bg-slate-100 p-4">
       <div className="flex items-center justify-between font-medium">
-        Course Order
+        Course Stripe Product ID
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="mr-2 h-4 w-4" />
-              Edit Order
+              Edit Product IDs
             </>
           )}
         </Button>
       </div>
       {!isEditing && (
-        <p className={cn('mt-2 text-sm', !initialData.order && 'italic text-slate-500')}>
-          {initialData.order || 'No order'}
-        </p>
+        <div
+          className={cn(
+            'mt-2 flex flex-col space-y-2 text-sm',
+            (!initialData.stripeProductStandardId || !initialData.stripeProductPremiumId) && 'italic text-slate-500',
+          )}>
+          <div>{initialData.stripeProductStandardId || 'No Standard Product id'}</div>
+          <div>{initialData.stripeProductPremiumId || 'No Premium Product id'}</div>
+        </div>
       )}
       {isEditing && (
         <Form {...(form as any)}>
-          <form onSubmit={form.handleSubmit(raw => onSubmit(formSchema.parse(raw)))} className="mt-4 space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
               control={form.control as any}
-              name="order"
+              name="stripeProductStandardId"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Standard</FormLabel>
                   <FormControl>
-                    <Input type={'number'} {...field} />
+                    <Input disabled={isSubmitting} placeholder="ex. 'prod_QbBkt7z9NPxO6j'" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control as any}
+              name="stripeProductPremiumId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Premium</FormLabel>
+                  <FormControl>
+                    <Input disabled={isSubmitting} placeholder="ex. 'prod_QbBkt7z9NPxO6j'" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,4 +134,4 @@ const OrderForm = ({ initialData, courseId }: OrderFormProps) => {
   );
 };
 
-export default OrderForm;
+export default StripeProductForm;
