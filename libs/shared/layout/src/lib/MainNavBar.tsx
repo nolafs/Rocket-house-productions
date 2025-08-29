@@ -1,14 +1,12 @@
 'use client';
 import React, { useEffect } from 'react';
 import Image, { type StaticImageData } from 'next/image';
-import NavLogin from './nav-login';
+
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { NavigationDocumentData } from '../../../../../apps/kids-guitar-dojo/prismicio-types';
 import cn from 'classnames';
 import { asText } from '@prismicio/client';
-
-import { ClerkProvider } from '@clerk/nextjs';
 
 interface HeaderProps {
   navigation: NavigationDocumentData;

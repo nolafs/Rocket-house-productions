@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { File, LayoutDashboard, ListChecks } from 'lucide-react';
+import { File, LayoutDashboard, ListChecks, Earth } from 'lucide-react';
 import { db } from '@rocket-house-productions/integration/server';
 // Components
 import TitleForm from './_components/title-form';
@@ -11,6 +11,19 @@ import ModulesForm from './_components/modules-form';
 import Actions from './_components/actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { auth } from '@clerk/nextjs/server';
+import { BookSceneForm } from './_components/book-scene';
+import { Prisma } from '@prisma/client';
+import OrderForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/order-form';
+
+export type CoursePayload = Prisma.CourseGetPayload<{
+  include: {
+    modules: true; // Module[]
+    bookScene: true; // BookScene | null
+    attachments: {
+      include: { attachmentType: true }; // Attachment & { attachmentType: AttachmentType }
+    };
+  };
+}>;
 
 const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) => {
   const params = await props.params;
@@ -22,16 +35,18 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
   }
 
   // Query to database to check for presence of course id passed in url
-  const course = await db.course.findUnique({
+  const course: CoursePayload | null = await db.course.findUnique({
     where: {
       id: params.courseId,
     },
+
     include: {
       modules: {
         orderBy: {
           position: 'asc',
         },
       },
+      bookScene: true,
       attachments: {
         include: {
           attachmentType: true,
@@ -53,6 +68,12 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
   const attachmentCategories = await db.attachmemtType.findMany({
     orderBy: {
       name: 'asc',
+    },
+  });
+
+  const bookScenes = await db.bookScene.findMany({
+    orderBy: {
+      title: 'asc',
     },
   });
 
@@ -96,6 +117,7 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
               <h2 className="text-xl">Customize your course</h2>
             </div>
             <TitleForm initialData={course} courseId={course.id} />
+            <OrderForm initialData={course} courseId={course.id} />
             <DescriptionForm initialData={course} courseId={course.id} />
             <ImageForm initialData={course} courseId={course.id} />
             <CategoryForm
@@ -128,6 +150,13 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
                 initialData={course}
                 courseId={course.id}
               />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Earth} />
+                <h2 className="text-xl">Book Scene</h2>
+              </div>
+              <BookSceneForm initialData={course} courseId={course.id} bookScenes={bookScenes} />
             </div>
           </div>
         </div>
