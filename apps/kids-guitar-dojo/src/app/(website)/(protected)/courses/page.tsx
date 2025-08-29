@@ -1,29 +1,42 @@
 import { getCourses } from '@rocket-house-productions/actions/server';
-import Link from 'next/link';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
+
 import { NavbarSimple } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
 import React from 'react';
+import { CoursesTimelineList } from '@rocket-house-productions/features';
 
 export default async function Page() {
   // get all courses
   const courses = await getCourses();
 
   return (
-    <>
+    <div
+      className={'flex bg-center bg-repeat'}
+      style={{
+        backgroundImage: "url('/images/tilebg.png')",
+        backgroundSize: '500px 333px',
+      }}>
       <NavbarSimple logo={logo} />
-      <div className={'mt-5 flex h-svh w-full flex-col items-center justify-center'}>
-        <h1 className={'font-lesson-heading mb-5 text-2xl font-bold'}>Course list</h1>
-        <ul className={'flex flex-col items-center justify-center space-y-4'}>
-          {courses.map(course => (
-            <li key={course.slug}>
-              <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
-                {course.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+
+      <div
+        className="pointer-events-none absolute inset-0 h-full"
+        style={{
+          backgroundImage: 'linear-gradient(to bottom, white, black)',
+          mixBlendMode: 'screen',
+        }}
+      />
+
+      <div
+        className="pointer-events-none absolute inset-0 h-full"
+        style={{
+          backgroundImage: 'linear-gradient(to bottom, #e8c996, #ebdac0)',
+          mixBlendMode: 'multiply',
+        }}
+      />
+
+      <div className={'relative z-10 flex min-h-svh w-full flex-col items-center justify-center py-20'}>
+        <CoursesTimelineList courses={courses} />
       </div>
-    </>
+    </div>
   );
 }

@@ -8,8 +8,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
 } from '@rocket-house-productions/shadcn-ui';
-import { Badge } from '@rocket-house-productions/shadcn-ui/server';
+import { Badge, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import {
   Dialog,
   DialogBody,
@@ -25,6 +29,8 @@ import ModuleProgressList from '../module/module-progress-list';
 import ModuleAwardList from '../module/ModuleAwardList';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import cn from 'classnames';
+import { EarthIcon } from 'lucide-react';
 
 interface HeaderProps {
   childId: string;
@@ -63,11 +69,24 @@ export function Header({
   };
 
   return (
-    <>
+    <TooltipProvider>
       <div
         className={'fixed left-0 top-0 z-[99] flex h-auto w-full flex-row justify-between p-4 transition-all'}
         style={{ backgroundColor: color }}>
-        <div>
+        <div className={'flex items-center justify-center space-x-5'}>
+          <div>
+            <Link href={'/courses'} className={cn(buttonVariants({ variant: 'lesson', size: 'icon' }), 'mt-4')}>
+              <span className={'sr-only'}>Back to courses</span>
+              <Tooltip>
+                <TooltipTrigger>
+                  <EarthIcon />
+                </TooltipTrigger>
+                <TooltipContent side={'right'} align={'end'} sideOffset={20} arrowPadding={1}>
+                  <p>Back to courses</p>
+                </TooltipContent>
+              </Tooltip>
+            </Link>
+          </div>
           <ScoreDisplay />
         </div>
         <div className={'flex items-center justify-center space-x-3'}>
@@ -142,7 +161,7 @@ export function Header({
           </Dialog>
         </div>
       </div>
-    </>
+    </TooltipProvider>
   );
 }
 
