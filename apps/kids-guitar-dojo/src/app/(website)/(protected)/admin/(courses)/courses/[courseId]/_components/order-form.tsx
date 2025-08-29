@@ -52,7 +52,7 @@ const OrderForm = ({ initialData, courseId }: OrderFormProps) => {
 
   const { isSubmitting, isValid } = form.formState;
 
-  const onSubmit = async (values: FormOutput) => {
+  const onSubmit: SubmitHandler<FormOutput> = async values => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
       toast.success('Course updated');
