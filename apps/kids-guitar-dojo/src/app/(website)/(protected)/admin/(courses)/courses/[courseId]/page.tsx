@@ -13,6 +13,7 @@ import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { auth } from '@clerk/nextjs/server';
 import { BookSceneForm } from './_components/book-scene';
 import { Prisma } from '@prisma/client';
+import OrderForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/order-form';
 
 export type CoursePayload = Prisma.CourseGetPayload<{
   include: {
@@ -38,6 +39,7 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
     where: {
       id: params.courseId,
     },
+
     include: {
       modules: {
         orderBy: {
@@ -115,6 +117,7 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
               <h2 className="text-xl">Customize your course</h2>
             </div>
             <TitleForm initialData={course} courseId={course.id} />
+            <OrderForm initialData={course} courseId={course.id} />
             <DescriptionForm initialData={course} courseId={course.id} />
             <ImageForm initialData={course} courseId={course.id} />
             <CategoryForm
