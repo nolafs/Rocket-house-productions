@@ -49,9 +49,15 @@ interface BookSceneCreateEditProps {
   courseId?: string;
   initialData?: Partial<BookScene>;
   editMode?: boolean;
+  onCancel?: () => void;
 }
 
-export function BookSceneCreateEdit({ initialData, editMode = false, courseId }: BookSceneCreateEditProps) {
+export const BookSceneCreateEdit = ({
+  initialData,
+  editMode = false,
+  courseId,
+  onCancel,
+}: BookSceneCreateEditProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(editMode);
   const defaults = useMemo(() => toFormValues(initialData), [initialData]);
@@ -71,6 +77,11 @@ export function BookSceneCreateEdit({ initialData, editMode = false, courseId }:
     } catch (error) {
       toast.error('Something went wrong');
     }
+  };
+
+  const onCancelHandler = () => {
+    setIsEditing(false);
+    onCancel?.();
   };
 
   return (
@@ -129,6 +140,7 @@ export function BookSceneCreateEdit({ initialData, editMode = false, courseId }:
                   <FormLabel>{label}</FormLabel>
                   <FormControl>
                     <FileImageUpload
+                      image={field.value}
                       onChange={file => {
                         if (file) field.onChange(file);
                       }}
@@ -140,13 +152,21 @@ export function BookSceneCreateEdit({ initialData, editMode = false, courseId }:
             />
           ))}
 
-          <Button type="submit" className="w-full">
-            Save
-          </Button>
+          <div className={'flex justify-center gap-x-4'}>
+            {isEditing && (
+              <Button variant={'secondary'} onClick={onCancelHandler} className="w-full">
+                Cancel
+              </Button>
+            )}
+
+            <Button type="submit" className="w-full">
+              Save
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
   );
-}
+};
 
 export default BookSceneCreateEdit;
