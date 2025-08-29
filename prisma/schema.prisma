@@ -22,6 +22,7 @@ model Course {
   description String? @db.Text
   imageUrl    String? @db.Text
   isPublished Boolean @default(false)
+  order       Int?    @default(0)
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])

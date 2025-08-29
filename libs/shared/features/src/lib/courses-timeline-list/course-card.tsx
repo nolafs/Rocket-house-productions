@@ -12,7 +12,7 @@ export function CourseCard({ course, idx = 0 }: CourseCardProps) {
   return (
     <div
       className={
-        'relative w-full max-w-sm rounded-xl border-2 border-[#e8c996] bg-[#f1dec0] p-4 shadow-sm shadow-black/20'
+        'relative w-full max-w-sm rounded-xl border-2 border-[#e8c996] bg-[#f1dec0] bg-[url(/images/cardbg.webp)] bg-repeat p-4 shadow-sm shadow-black/20'
       }>
       <div className={'absolute -top-0 left-1/2 -translate-x-1/2 -translate-y-1/2'}>
         <div
@@ -31,7 +31,11 @@ export function CourseCard({ course, idx = 0 }: CourseCardProps) {
           height={120}
           className={'w-full overflow-hidden rounded-lg p-2'}
         />
-        <div>
+        <div className={'my-4 text-center text-sm'}>{course.description}</div>
+        <div
+          className={
+            'flex w-full items-center justify-center rounded-xl border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5'
+          }>
           <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
             Enter Course
           </Link>
