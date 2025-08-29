@@ -17,18 +17,20 @@ const updateSchema = z.object({
   courseId: z.string().optional().nullable(),
 });
 
-type RouteCtx = { params: { id: string } };
+type Ctx = { params: Promise<{ bookSceneId: string }> };
 
-export async function GET(_req: Request, { params }: RouteCtx) {
+export async function GET(_req: NextRequest, ctx: Ctx) {
   const { userId } = await auth();
 
   if (!userId) {
     return new NextResponse('Unauthorized operation', { status: 401 });
   }
 
+  const { bookSceneId } = await ctx.params;
+
   try {
     const scene = await db.bookScene.findUnique({
-      where: { id: params.id },
+      where: { id: bookSceneId },
     });
     if (!scene) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     return NextResponse.json(scene);
@@ -38,12 +40,14 @@ export async function GET(_req: Request, { params }: RouteCtx) {
   }
 }
 
-export async function PATCH(req: Request, { params }: RouteCtx) {
+export async function PATCH(req: NextRequest, ctx: Ctx) {
   const { userId } = await auth();
 
   if (!userId) {
     return new NextResponse('Unauthorized operation', { status: 401 });
   }
+
+  const { bookSceneId } = await ctx.params;
 
   try {
     const json = await req.json();
@@ -55,7 +59,7 @@ export async function PATCH(req: Request, { params }: RouteCtx) {
     const { courseId, ...data } = parsed.data;
 
     const updated = await db.bookScene.update({
-      where: { id: params.id },
+      where: { id: bookSceneId },
       data,
     });
 
@@ -64,14 +68,14 @@ export async function PATCH(req: Request, { params }: RouteCtx) {
       if (courseId === null) {
         // unassign from any course using this scene
         await db.course.updateMany({
-          where: { bookSceneId: params.id },
+          where: { bookSceneId: bookSceneId },
           data: { bookSceneId: null },
         });
       } else {
         // set this scene on the given course (one scene per course)
         await db.course.update({
           where: { id: courseId },
-          data: { bookSceneId: params.id },
+          data: { bookSceneId: bookSceneId },
         });
       }
     }
@@ -86,22 +90,24 @@ export async function PATCH(req: Request, { params }: RouteCtx) {
   }
 }
 
-export async function DELETE(_req: Request, { params }: RouteCtx) {
+export async function DELETE(_req: NextRequest, ctx: Ctx) {
   const { userId } = await auth();
 
   if (!userId) {
     return new NextResponse('Unauthorized operation', { status: 401 });
   }
 
+  const { bookSceneId } = await ctx.params;
+
   try {
     // Optional: clear FK on courses first if your relation doesn't use onDelete: SetNull
     await db.course.updateMany({
-      where: { bookSceneId: params.id },
+      where: { bookSceneId: bookSceneId },
       data: { bookSceneId: null },
     });
 
     await db.bookScene.delete({
-      where: { id: params.id },
+      where: { id: bookSceneId },
     });
 
     return NextResponse.json({ ok: true });
