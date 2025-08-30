@@ -133,7 +133,7 @@ class ThreeErrorBoundary extends React.Component<
 }
 
 // Safe Texture Loading Component
-export function SafeSkyBox() {
+export function SafeSkyBox({ skyUrl }: { skyUrl?: string | undefined | null }) {
   const [fallback, setFallback] = React.useState(false);
 
   if (fallback) {
@@ -151,13 +151,13 @@ export function SafeSkyBox() {
           <meshStandardMaterial color="#87CEEB" side={THREE.BackSide} />
         </Box>
       }>
-      <SkyBoxWithTexture onError={() => setFallback(true)} />
+      <SkyBoxWithTexture skyUrl={skyUrl} onError={() => setFallback(true)} />
     </Suspense>
   );
 }
 
-function SkyBoxWithTexture({ onError }: { onError: () => void }) {
-  const texture = useLoader(THREE.TextureLoader, '/images/course/sky.webp', loader => {
+function SkyBoxWithTexture({ skyUrl, onError }: { skyUrl?: string | undefined | null; onError: () => void }) {
+  const texture = useLoader(THREE.TextureLoader, skyUrl || '/images/course/sky.webp', loader => {
     loader.manager.onError = onError;
   });
 

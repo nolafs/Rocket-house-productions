@@ -54,3 +54,15 @@ export async function getPriceOptionsForProducts(
 
   return results.filter(Boolean) as PriceOption[];
 }
+
+// Update Product metadata
+export const updateProductMetadata = async (productId: string, metadata: Record<string, string>) => {
+  noStore(); // avoid caching prices
+  try {
+    await stripe.products.update(productId, {
+      metadata,
+    });
+  } catch (error) {
+    console.error('Error updating product metadata:', error);
+  }
+};
