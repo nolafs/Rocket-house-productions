@@ -25,6 +25,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
 import { Course } from '@prisma/client';
+import { updateProductMetadata } from '../../../../../../../../../../../libs/shared/actions/src/stripe-products';
 
 interface StripeProductFormProps {
   initialData: Course;
@@ -59,6 +60,26 @@ const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) =>
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
+
+      if (values.stripeProductStandardId) {
+        await updateProductMetadata(values.stripeProductStandardId, {
+          course_id: courseId,
+          productType: 'standard',
+          position: '1',
+          product_group: 'kidGuitarDojo',
+          displayName: 'Rockstar Academy Standard',
+        });
+      }
+      if (values.stripeProductPremiumId) {
+        await updateProductMetadata(values.stripeProductPremiumId, {
+          courseId,
+          productType: 'premium',
+          position: '2',
+          product_group: 'kidGuitarDojo',
+          displayName: 'Rockstar Academy',
+        });
+      }
+
       toast.success('Course updated');
       toggleEdit();
       router.refresh();
