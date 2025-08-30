@@ -44,7 +44,7 @@ export async function CourseCard({ course, idx = 0 }: CourseCardProps) {
         </div>
       </div>
       <div className={'mt-5 flex flex-col items-center justify-center'}>
-        <h1 className={'font-lesson-heading text-lg'}>{course.title}</h1>
+        <h1 className={'font-lesson-heading text-center text-lg'}>{course.title}</h1>
         <Image
           src={course.imageUrl || '/images/course-placeholder.png'}
           alt={course.title}

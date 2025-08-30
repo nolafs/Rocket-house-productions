@@ -130,6 +130,13 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
               }))}
             />
             <StripeProductForm initialData={course} courseId={course.id} />
+            <div>
+              <div className="mt-5 flex items-center gap-x-2">
+                <IconBadge icon={Earth} />
+                <h2 className="text-xl">Book Scene</h2>
+              </div>
+              <BookSceneForm initialData={course} courseId={course.id} bookScenes={bookScenes} />
+            </div>
           </div>
           <div className="space-y-6">
             <div>
@@ -152,13 +159,6 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
                 initialData={course}
                 courseId={course.id}
               />
-            </div>
-            <div>
-              <div className="flex items-center gap-x-2">
-                <IconBadge icon={Earth} />
-                <h2 className="text-xl">Book Scene</h2>
-              </div>
-              <BookSceneForm initialData={course} courseId={course.id} bookScenes={bookScenes} />
             </div>
           </div>
         </div>
