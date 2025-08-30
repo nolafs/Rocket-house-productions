@@ -20,6 +20,7 @@ export const getCourse = async ({ courseSlug }: GetCourseProps) => {
       isPublished: true,
     },
     include: {
+      bookScene: true,
       attachments: {
         include: {
           attachmentType: {

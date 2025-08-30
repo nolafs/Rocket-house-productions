@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useThree } from '@react-three/fiber';
 
-import { Course } from '@prisma/client';
+import { type Course, type BookScene, type Module } from '@prisma/client';
 
 import { Loader2 } from 'lucide-react';
 
@@ -16,13 +16,12 @@ import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-ho
 
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
-import { Module } from '@prisma/client';
+
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
 
 import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
 
 import dynamic from 'next/dynamic';
-import { CameraController } from './course-scene/camera-control';
 
 const Landscape = dynamic(() => import('./course-scene/landscape').then(mod => mod.Landscape), {
   ssr: false,
@@ -56,7 +55,7 @@ if (typeof window !== 'undefined') {
 }
 
 interface CourseNavigationProps {
-  course: Course & { modules: any[] };
+  course: Course & { modules: any[]; bookScene?: BookScene };
   purchaseType?: string | null;
   onLoaded?: (loaded: boolean) => void;
 }
@@ -94,7 +93,6 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   useEffect(() => {
     // Calculate the current course progress
     const newProgress = courseState.getCourseProgress(course.id);
-    console.log('[COURSENAVIGATION]', newProgress);
 
     // Update only if the progression data has actually changed
     if (newProgress !== previousProgress.current) {
@@ -270,7 +268,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         camera={{ position: [0, 0, 130], fov: 15 }}>
         <ambientLight intensity={0.6} />
 
-        <SafeSkyBox />
+        <SafeSkyBox skyUrl={course?.bookScene?.skyUrl} />
 
         {/* rest of your 3D content */}
         <directionalLight
@@ -295,6 +293,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
           onOpenLesson={handleOpenLesson}
           display={display}
           onReady={load => handleLoaded(load)}
+          bookScene={course.bookScene}
         />
 
         <group position={[0, 300, -300]}>

@@ -30,6 +30,7 @@ export default async function Page() {
   }
 
   const client = createClient();
+
   const tiers = await client.getAllByType('pricing', {
     orderings: [
       {

@@ -27,6 +27,7 @@ const bookSceneFormSchema = z.object({
   foregroundUrl: z.string().trim().min(1, 'URL is required'),
   midgroundUrl: z.string().trim().min(1, 'URL is required'),
   backgroundUrl: z.string().trim().min(1, 'URL is required'),
+  skyUrl: z.string().trim().min(1, 'URL is required'),
   courseId: z.string().optional().nullable(),
 });
 
@@ -42,6 +43,7 @@ function toFormValues(d?: Partial<BookScene>): FormValues {
     foregroundUrl: (d as any)?.foregroundUrl ?? '',
     midgroundUrl: (d as any)?.midgroundUrl ?? '',
     backgroundUrl: (d as any)?.backgroundUrl ?? '',
+    skyUrl: (d as any)?.skyUrl ?? '',
   };
 }
 
@@ -129,6 +131,7 @@ export const BookSceneCreateEdit = ({
               ['foregroundUrl', 'Foreground'],
               ['midgroundUrl', 'Midground'],
               ['backgroundUrl', 'Background'],
+              ['skyUrl', 'Sky'],
             ] as const
           ).map(([name, label]) => (
             <FormField
