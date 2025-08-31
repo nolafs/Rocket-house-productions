@@ -6,6 +6,7 @@ import React from 'react';
 import { CoursesTimelineList } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { LessonPageWrapper } from '@rocket-house-productions/lesson/server';
 
 export default async function Page() {
   // get all courses
@@ -16,39 +17,11 @@ export default async function Page() {
   }
 
   const courses = await getCourses();
-
   const userData = await SessionFlags();
 
-  console.log(userData);
-
   return (
-    <div
-      className={'flex bg-center bg-repeat'}
-      style={{
-        backgroundImage: "url('/images/tilebg.png')",
-        backgroundSize: '500px 333px',
-      }}>
-      <NavbarSimple logo={logo} />
-
-      <div
-        className="pointer-events-none absolute inset-0 h-full"
-        style={{
-          backgroundImage: 'linear-gradient(to bottom, white, black)',
-          mixBlendMode: 'screen',
-        }}
-      />
-
-      <div
-        className="pointer-events-none absolute inset-0 h-full"
-        style={{
-          backgroundImage: 'linear-gradient(to bottom, #e8c996, #ebdac0)',
-          mixBlendMode: 'multiply',
-        }}
-      />
-
-      <div className={'relative z-10 flex min-h-svh w-full flex-col items-center justify-center py-20'}>
-        <CoursesTimelineList courses={courses} />
-      </div>
-    </div>
+    <LessonPageWrapper navbar={<NavbarSimple logo={logo} />}>
+      <CoursesTimelineList courses={courses} />
+    </LessonPageWrapper>
   );
 }
