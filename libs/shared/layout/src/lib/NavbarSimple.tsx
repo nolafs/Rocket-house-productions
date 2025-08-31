@@ -1,18 +1,50 @@
 'use client';
 import Link from 'next/link';
 import { SettingsIcon } from 'lucide-react';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, useClerk, useUser } from '@clerk/nextjs';
+import type { UserResource } from '@clerk/types';
 import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
+import { Badge, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Image, { type StaticImageData } from 'next/image';
 import React from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@rocket-house-productions/shadcn-ui';
 
 interface HeaderProps {
   isAdmin?: boolean;
   logo?: StaticImageData | null;
+  purchaseType?: string | null;
+  purchaseCategory?: string | null;
   backToUrl?: string;
   backToText?: string;
   classNames?: string;
+}
+
+function getInitials(user?: UserResource | null) {
+  // Prefer explicit first/last; fall back to fullName, username, or email local-part
+  const name =
+    [user?.firstName, user?.lastName].filter(Boolean).join(' ').trim() ||
+    user?.fullName?.trim() ||
+    user?.username?.trim() ||
+    user?.primaryEmailAddress?.emailAddress?.split('@')[0] ||
+    '';
+
+  if (!name) return '??';
+
+  const parts = name.split(/\s+/).filter(Boolean);
+  const first = parts[0]?.[0] ?? '';
+  const second = (parts.length > 1 ? parts[parts.length - 1]?.[0] : parts[0]?.[1]) ?? '';
+
+  return (first + (second || '')).toUpperCase();
 }
 
 export function NavbarSimple({
@@ -20,8 +52,32 @@ export function NavbarSimple({
   logo = null,
   backToUrl = '/',
   backToText = 'Back to home',
+  purchaseType = null,
+  purchaseCategory = null,
   classNames,
 }: HeaderProps) {
+  const router = useRouter();
+  const { signOut } = useClerk();
+  const { isSignedIn, user, isLoaded } = useUser();
+
+  const accountTypeLabel = (type: string) => {
+    if (type === 'basic') {
+      return 'Free';
+    } else if (type === 'standard') {
+      return 'Standard';
+    } else if (type === 'premium') {
+      return 'Premium';
+    }
+  };
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isSignedIn) {
+    router.push('/');
+  }
+
   return (
     <div
       id="navbar"
@@ -51,7 +107,30 @@ export function NavbarSimple({
                   </Link>
                 </SignedOut>
                 <SignedIn>
-                  <UserButton />
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <Avatar>
+                        <AvatarImage src={user?.imageUrl} />
+                        <AvatarFallback>{getInitials(user)}</AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuLabel>
+                        <span className={'mr-5 inline-block'}>Account </span>
+                        {(purchaseCategory || purchaseType) ?? (
+                          <Badge>
+                            {accountTypeLabel(purchaseCategory || (purchaseType === 'free' ? 'basic' : 'standard'))}
+                          </Badge>
+                        )}
+                      </DropdownMenuLabel>
+                      <DropdownMenuItem>
+                        <Link href="/courses/account">Manage Profile</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <button onClick={() => signOut({ redirectUrl: '/' })}>Sign Out</button>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </SignedIn>
               </li>
               <li>
@@ -75,13 +154,6 @@ export function NavbarSimple({
                   </div>
                 </SignedIn>
               </li>
-              <li>
-                <Link
-                  href="/courses/account"
-                  className={cn(buttonVariants({ variant: 'link' }), '!text-[16px] font-black font-medium')}>
-                  Account
-                </Link>
-              </li>
             </ul>
           </div>
         </nav>
@@ -89,5 +161,3 @@ export function NavbarSimple({
     </div>
   );
 }
-
-export default NavbarSimple;

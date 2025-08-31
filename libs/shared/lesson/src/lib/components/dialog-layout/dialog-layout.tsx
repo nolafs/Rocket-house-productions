@@ -13,7 +13,7 @@ export function DialogLayout({ title, children, classNames }: DialogLayoutProps)
       <div className={'absolute h-full w-full overflow-hidden rounded-xl bg-gray-100'} />
       <div
         className={
-          'bg-lessons z-2 text-lessons-foreground relative flex h-full w-full flex-col rounded-xl md:min-h-[484px] lg:min-w-[750px] lg:max-w-[800px]'
+          'bg-lessons z-2 text-lessons-foreground relative flex h-full w-full flex-col rounded-xl md:min-h-[484px] lg:min-w-[750px] lg:max-w-[880px]'
         }>
         <header
           className={
@@ -25,7 +25,7 @@ export function DialogLayout({ title, children, classNames }: DialogLayoutProps)
         </header>
         <div
           className={cn(
-            'content flex h-full w-full flex-1 flex-col justify-stretch rounded-b-lg bg-white px-6 pb-5 pt-7 md:px-10',
+            'content flex h-full w-full flex-1 flex-col justify-stretch rounded-b-lg bg-white',
             classNames,
           )}>
           {children}
