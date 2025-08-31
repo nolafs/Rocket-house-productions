@@ -15,7 +15,7 @@ export default async function Page() {
 
   return (
     <div className={'fixed left-0 top-0 z-30 flex h-full w-full items-center justify-center bg-black/50'}>
-      <DialogLayout title={`🎸 Account - ${name} 🎸 `} classNames={'px-0 pb-0 pt-0 md:px-0'}>
+      <DialogLayout hasCloseButton={true} title={`🎸 Account - ${name} 🎸 `} classNames={'px-0 pb-0 pt-0 md:px-0'}>
         <UserProfile />
       </DialogLayout>
     </div>
