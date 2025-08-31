@@ -25,7 +25,7 @@ export function NavbarSimple({
   return (
     <div
       id="navbar"
-      className={cn('navbar-area fixed z-10 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-4', classNames)}>
+      className={cn('navbar-area fixed z-50 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-4', classNames)}>
       <div className="container mx-auto max-w-[1266px]">
         <nav className={`navbar relative flex flex-wrap items-center justify-between`}>
           <div className="self-center">
