@@ -84,27 +84,31 @@ const OrderForm = ({ initialData, courseId }: OrderFormProps) => {
         </p>
       )}
       {isEditing && (
-        <Form {...(form as any)}>
-          <form onSubmit={form.handleSubmit(raw => onSubmit(formSchema.parse(raw)))} className="mt-4 space-y-4">
-            <FormField
-              control={form.control as any}
-              name="order"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input type={'number'} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
-              </Button>
-            </div>
-          </form>
-        </Form>
+        <>
+          <Form {...(form as any)}>
+            <form onSubmit={form.handleSubmit(raw => onSubmit(formSchema.parse(raw)))} className="mt-4 space-y-4">
+              <FormField
+                control={form.control as any}
+                name="order"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type={'number'} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center gap-x-2">
+                <Button disabled={!isValid || isSubmitting} type="submit">
+                  Save
+                </Button>
+              </div>
+            </form>
+          </Form>
+
+          <p className={'text-warning mt-4 text-sm'}>Note: First book in the series is membership purchase</p>
+        </>
       )}
     </div>
   );

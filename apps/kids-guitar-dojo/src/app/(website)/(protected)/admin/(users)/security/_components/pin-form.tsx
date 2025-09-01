@@ -60,7 +60,7 @@ export default function PinForm(props: { initial: { active: boolean; expiresAt: 
       form.setError('pin', { message: res.error || 'Failed to save' });
       return;
     }
-    // Clear pin fields after success
+    // Clear (.)pin fields after success
     form.reset({ ...values, pin: '', confirm: '' });
     router.refresh();
   };

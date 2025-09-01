@@ -9,9 +9,10 @@ import { Menu, SettingsIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import Image, { type StaticImageData } from 'next/image';
 import { PrismicNextLink } from '@prismicio/next';
-import { NavigationDocumentData } from '../../../../../apps/kids-guitar-dojo/prismicio-types';
+import { NavigationDocumentData } from '@/prismic-type';
 import { usePathname } from 'next/navigation';
 import { asText } from '@prismicio/client';
+import { UserSignedInDropdown } from '@rocket-house-productions/features';
 
 export function NavLogin({
   navigation,
@@ -38,7 +39,7 @@ export function NavLogin({
               </Link>
             </SignedOut>
             <SignedIn>
-              <UserButton />
+              <UserSignedInDropdown />
             </SignedIn>
           </li>
           <li>
@@ -69,11 +70,7 @@ export function NavLogin({
       </div>
 
       <div className={'grid grow-0 grid-cols-2 items-center justify-center md:hidden'}>
-        <div className={'mr-1.5 mt-1.5'}>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </div>
+        <div className={'mr-1.5 mt-1.5'}></div>
 
         {/* Toggle button */}
         <Sheet open={open} onOpenChange={setOpen}>

@@ -1,4 +1,4 @@
-// app/api/pin/verify/route.ts
+// app/api/(.)pin/verify/route.ts
 import { NextResponse } from 'next/server';
 import { cookies, headers } from 'next/headers';
 import { PrismaClient } from '@prisma/client';
