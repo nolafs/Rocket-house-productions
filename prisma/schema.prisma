@@ -339,6 +339,21 @@ model Account {
   @@index([userId])
 }
 
+model ParentPin {
+  scope     String    @id
+  hash      String
+  active    Boolean   @default(true)
+  expiresAt DateTime?
+  updatedAt DateTime  @updatedAt
+  updatedBy String?
+}
+
+model KvTemp {
+  key       String   @id
+  value     String // JSON string
+  expiresAt DateTime
+}
+
 model Child {
   id String @id @default(uuid())
 

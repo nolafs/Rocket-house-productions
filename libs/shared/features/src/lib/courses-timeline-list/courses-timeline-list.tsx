@@ -1,6 +1,4 @@
 import { Prisma } from '@prisma/client';
-import Link from 'next/link';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Image from 'next/image';
 import Ribben from '../assets/header.png';
 import CourseCard from './course-card';
