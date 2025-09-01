@@ -19,6 +19,7 @@
     "typeRoots": ["./node_modules/@types", "./types"],
     "paths": {
       "@/*": ["apps/kids-guitar-dojo/src/*"],
+      "@/prismic-type": ["apps/kids-guitar-dojo/prismicio-types.ts"],
       "@assets/*": ["apps/kids-guitar-dojo/src/assets/*"],
       "@components/*": ["apps/kids-guitar-dojo/src/components/*"],
       "@layouts/*": ["apps/kids-guitar-dojo/src/layouts/*"],

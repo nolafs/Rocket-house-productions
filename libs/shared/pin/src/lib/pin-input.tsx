@@ -1,3 +1,4 @@
+'use client';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useCallback, useRef, useState } from 'react';
@@ -23,6 +24,13 @@ interface PinInputProps {
 export function PinInput({ onSuccess, onFailure, onCancel }: PinInputProps) {
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+
+  const setInputRef = useCallback(
+    (idx: number) => (el: HTMLInputElement | null) => {
+      inputsRef.current[idx] = el;
+    },
+    [],
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -113,13 +121,6 @@ export function PinInput({ onSuccess, onFailure, onCancel }: PinInputProps) {
   const setMany = (vals: Partial<FormValues>) => {
     (Object.keys(vals) as Array<keyof FormValues>).forEach(k => form.setValue(k, vals[k] ?? ''));
   };
-
-  const setInputRef = useCallback(
-    (idx: number) => (el: HTMLInputElement | null) => {
-      inputsRef.current[idx] = el;
-    },
-    [],
-  );
 
   const allFilled = ['d0', 'd1', 'd2', 'd3'].every(k => (form.getValues() as any)[k]);
 
