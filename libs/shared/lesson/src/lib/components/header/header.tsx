@@ -28,7 +28,7 @@ import { useModuleProgressStore } from '@rocket-house-productions/providers';
 import ModuleProgressList from '../module/module-progress-list';
 import ModuleAwardList from '../module/ModuleAwardList';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { EarthIcon } from 'lucide-react';
 
@@ -50,7 +50,7 @@ export function Header({
   purchaseType = null,
   purchaseCategory = null,
 }: HeaderProps) {
-  const { signOut, openUserProfile } = useClerk();
+  const { signOut } = useClerk();
   const { getCurrentModule, currentModule, modules } = useModuleProgressStore(store => store);
   const [color, setColor] = useState<string>(background || 'transparent');
 
@@ -109,7 +109,7 @@ export function Header({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <button onClick={() => openUserProfile()}>Parent profile</button>
+                  <Link href="/courses/account">Parent Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
 
