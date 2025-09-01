@@ -9,10 +9,11 @@ import { Menu, SettingsIcon } from 'lucide-react';
 import React, { useState } from 'react';
 import Image, { type StaticImageData } from 'next/image';
 import { PrismicNextLink } from '@prismicio/next';
-import { NavigationDocumentData } from '@/prismic-type';
+
 import { usePathname } from 'next/navigation';
 import { asText } from '@prismicio/client';
 import { UserSignedInDropdown } from '@rocket-house-productions/features';
+import { type NavigationDocumentData } from '@/prismic-types';
 
 export function NavLogin({
   navigation,
