@@ -124,7 +124,10 @@ export function NavbarSimple({
                         )}
                       </DropdownMenuLabel>
                       <DropdownMenuItem>
-                        <Link href="/courses/account">Manage Profile</Link>
+                        <Link href={`/courses/pin?returnTo=${encodeURIComponent('/courses/account')}`} scroll={false}>
+                          Parent account
+                        </Link>
+                        ;
                       </DropdownMenuItem>
                       <DropdownMenuItem>
                         <button onClick={() => signOut({ redirectUrl: '/' })}>Sign Out</button>
