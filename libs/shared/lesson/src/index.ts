@@ -23,4 +23,6 @@ export { Quiz } from './lib/components/quiz/quiz';
 export { LessonData } from './lib/components/lesson/lesson-data';
 export { ParallaxScene } from './lib/components/parallax-scene';
 export * from './lib/components/dialog-layout/dialog-layout';
+export * from './lib/components/dialog-layout/dialog-return-url';
+
 export * from './lib/components/lesson/lesson-content';
