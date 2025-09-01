@@ -4,7 +4,7 @@ import logo from '@assets/logo.png';
 import { createClient } from '@/prismicio';
 import { Footer } from '@rocket-house-productions/layout/server';
 import { ClerkProvider } from '@clerk/nextjs';
-import NavLogin from '../../../../../../libs/shared/layout/src/lib/nav-login';
+import { NavLogin } from '@rocket-house-productions/layout';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   console.log('[SUB Layout]');

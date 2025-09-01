@@ -49,6 +49,12 @@
         }
       }
     },
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "tsc --noEmit -p apps/kids-guitar-dojo/tsconfig.json --generateTrace .ts-trace"
+      }
+    },
     "slicemachine": {
       "executor": "nx:run-commands",
       "options": {
