@@ -4,7 +4,7 @@ import Image, { type StaticImageData } from 'next/image';
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { NavigationDocumentData } from '../../../../../apps/kids-guitar-dojo/prismicio-types';
+import { NavigationDocumentData } from '@/prismic-types';
 import cn from 'classnames';
 import { asText } from '@prismicio/client';
 
@@ -15,8 +15,6 @@ interface HeaderProps {
 }
 
 export function MainNavbar({ navigation, logo, children }: HeaderProps) {
-  console.log('Navigation:', navigation);
-
   const currentRoute = usePathname();
 
   useEffect(() => {

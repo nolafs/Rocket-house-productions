@@ -8,9 +8,9 @@ interface DialogLayoutProps {
   title: string;
   children: ReactNode;
   classNames?: string;
-  hasCloseButton?: boolean;
+  hasCloseUrl?: string;
 }
-export function DialogLayout({ title, children, classNames, hasCloseButton }: DialogLayoutProps) {
+export function DialogLayout({ title, children, classNames, hasCloseUrl }: DialogLayoutProps) {
   const router = useRouter();
 
   return (
@@ -27,8 +27,12 @@ export function DialogLayout({ title, children, classNames, hasCloseButton }: Di
           <h2 className="text-center text-xl font-semibold leading-none tracking-tight text-white md:text-2xl lg:text-3xl">
             {title}
           </h2>
-          {hasCloseButton && (
-            <div className={'absolute right-5 top-16'} onClick={() => router.back()}>
+          {hasCloseUrl && (
+            <div
+              className={'absolute right-5 top-6'}
+              onClick={() => {
+                router.back();
+              }}>
               <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
                 <rect width="36" height="36" rx="5" fill="white" />
                 <path
