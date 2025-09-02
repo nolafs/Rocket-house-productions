@@ -15,16 +15,23 @@ datasource db {
 }
 
 model Course {
-  id                      String  @id @default(uuid())
-  userId                  String
-  title                   String  @db.Text
-  slug                    String? @unique
-  description             String? @db.Text
-  imageUrl                String? @db.Text
-  isPublished             Boolean @default(false)
-  order                   Int?    @default(0)
-  stripeProductPremiumId  String? @unique
-  stripeProductStandardId String? @unique
+  id                         String  @id @default(uuid())
+  userId                     String
+  title                      String  @db.Text
+  slug                       String? @unique
+  description                String? @db.Text
+  imageUrl                   String? @db.Text
+  isPublished                Boolean @default(false)
+  order                      Int?    @default(0)
+  stripeProductPremiumId     String? @unique
+  stripeProductPremiumIdDev  String? @unique
+  stripeProductStandardId    String? @unique
+  stripeProductStandardIdDev String? @unique
+
+  isMembershipEntry     Boolean             @default(false)
+  membershipSettingsId  String?
+  membershipSettings    MembershipSettings? @relation("CourseMembership", fields: [membershipSettingsId], references: [id])
+  includedInMemberships MembershipInclude[] @relation("IncludedCourse")
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
@@ -44,6 +51,32 @@ model Course {
   updatedAt DateTime @updatedAt()
 
   @@index([slug])
+}
+
+model MembershipSettings {
+  id       String @id @default(cuid())
+  courseId String @unique // the course that represents the membership entry
+  course   Course @relation(fields: [courseId], references: [id])
+
+  isActive      Boolean   @default(true)
+  effectiveFrom DateTime  @default(now())
+  expiresAt     DateTime?
+
+  included MembershipInclude[]
+  Course   Course[]
+}
+
+model MembershipInclude {
+  id           String             @id @default(cuid())
+  membershipId String
+  membership   MembershipSettings @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+
+  includedCourseId String
+  includedCourse   Course  @relation("IncludedCourse", fields: [includedCourseId], references: [id])
+  Course           Course? @relation(fields: [courseId], references: [id])
+  courseId         String?
+
+  @@unique([membershipId, includedCourseId]) // no duplicates
 }
 
 model BookScene {
