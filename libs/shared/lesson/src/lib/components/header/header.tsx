@@ -109,7 +109,7 @@ export function Header({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link href={`/courses/pin?returnTo=${encodeURIComponent('/courses/account')}`} scroll={false}>
+                  <Link href={`/courses/account'`} scroll={false}>
                     Parent account
                   </Link>
                 </DropdownMenuItem>
