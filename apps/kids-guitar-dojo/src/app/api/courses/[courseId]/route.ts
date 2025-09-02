@@ -5,15 +5,6 @@ import { auth } from '@clerk/nextjs/server';
 export async function GET(req: Request, props: { params: Promise<{ courseId: string }> }) {
   const params = await props.params;
   try {
-    /*
-    const { userId } = auth();
-
-    if (!userId) {
-      return new NextResponse('Unauthorized', { status: 401 });
-    }
-
-     */
-
     const course = await db.course.findUnique({
       where: {
         id: params.courseId,
