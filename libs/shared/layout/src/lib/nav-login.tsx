@@ -1,5 +1,5 @@
 'use client';
-import { SignedIn, SignedOut, UserButton, useUser } from '@clerk/nextjs';
+import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import cn from 'classnames';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@rocket-house-productions/shadcn-ui';

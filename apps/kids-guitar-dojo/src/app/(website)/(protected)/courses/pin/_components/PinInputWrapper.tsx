@@ -7,11 +7,11 @@ export const PinInputWrapper = ({ returnUrl }: { returnUrl: string }) => {
   const router = useRouter();
 
   const onSuccess = () => {
-    console.log('onSuccess');
     if (returnUrl) {
-      router.push(returnUrl);
+      console.log('onSuccess', returnUrl);
+      router.replace(returnUrl);
     } else {
-      router.push('/courses');
+      router.back();
     }
   };
 

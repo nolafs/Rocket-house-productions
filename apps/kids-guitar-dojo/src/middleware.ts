@@ -4,6 +4,7 @@ import { jwtVerify } from 'jose';
 
 const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
 const secret = new TextEncoder().encode(process.env.SESSION_FLAGS_SECRET);
+const pinSecret = new TextEncoder().encode(process.env.PIN_TOKEN_SECRET!);
 
 export default clerkMiddleware(
   async (auth, req) => {
@@ -53,6 +54,10 @@ export default clerkMiddleware(
 
         console.info('[MIDDLEWARE COURSE] flags');
 
+        const pinToken = req.cookies.get('pin:parents')?.value;
+
+        console.info('[MIDDLEWARE COURSE] Parent Pin', !!pinToken);
+
         // If still missing, let the request pass; first page can call /api/session
         if (!flags) {
           return NextResponse.redirect(`${req.nextUrl.origin}/`);
@@ -94,8 +99,26 @@ export default clerkMiddleware(
           );
         }
 
+        // upgrade route always allowed
         if (url.startsWith(`/courses/upgrade`)) {
           return NextResponse.next();
+        }
+
+        // account route always allowed
+
+        console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', pinToken);
+
+        if (url.startsWith(`/courses/account`)) {
+          try {
+            if (!pinToken) throw 0;
+            await jwtVerify(pinToken, pinSecret);
+            console.log('[MIDDLEWARE COURSE]  HAS PIN TOKEN - ALLOW ACCOUNT');
+            return NextResponse.next();
+          } catch (error) {
+            console.error('[MIDDLEWARE COURSE] PIN Error', error);
+            const to = `/courses/pin?returnTo=${encodeURIComponent(req.nextUrl.pathname)}`;
+            return NextResponse.redirect(new URL(to, req.url));
+          }
         }
 
         if (flags.purchases.length) {

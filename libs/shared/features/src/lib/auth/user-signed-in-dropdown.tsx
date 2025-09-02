@@ -41,8 +41,6 @@ export function UserSignedInDropdown() {
   const purchaseType = null;
   const purchaseCategory = null;
 
-  console.log('USER', user);
-
   const accountTypeLabel = (type: string) => {
     if (type === 'basic') {
       return 'Free';
@@ -78,10 +76,9 @@ export function UserSignedInDropdown() {
             )}
           </DropdownMenuLabel>
           <DropdownMenuItem>
-            <Link href={`/courses/pin?returnTo=${encodeURIComponent('/courses/account')}`} scroll={false}>
+            <Link href={`/courses/account`} scroll={false}>
               Parent account
             </Link>
-            ;
           </DropdownMenuItem>
           <DropdownMenuItem>
             <button onClick={() => signOut({ redirectUrl: '/' })}>Sign Out</button>

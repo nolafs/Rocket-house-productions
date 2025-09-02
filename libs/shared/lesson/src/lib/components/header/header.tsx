@@ -109,7 +109,9 @@ export function Header({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link href="/courses/account">Parent Profile</Link>
+                  <Link href={`/courses/account'`} scroll={false}>
+                    Parent account
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
 
