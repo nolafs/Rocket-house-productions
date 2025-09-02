@@ -16,13 +16,13 @@ export default async function Page() {
 
   return (
     <div className={'fixed left-0 top-0 z-30 flex h-full w-full items-center justify-center bg-black/50'}>
-      <DialogLayout hasCloseUrl={'/courses'} title={`🎸 Account - ${name} 🎸 `} classNames={'px-0 pb-0 pt-0 md:px-0'}>
-        <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading...</div>}>
+        <DialogLayout hasCloseUrl={'/courses'} title={`🎸 Account - ${name} 🎸 `} classNames={'px-0 pb-0 pt-0 md:px-0'}>
           <ClerkProvider dynamic>
             <UserProfile />
           </ClerkProvider>
-        </Suspense>
-      </DialogLayout>
+        </DialogLayout>
+      </Suspense>
     </div>
   );
 }
