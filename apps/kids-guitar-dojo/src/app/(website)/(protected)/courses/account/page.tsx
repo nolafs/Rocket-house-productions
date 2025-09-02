@@ -6,13 +6,13 @@ import { Suspense } from 'react';
 export default function Page() {
   return (
     <LessonPageWrapper>
-      <DialogReturnUrl title={'Parent Account'}>
-        <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading...</div>}>
+        <DialogReturnUrl title={'Parent Account'}>
           <ClerkProvider dynamic>
             <UserProfile />
           </ClerkProvider>
-        </Suspense>
-      </DialogReturnUrl>
+        </DialogReturnUrl>
+      </Suspense>
     </LessonPageWrapper>
   );
 }
