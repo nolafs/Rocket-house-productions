@@ -15,11 +15,20 @@ import { BookSceneForm } from './_components/book-scene';
 import { Prisma } from '@prisma/client';
 import OrderForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/order-form';
 import StripeProductForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/stripe-product-form';
+import MembershipForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/membership-form';
+import { getCourses } from '@rocket-house-productions/actions/server';
 
 export type CoursePayload = Prisma.CourseGetPayload<{
   include: {
     modules: true; // Module[]
     bookScene: true; // BookScene | null
+    membershipSettings: {
+      include: {
+        included: {
+          include: { includedCourse: true };
+        };
+      };
+    };
     attachments: {
       include: { attachmentType: true }; // Attachment & { attachmentType: AttachmentType }
     };
@@ -48,6 +57,13 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
         },
       },
       bookScene: true,
+      membershipSettings: {
+        include: {
+          included: {
+            include: { includedCourse: true },
+          },
+        },
+      },
       attachments: {
         include: {
           attachmentType: true,
@@ -77,6 +93,8 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
       title: 'asc',
     },
   });
+
+  const availableCourses = await getCourses();
 
   if (!course) {
     return redirect('/');
@@ -130,6 +148,7 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
               }))}
             />
             <StripeProductForm initialData={course} courseId={course.id} />
+            <MembershipForm initialData={course} courseId={course.id} availableCourses={availableCourses} />
             <div>
               <div className="mt-5 flex items-center gap-x-2">
                 <IconBadge icon={Earth} />

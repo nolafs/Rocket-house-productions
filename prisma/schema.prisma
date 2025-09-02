@@ -14,17 +14,30 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model AppSettings {
+  // Hard-coded single row
+  id                   String              @id @default("singleton")
+  membershipSettingsId String?             @unique
+  membershipSettings   MembershipSettings? @relation("Membership", fields: [membershipSettingsId], references: [id])
+}
+
 model Course {
-  id                      String  @id @default(uuid())
-  userId                  String
-  title                   String  @db.Text
-  slug                    String? @unique
-  description             String? @db.Text
-  imageUrl                String? @db.Text
-  isPublished             Boolean @default(false)
-  order                   Int?    @default(0)
-  stripeProductPremiumId  String? @unique
-  stripeProductStandardId String? @unique
+  id                         String  @id @default(uuid())
+  userId                     String
+  title                      String  @db.Text
+  slug                       String? @unique
+  description                String? @db.Text
+  imageUrl                   String? @db.Text
+  isPublished                Boolean @default(false)
+  order                      Int?    @default(0)
+  stripeProductPremiumId     String? @unique
+  stripeProductPremiumIdDev  String? @unique
+  stripeProductStandardId    String? @unique
+  stripeProductStandardIdDev String? @unique
+
+  isMembershipEntry     Boolean             @default(false)
+  membershipSettings    MembershipSettings? @relation("CourseMembership")
+  includedInMemberships MembershipInclude[] @relation("IncludedCourse")
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
@@ -44,6 +57,37 @@ model Course {
   updatedAt DateTime @updatedAt()
 
   @@index([slug])
+}
+
+model MembershipSettings {
+  id String @id @default(cuid())
+
+  // the course that represents the membership product
+  courseId String @unique
+  course   Course @relation("CourseMembership", fields: [courseId], references: [id])
+
+  appSettings AppSettings? @relation("Membership")
+
+  isActive      Boolean   @default(true)
+  effectiveFrom DateTime  @default(now())
+  expiresAt     DateTime?
+
+  // courses unlocked by this membership
+  included MembershipInclude[]
+}
+
+model MembershipInclude {
+  id String @id @default(cuid())
+
+  // parent membership settings
+  membershipId String
+  membership   MembershipSettings @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+
+  // course that gets unlocked
+  includedCourseId String
+  includedCourse   Course @relation("IncludedCourse", fields: [includedCourseId], references: [id])
+
+  @@unique([membershipId, includedCourseId]) // prevent duplicates
 }
 
 model BookScene {

@@ -39,6 +39,12 @@ const formSchema = z.object({
   stripeProductStandardId: z.string().min(1, {
     message: 'Standard Id is required',
   }),
+  stripeProductPremiumIdDev: z.string().min(1, {
+    message: 'Premium Dev Id is required',
+  }),
+  stripeProductStandardIdDev: z.string().min(1, {
+    message: 'Standard Dev Id is required',
+  }),
 });
 
 const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) => {
@@ -52,6 +58,8 @@ const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) =>
     defaultValues: {
       stripeProductStandardId: initialData?.stripeProductStandardId || '',
       stripeProductPremiumId: initialData?.stripeProductPremiumId || '',
+      stripeProductStandardIdDev: initialData?.stripeProductStandardIdDev || '',
+      stripeProductPremiumIdDev: initialData?.stripeProductPremiumIdDev || '',
     },
   });
 
@@ -72,6 +80,25 @@ const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) =>
       }
       if (values.stripeProductPremiumId) {
         await updateProductMetadata(values.stripeProductPremiumId, {
+          courseId,
+          productType: 'premium',
+          position: '2',
+          product_group: 'kidGuitarDojo',
+          displayName: 'Rockstar Academy',
+        });
+      }
+
+      if (values.stripeProductStandardIdDev) {
+        await updateProductMetadata(values.stripeProductStandardIdDev, {
+          course_id: courseId,
+          productType: 'standard',
+          position: '1',
+          product_group: 'kidGuitarDojo',
+          displayName: 'Rockstar Academy Standard',
+        });
+      }
+      if (values.stripeProductPremiumIdDev) {
+        await updateProductMetadata(values.stripeProductPremiumIdDev, {
           courseId,
           productType: 'premium',
           position: '2',
@@ -115,6 +142,12 @@ const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) =>
           <div>
             <b>Premium</b>: {initialData.stripeProductPremiumId || 'No Premium Product id'}
           </div>
+          <div>
+            <b>Standard Dev</b>: {initialData.stripeProductStandardIdDev || 'No Standard Product id'}
+          </div>
+          <div>
+            <b>Premium Dev</b>: {initialData.stripeProductPremiumIdDev || 'No Premium Product id'}
+          </div>
         </div>
       )}
       {isEditing && (
@@ -140,6 +173,33 @@ const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) =>
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Premium</FormLabel>
+                  <FormControl>
+                    <Input disabled={isSubmitting} placeholder="ex. 'prod_QbBkt7z9NPxO6j'" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control as any}
+              name="stripeProductStandardIdDev"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Standard Dev</FormLabel>
+                  <FormControl>
+                    <Input disabled={isSubmitting} placeholder="ex. 'prod_QbBkt7z9NPxO6j'" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control as any}
+              name="stripeProductPremiumIdDev"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Premium Dev</FormLabel>
                   <FormControl>
                     <Input disabled={isSubmitting} placeholder="ex. 'prod_QbBkt7z9NPxO6j'" {...field} />
                   </FormControl>
