@@ -1,18 +1,10 @@
 import { NextResponse } from 'next/server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 
-export async function GET(req: Request, { params }: { params: { courseId: string } }) {
+export async function GET(req: Request, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
-    /*
-    const { userId } = auth();
-
-    if (!userId) {
-      return new NextResponse('Unauthorized', { status: 401 });
-    }
-
-     */
-
     const course = await db.course.findUnique({
       where: {
         id: params.courseId,
@@ -34,7 +26,8 @@ export async function GET(req: Request, { params }: { params: { courseId: string
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { courseId: string } }) {
+export async function DELETE(req: Request, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
 
@@ -65,7 +58,8 @@ export async function DELETE(req: Request, { params }: { params: { courseId: str
   }
 }
 
-export async function PATCH(req: Request, { params }: { params: { courseId: string } }) {
+export async function PATCH(req: Request, props: { params: Promise<{ courseId: string }> }) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
     const { courseId } = params;

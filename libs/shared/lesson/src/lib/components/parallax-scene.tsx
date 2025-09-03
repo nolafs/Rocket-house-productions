@@ -18,6 +18,11 @@ export function ParallaxScene({ children, className }: ParallaxSceneProps) {
   const container = useRef<HTMLDivElement | null>(null);
 
   useGSAP(() => {
+    //check if window is defined
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
 

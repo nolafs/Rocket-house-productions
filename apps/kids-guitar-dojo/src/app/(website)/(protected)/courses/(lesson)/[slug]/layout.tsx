@@ -1,12 +1,12 @@
 import { CourseProgressionProvider } from '@rocket-house-productions/providers';
 import { getChild, getCourse } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
-import { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
+import { ReactNode, Suspense } from 'react';
 import { headers } from 'next/headers';
 import { Viewport } from 'next';
-const Header = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.Header));
-const ModuleAwards = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.ModuleAwards));
+import ModuleWrapper from './_components/moduleWrapper';
+import { ClerkProvider } from '@clerk/nextjs';
+import { Header, ModuleAwards } from '@rocket-house-productions/lesson';
 
 export const metadata = {
   title: 'Kids Guitar Dojo course',
@@ -14,7 +14,7 @@ export const metadata = {
 };
 
 export async function generateViewport(): Promise<Viewport> {
-  const userAgent = headers().get('user-agent');
+  const userAgent = (await headers()).get('user-agent');
   const isiPhone = /iphone/i.test(userAgent ?? '');
   return isiPhone
     ? {
@@ -27,10 +27,14 @@ export async function generateViewport(): Promise<Viewport> {
 
 interface LayoutProps {
   children: ReactNode;
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default async function Layout({ children, params }: LayoutProps) {
+export default async function Layout(props: LayoutProps) {
+  const params = await props.params;
+
+  const { children } = props;
+
   const child = await getChild(params.slug);
 
   if (!child) {
@@ -44,18 +48,16 @@ export default async function Layout({ children, params }: LayoutProps) {
   }
 
   return (
-    <div className={'lesson min-h-screen w-full'} style={{ backgroundColor: '#e8c996' }}>
-      <CourseProgressionProvider userId={child.id} course={course}>
-        <Header
-          childId={child.id}
-          avatar={child?.profilePicture}
-          name={child?.name}
-          purchaseType={child?.purchaseType}
-          purchaseCategory={child?.purchaseCategory}
-        />
-        <ModuleAwards />
+    <CourseProgressionProvider userId={child.id} course={course}>
+      <ModuleWrapper>
+        <Suspense fallback={''}>
+          <ClerkProvider dynamic>
+            <Header childId={child.id} avatar={child?.profilePicture} name={child?.name} />
+            <ModuleAwards />
+          </ClerkProvider>
+        </Suspense>
         {children}
-      </CourseProgressionProvider>
-    </div>
+      </ModuleWrapper>
+    </CourseProgressionProvider>
   );
 }

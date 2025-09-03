@@ -9,13 +9,12 @@ import { BookCheck, BookDashed, Grip, MoreHorizontal, Pencil, XCircleIcon } from
 
 import cn from 'classnames';
 import {
-  Badge,
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@rocket-house-productions/shadcn-ui';
+import { Button, Badge } from '@rocket-house-productions/shadcn-ui/server';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import AnswerInlineForm from './answer-inline-form';

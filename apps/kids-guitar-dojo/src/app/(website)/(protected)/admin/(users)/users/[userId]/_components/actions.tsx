@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { ConfirmModal } from '@rocket-house-productions/features';
 import { Trash } from 'lucide-react';
 import { useState } from 'react';

@@ -1,17 +1,11 @@
 import './global.scss';
 import { Raleway, Mochiy_Pop_One, Nunito } from 'next/font/google';
-
-import { UIProvider } from '@rocket-house-productions/hooks';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { PrismicPreview } from '@prismicio/next';
 import { createClient, repositoryName } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
-import { ClerkProvider } from '@clerk/nextjs';
-import { ConfettiProvider } from '@rocket-house-productions/providers';
-import PlausibleProvider from 'next-plausible';
 import { CookieConsent } from '@rocket-house-productions/features';
-import { Toaster } from 'react-hot-toast';
-import { LogRocketComponent } from '../../../../libs/shared/util/src/lib/logRocketComponent';
+import ClientProviders from '@components/clientProvider';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -32,13 +26,6 @@ const mochiyPopOne = Mochiy_Pop_One({
   variable: '--font-mochiy-pop-one',
 });
 
-const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || 'kidsguitardojo.com';
-
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 function isURL(string: string | null | undefined): boolean {
   if (!string) return false;
 
@@ -46,7 +33,7 @@ function isURL(string: string | null | undefined): boolean {
   return pattern.test(string);
 }
 
-export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(_props: any, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
   const settings = await client.getSingle('settings');
   const defaultImages = ['/share.png'];
@@ -171,33 +158,22 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  console.log('RootLayout rendered');
+
   return (
-    <PlausibleProvider domain={DOMAIN} customDomain={'https://plausible.biffify.com'}>
-      <ClerkProvider>
-        <LogRocketComponent />
-
-        <UIProvider>
-          <html
-            lang="en"
-            className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
-            suppressHydrationWarning={true}>
-            <body className={'bg-background min-h-screen font-sans antialiased'} suppressHydrationWarning>
-              {/* Confetti */}
-              <ConfettiProvider />
-              {/* Toaster */}
-              <Toaster position="bottom-center" />
-
-              {children}
-              {/* Preview */}
-              <PrismicPreview repositoryName={repositoryName} />
-              {/* Cookie consent */}
-              <CookieConsent />
-            </body>
-            {/* Analytics */}
-            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''} />
-          </html>
-        </UIProvider>
-      </ClerkProvider>
-    </PlausibleProvider>
+    <html
+      lang="en"
+      className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
+      suppressHydrationWarning={true}>
+      <body className={'bg-background min-h-screen font-sans antialiased'}>
+        <ClientProviders domain={'https://plausible.biffify.com'}>{children}</ClientProviders>
+        {/* Preview */}
+        <PrismicPreview repositoryName={repositoryName} />
+        {/* Cookie consent */}
+        <CookieConsent />
+      </body>
+      {/* Analytics */}
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''} />
+    </html>
   );
 }

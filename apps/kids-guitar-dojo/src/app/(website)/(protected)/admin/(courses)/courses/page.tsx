@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 // Database
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { DataTable } from './_components/data-table';
 import { columns } from './_components/columns';
@@ -15,7 +15,7 @@ const CoursesPage = async () => {
 
   const courses = await db.course.findMany({
     orderBy: {
-      createdAt: 'desc',
+      order: 'asc',
     },
   });
 

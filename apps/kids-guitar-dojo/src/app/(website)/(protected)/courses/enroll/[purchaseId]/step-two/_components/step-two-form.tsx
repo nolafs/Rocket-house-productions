@@ -1,7 +1,6 @@
 'use client';
-import { DialogLayout } from '@rocket-house-productions/lesson';
+
 import {
-  Button,
   Form,
   FormControl,
   FormField,
@@ -17,12 +16,11 @@ import {
   DatePicker,
 } from '@rocket-house-productions/shadcn-ui';
 import { FormErrors } from '../../_component/path-types';
-import { useFormState } from 'react-dom';
 import stepTwoFormAction from '../action';
 import { useForm } from 'react-hook-form';
 import { stepTwoSchema } from '../../_component/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useActionState } from 'react';
 import z from 'zod';
 import { PrevButton } from '../../_component/button-prev';
 import { XIcon } from 'lucide-react';
@@ -31,17 +29,18 @@ import ButtonSubmit from '../../_component/button-submit';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
 import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
+import { DialogLayout } from '@rocket-house-productions/lesson';
 
 const initialState: FormErrors = {};
 
-interface StepTwoFormProps {
+export interface StepTwoFormProps {
   baseUrl: string;
   header?: KeyTextField | string | null | undefined;
   body?: RichTextField | string | null | undefined;
 }
 
 export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps) {
-  const [serverError, formAction] = useFormState(stepTwoFormAction, initialState);
+  const [serverError, formAction] = useActionState(stepTwoFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
   const setActive = useMenuActive(state => state.setActive);
 
@@ -103,13 +102,6 @@ export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps)
                 ...onBoardingData,
                 ...formUpdate,
               });
-            }}
-            onSubmit={evt => {
-              evt.preventDefault();
-
-              form.handleSubmit(() => {
-                formAction(new FormData(formRef.current!));
-              })(evt);
             }}>
             <div className="relative pt-5">
               <div className={'grid grid-cols-1 gap-x-3 md:grid-cols-2'}>

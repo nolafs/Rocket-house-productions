@@ -7,7 +7,6 @@ import SectionTitle from '../../section-title/section-title';
 import { GroupField, RichTextField } from '@prismicio/client';
 import MottoText from '../../motto-text/motto-text';
 import cn from 'classnames';
-
 import Image from 'next/image';
 import Notes from '../../assets/notes.png';
 import VideoPlayer from '../../video-player/video-player';

@@ -10,9 +10,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Badge,
-  Button,
 } from '@rocket-house-productions/shadcn-ui';
+import { Badge, Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Account, Purchase } from '@prisma/client';
 
 export const columns: ColumnDef<Account>[] = [

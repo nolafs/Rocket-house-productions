@@ -1,6 +1,6 @@
 'use server';
 import { Prisma } from '@prisma/client';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 type AccountWithChildren = Prisma.AccountGetPayload<{
   include: {
@@ -9,6 +9,8 @@ type AccountWithChildren = Prisma.AccountGetPayload<{
 }>;
 
 export async function getAccountChildren(userId: string): Promise<AccountWithChildren | null> {
+  // TODO: MUST HANDLE MULTIPLE CHILDREN
+
   return db.account.findFirst({
     where: {
       userId: userId,
@@ -19,5 +21,3 @@ export async function getAccountChildren(userId: string): Promise<AccountWithChi
     //cacheStrategy: { ttl: 60 },
   });
 }
-
-export default getAccountChildren;

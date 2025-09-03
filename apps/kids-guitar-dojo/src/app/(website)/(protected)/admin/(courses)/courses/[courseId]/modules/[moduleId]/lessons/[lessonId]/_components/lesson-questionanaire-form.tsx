@@ -17,7 +17,6 @@ import cn from 'classnames';
 
 import { Module, Lesson, Questionary } from '@prisma/client';
 import {
-  Button,
   Form,
   FormControl,
   FormField,
@@ -32,7 +31,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@rocket-house-productions/shadcn-ui';
-
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 interface LessonsQuestionanaireFormProps {
   initialData: Lesson & { questionaries: Questionary[] };
   moduleId: string;

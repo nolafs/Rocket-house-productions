@@ -1,19 +1,15 @@
+'use client';
 import { Module } from '@prisma/client';
 import * as THREE from 'three';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
-import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
-import { extend, Object3DNode, MaterialNode } from '@react-three/fiber';
 import { LessonButton, ModulePosition } from './course.types';
+import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
+import { extend } from '@react-three/fiber';
 
-extend({ MeshLineGeometry, MeshLineMaterial });
-
-declare module '@react-three/fiber' {
-  interface ThreeElements {
-    meshLineGeometry: Object3DNode<MeshLineGeometry, typeof MeshLineGeometry>;
-    meshLineMaterial: MaterialNode<MeshLineMaterial, typeof MeshLineMaterial>;
-  }
+if (typeof window !== 'undefined') {
+  extend({ MeshLineGeometry, MeshLineMaterial });
 }
 
 interface Point {
@@ -128,6 +124,9 @@ const Path: React.FC<{
   onPathLength?: (length: number) => void;
 }> = ({ points, opacity = 1, color = 'white', onPathLength }) => {
   // Ensure there are enough points to create a line
+  useEffect(() => {
+    extend({ MeshLineGeometry, MeshLineMaterial });
+  }, []);
 
   const curvePath: CurvePath | null = useMemo(() => {
     if (points.length < 2) return null;
@@ -148,7 +147,6 @@ const Path: React.FC<{
     <group frustumCulled={false}>
       {curvePath && (
         <mesh>
-          {/* @ts-expect-error type not register */}
           <meshLineGeometry isMeshLine={true} frustumCulled={false} points={curvePath.curvePoints} />
 
           <meshLineMaterial

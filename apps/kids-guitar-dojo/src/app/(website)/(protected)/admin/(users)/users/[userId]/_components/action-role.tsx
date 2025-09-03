@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
-import { Label } from '@rocket-house-productions/shadcn-ui';
 import SelectRole from './select-role';
-
 import toast from 'react-hot-toast';
 import { updateUserRole } from '@rocket-house-productions/actions/server';
+import { Label } from '@rocket-house-productions/shadcn-ui';
+
 interface ActionRoleProps {
   userId: string;
   accountId: string;

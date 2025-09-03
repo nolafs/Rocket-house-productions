@@ -1,4 +1,3 @@
-'use client';
 import { freeCheckout } from '@rocket-house-productions/actions/server';
 import React from 'react';
 import CheckoutButton from './checkout-button';

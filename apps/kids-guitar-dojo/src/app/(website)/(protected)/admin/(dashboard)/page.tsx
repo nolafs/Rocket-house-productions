@@ -1,11 +1,10 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
-import { Activity } from 'lucide-react';
 import CardRevenue from './_components/card-revenue';
 import CardAccounts from './_components/card-accounts';
 import CardEnrollment from './_components/card-enrollment';
 import CardRecentSales from './_components/card-recent-sales';
 import CardServiceList from './_components/card-service-list';
 import CardTotalLessonCompleted from './_components/card-total-lesson-completed';
+import CardCurrentMembership from '@/app/(website)/(protected)/admin/(dashboard)/_components/card-current-membership';
 
 export default function Page() {
   return (
@@ -19,6 +18,9 @@ export default function Page() {
       <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-2">
         <CardRecentSales />
         <CardServiceList />
+      </div>
+      <div className="grid gap-4 md:gap-8 lg:grid-cols-1 xl:grid-cols-1">
+        <CardCurrentMembership />
       </div>
     </main>
   );

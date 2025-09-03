@@ -1,7 +1,7 @@
 export interface FormErrors {
   [key: string]: string | undefined;
 }
-
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 export enum OnBoardingRoutes {
   INTRO = '/intro',
   PARENT_DETAILS = '/step-one',
@@ -10,6 +10,8 @@ export enum OnBoardingRoutes {
   REVIEW = '/review',
   COMPLETED = '/courses',
 }
+
+/* eslint-enable @typescript-eslint/no-duplicate-enum-values */
 
 export const BASE_URL = '/courses/enroll/';
 

@@ -1,57 +1,76 @@
 import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
 
 const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
+const secret = new TextEncoder().encode(process.env.SESSION_FLAGS_SECRET);
+const pinSecret = new TextEncoder().encode(process.env.PIN_TOKEN_SECRET!);
 
 export default clerkMiddleware(
   async (auth, req) => {
     const url = req.nextUrl.pathname;
+    let pinToken = null;
+
+    console.info('[MIDDLEWARE]', 'Route', isProtectedRoute(req));
 
     // Skip Clerk processing for /slice-simulator and its sub-paths
-    if (url.startsWith('slice-simulator')) {
-      return;
+    if (url.startsWith('/slice-simulator')) {
+      return NextResponse.next();
+    }
+
+    if (!isProtectedRoute(req)) {
+      console.info('[MIDDLEWARE]', 'Unprotected Route');
+      return NextResponse.next();
     }
 
     if (isProtectedRoute(req)) {
-      auth.protect();
-
       console.info('[MIDDLEWARE COURSE]', 'Protected Route');
 
       if (url.startsWith('/courses')) {
         console.info('[MIDDLEWARE COURSE]', 'Courses Route');
 
-        const { userId, sessionClaims } = await auth();
+        const { sessionClaims } = await auth();
+
+        if (!sessionClaims) {
+          console.info('[MIDDLEWARE COURSE] No session claims found');
+          return NextResponse.redirect(`${req.nextUrl.origin}/`);
+        }
+
+        console.info('[MIDDLEWARE COURSE] sessionClaim');
+
+        let flags = (sessionClaims as any)?.metadata ?? (sessionClaims as any)?.metadata;
+
+        // Fallback to cookie if claims missing
+        if (!flags) {
+          const token = req.cookies.get('sf')?.value;
+          if (token) {
+            try {
+              const { payload } = await jwtVerify(token, secret);
+              flags = payload as any;
+            } catch {
+              /* ignore, allow through once */
+            }
+          }
+        }
+
+        console.info('[MIDDLEWARE COURSE] flags');
+
+        try {
+          pinToken = req.cookies.get('pin:parents')?.value;
+          console.info('[MIDDLEWARE COURSE] Parent Pin', !!pinToken);
+        } catch (e) {
+          console.error('[MIDDLEWARE COURSE] Pin Error', e);
+        }
+
+        // If still missing, let the request pass; first page can call /api/session
+        if (!flags) {
+          return NextResponse.redirect(`${req.nextUrl.origin}/`);
+        }
 
         const match = url.match(/^\/courses\/([^/]+)(.*)?$/);
         const product = match ? match[1] : null;
 
-        let userDb = null;
-
-        console.info('[MIDDLEWARE COURSE] User', userId, sessionClaims);
-
-        if (!userId) {
-          console.error('[MIDDLEWARE COURSE]', 'USER NOT AUTHENTICATED');
-
-          if (url.startsWith(`/courses/error`)) {
-            return NextResponse.next();
-          }
-          return NextResponse.redirect(`${req.nextUrl.origin}/courses/error?status=unauthorized`);
-        }
-
-        const client = await clerkClient();
-        const user = await client.users.getUser(userId);
-
-        if (!user) {
-          console.error('[MIDDLEWARE COURSE]', 'CLERK USER NOT FOUND');
-
-          if (url.startsWith(`${req.nextUrl.origin}/courses/error`)) {
-            return NextResponse.next();
-          }
-
-          return NextResponse.redirect(`${req.nextUrl.origin}/courses/error?status=unauthorized`);
-        }
-
-        if (user?.publicMetadata.status === 'pending') {
+        if (flags.status === 'pending') {
           console.info('[MIDDLEWARE COURSE] PENDING');
 
           if (url.startsWith(`/courses/success`)) {
@@ -60,41 +79,7 @@ export default clerkMiddleware(
           return NextResponse.redirect(`${req.nextUrl.origin}/courses/success`);
         }
 
-        // CHECK USER IS ACTIVE
-        //const accountRes = await fetch(`${req.nextUrl.origin}/api/getAccount?userId=${userId}`);
-        const userResponse = await fetch(`${req.nextUrl.origin}/api/users/${userId}`, {
-          headers: {
-            Cookie: req.headers.get('Cookie') || '',
-          },
-        });
-
-        if (!userResponse.ok) {
-          console.info('[MIDDLEWARE COURSE] USER DB NOT FOUND');
-
-          if (url.startsWith(`/courses/error`)) {
-            return NextResponse.next();
-          }
-          return NextResponse.redirect(
-            `${req.nextUrl.origin}/courses/error?status=error&message=No%20user%20found%20in%20Database`,
-          );
-        }
-
-        userDb = await userResponse.json();
-
-        //todo: check if userDb is null it does not go to an error page
-
-        if (!userDb) {
-          console.info('[MIDDLEWARE COURSE] USER DB IS NULL');
-
-          if (url.startsWith(`/courses/error`)) {
-            return NextResponse.next();
-          }
-          NextResponse.redirect(
-            `${req.nextUrl.origin}/courses/error?status=error&message=No%20user%20found%20in%20Database`,
-          );
-        }
-
-        if (userDb?.status === 'inactive') {
+        if (flags.status === 'inactive') {
           console.info('[MIDDLEWARE COURSE] ACCOUNT INACTIVE');
           if (url.startsWith(`/courses/order`)) {
             return NextResponse.next();
@@ -104,17 +89,9 @@ export default clerkMiddleware(
           );
         }
 
-        if (userDb?.status === 'pending') {
-          console.info('[MIDDLEWARE COURSE] ACCOUNT PENDING');
-          if (url.startsWith(`/courses/success`)) {
-            return NextResponse.next();
-          }
-          return NextResponse.redirect(`${req.nextUrl.origin}/courses/success`);
-        }
-
         // CHECK USER HAS PURCHASED COURSE
 
-        if (!userDb?._count?.purchases) {
+        if (!flags?.hasPurchases) {
           console.info('[MIDDLEWARE COURSE]  NO PURCHASES');
 
           if (url.startsWith(`/courses/order`)) {
@@ -126,65 +103,71 @@ export default clerkMiddleware(
           );
         }
 
-        // CHECK USER HAS PURCHASED COURSE ENROLLMENT
+        // upgrade route always allowed
+        if (url.startsWith(`/courses/upgrade`)) {
+          return NextResponse.next();
+        }
 
-        if (userDb?._count?.purchases) {
-          const unEnrolledPurchases = userDb.purchases.filter((purchase: any) => !purchase.childId);
+        // account route always allowed
 
-          console.info('[MIDDLEWARE COURSE]  PURCHASES', unEnrolledPurchases);
+        console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', pinToken);
 
-          if (unEnrolledPurchases.length === 0) {
-            // check if User wants to upgrade
-            if (url.startsWith(`/courses/upgrade`)) {
-              console.info('[MIDDLEWARE COURSE]  UPGRADE');
+        if (url.startsWith(`/courses/account`)) {
+          try {
+            if (!pinToken) throw 0;
+            await jwtVerify(pinToken, pinSecret);
+            console.log('[MIDDLEWARE COURSE]  HAS PIN TOKEN - ALLOW ACCOUNT');
+            return NextResponse.next();
+          } catch (error) {
+            console.error('[MIDDLEWARE COURSE] PIN Error', error);
+            const to = `/courses/pin?returnTo=${encodeURIComponent(req.nextUrl.pathname)}`;
+            return NextResponse.redirect(new URL(to, req.url));
+          }
+        }
+
+        if (flags.purchases.length) {
+          if (flags.purchases.length > 1) {
+            console.info('[MIDDLEWARE COURSE]  MULTIPLE PURCHASES ENROLLED - GO TO COURSE SELECTION');
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses`);
+          }
+
+          console.info('[MIDDLEWARE COURSE]  HAS PURCHASES', flags.purchases.length);
+
+          if (flags.unenrolledCourseType) {
+            console.log(
+              '[MIDDLEWARE COURSE]  PURCHASE SINGLE NOT ENROLLED - GO TO ENROLLMENT',
+              flags.unenrolledPurchaseId,
+            );
+            if (url.startsWith(`/courses/enroll/${flags.unenrolledPurchaseId}`)) {
               return NextResponse.next();
             }
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${flags.unenrolledPurchaseId}/intro`);
+          }
 
-            // All purchases are enrolled
-            if (userDb.purchases.length === 1 && userDb.purchases[0].childId) {
-              // Only one purchase, and it's enrolled
+          if (flags.singleEnrolledCourseSlug && flags.purchases.length === 1) {
+            console.info('[MIDDLEWARE COURSE]  SINGLE PURCHASE ENROLLED - GO TO LESSON');
 
-              const courseResp = await fetch(`${req.nextUrl.origin}/api/courses/${userDb.purchases[0].courseId}`);
-              const course = await courseResp.json();
-
-              console.info('[MIDDLEWARE COURSE]  SINGLE PURCHASE ENROLLED - GO TO LESSON');
-
-              if (url.startsWith(`/courses/${course?.slug}`)) {
+            //check user is admin
+            if (flags.role === 'admin') {
+              console.log('[MIDDLEWARE COURSE]  ADMIN USER - ALLOW ALL COURSES');
+              // check if url after /course is different from singleEnrolledCourseSlug
+              if (!url.endsWith(`${flags.singleEnrolledCourseSlug}`)) {
                 return NextResponse.next();
               }
-              return NextResponse.redirect(`${req.nextUrl.origin}/courses/${course?.slug}`);
-            } else {
-              console.info('[MIDDLEWARE COURSE]  ALL PURCHASES ENROLLED - GO TO COURSE SELECTION');
-              // todo: go to course selection
             }
-          } else if (unEnrolledPurchases.length === 1) {
-            // Only one purchase is not enrolled
-            console.log('[MIDDLEWARE COURSE]  PURCHASE SINGLE NOT ENROLLED - GO TO ENROLLMENT', unEnrolledPurchases[0]);
-            if (url.startsWith(`/courses/enroll/${unEnrolledPurchases[0].id}`)) {
+
+            if (url.startsWith(`/courses/${flags.singleEnrolledCourseSlug}`)) {
               return NextResponse.next();
             }
-            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}/intro`);
-          } else {
-            // More than one purchase is not enrolled
-            console.info('[MIDDLEWARE COURSE]  PURCHASE MULTIPLE NOT ENROLLED - SELECT PURCHASE TO ENROLL');
-            // todo: select your purchase to [module_slug]
-            if (url.startsWith(`/courses/enroll/${unEnrolledPurchases[0].id}`)) {
-              return NextResponse.next();
-            }
-            return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${unEnrolledPurchases[0].id}/intro`);
+            return NextResponse.redirect(`${req.nextUrl.origin}/courses/${flags.singleEnrolledCourseSlug}`);
           }
-        } else {
-          console.info('[MIDDLEWARE COURSE]  NO PURCHASES FOUND');
-          // Handle the case where there are no purchases
-          if (url.startsWith(`/courses/order`)) {
-            return NextResponse.next();
-          }
-          return NextResponse.redirect(
-            product ? `${req.nextUrl.origin}/courses/order?product=${product}` : '/courses/order',
-          );
         }
       }
+    } else {
+      return NextResponse.redirect(`${req.nextUrl.origin}/`);
     }
+
+    return NextResponse.next();
   },
   { debug: false },
 );

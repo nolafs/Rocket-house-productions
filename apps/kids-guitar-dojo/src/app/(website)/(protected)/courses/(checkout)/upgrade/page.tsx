@@ -8,9 +8,11 @@ import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
 import { getAccount } from '@rocket-house-productions/actions/server';
 
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
-export default async function Page({ params }: { params: { product: string[]; purchaseId: string } }) {
+export default async function Page(props: { params: Promise<{ product: string[]; purchaseId: string }> }) {
+  const params = await props.params;
+
   const { userId } = await auth();
 
   if (!userId) {
@@ -19,10 +21,10 @@ export default async function Page({ params }: { params: { product: string[]; pu
 
   let purchase = null;
 
-  // check if params contain childId and account
+  // check if params contain childId and (.)account
 
   if (!params.purchaseId) {
-    // get childId from account
+    // get childId from (.)account
     const account = await getAccount(userId);
     purchase = await db.purchase.findFirst({
       where: {
@@ -44,7 +46,10 @@ export default async function Page({ params }: { params: { product: string[]; pu
     if (purchase.category === 'premium') {
       return redirect('/courses');
     }
+
     params.purchaseId = purchase.id;
+
+    //console.log('[UPGRADE]', (.)account);
   }
 
   const client = createClient();
@@ -56,6 +61,10 @@ export default async function Page({ params }: { params: { product: string[]; pu
       },
     ],
   });
+
+  console.log('[UPGRADE]', tiers);
+  console.log('[UPGRADE]', purchase?.category);
+  console.log('[UPGRADE]', purchase);
 
   return (
     <main>

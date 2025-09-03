@@ -6,9 +6,29 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import { ResolvedOpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
 import { OGImage } from '@rocket-house-productions/types';
 
-type Params = { uid: string };
+type Props = {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export async function generateMetadata({ params }: { params: Params }, parent: ResolvingMetadata): Promise<Metadata> {
+export const generateStaticParams = async () => {
+  const client = createClient();
+  const pages = await client.getAllByType('blog_post', {
+    pageSize: 100,
+    orderings: [
+      {
+        field: 'my.blog_post.publishing_date',
+        direction: 'desc',
+      },
+    ],
+  });
+
+  return pages.map(page => ({
+    id: page.id,
+  }));
+};
+
+export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
   const page = await client.getSingle('blog').catch(() => notFound());
 
@@ -34,7 +54,8 @@ export async function generateMetadata({ params }: { params: Params }, parent: R
   };
 }
 
-export default async function Page({ searchParams }: { searchParams: { page: string; category: string } }) {
+export default async function Page(props: { searchParams: Promise<{ page: string; category: string }> }) {
+  const searchParams = await props.searchParams;
   const pageNum = Number(searchParams?.page) || 0;
   const limit = 9;
 

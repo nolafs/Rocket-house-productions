@@ -6,7 +6,7 @@ import { createClient } from '@/prismicio';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
-export default async function Page({ params }: { params: { product: string[] } }) {
+export default async function Page() {
   const client = createClient();
   const settings = await client.getSingle('settings');
 

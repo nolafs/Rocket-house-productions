@@ -1,8 +1,8 @@
 'use server';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import getAccount from './get-account';
+import { getAccount } from './get-account';
 
 interface GetQuizProps {
   courseSlug: string;
@@ -11,11 +11,13 @@ interface GetQuizProps {
 }
 
 export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizProps) => {
-  const { userId } = await auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     return redirect('/');
   }
+
+  const isAdmin = (sessionClaims?.metadata as { role: string })?.role === 'admin';
 
   const account = await getAccount(userId);
 
@@ -34,11 +36,16 @@ export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizPro
   }
 
   const module = await db.module.findUnique({
-    where: {
-      slug: moduleSlug,
-      courseId: course.id,
-      isPublished: true,
-    },
+    where: isAdmin
+      ? {
+          slug: moduleSlug,
+          courseId: course.id,
+        }
+      : {
+          slug: moduleSlug,
+          courseId: course.id,
+          isPublished: true,
+        },
     select: {
       id: true,
       title: true,

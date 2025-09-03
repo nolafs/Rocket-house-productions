@@ -2,21 +2,17 @@ import { auth } from '@clerk/nextjs/server';
 import { notFound, redirect } from 'next/navigation';
 import { getChild, getLesson } from '@rocket-house-productions/actions/server';
 import { createClient } from '@/prismicio';
-import dynamic from 'next/dynamic';
+import { LessonHeader } from '@rocket-house-productions/lesson';
+import LessonComponent from './_components/lessonComponent';
 
-const LessonComponent = dynamic(() => import('./_components/lessonComponent'), {
-  ssr: true,
-});
-
-const LessonHeader = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonHeader), {
-  ssr: false,
-});
+export const dynamic = 'force-dynamic';
 
 interface PageProps {
-  params: { slug: string; module_slug: string; lesson_slug: string };
+  params: Promise<{ slug: string; module_slug: string; lesson_slug: string }>;
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page(props: PageProps) {
+  const params = await props.params;
   if (!params.slug || !params.module_slug || !params.lesson_slug) {
     return notFound();
   }
@@ -68,8 +64,8 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <>
-      <LessonHeader lessonId={data.lesson.id} module={data.module} />
-      <main className={'container mx-auto mb-20 mt-[100px] flex max-w-5xl flex-col space-y-5 px-5'}>
+      <LessonHeader url={`/courses/${params.slug}`} lessonId={data.lesson.id} module={data.module} />
+      <main className={'lesson container mx-auto mb-20 mt-[100px] flex max-w-5xl flex-col space-y-5 px-5'}>
         <LessonComponent data={data} child={child} page={page} />
       </main>
     </>

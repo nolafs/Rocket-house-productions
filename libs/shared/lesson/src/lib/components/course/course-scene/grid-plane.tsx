@@ -1,3 +1,5 @@
+'use client';
+
 import { Grid } from '@react-three/drei';
 
 export function GridPlane() {

@@ -1,11 +1,11 @@
 'use server';
-import { db } from '@rocket-house-productions/integration';
-import { notFound, redirect } from 'next/navigation';
+import { db } from '@rocket-house-productions/integration/server';
+import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
-import getAccount from './get-account';
+import { getAccount } from './get-account';
 
 export const getChild = async (slug: string) => {
-  const { userId } = await auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     return redirect('/');
@@ -24,19 +24,54 @@ export const getChild = async (slug: string) => {
     },
   });
 
-  if (!purchase) {
-    return redirect(`/courses/error?status=error&message=No%20purchase%20found`);
-  }
+  // is user admin
 
-  if (!purchase.childId) {
-    return redirect(`/courses/error?status=error&message=No%20child%20found`);
-  }
+  console.log('[getChild] sessionClaims', sessionClaims);
 
-  const child = await db.child.findFirst({
-    where: {
-      id: purchase?.childId,
-    },
-  });
+  const isAdmin = (sessionClaims?.metadata as { role: string })?.role === 'admin';
+  let child = null;
+
+  if (!isAdmin) {
+    if (!purchase) {
+      return redirect(`/courses/error?status=error&message=No%20purchase%20found`);
+    }
+
+    if (!purchase.childId) {
+      return redirect(`/courses/error?status=error&message=No%20child%20found`);
+    }
+
+    child = await db.child.findFirst({
+      where: {
+        id: purchase?.childId,
+      },
+    });
+
+    if (!child) {
+      return redirect(`/courses/error?status=error&message=No%20child%20found`);
+    }
+  } else {
+    if (!purchase) {
+      //first child for admin
+      child = await db.child.findFirst({
+        where: {
+          accountId: account?.id,
+        },
+        orderBy: {
+          createdAt: 'asc',
+        },
+      });
+    } else {
+      if (!purchase.childId) {
+        return redirect(`/courses/error?status=error&message=No%20child%20found`);
+      }
+
+      child = await db.child.findFirst({
+        where: {
+          id: purchase?.childId,
+        },
+      });
+    }
+  }
 
   if (!child) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
@@ -45,7 +80,7 @@ export const getChild = async (slug: string) => {
   return {
     ...child,
     purchaseId: purchase?.id,
-    purchaseType: purchase?.type,
-    purchaseCategory: purchase?.category,
+    purchaseType: purchase?.type || 'free', // default to 'free' if type is not set
+    purchaseCategory: purchase?.category || 'free', // default to 'free' if category is not set
   };
 };

@@ -1,6 +1,6 @@
 'use server';
 import { Prisma } from '@prisma/client';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 type AccountWithPurchases = Prisma.AccountGetPayload<{
   include: {
@@ -52,5 +52,3 @@ export async function getAccount(userId: string): Promise<AccountWithPurchases |
     },
   });
 }
-
-export default getAccount;

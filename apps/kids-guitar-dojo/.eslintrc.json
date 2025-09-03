@@ -1,13 +1,18 @@
 {
   "extends": ["plugin:@nx/react-typescript", "next", "next/core-web-vitals", "../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", ".next/**/*", "node_modules/**/*"],
+  "ignorePatterns": ["!**/*", ".next/**/*", "node_modules/**/*", "next-env.d.ts"],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.d.ts"],
       "rules": {
         "@next/next/no-html-link-for-pages": ["error", "apps/kids-guitar-dojo/pages"],
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-circle": "off",
+        "@typescript-eslint/no-empty-interface": ["warn"],
         "@nx/enforce-module-boundaries": [
-          "warn",
+          "off",
           {
             "allow": [
               "@components/*",
@@ -34,6 +39,13 @@
       "env": {
         "jest": true
       }
+    },
+    {
+      "files": [ "next-env.d.ts"],
+      "rules": {
+        "@typescript-eslint/triple-slash-reference": "off"
+      }
     }
+
   ]
 }

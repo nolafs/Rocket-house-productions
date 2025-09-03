@@ -14,29 +14,101 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model AppSettings {
+  // Hard-coded single row
+  id                   String              @id @default("singleton")
+  membershipSettingsId String?             @unique
+  membershipSettings   MembershipSettings? @relation("Membership", fields: [membershipSettingsId], references: [id])
+}
+
 model Course {
-  id          String  @id @default(uuid())
-  userId      String
-  title       String  @db.Text
-  slug        String? @unique
-  description String? @db.Text
-  imageUrl    String? @db.Text
-  isPublished Boolean @default(false)
+  id                         String  @id @default(uuid())
+  userId                     String
+  title                      String  @db.Text
+  slug                       String? @unique
+  description                String? @db.Text
+  imageUrl                   String? @db.Text
+  isPublished                Boolean @default(false)
+  order                      Int?    @default(0)
+  basicIsFree                Boolean @default(false)
+  stripeProductBasicId       String? @unique
+  stripeProductBasicDev      String? @unique
+  stripeProductPremiumId     String? @unique
+  stripeProductPremiumIdDev  String? @unique
+  stripeProductStandardId    String? @unique
+  stripeProductStandardIdDev String? @unique
+
+  isMembershipEntry     Boolean             @default(false)
+  membershipSettings    MembershipSettings? @relation("CourseMembership")
+  includedInMemberships MembershipInclude[] @relation("IncludedCourse")
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
-  childScores ChildScore[]
+  childScores   ChildScore[]
   childProgress ChildProgress[]
 
   modules     Module[]
   attachments Attachment[]
   purchases   Purchase[]
 
+  // single book scene for course
+  bookSceneId String?
+  bookScene   BookScene? @relation("CourseBookScene", fields: [bookSceneId], references: [id], onDelete: SetNull, onUpdate: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
   @@index([slug])
+}
+
+model MembershipSettings {
+  id String @id @default(cuid())
+
+  // the course that represents the membership product
+  courseId String @unique
+  course   Course @relation("CourseMembership", fields: [courseId], references: [id])
+
+  appSettings AppSettings? @relation("Membership")
+
+  isActive      Boolean   @default(true)
+  effectiveFrom DateTime  @default(now())
+  expiresAt     DateTime?
+
+  // courses unlocked by this membership
+  included MembershipInclude[]
+}
+
+model MembershipInclude {
+  id String @id @default(cuid())
+
+  // parent membership settings
+  membershipId String
+  membership   MembershipSettings @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+
+  // course that gets unlocked
+  includedCourseId String
+  includedCourse   Course @relation("IncludedCourse", fields: [includedCourseId], references: [id])
+
+  @@unique([membershipId, includedCourseId]) // prevent duplicates
+}
+
+model BookScene {
+  id            String  @id @default(uuid())
+  title         String
+  strapline     String?
+  guitarUrl     String? @db.Text
+  guitarHeadUrl String? @db.Text
+  fretboardUrl  String? @db.Text
+  foregroundUrl String? @db.Text
+  midgroundUrl  String? @db.Text
+  skyUrl        String? @db.Text
+  backgroundUrl String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  courses Course[] @relation("CourseBookScene")
 }
 
 model Module {
@@ -51,8 +123,8 @@ model Module {
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  lessons Lesson[]
-  awards Award[]
+  lessons     Lesson[]
+  awards      Award[]
   attachments ModuleAttachment[]
 
   availableAwards ModuleAwardType[]
@@ -73,19 +145,19 @@ model Category {
 }
 
 model CategoryLesson {
-  id      String   @id @default(uuid())
-  name    String   @unique
-  lesson  Lesson[]
+  id     String   @id @default(uuid())
+  name   String   @unique
+  lesson Lesson[]
 }
 
 model AttachmemtType {
-  id   String @id @default(uuid())
-  name String
+  id          String       @id @default(uuid())
+  name        String
   attachments Attachment[]
 }
 
 model ModuleAttachmemtType {
-  id          String       @id @default(uuid())
+  id          String             @id @default(uuid())
   name        String
   attachments ModuleAttachment[]
 }
@@ -96,7 +168,7 @@ model ModuleAttachment {
   url  String @db.Text
 
   attachmentTypeId String?
-  attachmentType ModuleAttachmemtType? @relation(fields: [attachmentTypeId], references: [id])
+  attachmentType   ModuleAttachmemtType? @relation(fields: [attachmentTypeId], references: [id])
 
   moduleId String
   module   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
@@ -109,10 +181,10 @@ model ModuleAttachment {
 
 model AwardType {
   id          String  @id @default(uuid())
-  name        String// The name of the award, e.g., "Completion Badge", "High Score"
-  description String?// A description of what the award is for
-  badgeUrl    String?// URL for the badge image
-  points      Int// Points awarded
+  name        String // The name of the award, e.g., "Completion Badge", "High Score"
+  description String? // A description of what the award is for
+  badgeUrl    String? // URL for the badge image
+  points      Int // Points awarded
 
   condition String
 
@@ -124,9 +196,9 @@ model AwardType {
 }
 
 model ModuleAwardType {
-  id          String    @id @default(uuid())
-  moduleId    String
-  module      Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  id       String @id @default(uuid())
+  moduleId String
+  module   Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 
   awardTypeId String
   awardType   AwardType @relation(fields: [awardTypeId], references: [id], onDelete: Cascade)
@@ -143,7 +215,7 @@ model Attachment {
   url  String @db.Text
 
   attachmentTypeId String?
-  attachmentType AttachmemtType? @relation(fields: [attachmentTypeId], references: [id])
+  attachmentType   AttachmemtType? @relation(fields: [attachmentTypeId], references: [id])
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -179,7 +251,7 @@ model Lesson {
 
   questionaries Questionary[]
 
-  bookCta Boolean? @default(false)
+  bookCta     Boolean? @default(false)
   bookMessage String?
 
   createdAt DateTime @default(now())
@@ -192,19 +264,19 @@ model Lesson {
 }
 
 model Questionary {
-  id          String  @id @default(uuid())
+  id          String     @id @default(uuid())
   title       String
   position    Int
-  isPublished Boolean @default(false)
-  imageUrl    String? @db.Text
-  type        String? @default("text")
-  lessonId String
-  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  questions Question[]
-  boardSize Int?
-  points Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  isPublished Boolean    @default(false)
+  imageUrl    String?    @db.Text
+  type        String?    @default("text")
+  lessonId    String
+  lesson      Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  questions   Question[]
+  boardSize   Int?
+  points      Int?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt()
 
   @@index([lessonId])
 }
@@ -216,12 +288,12 @@ model Question {
   isPublished Boolean @default(false)
   type        String? @default("text")
 
-  imageUrl    String? @db.Text
+  imageUrl String? @db.Text
 
   questionaryId String
   questionary   Questionary @relation(fields: [questionaryId], references: [id], onDelete: Cascade)
 
-  correctAnswer Boolean
+  correctAnswer   Boolean
   boardCordinates String?
 
   createdAt DateTime @default(now())
@@ -234,7 +306,7 @@ model BunnyData {
   id         String  @id @default(uuid())
   videoId    String
   videoLibId String
-  title  String?
+  title      String?
 
   lessonId String @unique
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
@@ -243,9 +315,8 @@ model BunnyData {
   @@index([lessonId])
 }
 
-
 model Award {
-  id          String       @id @default(uuid())
+  id String @id @default(uuid())
 
   childId String
   child   Child  @relation(fields: [childId], references: [id], onDelete: Cascade)
@@ -259,14 +330,14 @@ model Award {
   lesson   Lesson? @relation(fields: [lessonId], references: [id])
   lessonId String?
 
-  awardedAt   DateTime     @default(now())
+  awardedAt DateTime @default(now())
 
   @@unique([awardTypeId, childId])
   @@index([childId])
 }
 
 model Purchase {
-  id     String @id @default(uuid())
+  id      String  @id @default(uuid())
   childId String?
 
   courseId String
@@ -276,10 +347,10 @@ model Purchase {
   account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   stripeChargeId String? @unique
-  amount          Int
+  amount         Int
 
-  type            String?
-  category        String?
+  type     String?
+  category String?
 
   billingAddress String?
 
@@ -292,22 +363,22 @@ model Purchase {
 }
 
 model Account {
-  id               String  @id @default(uuid())
-  userId           String  @unique
+  id     String @id @default(uuid())
+  userId String @unique
 
-  stripeCustomerId String?  @unique
+  stripeCustomerId       String? @unique
   recentStripeCheckoutId String? @unique
 
-  children Child[]
+  children  Child[]
   purchases Purchase[]
 
-  firstName        String?
-  lastName         String?
-  email            String?  @unique
-  status           String  @default("inactive")
-  newsletter       Boolean @default(false)
+  firstName  String?
+  lastName   String?
+  email      String? @unique
+  status     String  @default("inactive")
+  newsletter Boolean @default(false)
 
-  role             String  @default("member")
+  role String @default("member")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
@@ -315,15 +386,30 @@ model Account {
   @@index([userId])
 }
 
+model ParentPin {
+  scope     String    @id
+  hash      String
+  active    Boolean   @default(true)
+  expiresAt DateTime?
+  updatedAt DateTime  @updatedAt
+  updatedBy String?
+}
+
+model KvTemp {
+  key       String   @id
+  value     String // JSON string
+  expiresAt DateTime
+}
+
 model Child {
-  id       String @id @default(uuid())
+  id String @id @default(uuid())
 
   accountId String
   account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
-  name String
+  name           String
   profilePicture String?
-  birthday  DateTime
+  birthday       DateTime
 
   childProgress ChildProgress[]
   awards        Award[]
@@ -331,7 +417,7 @@ model Child {
   childScores ChildScore[]
 
   parentConsent Boolean @default(false)
-  notifications  Boolean @default(true)
+  notifications Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
@@ -340,10 +426,10 @@ model Child {
 }
 
 model ChildProgress {
-  id      String @id @default(uuid())
+  id String @id @default(uuid())
 
   childId String
-  child Child @relation(fields: [childId], references: [id], onDelete: Cascade)
+  child   Child  @relation(fields: [childId], references: [id], onDelete: Cascade)
 
   lessonId String
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
@@ -363,10 +449,10 @@ model ChildProgress {
 }
 
 model ChildScore {
-  id      String @id @default(uuid())
+  id String @id @default(uuid())
 
   childId String
-  child Child @relation(fields: [childId], references: [id], onDelete: Cascade)
+  child   Child  @relation(fields: [childId], references: [id], onDelete: Cascade)
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)

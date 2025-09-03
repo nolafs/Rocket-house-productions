@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
 import { DollarSign } from 'lucide-react';
-import { db } from '@rocket-house-productions/integration';
+import { db } from '@rocket-house-productions/integration/server';
 
 export async function CardRevenue() {
   const purchases = await db.purchase.aggregate({

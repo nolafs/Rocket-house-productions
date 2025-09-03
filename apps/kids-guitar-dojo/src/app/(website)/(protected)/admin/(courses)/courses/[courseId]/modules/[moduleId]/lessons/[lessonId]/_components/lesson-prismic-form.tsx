@@ -11,19 +11,11 @@ import { useForm } from 'react-hook-form';
 import { Pencil } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-  Button,
-  Combobox,
-} from '@rocket-house-productions/shadcn-ui';
+import { Form, FormControl, FormField, FormItem, FormMessage, Combobox } from '@rocket-house-productions/shadcn-ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
 import { Lesson } from '@prisma/client';
-import { Preview, Editor } from '@rocket-house-productions/features';
 
 interface LessonDescriptionFormProps {
   initialData: Lesson;

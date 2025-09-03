@@ -1,9 +1,27 @@
-import { Loader2 } from 'lucide-react';
+import { getCourses, SessionFlags } from '@rocket-house-productions/actions/server';
 
-export default async function Page({ params }: { params: { product: string[] } }) {
+import { NavbarSimple } from '@rocket-house-productions/layout';
+import logo from '@assets/logo.png';
+import React from 'react';
+import { CoursesTimelineList } from '@rocket-house-productions/features';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { LessonPageWrapper } from '@rocket-house-productions/lesson/server';
+
+export default async function Page() {
+  // get all courses
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect('/');
+  }
+
+  const courses = await getCourses();
+  const userData = await SessionFlags();
+
   return (
-    <div className={'mt-5 flex h-svh w-full flex-col items-center justify-center'}>
-      <Loader2 className={'text-primary h-12 w-12 animate-spin'} />
-    </div>
+    <LessonPageWrapper navbar={<NavbarSimple logo={logo} />}>
+      <CoursesTimelineList courses={courses} />
+    </LessonPageWrapper>
   );
 }

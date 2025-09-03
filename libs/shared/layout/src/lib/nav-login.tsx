@@ -1,25 +1,34 @@
 'use client';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import cn from 'classnames';
-import {
-  buttonVariants,
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@rocket-house-productions/shadcn-ui';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@rocket-house-productions/shadcn-ui';
+
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { Menu, SettingsIcon } from 'lucide-react';
 import React, { useState } from 'react';
-import Image from 'next/image';
-import { asText } from '@prismicio/client';
-import { NavigationProps } from '@rocket-house-productions/types';
+import Image, { type StaticImageData } from 'next/image';
 import { PrismicNextLink } from '@prismicio/next';
-import { PrismicText } from '@prismicio/react';
 
-export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; navigation: NavigationProps; logo: any }) {
+import { usePathname } from 'next/navigation';
+import { asText } from '@prismicio/client';
+import { UserSignedInDropdown } from '@rocket-house-productions/features';
+import { type NavigationDocumentData } from '@/prismic-types';
+
+export function NavLogin({
+  navigation,
+  logo,
+}: {
+  isAdmin?: boolean;
+  navigation: NavigationDocumentData;
+  logo: StaticImageData;
+}) {
   const [open, setOpen] = useState(false);
+  const currentRoute = usePathname();
+  const { user } = useUser();
+
+  const isAdmin = user?.publicMetadata.role === 'admin';
+
   return (
     <>
       <div className="other-options hidden self-center pb-[10px] pt-[20px] md:block xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
@@ -31,7 +40,7 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
               </Link>
             </SignedOut>
             <SignedIn>
-              <UserButton />
+              <UserSignedInDropdown />
             </SignedIn>
           </li>
           <li>
@@ -44,7 +53,7 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
             </SignedOut>
             <SignedIn>
               <div className={'flex space-x-1'}>
-                <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
+                <Link href="/refresh" className={buttonVariants({ variant: 'outline' })}>
                   Go to Course
                 </Link>
                 {isAdmin && (
@@ -62,11 +71,7 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
       </div>
 
       <div className={'grid grow-0 grid-cols-2 items-center justify-center md:hidden'}>
-        <div className={'mr-1.5 mt-1.5'}>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </div>
+        <div className={'mr-1.5 mt-1.5'}></div>
 
         {/* Toggle button */}
         <Sheet open={open} onOpenChange={setOpen}>
@@ -85,14 +90,17 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
                   <Image src={logo} className="inline pl-5" alt="logo" />
                 </Link>
                 <ul className={'b mt-10 flex flex-col divide-y divide-gray-500/10'}>
-                  {navigation &&
-                    navigation.items.map(item => (
-                      <li key={asText(item.label)} className="group relative px-5 py-5">
+                  {navigation?.links &&
+                    navigation.links.map((item, idx) => (
+                      <li key={`nav-login-${idx}`} className="group relative px-5 py-5">
                         <PrismicNextLink
                           field={item.link}
                           onClick={() => setOpen(false)}
-                          className="hover:text-primary text-base font-medium text-gray-500 transition-all">
-                          <PrismicText field={item.label} />
+                          className={cn(
+                            'hover:text-primary text-base font-medium text-gray-500 transition-all',
+                            (item.link as { url: string }).url === currentRoute && 'text-primary',
+                          )}>
+                          {asText(item.label)}
                         </PrismicNextLink>
                       </li>
                     ))}
@@ -114,8 +122,8 @@ export function NavLogin({ isAdmin, navigation, logo }: { isAdmin?: boolean; nav
                     </Link>
                   </SignedOut>
                   <SignedIn>
-                    <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
-                      Go to Lesson
+                    <Link href="/refresh" className={buttonVariants({ variant: 'outline' })}>
+                      Go to Course
                     </Link>
                     {isAdmin && (
                       <Link href="/admin" className={buttonVariants({ variant: 'outline' })}>

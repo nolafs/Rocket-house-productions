@@ -8,3 +8,6 @@ export { cn } from './lib/cn';
 export * from './lib/format';
 export { CurrencyToSymbol } from './lib/currencyToSymbole';
 export { debounce } from './lib/debounce';
+export { LogRocketComponent } from './lib/logRocketComponent';
+export { computeFlagsFromUserDb, type SessionFlags } from './lib/session-flags';
+export * from './lib/url';
