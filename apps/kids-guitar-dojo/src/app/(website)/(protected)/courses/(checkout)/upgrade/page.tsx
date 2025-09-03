@@ -20,10 +20,10 @@ export default async function Page(props: { params: Promise<{ product: string[];
 
   let purchase = null;
 
-  // check if params contain childId and account
+  // check if params contain childId and (.)account
 
   if (!params.purchaseId) {
-    // get childId from account
+    // get childId from (.)account
     const account = await getAccount(userId);
     purchase = await db.purchase.findFirst({
       where: {
@@ -47,7 +47,7 @@ export default async function Page(props: { params: Promise<{ product: string[];
     }
     params.purchaseId = purchase.id;
 
-    //console.log('[UPGRADE]', account);
+    //console.log('[UPGRADE]', (.)account);
   }
 
   const client = createClient();

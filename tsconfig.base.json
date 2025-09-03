@@ -19,6 +19,7 @@
     "typeRoots": ["./node_modules/@types", "./types"],
     "paths": {
       "@/*": ["apps/kids-guitar-dojo/src/*"],
+      "@/prismic-types": ["apps/kids-guitar-dojo/prismicio-types.d.ts"],
       "@assets/*": ["apps/kids-guitar-dojo/src/assets/*"],
       "@components/*": ["apps/kids-guitar-dojo/src/components/*"],
       "@layouts/*": ["apps/kids-guitar-dojo/src/layouts/*"],
@@ -35,6 +36,8 @@
       "@rocket-house-productions/layout/server": ["libs/shared/layout/src/server.ts"],
       "@rocket-house-productions/lesson": ["libs/shared/lesson/src/index.ts"],
       "@rocket-house-productions/lesson/server": ["libs/shared/lesson/src/server.ts"],
+      "@rocket-house-productions/pin": ["libs/shared/pin/src/index.ts"],
+      "@rocket-house-productions/pin/server": ["libs/shared/pin/src/server.ts"],
       "@rocket-house-productions/providers": ["libs/shared/providers/src/index.ts"],
       "@rocket-house-productions/providers/server": ["libs/shared/providers/src/server.ts"],
       "@rocket-house-productions/shadcn-ui": ["libs/shared/shadcn-ui/src/index.ts"],

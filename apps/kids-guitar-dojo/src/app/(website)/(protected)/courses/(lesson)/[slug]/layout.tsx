@@ -1,13 +1,12 @@
 import { CourseProgressionProvider } from '@rocket-house-productions/providers';
 import { getChild, getCourse } from '@rocket-house-productions/actions/server';
 import { redirect } from 'next/navigation';
-import { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
+import { ReactNode, Suspense } from 'react';
 import { headers } from 'next/headers';
 import { Viewport } from 'next';
 import ModuleWrapper from './_components/moduleWrapper';
-const Header = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.Header));
-const ModuleAwards = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.ModuleAwards));
+import { ClerkProvider } from '@clerk/nextjs';
+import { Header, ModuleAwards } from '@rocket-house-productions/lesson';
 
 export const metadata = {
   title: 'Kids Guitar Dojo course',
@@ -51,14 +50,18 @@ export default async function Layout(props: LayoutProps) {
   return (
     <CourseProgressionProvider userId={child.id} course={course}>
       <ModuleWrapper>
-        <Header
-          childId={child.id}
-          avatar={child?.profilePicture}
-          name={child?.name}
-          purchaseType={child?.purchaseType}
-          purchaseCategory={child?.purchaseCategory}
-        />
-        <ModuleAwards />
+        <Suspense fallback={''}>
+          <ClerkProvider dynamic>
+            <Header
+              childId={child.id}
+              avatar={child?.profilePicture}
+              name={child?.name}
+              purchaseType={child?.purchaseType}
+              purchaseCategory={child?.purchaseCategory}
+            />
+            <ModuleAwards />
+          </ClerkProvider>
+        </Suspense>
         {children}
       </ModuleWrapper>
     </CourseProgressionProvider>

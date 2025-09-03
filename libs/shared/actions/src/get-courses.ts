@@ -13,6 +13,9 @@ export const getCourses = async () => {
 
   const courses = await db.course.findMany({
     where: isAdmin ? undefined : { isPublished: true },
+    orderBy: {
+      order: 'asc',
+    },
     include: {
       attachments: {
         include: {
