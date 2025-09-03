@@ -1,9 +1,10 @@
 'use server';
-import { auth } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration/server';
-import { redirect } from 'next/navigation';
+///import { auth } from '@clerk/nextjs/server';
+//import { db } from '@rocket-house-productions/integration/server';
+//import { redirect } from 'next/navigation';
 
 export const getAppSettings = async () => {
+  /*
   const { userId } = await auth();
 
   if (!userId) {
@@ -50,4 +51,7 @@ export const getAppSettings = async () => {
   });
 
   return appSettings;
+
+   */
+  return null;
 };
