@@ -37,7 +37,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
           social={settings.data.social_media}
           copyright={settings.data.copyright_line}
         />
-
         <BackToTop />
       </Suspense>
     </>
