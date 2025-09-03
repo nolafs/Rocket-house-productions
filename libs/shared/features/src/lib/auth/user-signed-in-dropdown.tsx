@@ -7,12 +7,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@rocket-house-productions/shadcn-ui';
 import { Badge } from '@rocket-house-productions/shadcn-ui/server';
 import Link from 'next/link';
 import { SignedIn, useClerk, useUser } from '@clerk/nextjs';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { UserResource } from '@clerk/types';
 
@@ -38,26 +39,21 @@ export function UserSignedInDropdown() {
   const router = useRouter();
   const { signOut } = useClerk();
   const { isSignedIn, user, isLoaded } = useUser();
-  const purchaseType = null;
-  const purchaseCategory = null;
 
-  const accountTypeLabel = (type: string) => {
-    if (type === 'basic') {
-      return 'Free';
-    } else if (type === 'standard') {
-      return 'Standard';
-    } else if (type === 'premium') {
-      return 'Premium';
+  // If you want to redirect when not signed in, do it as a side-effect:
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push('/');
     }
-  };
+  }, [isLoaded, isSignedIn, router]);
 
-  if (!isLoaded) {
-    return;
-  }
+  // While loading, render nothing
+  if (!isLoaded) return null;
 
-  if (!isSignedIn) {
-    router.push('/');
-  }
+  // If not signed in (briefly in dev), render nothing; SignedOut is optional here
+  if (!isSignedIn) return null;
+
+  const tier: string = user?.publicMetadata?.tier as string;
 
   return (
     <SignedIn>
@@ -71,15 +67,34 @@ export function UserSignedInDropdown() {
         <DropdownMenuContent>
           <DropdownMenuLabel>
             <span className={'mr-5 inline-block'}>Account </span>
-            {(purchaseCategory || purchaseType) ?? (
-              <Badge>{accountTypeLabel(purchaseCategory || (purchaseType === 'free' ? 'basic' : 'standard'))}</Badge>
-            )}
+            <Badge>
+              <span className={'capitalize'}>{tier}</span>
+            </Badge>
           </DropdownMenuLabel>
+          <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link href={`/courses/account`} scroll={false}>
               Parent account
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          {tier === 'free' && (
+            <>
+              <DropdownMenuItem>
+                <Link href={'/courses/upgrade'}>Upgrade</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
+
+          {tier !== 'free' && tier === 'standard' && (
+            <>
+              <DropdownMenuItem>
+                <Link href={'/courses/upgrade'}>Upgrade to premium</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+            </>
+          )}
           <DropdownMenuItem>
             <button onClick={() => signOut({ redirectUrl: '/' })}>Sign Out</button>
           </DropdownMenuItem>
