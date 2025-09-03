@@ -1,6 +1,6 @@
 
 [build]
-  command = "NODE_OPTIONS='--trace-warnings' nx run kids-guitar-dojo:build-with-types"
+  command = "NODE_OPTIONS=--trace-warnings nx run kids-guitar-dojo:build-with-types"
   functions = "apps/kids-guitar-dojo/netlify/function"
   publish = "apps/kids-guitar-dojo/.next"
 
