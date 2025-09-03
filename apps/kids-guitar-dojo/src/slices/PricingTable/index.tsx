@@ -19,6 +19,7 @@ const PricingTable = async ({ slice }: PricingTableProps) => {
   const client = createClient();
   const tierPricing: AllDocumentTypes[] = [];
 
+  /*
   const appSettings = await getAppSettings();
 
   console.log('appSettings', appSettings);
@@ -52,6 +53,8 @@ const PricingTable = async ({ slice }: PricingTableProps) => {
       tierPricing.push(tier);
     }
   }
+
+   */
 
   if (tierPricing.length === 0) {
     console.log('No pricing tiers found');
