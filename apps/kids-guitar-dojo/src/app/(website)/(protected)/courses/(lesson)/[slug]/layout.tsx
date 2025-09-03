@@ -52,13 +52,7 @@ export default async function Layout(props: LayoutProps) {
       <ModuleWrapper>
         <Suspense fallback={''}>
           <ClerkProvider dynamic>
-            <Header
-              childId={child.id}
-              avatar={child?.profilePicture}
-              name={child?.name}
-              purchaseType={child?.purchaseType}
-              purchaseCategory={child?.purchaseCategory}
-            />
+            <Header childId={child.id} avatar={child?.profilePicture} name={child?.name} />
             <ModuleAwards />
           </ClerkProvider>
         </Suspense>
