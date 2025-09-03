@@ -20,10 +20,10 @@
     "!node_modules/sharp/build/Release/sharp-darwin-*"
   ]
 
-[redirects.query]
-  url = ":url"
-  w = ":width"
-  q = ":quality"
+  [redirects.query]
+    url = ":url"
+    w = ":width"
+    q = ":quality"
 
 [[redirects]]
   from = "/_ipx/*"
