@@ -1,23 +1,22 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { ArrowLeft, LayoutDashboard, ListChecks } from 'lucide-react';
+
+import { ArrowLeft, Eye, LayoutDashboard, ListChecks, Video } from 'lucide-react';
+
+import { db } from '@rocket-house-productions/integration';
 
 // Components
 import ModuleTitleForm from './_components/module-title-form';
 import ModuleDescriptionForm from './_components/module-description-form';
 import ModuleActions from './_components/module-actions';
-
+import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
 import LessonForm from './_components/lesson-form';
 import ModuleColorForm from './_components/module-color-form';
-import ModuleAttachementForm from './_components/module-attachement-form';
-import ModuleAwardForm from './_components/module-award-form';
+import ModuleAttachementForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-attachement-form';
+import ModuleAwardForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/_components/module-award-form';
 
-import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
-import { db } from '@rocket-house-productions/integration/server';
-
-const ModuleIdPage = async (props: { params: Promise<{ courseId: string; moduleId: string }> }) => {
-  const params = await props.params;
+const ModuleIdPage = async ({ params }: { params: { courseId: string; moduleId: string } }) => {
   const { userId } = await auth();
 
   if (!userId) {

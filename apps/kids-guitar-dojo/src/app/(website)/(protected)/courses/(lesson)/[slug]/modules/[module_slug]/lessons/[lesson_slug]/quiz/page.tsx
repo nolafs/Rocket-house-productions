@@ -5,11 +5,10 @@ import { getChild, getQuiz } from '@rocket-house-productions/actions/server';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 
 interface PageProps {
-  params: Promise<{ slug: string; module_slug: string; lesson_slug: string }>;
+  params: { slug: string; module_slug: string; lesson_slug: string };
 }
 
-export default async function Page(props: PageProps) {
-  const params = await props.params;
+export default async function Page({ params }: PageProps) {
   if (!params.slug || !params.module_slug || !params.lesson_slug) {
     return notFound();
   }

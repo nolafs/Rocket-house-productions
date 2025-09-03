@@ -11,8 +11,15 @@ import { useForm } from 'react-hook-form';
 import { Pencil } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import { Form, FormControl, FormDescription, FormField, FormItem, Checkbox } from '@rocket-house-productions/shadcn-ui';
-import { Button } from '@rocket-house-productions/shadcn-ui/server';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  Button,
+  Checkbox,
+} from '@rocket-house-productions/shadcn-ui';
 
 import cn from 'classnames';
 
@@ -26,7 +33,7 @@ interface ChapterAccessFormProps {
 }
 
 const formSchema = z.object({
-  isFree: z.boolean(),
+  isFree: z.boolean().default(false),
 });
 
 const LessonAccessForm = ({ initialData, courseId, moduleId, lessonId }: ChapterAccessFormProps) => {

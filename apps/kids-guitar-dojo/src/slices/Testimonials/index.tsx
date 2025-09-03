@@ -4,8 +4,6 @@ import { Bounded } from '@components/Bounded';
 import { SectionTestimonials } from '@rocket-house-productions/features';
 import { TestimonialsType } from '@rocket-house-productions/types';
 
-import type { JSX } from "react";
-
 /**
  * Props for `Testimonials`.
  */

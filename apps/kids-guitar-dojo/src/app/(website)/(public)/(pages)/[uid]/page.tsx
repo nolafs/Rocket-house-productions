@@ -10,8 +10,7 @@ import { ResolvedOpenGraph } from 'next/dist/lib/metadata/types/opengraph-types'
 
 type Params = { uid: string };
 
-export async function generateMetadata(props: { params: Promise<Params> }, parent: ResolvingMetadata): Promise<Metadata> {
-  const params = await props.params;
+export async function generateMetadata({ params }: { params: Params }, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
   const page = await client.getByUID('page', params.uid).catch(() => notFound());
 
@@ -40,8 +39,7 @@ export async function generateMetadata(props: { params: Promise<Params> }, paren
   };
 }
 
-export default async function Page(props: { params: Promise<Params> }) {
-  const params = await props.params;
+export default async function Page({ params }: { params: Params }) {
   const client = createClient();
   const page = await client.getByUID('page', params.uid).catch(() => notFound());
 

@@ -12,11 +12,11 @@ import { redirect } from 'next/navigation';
 
 interface LayoutProps {
   children: React.ReactNode;
-  params: Promise<{ purchaseId: string }>;
+  params: { purchaseId: string };
 }
 
 export async function generateViewport(): Promise<Viewport> {
-  const userAgent = (await headers()).get('user-agent');
+  const userAgent = headers().get('user-agent');
   const isiPhone = /iphone/i.test(userAgent ?? '');
   return isiPhone
     ? {
@@ -28,11 +28,7 @@ export async function generateViewport(): Promise<Viewport> {
     : {};
 }
 
-export default async function Layout(props: LayoutProps) {
-  const params = await props.params;
-
-  const { children } = props;
-
+export default async function Layout({ children, params }: LayoutProps) {
   const { userId } = await auth();
 
   if (!userId) {
@@ -45,10 +41,8 @@ export default async function Layout(props: LayoutProps) {
     <div className={'lesson'}>
       <NavbarSimple logo={logo} />
       <ParallaxScene>
-        <OnBoardingContextProvider>
-          {children}
-          <StepNavigation baseUrl={baseUrl} />
-        </OnBoardingContextProvider>
+        <OnBoardingContextProvider>{children}</OnBoardingContextProvider>
+        <StepNavigation baseUrl={baseUrl} />
       </ParallaxScene>
     </div>
   );

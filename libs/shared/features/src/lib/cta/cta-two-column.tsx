@@ -1,6 +1,8 @@
 import { GroupField, RichTextField } from '@prismicio/client';
-import { PrismicRichText } from '@prismicio/react';
+import { PrismicLink, PrismicRichText } from '@prismicio/react';
 import MottoText from '../motto-text/motto-text';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+import cn from 'classnames';
 import { ButtonGroup } from '@rocket-house-productions/ui';
 
 interface CtaColumnsProps {

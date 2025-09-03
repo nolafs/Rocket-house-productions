@@ -5,13 +5,14 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  Button,
+  buttonVariants,
   Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
 } from '@rocket-house-productions/shadcn-ui';
-import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { ChevronRightIcon, MenuIcon } from 'lucide-react';
 import Link from 'next/link';
 import cn from 'classnames';

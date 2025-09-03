@@ -1,18 +1,16 @@
-'use client';
 import { useMemo, useRef } from 'react';
+import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import { useTexture, Html, Plane } from '@react-three/drei';
 import { Group, PlaneGeometry } from 'three';
+import { useFrame, extend } from '@react-three/fiber';
 import Image from 'next/image';
 import * as THREE from 'three';
 import kidDojo from '../../../assets/kgd-circle.png';
+
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { useFrame, extend } from '@react-three/fiber';
-import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 
-if (typeof window !== 'undefined') {
-  extend({ MeshLineGeometry, MeshLineMaterial });
-}
+extend({ MeshLineGeometry, MeshLineMaterial });
 
 interface FinalSceneProps {
   position?: [number, number, number];
@@ -26,7 +24,6 @@ export const FinalScene = ({ courseCompleted, position, rotation, pathLength = 0
   const confettiRef = useRef<Group | null>(null);
   const ninjaRef = useRef<Group | null>(null);
   const ninjaRef2 = useRef<Group | null>(null);
-
   const guitarHead = useTexture('/images/course/guitar-head.webp');
   const sun = useTexture('/images/course/finish.png');
   const ninja = useTexture('/images/course/ninja.png');

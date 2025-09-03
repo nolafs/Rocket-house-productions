@@ -17,11 +17,12 @@ import {
   FormDescription,
   FormField,
   FormItem,
+  Button,
   Checkbox,
   Input,
   FormMessage,
 } from '@rocket-house-productions/shadcn-ui';
-import { Button } from '@rocket-house-productions/shadcn-ui/server';
+
 import cn from 'classnames';
 
 import { Lesson } from '@prisma/client';
@@ -34,7 +35,7 @@ interface ChapterAccessFormProps {
 }
 
 const formSchema = z.object({
-  bookCta: z.boolean(),
+  bookCta: z.boolean().default(false),
   bookMessage: z.string().optional(),
 });
 

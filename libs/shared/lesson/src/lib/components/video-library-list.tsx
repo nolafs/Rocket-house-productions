@@ -1,8 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { getVideoList } from '@rocket-house-productions/actions/server';
-import { Card, CardContent, CardFooter } from '@rocket-house-productions/shadcn-ui';
-import { Button } from '@rocket-house-productions/shadcn-ui/server';
+import { Button, Card, CardContent, CardFooter } from '@rocket-house-productions/shadcn-ui';
 import { Loader2Icon } from 'lucide-react';
 
 type pagination = {

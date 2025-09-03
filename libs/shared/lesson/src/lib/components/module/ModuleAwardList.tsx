@@ -1,4 +1,3 @@
-'use client';
 import { useModuleProgressStore } from '@rocket-house-productions/providers';
 import { useEffect, useState } from 'react';
 import { AvailableAward } from '@rocket-house-productions/store';

@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { db } from '@rocket-house-productions/integration/server';
+import { db } from '@rocket-house-productions/integration';
 
-export async function DELETE(req: Request, props: { params: Promise<{ courseId: string; attachmentId: string }> }) {
-  const params = await props.params;
+export async function DELETE(req: Request, { params }: { params: { courseId: string; attachmentId: string } }) {
   try {
     const { userId } = await auth();
 

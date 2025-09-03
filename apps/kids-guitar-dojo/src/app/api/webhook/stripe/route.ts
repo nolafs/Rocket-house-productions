@@ -1,11 +1,11 @@
 'use server';
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { db, stripe } from '@rocket-house-productions/integration/server';
+import { db, stripe } from '@rocket-house-productions/integration';
 import { clerkClient } from '@clerk/nextjs/server';
 import { MailerList } from '@rocket-house-productions/actions/server';
 
-export async function POST(req: Request) {
+export async function POST(req: Request, res: Response) {
   let event: Stripe.Event;
 
   try {
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
             throw new Error('No Course ID found');
           }
 
-          console.info('[CheckoutSession] update (.)account', data.metadata);
+          console.info('[CheckoutSession] update account', data.metadata);
 
           await db.account.update({
             where: {
@@ -103,7 +103,11 @@ export async function POST(req: Request) {
                   amount: data.amount_subtotal || 0,
                   type: 'charge',
                   category: data.metadata.type || null,
-                  billingAddress: JSON.stringify((data?.customer_details?.address as Stripe.Address) || null),
+                  billingAddress: JSON.stringify(
+                    (data?.shipping_details?.address as Stripe.Address) ||
+                      (data?.customer_details?.address as Stripe.Address) ||
+                      null,
+                  ),
                 },
               });
 
@@ -120,7 +124,11 @@ export async function POST(req: Request) {
                   amount: data.amount_subtotal || 0,
                   type: 'charge',
                   category: data.metadata.type || null,
-                  billingAddress: JSON.stringify((data?.customer_details?.address as Stripe.Address) || null),
+                  billingAddress: JSON.stringify(
+                    (data?.shipping_details?.address as Stripe.Address) ||
+                      (data?.customer_details?.address as Stripe.Address) ||
+                      null,
+                  ),
                 },
               });
 
@@ -137,7 +145,11 @@ export async function POST(req: Request) {
                 amount: data.amount_subtotal || 0,
                 category: data.metadata.type || null,
                 type: 'charge',
-                billingAddress: JSON.stringify((data?.customer_details?.address as Stripe.Address) || null),
+                billingAddress: JSON.stringify(
+                  (data?.shipping_details?.address as Stripe.Address) ||
+                    (data?.customer_details?.address as Stripe.Address) ||
+                    null,
+                ),
               },
             });
           }

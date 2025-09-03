@@ -1,9 +1,9 @@
+import { ScrollToProvider } from '@rocket-house-productions/providers';
 import { getChild, getLesson } from '@rocket-house-productions/actions/server';
 import { notFound, redirect } from 'next/navigation';
 import { ReactNode } from 'react';
 import { LessonData } from '@rocket-house-productions/lesson';
 import { auth } from '@clerk/nextjs/server';
-import LessonPageWrapper from './_components/lessonPageWrapper';
 
 export const metadata = {
   title: 'Kids Guitar Dojo course',
@@ -12,14 +12,10 @@ export const metadata = {
 
 interface LayoutProps {
   children: ReactNode;
-  params: Promise<{ slug: string; module_slug: string; lesson_slug: string }>;
+  params: { slug: string; module_slug: string; lesson_slug: string };
 }
 
-export default async function Layout(props: LayoutProps) {
-  const params = await props.params;
-
-  const { children } = props;
-
+export default async function Layout({ children, params }: LayoutProps) {
   const { userId } = await auth();
 
   if (!userId) {
@@ -43,9 +39,11 @@ export default async function Layout(props: LayoutProps) {
   }
 
   return (
-    <LessonPageWrapper>
-      <LessonData lesson={data.lesson.id} module={data.module} />
-      {children}
-    </LessonPageWrapper>
+    <div className={'min-h-screen bg-white'}>
+      <ScrollToProvider>
+        <LessonData lesson={data.lesson.id} module={data.module} />
+        {children}
+      </ScrollToProvider>
+    </div>
   );
 }

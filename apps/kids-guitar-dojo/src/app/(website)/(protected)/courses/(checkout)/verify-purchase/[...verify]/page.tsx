@@ -1,10 +1,9 @@
 import { Loader2 } from 'lucide-react';
-import { stripeCheckoutSessionStatus } from '@rocket-house-productions/integration/server';
+import { stripeCheckoutSessionStatus } from '@rocket-house-productions/integration';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
-export default async function Page(props: { params: Promise<{ verify: string[] }> }) {
-  const params = await props.params;
+export default async function Page({ params }: { params: { verify: string[] } }) {
   const { userId } = await auth();
 
   if (!userId) {

@@ -1,12 +1,18 @@
 'use server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { db } from '@rocket-house-productions/integration/server';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
+import { db } from '@rocket-house-productions/integration';
+import {
+  Button,
+  buttonVariants,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@rocket-house-productions/shadcn-ui';
 import Link from 'next/link';
-export default async function Page(props: { params: Promise<{ childId: string }> }) {
-  const params = await props.params;
+export default async function Page({ params }: { params: { childId: string } }) {
   const { userId, sessionClaims } = await auth();
 
   if (!userId) {

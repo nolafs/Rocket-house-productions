@@ -1,7 +1,12 @@
+/* eslint-disable-next-line */
 'use client';
+
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { type ReactNode, useRef, useState, useEffect } from 'react';
+import { ReactNode, useRef, useState } from 'react';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export interface VideoProps {
   children: ReactNode;
@@ -11,33 +16,16 @@ export interface VideoProps {
 }
 
 export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleReplay }: VideoProps) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [scrollTriggerReady, setScrollTriggerReady] = useState(false);
-  // Use a generic type for ScrollTrigger instance reference (unknown until loaded)
-  const scrollTriggerRef = useRef<{
-    getById?: (id: string) => { kill: () => void } | undefined;
-  } | null>(null);
-
-  useEffect(() => {
-    let mounted = true;
-    if (typeof window === 'undefined') return;
-    (async () => {
-      const mod = await import('gsap/ScrollTrigger');
-      if (!mounted) return;
-      scrollTriggerRef.current = mod.ScrollTrigger;
-      gsap.registerPlugin(mod.ScrollTrigger);
-      setScrollTriggerReady(true);
-    })();
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  const ref = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
 
   useGSAP(
     () => {
-      if (!scrollTriggerReady) return; // wait until ScrollTrigger is loaded
-      if (!ref.current) return;
-      if (typeof document === 'undefined' || !document.querySelector('.video')) return;
+      //check if target is defined
+      if (!ref.current) {
+        console.error('VideoPlayerWrapper: ref.current is null');
+        return;
+      }
 
       gsap.fromTo(
         '.video',
@@ -47,11 +35,13 @@ export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleRe
           y: 0,
           duration: 1,
           scrollTrigger: {
+            //toggleActions: 'play pause resume reset',
+            //markers: true,
             trigger: ref.current,
             start: 'top 70%',
             end: 'bottom 30%',
-            markers: false,
             onEnter: () => {
+              setReady(true);
               handlePlay();
             },
             onEnterBack: () => {
@@ -66,21 +56,13 @@ export function VideoPlayerWrapper({ children, handlePlay, handlePause, handleRe
           },
         },
       );
-
-      return () => {
-        gsap.killTweensOf('.video');
-        const id = ref.current?.id;
-        if (id && scrollTriggerRef.current?.getById) {
-          scrollTriggerRef.current.getById(id)?.kill();
-        }
-      };
     },
-    { scope: ref, dependencies: [scrollTriggerReady] },
+    { scope: ref },
   );
 
   return (
-    <div ref={ref} className={'relative bg-black'}>
-      {children}
+    <div ref={ref} className={'relative'}>
+      <div className={'video'}>{children}</div>
     </div>
   );
 }

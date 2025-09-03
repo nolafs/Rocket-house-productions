@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import cn from 'classnames';
-import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
+import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { useUser } from '@rocket-house-productions/hooks';
 import { useEffect, useState } from 'react';
 import { redirect, useRouter } from 'next/navigation';

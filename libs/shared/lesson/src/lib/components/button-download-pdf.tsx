@@ -1,5 +1,5 @@
 'use client';
-import { Button } from '@rocket-house-productions/shadcn-ui/server';
+import { Button } from '@rocket-house-productions/shadcn-ui';
 import { saveAs } from 'file-saver';
 import axios from 'axios';
 

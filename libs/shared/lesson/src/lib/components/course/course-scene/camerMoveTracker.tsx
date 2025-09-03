@@ -1,4 +1,3 @@
-'use client';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { debounce } from 'lodash';

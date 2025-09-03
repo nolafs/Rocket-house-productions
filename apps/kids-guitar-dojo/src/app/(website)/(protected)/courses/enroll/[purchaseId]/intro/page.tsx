@@ -4,8 +4,7 @@ import { BASE_URL } from '../_component/path-types';
 import { createClient } from '@/prismicio';
 import { PrismicRichText } from '@prismicio/react';
 
-export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {
-  const params = await props.params;
+export default async function Page({ params }: { params: { purchaseId: string } }) {
   const baseUrl = `${BASE_URL}${params.purchaseId}`;
 
   const client = createClient();

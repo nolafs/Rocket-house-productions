@@ -1,7 +1,24 @@
 'use client';
-import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../dialog-layout/dialog';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@rocket-house-productions/shadcn-ui';
-import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
+import {
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../dialog-layout/dialog';
+import {
+  Button,
+  buttonVariants,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@rocket-house-productions/shadcn-ui';
+
 import { Disc3 } from 'lucide-react';
 import Player from '@madzadev/audio-player';
 import './jukebox.css';

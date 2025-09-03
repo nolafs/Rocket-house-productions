@@ -13,17 +13,12 @@ import * as prismic from '@prismicio/client';
 import { Author } from 'next/dist/lib/metadata/types/metadata-types';
 import { WithContext, BlogPosting } from 'schema-dts';
 import { BlogCategoryDocumentData } from '../../../../../../prismicio-types';
+type Params = { uid: string };
 
-type Props = {
-  params: Promise<{ uid: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-};
-
-export async function generateMetadata({ params, searchParams }: Props, parent: ResolvingMetadata): Promise<Metadata> {
-  const { uid } = await params;
+export async function generateMetadata({ params }: { params: Params }, parent: ResolvingMetadata): Promise<Metadata> {
   const client = createClient();
   const post = await client
-    .getByUID('blog_post', uid, {
+    .getByUID('blog_post', params.uid, {
       fetchLinks: ['author.name', 'blog_category.category'],
     })
     .catch(() => notFound());
@@ -114,7 +109,7 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
     description: description,
     authors: [{ name: author?.name ?? '' }],
     alternates: {
-      canonical: `/blog/${uid}`,
+      canonical: `/blog/${params.uid}`,
     },
     creator: author?.name,
     publisher: author?.name,
@@ -146,11 +141,10 @@ interface PageData {
   category: ContentRelationshipField<CategoryData>;
 }
 
-export default async function Page({ params }: Props) {
-  const { uid } = await params;
+export default async function Page({ params }: { params: Params }) {
   const client = createClient();
   const page = await client
-    .getByUID('blog_post', uid, {
+    .getByUID('blog_post', params.uid, {
       fetchLinks: ['author.name', 'author.profile_image', 'blog_category.category'],
     })
     .catch(() => notFound());

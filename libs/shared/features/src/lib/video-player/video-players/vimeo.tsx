@@ -1,15 +1,11 @@
 /* eslint-disable-next-line */
 'use client';
 import cn from 'classnames';
-import { ComponentRef, useRef, useState } from 'react';
-import ReactPlayer from 'react-player';
-
-import { type Config } from 'react-player/types';
+import { useRef, useState } from 'react';
+import ReactPlayer, { Config, ReactPlayerProps } from 'react-player/lazy';
 import VideoControl from './video-control';
 import VideoFrame from './video-frame';
 import VideoPlayerWrapper from '../video-player-wrapper';
-
-type ReactPlayerRef = ComponentRef<typeof ReactPlayer>;
 
 export interface VimeoProps {
   id: string;
@@ -41,13 +37,21 @@ export function Vimeo({
   standard = true,
 }: VimeoProps) {
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
-  const ref = useRef<ReactPlayerRef | null>(null);
+  const ref = useRef<ReactPlayer>(null);
 
   const opts: Config = {
     vimeo: {
-      vimeo_logo: false,
-      byline: false,
-      dnt: true,
+      title: title,
+      playerOptions: {
+        controls: controls,
+        autoplay: autoplay,
+        muted: autoplay ? true : false,
+        loop: loop,
+        playsinline: true,
+        byline: false,
+        vimeo_logo: false,
+        dnt: true,
+      },
     },
   };
 
@@ -84,15 +88,10 @@ export function Vimeo({
               width="100%"
               height="100%"
               playing={showPlayer}
-              muted={autoplay}
               ref={ref}
-              light={poster}
               id={id}
-              src={src}
-              loop={loop}
+              url={src}
               config={opts}
-              playsInline={true}
-              controls={controls}
               className={'h-full w-full object-cover object-center'}
               onPlay={handlePlay}></ReactPlayer>
           )}

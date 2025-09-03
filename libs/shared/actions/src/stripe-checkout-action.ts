@@ -1,9 +1,9 @@
 'use server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { stripeCheckout } from '@rocket-house-productions/integration/server';
+import { stripeCheckout } from '@rocket-house-productions/integration';
 
-export const stripeCheckoutAction = async (data: FormData): Promise<void> => {
+export const stripeCheckoutAction = async (data: FormData) => {
   const productId = data.get('productId');
   let purchaseId = data.get('purchaseId');
 
@@ -18,7 +18,7 @@ export const stripeCheckoutAction = async (data: FormData): Promise<void> => {
   const { userId } = await auth();
 
   if (!userId) {
-    redirect('/sign-in');
+    return null;
   }
 
   const checkoutSession = await stripeCheckout(productId, purchaseId);
@@ -29,3 +29,5 @@ export const stripeCheckoutAction = async (data: FormData): Promise<void> => {
 
   redirect(checkoutSession.url);
 };
+
+export default stripeCheckoutAction;

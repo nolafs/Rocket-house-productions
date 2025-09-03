@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from '../dialog-layout/dialog';
 import {
+  Button,
   Drawer,
   DrawerContent,
   DrawerHeader,
@@ -20,7 +21,6 @@ import {
   TableHeader,
   TableRow,
 } from '@rocket-house-productions/shadcn-ui';
-import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Trophy } from 'lucide-react';
 import cn from 'classnames';
 import { useClientMediaQuery, useLeaderboard } from '@rocket-house-productions/hooks';

@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 import bonsai from '../assets/bonsai.png';
 import carpFish from '../assets/carp-fish.png';

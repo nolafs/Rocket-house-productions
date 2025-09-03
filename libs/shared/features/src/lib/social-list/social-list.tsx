@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 import { SocialLinkItemType } from '@rocket-house-productions/types';
 
+/* eslint-disable-next-line */
 export interface SocialListProps {
   items?: SocialLinkItemType[];
   className?: string;

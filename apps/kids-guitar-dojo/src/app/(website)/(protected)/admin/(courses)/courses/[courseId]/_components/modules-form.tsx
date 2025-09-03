@@ -17,6 +17,7 @@ import cn from 'classnames';
 
 import { Module, Course } from '@prisma/client';
 import {
+  Button,
   Form,
   FormControl,
   FormField,
@@ -25,7 +26,6 @@ import {
   FormMessage,
   Input,
 } from '@rocket-house-productions/shadcn-ui';
-import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { SlugFormControl } from '@rocket-house-productions/lesson';
 
 interface ModulesFormProps {

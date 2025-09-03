@@ -2,8 +2,6 @@ import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
 import { FeatureList } from '@rocket-house-productions/features';
 
-import type { JSX } from "react";
-
 /**
  * Props for `Features`.
  */

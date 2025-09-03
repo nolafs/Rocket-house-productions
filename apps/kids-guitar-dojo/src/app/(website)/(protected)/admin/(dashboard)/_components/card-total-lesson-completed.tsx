@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
 import { Activity } from 'lucide-react';
-import { db } from '@rocket-house-productions/integration/server';
+import { db } from '@rocket-house-productions/integration';
 
 export async function CardTotalLessonCompleted() {
   const childProgression = await db.childProgress.aggregate({

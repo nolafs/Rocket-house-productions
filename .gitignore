@@ -51,5 +51,3 @@ Thumbs.db
 # Next.js
 .next
 out
-# Local Netlify folder
-.netlify

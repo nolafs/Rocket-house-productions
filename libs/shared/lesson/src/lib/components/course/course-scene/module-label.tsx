@@ -1,4 +1,3 @@
-'use client';
 import { Module } from '@prisma/client';
 import { Center, PivotControls, RoundedBox, Text3D } from '@react-three/drei';
 

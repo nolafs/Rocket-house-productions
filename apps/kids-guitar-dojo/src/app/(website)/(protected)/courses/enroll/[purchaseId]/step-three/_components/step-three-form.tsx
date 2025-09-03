@@ -1,5 +1,5 @@
 'use client';
-import { DialogLayout } from '@rocket-house-productions/lesson';
+import { Avatar, DialogLayout } from '@rocket-house-productions/lesson';
 import {
   Form,
   FormControl,
@@ -11,12 +11,13 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import { FormErrors } from '../../_component/path-types';
 import stepThreeFormAction from '../action';
+import { useFormState } from 'react-dom';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { stepThreeSchema } from '../../_component/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { XIcon } from 'lucide-react';
-import { useEffect, useRef, useState, useActionState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { PrevButton } from '../../_component/button-prev';
 import Image from 'next/image';
 import checked from './_assets/checked.png';
@@ -26,19 +27,18 @@ import ButtonSubmit from '../../_component/button-submit';
 import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
 import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
-import { Avatar } from '@rocket-house-productions/lesson';
 const initialState: FormErrors = {};
 
 const avatarOptions = ['kimono', 'bonsai', 'carpFish', 'daruma', 'samurai', 'temple_1', 'yukata'];
 
-export interface StepThreeFormProps {
+interface StepThreeFormProps {
   baseUrl: string;
   header?: KeyTextField | string | null | undefined;
   body?: RichTextField | string | null | undefined;
 }
 
 export default function StepThreeForm({ baseUrl, header, body }: StepThreeFormProps) {
-  const [serverError, formAction] = useActionState(stepThreeFormAction, initialState);
+  const [serverError, formAction] = useFormState(stepThreeFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
   const [name, setName] = useState<string | null>('');
   const setActive = useMenuActive(state => state.setActive);

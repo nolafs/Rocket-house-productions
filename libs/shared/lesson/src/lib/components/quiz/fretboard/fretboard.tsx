@@ -1,4 +1,3 @@
-'use client';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Question, Questionary } from '@prisma/client';
 import Image from 'next/image';

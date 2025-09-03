@@ -1,4 +1,3 @@
-'use client';
 import cn from 'classnames';
 import { CheckCircleIcon } from 'lucide-react';
 import { PrismicRichText } from '@prismicio/react';
@@ -7,7 +6,6 @@ import { Tier } from '@rocket-house-productions/types';
 import BuyButton from '../checkout/buy-button';
 import CheckoutButton from '../checkout/checkout-button';
 import StripePricing from './stripe-pricing';
-import { useUser } from '@clerk/nextjs';
 
 interface SectionPricingTableProps {
   tiers: Tier[];
@@ -15,7 +13,6 @@ interface SectionPricingTableProps {
   upgrade?: string | null;
   courseId?: string | null;
   purchaseId?: string | null;
-  userData?: any | null;
 }
 
 export function SectionPricingTable({
@@ -24,10 +21,7 @@ export function SectionPricingTable({
   purchaseId = null,
   courseId = null,
   upgrade = null,
-  userData = null,
 }: SectionPricingTableProps) {
-  const { user } = useUser();
-
   if (tiers.length === 0) {
     return null;
   }
@@ -47,8 +41,6 @@ export function SectionPricingTable({
     // remove paid tiers
     tiers = tiers.filter(tier => tier.data.purchase_type === 'purchase');
   }
-
-  const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
 
   return (
     <div
@@ -83,17 +75,12 @@ export function SectionPricingTable({
 
           {!tier.data.free ? (
             <>
-              <StripePricing
-                productId={isProduction ? tier.data.stripeProductId : tier.data.stripe_productid_dev}
-                sales={tier.data.sales}
-              />
-              {user ? (
-                <div></div>
-              ) : checkout ? (
+              <StripePricing productId={tier.data.stripeProductId} sales={tier.data.sales} />
+              {checkout ? (
                 <CheckoutButton
                   type={'payed'}
                   mostPopular={tier.data.most_popular}
-                  productId={process.env.PRODUCTION ? tier.data.stripeProductId : tier.data.stripe_productid_dev}
+                  productId={tier.data.stripeProductId}
                   courseId={courseId}
                   purchaseId={purchaseId}
                 />
@@ -101,7 +88,7 @@ export function SectionPricingTable({
                 <BuyButton
                   type={'payed'}
                   mostPopular={tier.data.most_popular}
-                  productId={isProduction ? tier.data.stripeProductId : tier.data.stripe_productid_dev}
+                  productId={tier.data.stripeProductId}
                   courseId={null}
                 />
               )}

@@ -4,7 +4,6 @@ import ContentBlockImage from '../content-block-image/content-block-image';
 
 interface SectionContentBlockListProps {
   data: {
-    id: string;
     subtitle?: KeyTextField | null | undefined;
     title?: RichTextField | null | undefined;
     items?: {
@@ -24,7 +23,7 @@ export function SectionContentBlockList({ data }: SectionContentBlockListProps) 
       {data && <SectionTitle subtitle={data.subtitle} title={data?.title} align="center" titleSize="large" />}
       <div className={'mt-32'}>
         {data.items?.map((item, idx) => (
-          <div key={data?.id + idx} className={'max-w-8xl container mx-auto mb-28'}>
+          <div className={'max-w-8xl container mx-auto mb-28'}>
             <ContentBlockImage
               data={{
                 section_title: {

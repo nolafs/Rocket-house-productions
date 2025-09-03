@@ -1,4 +1,3 @@
-'use client';
 import { Lesson, Module } from '@prisma/client';
 import * as THREE from 'three';
 

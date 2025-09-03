@@ -1,43 +1,41 @@
-import React, { Suspense } from 'react';
-import { BackToTop, MainNavbar } from '@rocket-house-productions/layout';
+import { Suspense } from 'react';
+import { BackToTop, Footer, Navbar } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
 import { createClient } from '@/prismicio';
-import { Footer } from '@rocket-house-productions/layout/server';
-import { ClerkProvider } from '@clerk/nextjs';
-import { NavLogin } from '@rocket-house-productions/layout';
+import NextTopLoader from 'nextjs-toploader';
+import { auth } from '@clerk/nextjs/server';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
-  console.log('[SUB Layout]');
-
   const client = createClient();
   const navigation = await client.getSingle('navigation');
   const settings = await client.getSingle('settings');
 
+  const { sessionClaims } = await auth();
+
   return (
     <>
+      {/* Loading-bar */}
+      <NextTopLoader color={'hsl(var(--accent))'} height={5} showSpinner={false} shadow={false} zIndex={99999} />
+
       {/* Menu header */}
-      <MainNavbar navigation={navigation.data} logo={logo}>
-        <Suspense fallback={''}>
-          <ClerkProvider dynamic>
-            <NavLogin navigation={navigation.data} logo={logo} />
-          </ClerkProvider>
-        </Suspense>
-      </MainNavbar>
+      <Navbar
+        navigation={{ items: navigation.data.links }}
+        logo={logo}
+        isAdmin={sessionClaims?.metadata?.role === 'admin'}
+      />
 
       {children}
 
       {/* Footer */}
-
+      <Footer
+        navigation={{ items: navigation.data.links }}
+        logo={logo}
+        secondaryNavigation={{ items: settings.data.secondary_navigation }}
+        social={settings.data.social_media}
+        copyright={settings.data.copyright_line}
+      />
       {/* BackToTop */}
       <Suspense>
-        <Footer
-          navigation={navigation.data}
-          logo={logo}
-          secondaryNavigation={settings.data.secondary_navigation}
-          social={settings.data.social_media}
-          copyright={settings.data.copyright_line}
-        />
-
         <BackToTop />
       </Suspense>
     </>

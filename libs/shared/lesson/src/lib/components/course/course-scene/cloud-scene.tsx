@@ -1,4 +1,3 @@
-'use client';
 import { Plane, useTexture } from '@react-three/drei';
 import React, { useEffect, useState } from 'react';
 

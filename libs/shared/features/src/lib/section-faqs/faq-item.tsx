@@ -1,7 +1,6 @@
 'use client';
 import { KeyTextField, RichTextField } from '@prismicio/client';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@rocket-house-productions/shadcn-ui';
-import { Button } from '@rocket-house-productions/shadcn-ui/server';
+import { Button, Collapsible, CollapsibleContent, CollapsibleTrigger } from '@rocket-house-productions/shadcn-ui';
 import { useState } from 'react';
 import { PrismicRichText } from '@prismicio/react';
 import { CircleArrowDownIcon, CircleArrowUpIcon } from 'lucide-react';

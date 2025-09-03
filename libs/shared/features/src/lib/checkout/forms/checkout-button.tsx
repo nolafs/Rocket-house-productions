@@ -1,7 +1,6 @@
-'use client';
 import cn from 'classnames';
 import { Loader2Icon } from 'lucide-react';
-import { Button } from '@rocket-house-productions/shadcn-ui/server';
+import { Button } from '@rocket-house-productions/shadcn-ui';
 import React from 'react';
 import { useFormStatus } from 'react-dom';
 

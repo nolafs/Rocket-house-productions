@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
-import { GraduationCapIcon } from 'lucide-react';
-import { db } from '@rocket-house-productions/integration/server';
+import { CreditCard, GraduationCapIcon } from 'lucide-react';
+import { db } from '@rocket-house-productions/integration';
 
 export async function CardEnrollment() {
   const childrenCount = await db.child.count();
@@ -34,11 +34,9 @@ export async function CardEnrollment() {
 
   if (childrenCountPreviousMonth === 0) {
     // If no children were added last month, the percentage increase is 100%
-    percentDifference = Math.round(childrenCountCurrentMonth > 0 ? 100 : 0);
+    percentDifference = childrenCountCurrentMonth > 0 ? 100 : 0;
   } else {
-    percentDifference = Math.round(
-      ((childrenCountCurrentMonth - childrenCountPreviousMonth) / childrenCountPreviousMonth) * 100,
-    );
+    percentDifference = ((childrenCountCurrentMonth - childrenCountPreviousMonth) / childrenCountPreviousMonth) * 100;
   }
 
   return (

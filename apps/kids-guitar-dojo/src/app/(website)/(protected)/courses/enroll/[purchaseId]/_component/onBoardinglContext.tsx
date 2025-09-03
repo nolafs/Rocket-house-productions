@@ -36,52 +36,41 @@ export const OnBoardingContextProvider = ({ children }: { children: React.ReactN
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
     readFromLocalStorage();
     setDataLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
     if (dataLoaded) {
       saveDataToLocalStorage(onBoardingData);
     }
   }, [onBoardingData, dataLoaded]);
 
-  // Fixed: Use functional update and removed dependency
-  const updateOnBoardingDetails = useCallback((onBoardingDetails: Partial<OnBoardingType>) => {
-    setOnBoardingData(prev => ({ ...prev, ...onBoardingDetails }));
-  }, []);
+  const updateOnBoardingDetails = useCallback(
+    (onBoardingDetails: Partial<OnBoardingType>) => {
+      setOnBoardingData({ ...setOnBoardingData, ...onBoardingDetails });
+    },
+    [onBoardingData],
+  );
 
   const saveDataToLocalStorage = (currentDealData: OnBoardingInitialValuesType) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(currentDealData));
-    }
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(currentDealData));
   };
 
   const readFromLocalStorage = () => {
-    if (typeof window !== 'undefined') {
-      const loadedDataString = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (!loadedDataString) return setOnBoardingData(defaultOnBoarding);
-      const validated = onBoardingInitialValuesSchema.safeParse(JSON.parse(loadedDataString));
+    const loadedDataString = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!loadedDataString) return setOnBoardingData(defaultOnBoarding);
+    const validated = onBoardingInitialValuesSchema.safeParse(JSON.parse(loadedDataString));
 
-      if (validated.success) {
-        setOnBoardingData(validated.data);
-      } else {
-        setOnBoardingData(defaultOnBoarding);
-      }
+    if (validated.success) {
+      setOnBoardingData(validated.data);
     } else {
       setOnBoardingData(defaultOnBoarding);
     }
   };
 
-  // Fixed: Added window check before accessing localStorage
   const resetLocalStorage = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
-    }
+    localStorage.removeItem(LOCAL_STORAGE_KEY);
     setOnBoardingData(defaultOnBoarding);
   };
 

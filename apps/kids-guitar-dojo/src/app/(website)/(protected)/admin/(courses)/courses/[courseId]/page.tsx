@@ -1,7 +1,10 @@
 import { redirect } from 'next/navigation';
-import { File, LayoutDashboard, ListChecks, Earth } from 'lucide-react';
-import { db } from '@rocket-house-productions/integration/server';
+import { File, LayoutDashboard, ListChecks } from 'lucide-react';
+
+import { db } from '@rocket-house-productions/integration';
+
 // Components
+
 import TitleForm from './_components/title-form';
 import DescriptionForm from './_components/description-form';
 import ImageForm from './_components/image-form';
@@ -9,34 +12,10 @@ import CategoryForm from './_components/category-form';
 import AttachmentForm from './_components/attachment-form';
 import ModulesForm from './_components/modules-form';
 import Actions from './_components/actions';
-import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
+import { Banner, IconBadge } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
-import { BookSceneForm } from './_components/book-scene';
-import { Prisma } from '@prisma/client';
-import OrderForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/order-form';
-import StripeProductForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/stripe-product-form';
-import MembershipForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/membership-form';
-import { getCourses } from '@rocket-house-productions/actions/server';
 
-export type CoursePayload = Prisma.CourseGetPayload<{
-  include: {
-    modules: true; // Module[]
-    bookScene: true; // BookScene | null
-    membershipSettings: {
-      include: {
-        included: {
-          include: { includedCourse: true };
-        };
-      };
-    };
-    attachments: {
-      include: { attachmentType: true }; // Attachment & { attachmentType: AttachmentType }
-    };
-  };
-}>;
-
-const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) => {
-  const params = await props.params;
+const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   // To verify if the course creator, is the one editing it
   const { userId }: { userId: string | null } = await auth();
 
@@ -45,23 +24,14 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
   }
 
   // Query to database to check for presence of course id passed in url
-  const course: CoursePayload | null = await db.course.findUnique({
+  const course = await db.course.findUnique({
     where: {
       id: params.courseId,
     },
-
     include: {
       modules: {
         orderBy: {
           position: 'asc',
-        },
-      },
-      bookScene: true,
-      membershipSettings: {
-        include: {
-          included: {
-            include: { includedCourse: true },
-          },
         },
       },
       attachments: {
@@ -87,14 +57,6 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
       name: 'asc',
     },
   });
-
-  const bookScenes = await db.bookScene.findMany({
-    orderBy: {
-      title: 'asc',
-    },
-  });
-
-  const availableCourses = await getCourses();
 
   if (!course) {
     return redirect('/');
@@ -136,7 +98,6 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
               <h2 className="text-xl">Customize your course</h2>
             </div>
             <TitleForm initialData={course} courseId={course.id} />
-            <OrderForm initialData={course} courseId={course.id} />
             <DescriptionForm initialData={course} courseId={course.id} />
             <ImageForm initialData={course} courseId={course.id} />
             <CategoryForm
@@ -147,15 +108,6 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
                 value: category.id,
               }))}
             />
-            <StripeProductForm initialData={course} courseId={course.id} />
-            <MembershipForm initialData={course} courseId={course.id} availableCourses={availableCourses} />
-            <div>
-              <div className="mt-5 flex items-center gap-x-2">
-                <IconBadge icon={Earth} />
-                <h2 className="text-xl">Book Scene</h2>
-              </div>
-              <BookSceneForm initialData={course} courseId={course.id} bookScenes={bookScenes} />
-            </div>
           </div>
           <div className="space-y-6">
             <div>

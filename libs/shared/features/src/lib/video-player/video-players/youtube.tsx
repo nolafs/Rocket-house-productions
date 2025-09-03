@@ -1,9 +1,8 @@
 /* eslint-disable-next-line */
 'use client';
 import cn from 'classnames';
-import { ComponentRef, useRef, useState } from 'react';
-import ReactPlayer from 'react-player';
-import { type Config } from 'react-player/types';
+import { useReducer, useRef, useState } from 'react';
+import ReactPlayer, { Config } from 'react-player/lazy';
 
 import VideoControl from './video-control';
 import VideoFrame from './video-frame';
@@ -23,8 +22,6 @@ export interface YoutubeProps {
   frame?: boolean;
 }
 
-type ReactPlayerRef = ComponentRef<typeof ReactPlayer>;
-
 export function Youtube({
   id,
   src,
@@ -39,7 +36,7 @@ export function Youtube({
   height = 1200,
 }: YoutubeProps) {
   const [showPlayer, setShowPlayer] = useState<boolean>(false);
-  const ref = useRef<ReactPlayerRef | null>(null);
+  const ref = useRef<any>(null);
 
   if (!width) {
     width = 944;
@@ -51,7 +48,13 @@ export function Youtube({
 
   const opts: Config = {
     youtube: {
-      color: 'white',
+      playerVars: {
+        mute: autoplay ? 0 : 1,
+        autoplay: autoplay ? 1 : 0,
+        controls: controls ? 1 : 0,
+        loop: loop ? 1 : 0,
+        playsinline: 1,
+      },
     },
   };
 
@@ -86,16 +89,12 @@ export function Youtube({
               width="100%"
               height="100%"
               playing={showPlayer}
-              muted={autoplay}
               ref={ref}
               light={poster}
               id={id}
-              src={src}
-              loop={loop}
+              url={src}
               config={opts}
-              playsInline={true}
               onPlay={handlePlay}
-              controls={controls}
               className={'absolute z-10 min-h-full w-auto min-w-full max-w-none'}
             />
           )}

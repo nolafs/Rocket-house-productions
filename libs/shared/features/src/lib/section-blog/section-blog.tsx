@@ -1,7 +1,7 @@
 import BlogList from '../blog/blog-list';
 import { KeyTextField, LinkField, RichTextField } from '@prismicio/client';
 import SectionTitle from '../section-title/section-title';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
 import { PrismicLink } from '@prismicio/react';
 
 interface SectionBlogProps {

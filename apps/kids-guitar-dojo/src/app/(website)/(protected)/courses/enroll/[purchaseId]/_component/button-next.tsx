@@ -5,7 +5,8 @@ import path from 'path';
 import { STEPS } from './path-types';
 import Link from 'next/link';
 import cn from 'classnames';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
+import { buttonVariants } from '@rocket-house-productions/shadcn-ui';
+
 interface NextButtonProps {
   label?: string;
   baseUrl?: string;

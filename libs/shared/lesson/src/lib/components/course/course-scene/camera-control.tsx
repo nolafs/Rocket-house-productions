@@ -1,4 +1,3 @@
-'use client';
 import { CameraControls } from '@react-three/drei';
 import React, { useRef } from 'react';
 import { useThree } from '@react-three/fiber';
@@ -6,7 +5,7 @@ import { button, buttonGroup, folder, useControls } from 'leva';
 import { DEG2RAD } from 'three/src/math/MathUtils';
 
 export function CameraController() {
-  const cameraControlsRef = useRef<any>(undefined);
+  const cameraControlsRef = useRef<any>();
 
   const { camera } = useThree();
 

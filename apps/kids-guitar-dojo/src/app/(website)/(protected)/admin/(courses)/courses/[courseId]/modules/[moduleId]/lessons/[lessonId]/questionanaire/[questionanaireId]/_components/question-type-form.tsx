@@ -18,6 +18,7 @@ import {
   FormItem,
   FormMessage,
   Input,
+  Button,
   FormLabel,
   Select,
   SelectTrigger,
@@ -27,7 +28,8 @@ import {
   SelectLabel,
   SelectItem,
 } from '@rocket-house-productions/shadcn-ui';
-import { Button } from '@rocket-house-productions/shadcn-ui/server';
+import { SlugFormControl } from '@rocket-house-productions/lesson';
+
 interface QuestionFormProps {
   initialData: {
     type: 'text' | 'images' | 'fretboard' | string | undefined | null;
@@ -41,7 +43,7 @@ interface QuestionFormProps {
 
 const formSchema = z.object({
   type: z.string().min(1, 'Type is required'),
-  boardSize: z.number().nullable(),
+  boardSize: z.preprocess(val => (val === '' ? undefined : Number(val)), z.number().optional()),
 });
 
 const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questionanaireId }: QuestionFormProps) => {
@@ -56,7 +58,7 @@ const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questiona
     resolver: zodResolver(formSchema),
     defaultValues: {
       type: type,
-      boardSize: initialData.boardSize || null,
+      boardSize: initialData.boardSize || undefined,
     },
   });
 
