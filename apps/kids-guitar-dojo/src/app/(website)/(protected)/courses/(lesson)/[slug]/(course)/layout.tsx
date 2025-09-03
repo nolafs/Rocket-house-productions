@@ -19,5 +19,9 @@ export default async function Layout(props: LayoutProps) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }
 
-  return <div className={'lesson'}>{children}</div>;
+  return (
+    <div id={'course-lesson-nav'} className={'lesson'}>
+      {children}
+    </div>
+  );
 }

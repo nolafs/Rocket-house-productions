@@ -1,24 +1,27 @@
-import { Loader2 } from 'lucide-react';
-import { getCourses } from '@rocket-house-productions/actions/server';
-import Link from 'next/link';
-import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
+import { getCourses, SessionFlags } from '@rocket-house-productions/actions/server';
+
+import { NavbarSimple } from '@rocket-house-productions/layout';
+import logo from '@assets/logo.png';
+import React from 'react';
+import { CoursesTimelineList } from '@rocket-house-productions/features';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { LessonPageWrapper } from '@rocket-house-productions/lesson/server';
 
 export default async function Page() {
   // get all courses
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect('/');
+  }
+
   const courses = await getCourses();
+  const userData = await SessionFlags();
 
   return (
-    <div className={'mt-5 flex h-svh w-full flex-col items-center justify-center'}>
-      <h1 className={'font-lesson-heading mb-5 text-2xl font-bold'}>Course list</h1>
-      <ul className={'flex flex-col items-center justify-center space-y-4'}>
-        {courses.map(course => (
-          <li key={course.slug}>
-            <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
-              {course.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <LessonPageWrapper navbar={<NavbarSimple logo={logo} />}>
+      <CoursesTimelineList courses={courses} />
+    </LessonPageWrapper>
   );
 }

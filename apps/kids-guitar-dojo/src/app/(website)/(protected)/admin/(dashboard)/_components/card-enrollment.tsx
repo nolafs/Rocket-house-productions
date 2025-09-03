@@ -34,9 +34,11 @@ export async function CardEnrollment() {
 
   if (childrenCountPreviousMonth === 0) {
     // If no children were added last month, the percentage increase is 100%
-    percentDifference = childrenCountCurrentMonth > 0 ? 100 : 0;
+    percentDifference = Math.round(childrenCountCurrentMonth > 0 ? 100 : 0);
   } else {
-    percentDifference = ((childrenCountCurrentMonth - childrenCountPreviousMonth) / childrenCountPreviousMonth) * 100;
+    percentDifference = Math.round(
+      ((childrenCountCurrentMonth - childrenCountPreviousMonth) / childrenCountPreviousMonth) * 100,
+    );
   }
 
   return (

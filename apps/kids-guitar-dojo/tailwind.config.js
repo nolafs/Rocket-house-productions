@@ -5,6 +5,11 @@ const plugin = require('tailwindcss/plugin');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [presetTheme],
+  corePlugins: {
+    gradientColorStops: true, // re-enable from-/via-/to-
+    backgroundImage: true, // make sure direction classes exist
+    backgroundBlendMode: true,
+  },
   content: [
     join(__dirname, '{src,pages,components,app}/**/*!(*.stories|*.spec).{ts,tsx,html}'),
     join('../../libs', '**/src/**/*!(*.stories|*.spec).{ts,tsx,html}'),

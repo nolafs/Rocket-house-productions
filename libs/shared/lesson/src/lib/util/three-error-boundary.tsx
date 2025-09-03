@@ -6,6 +6,7 @@ import { Box, Html, Preload, useProgress } from '@react-three/drei';
 import { Loader2 } from 'lucide-react';
 import * as THREE from 'three';
 import ModuleAwards from '../components/course/course-scene/module-awards';
+import LessonPageWrapper from '../components/lesson-page-wrapper';
 
 // Error Boundary Component
 class ThreeErrorBoundary extends React.Component<
@@ -133,7 +134,7 @@ class ThreeErrorBoundary extends React.Component<
 }
 
 // Safe Texture Loading Component
-export function SafeSkyBox() {
+export function SafeSkyBox({ skyUrl }: { skyUrl?: string | undefined | null }) {
   const [fallback, setFallback] = React.useState(false);
 
   if (fallback) {
@@ -151,13 +152,13 @@ export function SafeSkyBox() {
           <meshStandardMaterial color="#87CEEB" side={THREE.BackSide} />
         </Box>
       }>
-      <SkyBoxWithTexture onError={() => setFallback(true)} />
+      <SkyBoxWithTexture skyUrl={skyUrl} onError={() => setFallback(true)} />
     </Suspense>
   );
 }
 
-function SkyBoxWithTexture({ onError }: { onError: () => void }) {
-  const texture = useLoader(THREE.TextureLoader, '/images/course/sky.webp', loader => {
+function SkyBoxWithTexture({ skyUrl, onError }: { skyUrl?: string | undefined | null; onError: () => void }) {
+  const texture = useLoader(THREE.TextureLoader, skyUrl || '/images/course/sky.webp', loader => {
     loader.manager.onError = onError;
   });
 
@@ -218,8 +219,8 @@ export function SafeLoader() {
 
   return (
     <Html fullscreen zIndexRange={[1000, 1000]}>
-      <div className="flex h-screen w-full flex-col items-center justify-center bg-[#e8c996]">
-        <div className="flex flex-col items-center justify-center">
+      <LessonPageWrapper className="flex h-screen w-full flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center text-pink-500">
           {hasErrors ? (
             <div className="text-center">
               <div className="mb-4 text-4xl text-red-400">⚠️</div>
@@ -228,20 +229,18 @@ export function SafeLoader() {
             </div>
           ) : (
             <>
-              <Loader2 className="mb-5 h-12 w-12 animate-spin text-white" />
-              <div className="font-lesson-heading mt-5 w-full text-center text-white">{Math.round(progress)}%</div>
+              <Loader2 className="mb-5 h-12 w-12 animate-spin" />
+              <div className="font-lesson-heading mt-5 w-full text-center">{Math.round(progress)}%</div>
             </>
           )}
-          <div className="w-full text-center text-sm text-white">
+          <div className="w-full text-center text-sm">
             Item: {loaded} / {total}
           </div>
 
           {/* Show loading state indicator */}
-          <div className="mt-2 w-full text-center text-xs text-white/70">
-            {debouncedActive ? 'Loading...' : 'Finalizing...'}
-          </div>
+          <div className="mt-2 w-full text-center text-xs">{debouncedActive ? 'Loading...' : 'Finalizing...'}</div>
         </div>
-      </div>
+      </LessonPageWrapper>
     </Html>
   );
 }
