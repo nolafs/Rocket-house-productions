@@ -19,16 +19,27 @@ export async function CourseCard({ course, idx = 0 }: CourseCardProps) {
     },
   });
 
+  const standardId =
+    process.env.NEXT_PUBLIC_PRODUCTION === 'true' ? course.stripeProductStandardId : course.stripeProductStandardIdDev;
+  const premiumId =
+    process.env.NEXT_PUBLIC_PRODUCTION === 'true' ? course.stripeProductPremiumId : course.stripeProductPremiumIdDev;
+
   const productIds = [
-    course.stripeProductStandardId && { id: course.stripeProductStandardId, fallbackLabel: 'Standard' },
-    course.stripeProductPremiumId && { id: course.stripeProductPremiumId, fallbackLabel: 'Premium' },
+    standardId && {
+      id: standardId,
+      fallbackLabel: 'Standard',
+    },
+    premiumId && {
+      id: premiumId,
+      fallbackLabel: 'Premium',
+    },
   ].filter(Boolean) as { id: string; fallbackLabel: string }[];
+
+  console.log(productIds);
 
   const options = productIds.length
     ? await getPriceOptionsForProducts(productIds, { currency: 'eur', oneTimeOnly: true })
     : [];
-
-  console.log(options);
 
   return (
     <div
