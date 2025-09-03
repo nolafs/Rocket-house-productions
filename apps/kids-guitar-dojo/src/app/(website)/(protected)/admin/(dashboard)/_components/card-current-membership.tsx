@@ -6,8 +6,6 @@ import { getAppSettings } from '@rocket-house-productions/actions/server';
 export async function CardCurrentMembership() {
   const appSettingsRes = await getAppSettings();
 
-  console.log(appSettingsRes);
-
   return (
     <Card x-chunk="dashboard-01-chunk-6">
       <CardHeader>
