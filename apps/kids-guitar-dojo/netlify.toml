@@ -1,4 +1,5 @@
-
+#[build.environment]
+#  NEXT_USE_NETLIFY_EDGE = "false"
 [build]
   command = "NODE_OPTIONS=--trace-warnings nx run kids-guitar-dojo:build-with-types"
   functions = "apps/kids-guitar-dojo/netlify/function"
@@ -18,11 +19,6 @@
     "!node_modules/sharp/vendor/8.12.2/darwin-*/**/*",
     "!node_modules/sharp/build/Release/sharp-darwin-*"
   ]
-
-[[redirects]]
-  from = "/_next/image"
-  to = "/.netlify/images?url=:url&w=:width&q=:quality"
-  status = 200
 
   [redirects.query]
     url = ":url"
