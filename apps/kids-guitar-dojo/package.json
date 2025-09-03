@@ -1,7 +1,4 @@
 {
-  "scripts": {
-    "start": "next start"
-  },
   "dependencies": {
     "@clerk/nextjs": "6.29.0",
     "@clerk/types": "4.81.0",
@@ -101,5 +98,8 @@
     "eslint": "8.57.1",
     "@types/react": "19.1.9",
     "@types/react-dom": "19.1.7"
+  },
+  "scripts": {
+    "start": "next start"
   }
 }

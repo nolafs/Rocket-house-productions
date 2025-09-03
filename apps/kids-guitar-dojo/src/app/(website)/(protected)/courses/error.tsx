@@ -19,15 +19,14 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
       <div className="text-center">
         <Image src={LogoFull} alt={'Kids Guitar Dojo'} width={112} height={28} className={'inline-block'} />
         <p className="text-base font-semibold uppercase text-indigo-600">Error</p>
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Client side Error</h1>
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Client Side Error</h1>
         <p className="mt-6 text-base leading-7 text-gray-600">Sorry, an error has occurred</p>
         <div className="mt-10 flex flex-col items-center justify-center gap-6 md:flex-row">
           <Button
             onClick={
               // Attempt to recover by trying to re-render the segment
               () => reset()
-            }
-            className={cn(buttonVariants({ size: 'lg' }))}>
+            }>
             Go back Home
           </Button>
           <Link href="/contact" className={cn(buttonVariants({ variant: 'ghost', size: 'lg' }))}>
