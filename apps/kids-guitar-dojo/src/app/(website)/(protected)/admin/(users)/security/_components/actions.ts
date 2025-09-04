@@ -3,6 +3,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { PrismaClient } from '@prisma/client';
 import argon2 from 'argon2';
+import { encryptPin } from '@rocket-house-productions/actions/server';
 
 const db = new PrismaClient();
 
@@ -26,10 +27,15 @@ export async function saveParentPin(input: SavePinInput) {
 
   const hash = await argon2.hash(pin, { type: argon2.argon2id });
 
+  const { pinCipher, pinIv, pinAuthTag } = await encryptPin(pin);
+
   await db.parentPin.upsert({
     where: { scope: 'parents' },
     update: {
       hash,
+      pinCipher,
+      pinIv,
+      pinAuthTag,
       active,
       expiresAt: expiresAt ? new Date(expiresAt) : null,
       updatedBy: userId,
@@ -37,6 +43,9 @@ export async function saveParentPin(input: SavePinInput) {
     create: {
       scope: 'parents',
       hash,
+      pinCipher,
+      pinIv,
+      pinAuthTag,
       active,
       expiresAt: expiresAt ? new Date(expiresAt) : null,
       updatedBy: userId,
