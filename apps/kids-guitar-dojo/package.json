@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@slicemachine/adapter-next": "^0.3.66",
-    "next": "15.5.2",
+    "next": "14.2.5",
     "slice-machine-ui": "^2.12.3"
   },
   "scripts": {
