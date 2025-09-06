@@ -4,7 +4,7 @@ import { jwtVerify } from 'jose';
 
 const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
 const secret = new TextEncoder().encode(process.env.SESSION_FLAGS_SECRET);
-//const pinSecret = new TextEncoder().encode(process.env.PIN_TOKEN_SECRET!);
+//const pinSecret = new TextEncoder().encode(process.env.PIN_TOKEN_SECRET);
 
 export default clerkMiddleware(
   async (auth, req) => {
