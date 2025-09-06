@@ -32,7 +32,13 @@ const nextConfig = {
   },
   productionBrowserSourceMaps: true,
   nx: {},
-  serverExternalPackages: ['@prisma/client', 'html2canvas', 'video.js', 'player.js'],
+  serverExternalPackages: [
+    '@prisma/client',
+    'html2canvas',
+    'video.js',
+    'player.js',
+    //'gsap',
+  ],
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   experimental: {
     taint: true,
