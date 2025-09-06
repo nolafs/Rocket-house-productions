@@ -12,6 +12,7 @@ import { useGSAP } from '@gsap/react';
 import { LessonButton, ModulePosition } from './course.types';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { type BookScene } from '@prisma/client';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP);
@@ -29,6 +30,7 @@ interface LandscapeProps {
   onPathLength?: (length: number) => void;
   onReady?: (ready: boolean) => void;
   container?: MutableRefObject<HTMLElement | null>;
+  bookScene?: BookScene;
 }
 
 const SCROLL_FACTOR = 50;
@@ -43,13 +45,14 @@ export const Landscape = ({
   purchaseType = null,
   onReady,
   container,
+  bookScene,
   onOpenLesson,
   onModulePosition,
   ...rest
 }: LandscapeProps) => {
-  const guitar = useTexture('/images/course/guitar.webp');
-  const midGround = useTexture('/images/course/lessons-mid.webp');
-  const foreGround = useTexture('/images/course/lessons-fore.webp');
+  const guitar = useTexture(bookScene?.guitarUrl || '/images/course/guitar.webp');
+  const midGround = useTexture(bookScene?.midgroundUrl || '/images/course/lessons-mid.webp');
+  const foreGround = useTexture(bookScene?.foregroundUrl || '/images/course/lessons-fore.webp');
 
   const ref = React.useRef<THREE.Group>(null);
   const setupComplete = useRef(false);
@@ -260,7 +263,7 @@ export const Landscape = ({
             lineHeight={0.5}
             letterSpacing={-0.06}
             size={2}>
-            LET'S ROCK AND ROLL
+            {bookScene?.strapline?.split('-')[0] || 'GUITAR DOJO'}
             <meshStandardMaterial color="#EC4899" />
           </Text3D>
         </Center>
@@ -276,7 +279,7 @@ export const Landscape = ({
             lineHeight={0.5}
             letterSpacing={-0.06}
             size={2}>
-            NINJA STYLE!
+            {bookScene?.strapline?.split('-')[1] || 'GUITAR DOJO'}
             <meshStandardMaterial color="#DE0BF5" />
           </Text3D>
         </Center>

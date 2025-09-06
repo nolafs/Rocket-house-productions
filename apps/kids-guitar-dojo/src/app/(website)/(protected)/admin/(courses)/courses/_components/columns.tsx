@@ -20,6 +20,17 @@ import cn from 'classnames';
 
 export const columns: ColumnDef<Course>[] = [
   {
+    accessorKey: 'order',
+    header: ({ column }) => {
+      return (
+        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+          Book No.
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+  },
+  {
     accessorKey: 'title',
     header: ({ column }) => {
       return (

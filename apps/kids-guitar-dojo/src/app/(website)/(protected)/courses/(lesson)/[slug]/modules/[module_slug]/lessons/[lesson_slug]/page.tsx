@@ -64,8 +64,8 @@ export default async function Page(props: PageProps) {
 
   return (
     <>
-      <LessonHeader lessonId={data.lesson.id} module={data.module} />
-      <main className={'container mx-auto mb-20 mt-[100px] flex max-w-5xl flex-col space-y-5 px-5'}>
+      <LessonHeader url={`/courses/${params.slug}`} lessonId={data.lesson.id} module={data.module} />
+      <main className={'lesson container mx-auto mb-20 mt-[100px] flex max-w-5xl flex-col space-y-5 px-5'}>
         <LessonComponent data={data} child={child} page={page} />
       </main>
     </>

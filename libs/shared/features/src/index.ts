@@ -1,3 +1,4 @@
+export * from './lib/courses-timeline-list/courses-timeline-list';
 export { CookieConsent } from './lib/cookie-consent/cookie-consent';
 export * from './lib/section-pricing-table/stripe-pricing';
 export { BuyButton } from './lib/checkout/buy-button';
@@ -33,3 +34,4 @@ export { FileUpload } from './lib/file-upload/file-upload';
 export { FileImageUpload } from './lib/file-upload/file-image-upload';
 export * from './lib/modals/confirm-modal';
 export { Editor } from './lib/editor/editor';
+export { UserSignedInDropdown } from './lib/auth/user-signed-in-dropdown';

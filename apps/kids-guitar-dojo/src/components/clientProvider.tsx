@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { ClerkProvider } from '@clerk/nextjs';
 import PlausibleProvider from 'next-plausible';
@@ -31,7 +31,11 @@ export function ClientProviders({ children, domain }: ClientProvidersProps) {
           <NextTopLoader zIndex={999999} color="hsl(var(--accent)" height={5} showSpinner={false} shadow={false} />
           {children}
           <Toaster position="bottom-center" />
-          <LogRocketComponent />
+          <Suspense fallback={''}>
+            <ClerkProvider dynamic>
+              <LogRocketComponent />
+            </ClerkProvider>
+          </Suspense>
         </UIProvider>
       </PlausibleProvider>
     </ClerkProvider>
