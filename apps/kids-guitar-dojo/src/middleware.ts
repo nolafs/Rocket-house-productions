@@ -9,7 +9,7 @@ const pinSecret = new TextEncoder().encode(process.env.PIN_TOKEN_SECRET!);
 export default clerkMiddleware(
   async (auth, req) => {
     const url = req.nextUrl.pathname;
-    let pinToken = null;
+    //let pinToken = null;
 
     console.info('[MIDDLEWARE]', 'Route', isProtectedRoute(req));
 
@@ -55,12 +55,15 @@ export default clerkMiddleware(
 
         console.info('[MIDDLEWARE COURSE] flags');
 
+        /*
         try {
           pinToken = req.cookies.get('pin:parents')?.value;
           console.info('[MIDDLEWARE COURSE] Parent Pin', !!pinToken);
         } catch (e) {
           console.error('[MIDDLEWARE COURSE] Pin Error', e);
         }
+
+         */
 
         // If still missing, let the request pass; first page can call /api/session
         if (!flags) {
@@ -109,7 +112,7 @@ export default clerkMiddleware(
         }
 
         // account route always allowed
-
+        /*
         console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', pinToken);
 
         if (url.startsWith(`/courses/account`)) {
@@ -124,6 +127,8 @@ export default clerkMiddleware(
             return NextResponse.redirect(new URL(to, req.url));
           }
         }
+
+         */
 
         if (flags.purchases.length) {
           if (flags.purchases.length > 1) {
