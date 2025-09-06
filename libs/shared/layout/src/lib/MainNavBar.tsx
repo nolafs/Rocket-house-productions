@@ -1,20 +1,20 @@
 'use client';
 import React, { useEffect } from 'react';
 import Image, { type StaticImageData } from 'next/image';
-import NavLogin from './nav-login';
+
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { NavigationDocumentData } from '../../../../../apps/kids-guitar-dojo/prismicio-types';
+import { NavigationDocumentData } from '@/prismic-types';
 import cn from 'classnames';
 import { asText } from '@prismicio/client';
+
 interface HeaderProps {
   navigation: NavigationDocumentData;
   logo: StaticImageData;
+  children?: React.ReactNode;
 }
 
-export function MainNavbar({ navigation, logo }: HeaderProps) {
-  console.log('Navigation:', navigation);
-
+export function MainNavbar({ navigation, logo, children }: HeaderProps) {
   const currentRoute = usePathname();
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export function MainNavbar({ navigation, logo }: HeaderProps) {
             </ul>
           </div>
           {/* Other options */}
-          <NavLogin navigation={navigation} logo={logo} />
+          {children}
         </nav>
       </div>
     </div>

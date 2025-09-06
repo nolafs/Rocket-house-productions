@@ -1,15 +1,19 @@
 'use client';
 import Link from 'next/link';
 import { SettingsIcon } from 'lucide-react';
-import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignedIn, SignedOut } from '@clerk/nextjs';
+
 import cn from 'classnames';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Image, { type StaticImageData } from 'next/image';
 import React from 'react';
+import { UserSignedInDropdown } from '@rocket-house-productions/features';
 
 interface HeaderProps {
   isAdmin?: boolean;
   logo?: StaticImageData | null;
+  purchaseType?: string | null;
+  purchaseCategory?: string | null;
   backToUrl?: string;
   backToText?: string;
   classNames?: string;
@@ -25,7 +29,7 @@ export function NavbarSimple({
   return (
     <div
       id="navbar"
-      className={cn('navbar-area fixed z-10 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-4', classNames)}>
+      className={cn('navbar-area fixed z-50 bg-transparent px-5 py-[20px] lg:py-[25px] xl:py-4', classNames)}>
       <div className="container mx-auto max-w-[1266px]">
         <nav className={`navbar relative flex flex-wrap items-center justify-between`}>
           <div className="self-center">
@@ -50,9 +54,7 @@ export function NavbarSimple({
                     Log in
                   </Link>
                 </SignedOut>
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
+                <UserSignedInDropdown />
               </li>
               <li>
                 <SignedOut>
@@ -82,5 +84,3 @@ export function NavbarSimple({
     </div>
   );
 }
-
-export default NavbarSimple;

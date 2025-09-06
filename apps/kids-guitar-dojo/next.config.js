@@ -39,7 +39,7 @@ const nextConfig = {
   experimental: {
     taint: true,
     ppr: false,
-    //serverSourceMaps: true,
+    serverSourceMaps: true,
   },
   ...(process.env.NEXT_PUBLIC_PRODUCTION && headers),
   images: {

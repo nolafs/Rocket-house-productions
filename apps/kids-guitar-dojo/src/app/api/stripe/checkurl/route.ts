@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse('Invalid checkout session url', { status: 500 });
   }
 
-  // update db account status to pending
+  // update db (.)account status to pending
   await db.account.update({
     where: {
       userId: userId,
