@@ -1,19 +1,17 @@
 #[build.environment]
 #  NEXT_USE_NETLIFY_EDGE = "false"
 [build]
-  command = "npx nx reset && nx run kids-guitar-dojo:build-with-types"
+  command = "nx reset && yarn prisma generate && nx build kids-guitar-dojo"
   functions = "apps/kids-guitar-dojo/netlify/function"
   publish = "apps/kids-guitar-dojo/.next"
 
 [build.environment]
-    NODE_VERSION = "20"  # Use major version only
-    YARN_VERSION = "4.4.0"
-    NPM_FLAGS = "--legacy-peer-deps"
-    NEXT_TELEMETRY_DISABLED = "1"
-    NODE_OPTIONS = "--max_old_space_size=4096"
+  NODE_VERSION = "20.19.4"
+  YARN_VERSION = "4.4.0"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
 
 [functions]
   included_files = [
