@@ -389,6 +389,9 @@ model Account {
 model ParentPin {
   scope     String    @id
   hash      String
+  pinCipher String
+  pinIv     String
+  pinAuthTag String
   active    Boolean   @default(true)
   expiresAt DateTime?
   updatedAt DateTime  @updatedAt
