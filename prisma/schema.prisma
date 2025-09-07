@@ -14,6 +14,13 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum TierType {
+  BASIC
+  STANDARD
+  PREMIUM
+  UPGRADE
+}
+
 model AppSettings {
   // Hard-coded single row
   id                   String              @id @default("singleton")
@@ -22,21 +29,24 @@ model AppSettings {
 }
 
 model Course {
-  id                         String  @id @default(uuid())
-  userId                     String
-  title                      String  @db.Text
-  slug                       String? @unique
-  description                String? @db.Text
-  imageUrl                   String? @db.Text
-  isPublished                Boolean @default(false)
-  order                      Int?    @default(0)
-  basicIsFree                Boolean @default(false)
+  id          String  @id @default(uuid())
+  userId      String
+  title       String  @db.Text
+  slug        String? @unique
+  description String? @db.Text
+  imageUrl    String? @db.Text
+  isPublished Boolean @default(false)
+  order       Int?    @default(0)
+  basicIsFree Boolean @default(false)
+
   stripeProductBasicId       String? @unique
   stripeProductBasicDev      String? @unique
   stripeProductPremiumId     String? @unique
   stripeProductPremiumIdDev  String? @unique
   stripeProductStandardId    String? @unique
   stripeProductStandardIdDev String? @unique
+
+  tiers Tier[] // one-to-many
 
   isMembershipEntry     Boolean             @default(false)
   membershipSettings    MembershipSettings? @relation("CourseMembership")
@@ -60,6 +70,36 @@ model Course {
   updatedAt DateTime @updatedAt()
 
   @@index([slug])
+}
+
+model Tier {
+  id       String @id @default(cuid())
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  type         TierType
+  name         String
+  description  String?
+  purchaseType Int?
+  sales        Boolean  @default(false)
+  free         Boolean  @default(false)
+  position     Int      @default(0)
+  mostPopular  Boolean  @default(false)
+
+  features String[] @default([])
+
+  // Stripe product ids for this tier (prod/dev)
+  stripeId    String? @unique
+  stripeIdDev String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  // Enforce ≤ 3 tiers per course (one of each)
+  @@unique([courseId, type])
+  // Optional: prevent duplicate names within a course
+  @@unique([courseId, name])
+  @@index([courseId, type])
 }
 
 model MembershipSettings {
@@ -387,15 +427,15 @@ model Account {
 }
 
 model ParentPin {
-  scope     String    @id
-  hash      String
-  pinCipher String
-  pinIv     String
-  pinAuthTag String
-  active    Boolean   @default(true)
-  expiresAt DateTime?
-  updatedAt DateTime  @updatedAt
-  updatedBy String?
+  scope      String    @id
+  hash       String
+  pinCipher  String?
+  pinIv      String?
+  pinAuthTag String?
+  active     Boolean   @default(true)
+  expiresAt  DateTime?
+  updatedAt  DateTime  @updatedAt
+  updatedBy  String?
 }
 
 model KvTemp {

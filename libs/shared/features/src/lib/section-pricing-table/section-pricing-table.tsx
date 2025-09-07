@@ -1,8 +1,7 @@
 'use client';
 import cn from 'classnames';
 import { CheckCircleIcon } from 'lucide-react';
-import { PrismicRichText } from '@prismicio/react';
-import { Tier } from '@rocket-house-productions/types';
+import { Tier } from '@prisma/client';
 
 import BuyButton from '../checkout/buy-button';
 import CheckoutButton from '../checkout/checkout-button';
@@ -15,7 +14,6 @@ interface SectionPricingTableProps {
   upgrade?: string | null;
   courseId?: string | null;
   purchaseId?: string | null;
-  userData?: any | null;
 }
 
 export function SectionPricingTable({
@@ -24,7 +22,6 @@ export function SectionPricingTable({
   purchaseId = null,
   courseId = null,
   upgrade = null,
-  userData = null,
 }: SectionPricingTableProps) {
   const { user } = useUser();
 
@@ -35,18 +32,17 @@ export function SectionPricingTable({
   if (upgrade) {
     // remove free tier
     if (upgrade === 'basic') {
-      tiers = tiers.filter(tier => !tier.data.free && tier.data.purchase_type !== 'upgrade');
+      tiers = tiers.filter(tier => !tier.free && tier.type !== 'UPGRADE');
     }
     if (upgrade === 'standard') {
-      tiers = tiers.filter(tier => tier.data.purchase_type === 'upgrade');
+      tiers = tiers.filter(tier => tier.type === 'UPGRADE');
     }
     if (upgrade === 'premium') {
       tiers = [];
     }
-  } else {
-    // remove paid tiers
-    tiers = tiers.filter(tier => tier.data.purchase_type === 'purchase');
   }
+
+  console.log('Tiers:', tiers);
 
   const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
 
@@ -60,48 +56,39 @@ export function SectionPricingTable({
         <div
           key={tier.id}
           className={cn(
-            tier.data.most_popular ? 'ring-primary ring-2' : 'ring-1 ring-gray-200',
+            tier.mostPopular ? 'ring-primary ring-2' : 'ring-1 ring-gray-200',
             'rounded bg-[#f7f8f9] p-8 xl:p-10',
           )}>
           <div className="flex items-center justify-between gap-x-4">
-            <h3
-              className={cn(
-                tier.data.most_popular ? 'text-primary' : 'text-gray-900',
-                'text-2xl font-semibold leading-8',
-              )}>
-              {tier.data.name}
+            <h3 className={cn(tier.mostPopular ? 'text-primary' : 'text-gray-900', 'text-2xl font-semibold leading-8')}>
+              {tier.name}
             </h3>
-            {tier.data.most_popular ? (
+            {tier.mostPopular ? (
               <p className="bg-primary rounded-full px-2.5 py-1 text-xs font-semibold leading-5 text-white">
                 Most popular
               </p>
             ) : null}
           </div>
-          <div className="mt-4 leading-6 text-gray-600">
-            <PrismicRichText field={tier.data.description} />
-          </div>
+          <div className="mt-4 leading-6 text-gray-600">{tier.description}</div>
 
-          {!tier.data.free ? (
+          {!tier.free ? (
             <>
-              <StripePricing
-                productId={isProduction ? tier.data.stripeProductId : tier.data.stripe_productid_dev}
-                sales={tier.data.sales}
-              />
+              <StripePricing productId={isProduction ? tier.stripeId : tier.stripeIdDev} sales={tier.sales} />
               {user ? (
                 <div></div>
               ) : checkout ? (
                 <CheckoutButton
                   type={'payed'}
-                  mostPopular={tier.data.most_popular}
-                  productId={process.env.PRODUCTION ? tier.data.stripeProductId : tier.data.stripe_productid_dev}
+                  mostPopular={tier.mostPopular}
+                  productId={process.env.PRODUCTION ? tier.stripeId : tier.stripeIdDev}
                   courseId={courseId}
                   purchaseId={purchaseId}
                 />
               ) : (
                 <BuyButton
                   type={'payed'}
-                  mostPopular={tier.data.most_popular}
-                  productId={isProduction ? tier.data.stripeProductId : tier.data.stripe_productid_dev}
+                  mostPopular={tier.mostPopular}
+                  productId={process.env.PRODUCTION ? tier.stripeId : tier.stripeIdDev}
                   courseId={null}
                 />
               )}
@@ -114,25 +101,25 @@ export function SectionPricingTable({
               {checkout ? (
                 <CheckoutButton
                   type={'free'}
-                  mostPopular={tier.data.most_popular}
+                  mostPopular={tier.mostPopular}
                   productId={null}
-                  courseId={tier.data.course_id}
+                  courseId={tier.courseId}
                 />
               ) : (
-                <BuyButton type={'free'} mostPopular={tier.data.most_popular} courseId={tier.data.course_id} />
+                <BuyButton type={'free'} mostPopular={tier.mostPopular} courseId={tier.courseId} />
               )}
             </>
           )}
 
           <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
-            {tier.data.features.map((item, idx) => (
+            {tier.features.map((item, idx) => (
               <li key={tier.id + 'feature' + idx} className="flex gap-x-3">
                 <CheckCircleIcon
                   aria-hidden="true"
                   fill={'rgb(44, 103, 221)'}
                   className="h-6 w-5 flex-none text-white"
                 />
-                {item.feature}
+                {item}
               </li>
             ))}
           </ul>
