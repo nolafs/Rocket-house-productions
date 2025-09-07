@@ -23,7 +23,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../dialog-layout/dialog';
-import { useClerk } from '@clerk/nextjs';
+import { useClerk, useUser } from '@clerk/nextjs';
 import { useModuleProgressStore } from '@rocket-house-productions/providers';
 import ModuleProgressList from '../module/module-progress-list';
 import ModuleAwardList from '../module/ModuleAwardList';
@@ -31,6 +31,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { EarthIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface HeaderProps {
   childId: string;
@@ -38,35 +39,33 @@ interface HeaderProps {
   avatar: 'kimono' | 'bonsai' | 'carpFish' | 'daruma' | 'samurai' | 'temple_1' | 'yukata' | string | null | undefined;
   background?: string | null | undefined;
   score?: number;
-  purchaseType: string | null | undefined;
-  purchaseCategory: string | null | undefined;
 }
 
-export function Header({
-  childId,
-  name,
-  avatar,
-  background = 'transparent',
-  purchaseType = null,
-  purchaseCategory = null,
-}: HeaderProps) {
+export function Header({ childId, name, avatar, background = 'transparent' }: HeaderProps) {
+  const router = useRouter();
   const { signOut } = useClerk();
+  const { isSignedIn, user, isLoaded } = useUser();
   const { getCurrentModule, currentModule, modules } = useModuleProgressStore(store => store);
   const [color, setColor] = useState<string>(background || 'transparent');
+
+  // If you want to redirect when not signed in, do it as a side-effect:
+  useEffect(() => {
+    if (isLoaded && !isSignedIn) {
+      router.push('/');
+    }
+  }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
     setColor(prevState => getCurrentModule()?.color || background || 'transparent');
   }, [getCurrentModule, background, currentModule, modules]);
 
-  const accountTypeLabel = (type: string) => {
-    if (type === 'basic') {
-      return 'Free';
-    } else if (type === 'standard') {
-      return 'Standard';
-    } else if (type === 'premium') {
-      return 'Premium';
-    }
-  };
+  // While loading, render nothing
+  if (!isLoaded) return null;
+
+  // If not signed in (briefly in dev), render nothing; SignedOut is optional here
+  if (!isSignedIn) return null;
+
+  const tier: string = user?.publicMetadata?.tier as string;
 
   return (
     <TooltipProvider>
@@ -100,7 +99,7 @@ export function Header({
                 <DropdownMenuLabel>
                   <span className={'mr-5 inline-block'}>Account </span>
                   <Badge>
-                    {accountTypeLabel(purchaseCategory || (purchaseType === 'free' ? 'basic' : 'standard'))}
+                    <span className={'capitalize'}>{tier}</span>
                   </Badge>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -109,13 +108,13 @@ export function Header({
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link href={`/courses/account'`} scroll={false}>
+                  <Link href={`/courses/account`} scroll={false}>
                     Parent account
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
 
-                {purchaseType === 'free' && (
+                {tier === 'free' && (
                   <>
                     <DropdownMenuItem>
                       <Link href={'/courses/upgrade'}>Upgrade</Link>
@@ -124,7 +123,7 @@ export function Header({
                   </>
                 )}
 
-                {purchaseType !== 'free' && purchaseCategory === 'standard' && (
+                {tier !== 'free' && tier === 'standard' && (
                   <>
                     <DropdownMenuItem>
                       <Link href={'/courses/upgrade'}>Upgrade to premium</Link>

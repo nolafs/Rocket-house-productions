@@ -30,6 +30,9 @@ model Course {
   imageUrl                   String? @db.Text
   isPublished                Boolean @default(false)
   order                      Int?    @default(0)
+  basicIsFree                Boolean @default(false)
+  stripeProductBasicId       String? @unique
+  stripeProductBasicDev      String? @unique
   stripeProductPremiumId     String? @unique
   stripeProductPremiumIdDev  String? @unique
   stripeProductStandardId    String? @unique

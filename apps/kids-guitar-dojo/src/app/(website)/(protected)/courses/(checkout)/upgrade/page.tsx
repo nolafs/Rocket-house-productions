@@ -12,6 +12,7 @@ import { db } from '@rocket-house-productions/integration/server';
 
 export default async function Page(props: { params: Promise<{ product: string[]; purchaseId: string }> }) {
   const params = await props.params;
+
   const { userId } = await auth();
 
   if (!userId) {
@@ -45,6 +46,7 @@ export default async function Page(props: { params: Promise<{ product: string[];
     if (purchase.category === 'premium') {
       return redirect('/courses');
     }
+
     params.purchaseId = purchase.id;
 
     //console.log('[UPGRADE]', (.)account);
@@ -60,9 +62,9 @@ export default async function Page(props: { params: Promise<{ product: string[];
     ],
   });
 
-  //console.log('[UPGRADE]', tiers.length);
-  //console.log('[UPGRADE]', purchase?.category);
-  //console.log('[UPGRADE]', purchase);
+  console.log('[UPGRADE]', tiers);
+  console.log('[UPGRADE]', purchase?.category);
+  console.log('[UPGRADE]', purchase);
 
   return (
     <main>

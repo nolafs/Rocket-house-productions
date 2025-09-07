@@ -33,7 +33,6 @@ export const BlogCard = forwardRef<HTMLDivElement, TProps>(
             fallbackAlt=""
             imgixParams={{
               fm: 'webp',
-              fit: 'fill',
 
               crop: ['focalpoint'],
               w: 500,

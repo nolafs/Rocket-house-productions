@@ -6,6 +6,8 @@ import { Purchase } from '@prisma/client';
 export type SessionFlags = {
   status: 'active' | 'pending' | 'inactive';
   hasPurchases: boolean;
+  tier?: string | null | undefined;
+  type?: string | null | undefined;
   purchases?: Partial<Purchase>[] | null | undefined;
   singleEnrolledCourseSlug?: string | undefined | null;
   singleEnrolledCourseType?: string | undefined | null;
@@ -18,8 +20,30 @@ export async function computeFlagsFromUserDb(userId: string): Promise<SessionFla
     select: {
       status: true,
       purchases: {
-        select: { id: true, childId: true, type: true, course: { select: { slug: true } } },
+        select: { id: true, childId: true, type: true, category: true, course: { select: { slug: true, id: true } } },
         orderBy: { createdAt: 'asc' },
+      },
+    },
+  });
+
+  // Get app settings to determine membership course
+  const appSettings = await db.appSettings.findFirst({
+    include: {
+      membershipSettings: {
+        include: {
+          course: {
+            select: {
+              id: true,
+              order: true,
+              title: true,
+              slug: true,
+              stripeProductPremiumId: true,
+              stripeProductPremiumIdDev: true,
+              stripeProductStandardId: true,
+              stripeProductStandardIdDev: true,
+            },
+          },
+        },
       },
     },
   });
@@ -31,6 +55,11 @@ export async function computeFlagsFromUserDb(userId: string): Promise<SessionFla
   const purchases = account.purchases ?? [];
   const hasPurchases = purchases.length > 0;
 
+  //check if user has membership purchase, if so, consider as unenrolled
+  const hasMembershipPurchase = purchases.filter(p => {
+    return appSettings?.membershipSettings?.course.id === p.course.id;
+  });
+
   const unenrolled = purchases.filter((p: any) => !p.childId);
   const singleEnrolled = purchases.length === 1 && purchases[0]?.childId ? purchases[0] : null;
 
@@ -38,6 +67,8 @@ export async function computeFlagsFromUserDb(userId: string): Promise<SessionFla
     status: (account.status as any) ?? 'inactive',
     hasPurchases,
     purchases: purchases,
+    tier: hasMembershipPurchase[0]?.category || hasMembershipPurchase[0]?.type || null,
+    type: hasMembershipPurchase[0]?.type || 'free',
     singleEnrolledCourseType: singleEnrolled?.type,
     singleEnrolledCourseSlug: singleEnrolled?.course?.slug,
     unenrolledPurchaseId: unenrolled.length === 1 ? purchases[0].id : null,

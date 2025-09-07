@@ -9,6 +9,7 @@ const pinSecret = new TextEncoder().encode(process.env.PIN_TOKEN_SECRET!);
 export default clerkMiddleware(
   async (auth, req) => {
     const url = req.nextUrl.pathname;
+    let pinToken = null;
 
     console.info('[MIDDLEWARE]', 'Route', isProtectedRoute(req));
 
@@ -54,9 +55,12 @@ export default clerkMiddleware(
 
         console.info('[MIDDLEWARE COURSE] flags');
 
-        const pinToken = req.cookies.get('pin:parents')?.value;
-
-        console.info('[MIDDLEWARE COURSE] Parent Pin', !!pinToken);
+        try {
+          pinToken = req.cookies.get('pin:parents')?.value;
+          console.info('[MIDDLEWARE COURSE] Parent Pin', !!pinToken);
+        } catch (e) {
+          console.error('[MIDDLEWARE COURSE] Pin Error', e);
+        }
 
         // If still missing, let the request pass; first page can call /api/session
         if (!flags) {
