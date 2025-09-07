@@ -1,9 +1,9 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import PurchaseOption from './_components/purchase-option';
-import { createClient } from '@/prismicio';
 import { SectionPricingTable } from '@rocket-house-productions/features';
-import { Tier } from '@rocket-house-productions/types';
+import { getAppSettings } from '@rocket-house-productions/actions/server';
+import { Tier } from '@prisma/client';
 
 export default async function Page() {
   const { userId, sessionClaims } = await auth();
@@ -28,22 +28,13 @@ export default async function Page() {
     }
   }
 
-  const client = createClient();
-
-  const tiers = await client.getAllByType('pricing', {
-    orderings: [
-      {
-        field: 'my.pricing.position',
-        direction: 'asc',
-      },
-    ],
-  });
+  const appSettings = await getAppSettings();
 
   return (
     <main>
       <PurchaseOption userId={userId} email={sessionClaims?.email as string}>
         <section className={'container px-5'}>
-          <SectionPricingTable tiers={tiers as Tier[]} checkout={true} />
+          <SectionPricingTable tiers={appSettings?.membershipSettings?.course.tiers as Tier[]} checkout={true} />
         </section>
       </PurchaseOption>
     </main>
