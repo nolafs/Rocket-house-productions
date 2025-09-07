@@ -52,8 +52,6 @@ export async function POST(req: Request) {
           throw new Error('Invalid user ID');
         }
 
-        const parentPin = decryptPin(pinCipher, pinIv, pinAuthTag );
-        
         //check if user is already in the database
         const user = await db.account.findUnique({
           where: {
@@ -91,20 +89,23 @@ export async function POST(req: Request) {
           },
         });
 
-        console.log(parentPin);
+        if (pinCipher && pinIv && pinAuthTag) {
+          const parentPin = decryptPin(pinCipher, pinIv, pinAuthTag);
 
-        const emailMessage = "`Hi ${first_name},\n\nWe'd like to remind you of your <strong>Parent PIN</strong> that keeps your account secure:\n\n<strong>Your Parent PIN:</strong> ${parentPin}\n\nWith this Pin, you can:\n\n<ul><li>Manage your account details</li><li>Make purchases</li><li>Upgrade memberships</li></ul> \n\n👉Remember to keep this PIN safe and private. It ensures your child can enjoy their lessons while you stay in control of account and payment settings. \n\nThank you for being part of the Kids Guitar Dojo family!\n\nWarm Regards, \n\nThe Kids Guitar Dojo Team🎶P`";
+          console.log(parentPin);
 
-        const mailData = {
-          name: first_name,
-          email: email_addresses[0].email_address,
-          subject: 'Here\'s Your Parent PIN for Easy Access 🎸',
-          message: emailMessage,
-        };
+          const emailMessage = `Hi ${first_name || 'Parent'},\n\nWe'd like to remind you of your <strong>Parent PIN</strong> that keeps your account secure:\n\n<strong>Your Parent PIN:</strong> ${parentPin}\n\nWith this Pin, you can:\n\n<ul><li>Manage your account details</li><li>Make purchases</li><li>Upgrade memberships</li></ul> \n\n👉Remember to keep this PIN safe and private. It ensures your child can enjoy their lessons while you stay in control of account and payment settings. \n\nThank you for being part of the Kids Guitar Dojo family!\n\nWarm Regards, \n\nThe Kids Guitar Dojo Team🎶P`;
+          const mailData = {
+            name: first_name || 'Parent',
+            email: email_addresses[0].email_address,
+            subject: "Here's Your Parent PIN for Easy Access 🎸",
+            message: emailMessage,
+          };
 
-        const {data, errors}= await triggerMail(null, mailData);
+          const { data, errors } = await triggerMail(null, mailData);
 
-        console.log(data);
+          console.log(data);
+        }
 
         break;
       }
