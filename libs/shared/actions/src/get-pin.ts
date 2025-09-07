@@ -1,0 +1,38 @@
+'use server';
+import { auth } from '@clerk/nextjs/server';
+import { db } from '@rocket-house-productions/integration/server';
+import argon2 from 'argon2';
+
+interface PinProps {
+  pinCipher: string;
+  pinIv: string;
+  pinAuthTag: string;
+}
+
+export const getGlobalPin = async (): Promise<PinProps | null> => {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return null;
+  }
+
+  const pin  = await db.parentPin.findFirst({
+    where:{
+      scope: "parents",
+      active: true,
+      expiresAt:{ gt: new Date()}
+    }
+  });
+
+  if(!pin){
+    throw new Error('No pin found');
+  }
+
+  return {
+    pinCipher: pin.pinCipher,
+    pinIv: pin.pinIv,
+    pinAuthTag: pin.pinAuthTag
+  };
+
+
+}

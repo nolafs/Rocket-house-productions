@@ -6,7 +6,7 @@ import { createClient } from '@/prismicio';
 import StepOneForm from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/step-one/_components/step-one-form';
 import StepOneWrapper from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/step-one/_components/StepOneWrapper';
 
-export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {
+export default async function StepTwo(props: { params: Promise<{ purchaseId: string }> }) {
   const params = await props.params;
   const baseUrl = `${BASE_URL}${params.purchaseId}`;
 
