@@ -1,7 +1,6 @@
 'use server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration/server';
-import argon2 from 'argon2';
 
 interface PinProps {
   pinCipher?: string;
