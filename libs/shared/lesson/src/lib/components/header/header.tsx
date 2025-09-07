@@ -59,16 +59,6 @@ export function Header({ childId, name, avatar, background = 'transparent' }: He
     setColor(prevState => getCurrentModule()?.color || background || 'transparent');
   }, [getCurrentModule, background, currentModule, modules]);
 
-  const accountTypeLabel = (type: string) => {
-    if (type === 'basic') {
-      return 'Free';
-    } else if (type === 'standard') {
-      return 'Standard';
-    } else if (type === 'premium') {
-      return 'Premium';
-    }
-  };
-
   // While loading, render nothing
   if (!isLoaded) return null;
 
@@ -118,7 +108,7 @@ export function Header({ childId, name, avatar, background = 'transparent' }: He
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link href={`/courses/account'`} scroll={false}>
+                  <Link href={`/courses/account`} scroll={false}>
                     Parent account
                   </Link>
                 </DropdownMenuItem>
