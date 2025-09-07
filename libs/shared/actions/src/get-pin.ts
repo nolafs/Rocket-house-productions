@@ -3,9 +3,9 @@ import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration/server';
 
 interface PinProps {
-  pinCipher?: string;
-  pinIv?: string;
-  pinAuthTag?: string;
+  pinCipher?: string | null;
+  pinIv?: string | null;
+  pinAuthTag?: string | null;
 }
 
 export const getGlobalPin = async (): Promise<PinProps> => {
