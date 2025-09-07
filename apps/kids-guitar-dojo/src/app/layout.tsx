@@ -158,8 +158,6 @@ export async function generateMetadata(_props: any, parent: ResolvingMetadata): 
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  console.log('RootLayout rendered');
-
   return (
     <html
       lang="en"

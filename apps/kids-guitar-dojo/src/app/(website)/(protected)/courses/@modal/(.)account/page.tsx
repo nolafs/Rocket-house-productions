@@ -19,7 +19,7 @@ export default async function Page() {
       <Suspense fallback={<div>Loading...</div>}>
         <DialogLayout hasCloseUrl={'/courses'} title={`🎸 Account - ${name} 🎸 `} classNames={'px-0 pb-0 pt-0 md:px-0'}>
           <ClerkProvider dynamic>
-            <UserProfile />
+            <UserProfile routing="hash" />
           </ClerkProvider>
         </DialogLayout>
       </Suspense>
