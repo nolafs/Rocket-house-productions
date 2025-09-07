@@ -25,7 +25,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
 import { Course } from '@prisma/client';
-import { updateProductMetadata } from '../../../../../../../../../../../libs/shared/actions/src/stripe-products';
+import { updateProductMetadata } from '@rocket-house-productions/actions/server';
 
 interface StripeProductFormProps {
   initialData: Course;

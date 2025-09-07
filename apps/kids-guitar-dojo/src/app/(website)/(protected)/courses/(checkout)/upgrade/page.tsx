@@ -1,14 +1,14 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { createClient } from '@/prismicio';
 import { Bounded } from '@components/Bounded';
 import { SectionPricingTable } from '@rocket-house-productions/features';
-import { Tier } from '@rocket-house-productions/types';
 import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
-import { getAccount } from '@rocket-house-productions/actions/server';
+import { getAccount, getAppSettings } from '@rocket-house-productions/actions/server';
 
 import { db } from '@rocket-house-productions/integration/server';
+import { Tier } from '@prisma/client';
+import { Suspense } from 'react';
 
 export default async function Page(props: { params: Promise<{ product: string[]; purchaseId: string }> }) {
   const params = await props.params;
@@ -20,18 +20,33 @@ export default async function Page(props: { params: Promise<{ product: string[];
   }
 
   let purchase = null;
+  const account = await getAccount(userId);
 
   // check if params contain childId and (.)account
 
   if (!params.purchaseId) {
     // get childId from (.)account
-    const account = await getAccount(userId);
+
+    const appSettingsRes = await getAppSettings();
+
+    if (!appSettingsRes?.membershipSettings?.course) {
+      return redirect('/');
+    }
+
     purchase = await db.purchase.findFirst({
       where: {
         accountId: account?.id,
+        courseId: appSettingsRes?.membershipSettings?.course.id,
       },
       include: {
-        course: true,
+        course: {
+          include: {
+            category: true, // full category relation
+            tiers: {
+              orderBy: { position: 'asc' },
+            },
+          },
+        },
       },
     });
 
@@ -49,9 +64,12 @@ export default async function Page(props: { params: Promise<{ product: string[];
 
     params.purchaseId = purchase.id;
 
-    //console.log('[UPGRADE]', (.)account);
+    console.log('[UPGRADE]', purchase);
+  } else {
+    console.log('[UPGRADE]', purchase);
   }
 
+  /*
   const client = createClient();
   const tiers = await client.getAllByType('pricing', {
     orderings: [
@@ -62,9 +80,13 @@ export default async function Page(props: { params: Promise<{ product: string[];
     ],
   });
 
+  console.log(tiers);
+
   console.log('[UPGRADE]', tiers);
   console.log('[UPGRADE]', purchase?.category);
   console.log('[UPGRADE]', purchase);
+
+   */
 
   return (
     <main>
@@ -80,12 +102,14 @@ export default async function Page(props: { params: Promise<{ product: string[];
           </p>
         </div>
         <Bounded as={'section'} yPadding={'sm'}>
-          <SectionPricingTable
-            tiers={tiers as Tier[]}
-            checkout={true}
-            upgrade={purchase?.category || 'basic'}
-            purchaseId={params.purchaseId}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <SectionPricingTable
+              tiers={purchase?.course.tiers as Tier[]}
+              checkout={true}
+              upgrade={purchase?.category || 'basic'}
+              purchaseId={params.purchaseId}
+            />
+          </Suspense>
         </Bounded>
       </div>
     </main>

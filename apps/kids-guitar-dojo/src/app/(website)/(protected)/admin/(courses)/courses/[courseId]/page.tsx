@@ -17,11 +17,13 @@ import OrderForm from '@/app/(website)/(protected)/admin/(courses)/courses/[cour
 import StripeProductForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/stripe-product-form';
 import MembershipForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/membership-form';
 import { getCourses } from '@rocket-house-productions/actions/server';
+import CourseTierForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/course-tier-form';
 
 export type CoursePayload = Prisma.CourseGetPayload<{
   include: {
     modules: true; // Module[]
-    bookScene: true; // BookScene | null
+    bookScene: true;
+    tiers: true;
     membershipSettings: {
       include: {
         included: {
@@ -57,6 +59,7 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
         },
       },
       bookScene: true,
+      tiers: true,
       membershipSettings: {
         include: {
           included: {
@@ -147,7 +150,7 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
                 value: category.id,
               }))}
             />
-            <StripeProductForm initialData={course} courseId={course.id} />
+            <CourseTierForm initialData={course} courseId={course.id} />
             <MembershipForm initialData={course} courseId={course.id} availableCourses={availableCourses} />
             <div>
               <div className="mt-5 flex items-center gap-x-2">

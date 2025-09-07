@@ -2,7 +2,6 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import PurchaseOption from './_components/purchase-option';
 import { createClient } from '@/prismicio';
-import { Bounded } from '@components/Bounded';
 import { SectionPricingTable } from '@rocket-house-productions/features';
 import { Tier } from '@rocket-house-productions/types';
 

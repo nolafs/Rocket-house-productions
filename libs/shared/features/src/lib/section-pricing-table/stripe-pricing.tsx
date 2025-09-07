@@ -1,4 +1,6 @@
-'use server';
+'use client';
+
+import { useEffect, useState } from 'react';
 import { CurrencyToSymbol } from '@rocket-house-productions/util';
 import { stripePrices } from '@rocket-house-productions/actions/server';
 
@@ -7,32 +9,38 @@ interface StripePricingProps {
   sales?: boolean | undefined;
 }
 
-export async function StripePricing({ productId, sales = false }: StripePricingProps) {
-  if (!productId) {
-    return null;
-  }
+export default function StripePricing({ productId, sales = false }: StripePricingProps) {
+  const [price, setPrice] = useState<number | null>(null);
+  const [currency, setCurrency] = useState<string | null>(null);
 
-  const productPrices = await stripePrices(productId, sales);
+  useEffect(() => {
+    if (!productId) return;
 
-  console.log('Fetching prices for productId:', productPrices);
+    const fetchPrices = async () => {
+      try {
+        const productPrices = await stripePrices(productId, sales);
 
-  if (!productPrices) {
-    return null;
-  }
+        console.log('Fetching prices for productId:', productPrices);
 
-  const tier = productPrices[0];
+        if (productPrices && productPrices[0]?.unit_amount) {
+          setPrice(productPrices[0].unit_amount);
+          setCurrency(productPrices[0].currency);
+        }
+      } catch (err) {
+        console.error('Error fetching stripe prices:', err);
+      }
+    };
 
-  if (tier?.unit_amount) {
-    return (
-      <p className="mt-6 flex items-baseline gap-x-1">
-        <span className="text-4xl font-bold tracking-tight text-gray-900">
-          {CurrencyToSymbol(tier.currency.toUpperCase())} {(tier?.unit_amount / 100).toFixed(2)}
-        </span>
-      </p>
-    );
-  }
+    fetchPrices();
+  }, [productId, sales]);
 
-  return null;
+  if (!price || !currency) return null;
+
+  return (
+    <p className="mt-6 flex items-baseline gap-x-1">
+      <span className="text-4xl font-bold tracking-tight text-gray-900">
+        {CurrencyToSymbol(currency.toUpperCase())} {(price / 100).toFixed(2)}
+      </span>
+    </p>
+  );
 }
-
-export default StripePricing;

@@ -17,31 +17,21 @@ export const getAppSettings = async () => {
           included: {
             include: {
               includedCourse: {
-                select: {
-                  id: true,
-                  order: true,
-                  title: true,
-                  slug: true,
-                  stripeProductPremiumId: true,
-                  stripeProductPremiumIdDev: true,
-                  stripeProductStandardId: true,
-                  stripeProductStandardIdDev: true,
-                  includedInMemberships: true,
+                include: {
+                  category: true, // full category relation
+                  tiers: {
+                    orderBy: { position: 'asc' },
+                  },
                 },
               },
             },
           },
           course: {
-            select: {
-              id: true,
-              order: true,
-              title: true,
-              slug: true,
-              stripeProductPremiumId: true,
-              stripeProductPremiumIdDev: true,
-              stripeProductStandardId: true,
-              stripeProductStandardIdDev: true,
-              includedInMemberships: true,
+            include: {
+              category: true, // full category relation
+              tiers: {
+                orderBy: { position: 'asc' },
+              },
             },
           },
         },
