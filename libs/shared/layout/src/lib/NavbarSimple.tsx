@@ -24,8 +24,6 @@ export function NavbarSimple({
   logo = null,
   backToUrl = '/',
   backToText = 'Back to home',
-  purchaseType = null,
-  purchaseCategory = null,
   classNames,
 }: HeaderProps) {
   return (
