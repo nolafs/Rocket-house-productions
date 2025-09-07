@@ -9,7 +9,7 @@ export default function Page() {
       <Suspense fallback={<div>Loading...</div>}>
         <DialogReturnUrl title={'Parent Account'}>
           <ClerkProvider dynamic>
-            <UserProfile />
+            <UserProfile routing="hash" />
           </ClerkProvider>
         </DialogReturnUrl>
       </Suspense>

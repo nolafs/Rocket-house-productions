@@ -11,6 +11,12 @@ const { PrismaPlugin } = require('@prisma/nextjs-monorepo-workaround-plugin');
  **/
 const nextConfig = {
   webpack: (config, { isServer, dev }) => {
+    // Add better module resolution
+    config.resolve.extensionAlias = {
+      '.js': ['.ts', '.tsx', '.js', '.jsx'],
+      '.jsx': ['.tsx', '.jsx'],
+    };
+
     if (!dev) {
       if (isServer) {
         config.externals.push({
@@ -31,11 +37,9 @@ const nextConfig = {
     'html2canvas',
     'video.js',
     'player.js',
-    '@react-three/fiber',
-    '@react-three/drei',
-    'gsap',
+    //'gsap',
   ],
-  transpilePackages: ['three'],
+  transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   experimental: {
     taint: true,
     ppr: false,
