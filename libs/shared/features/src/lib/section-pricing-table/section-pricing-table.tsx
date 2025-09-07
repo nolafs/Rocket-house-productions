@@ -40,6 +40,9 @@ export function SectionPricingTable({
     if (upgrade === 'premium') {
       tiers = [];
     }
+  } else {
+    // remove upgrade tiers
+    tiers = tiers.filter(tier => tier.type !== 'UPGRADE');
   }
 
   console.log('Tiers:', tiers);
