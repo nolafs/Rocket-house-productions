@@ -1,6 +1,6 @@
 'use client';
 import { Plane, useTexture } from '@react-three/drei';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 interface CloudProps {
   textureUrl: string;
@@ -25,13 +25,15 @@ interface CloudsProps {
 }
 
 export const Clouds = ({ width, height, depth, numClouds }: CloudsProps) => {
-  const clouds = [];
-
-  for (let i = 0; i < numClouds; i++) {
-    const textureUrl = CloudImages[i % CloudImages.length];
-    const position = generateRandomPosition(width, height, depth);
-    clouds.push(<Cloud key={i} textureUrl={textureUrl} position={position} />);
-  }
+  const clouds = useMemo(() => {
+    return Array.from({ length: numClouds }, (_, i) => {
+      const textureUrl = CloudImages[i % CloudImages.length];
+      const position = generateRandomPosition(width, height, depth);
+      // Prefer a stable key that doesn’t change order-based if possible
+      const key = `${textureUrl}-${i}-${width}x${height}x${depth}`;
+      return <Cloud key={key} textureUrl={textureUrl} position={position} />;
+    });
+  }, [width, height, depth, numClouds]);
 
   return <>{clouds}</>;
 };
