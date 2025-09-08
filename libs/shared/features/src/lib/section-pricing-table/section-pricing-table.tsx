@@ -67,7 +67,7 @@ export async function SectionPricingTable({
 
     // check if user already has a membership
     if (userId && sessionClaims) {
-      const userData: userMetadata = sessionClaims?.metadata as userMetadata;
+      const userData = sessionClaims?.metadata as Partial<userMetadata>;
 
       if (userData) {
         if (userData?.hasPurchases === true) {
