@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import * as z from 'zod';
@@ -45,7 +45,7 @@ interface ModuleDescriptionFormProps {
 const formSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().min(1, 'Description is required'),
-  points: z.number().min(0, 'Points must be at least 0'),
+  points: z.number().min(1, 'Points must be at least 0'),
   condition: z.string().min(1, 'Condition is required'),
   badgeUrl: z.string().nullable().optional(),
 });
@@ -64,8 +64,13 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    reValidateMode: 'onChange',
     defaultValues: {
       name: '',
+      description: '',
+      points: 1,
+      condition: '',
+      badgeUrl: null,
     },
   });
 
@@ -81,6 +86,11 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
       toast.error('Something went wrong');
     }
   };
+
+  useEffect(() => {
+    console.log('isValid', isValid);
+    console.log('isSubmitting', isSubmitting);
+  }, [isValid, isSubmitting]);
 
   return (
     <div className="relative mt-6 rounded-md border bg-slate-100 p-4">
@@ -103,10 +113,10 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
         </Button>
       </div>
       {isCreating && (
-        <Form {...(form as any)}>
+        <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
             <FormField
-              control={form.control as any}
+              control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
@@ -119,7 +129,7 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
               )}
             />
             <FormField
-              control={form.control as any}
+              control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
@@ -132,13 +142,18 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
               )}
             />
             <FormField
-              control={form.control as any}
+              control={form.control}
               name="points"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Points</FormLabel>
                   <FormControl>
-                    <Input type={'number'} disabled={isSubmitting} {...field} />
+                    <Input
+                      type="number"
+                      disabled={isSubmitting}
+                      value={field.value ?? ''}
+                      onChange={e => field.onChange(e.target.valueAsNumber)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -189,7 +204,7 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
                 ))}
               {isEditingImage && (
                 <FormField
-                  control={form.control as any}
+                  control={form.control}
                   name="badgeUrl"
                   render={({ field }) => (
                     <FormItem>
@@ -200,7 +215,7 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
                             if (file) {
                               setIsEditingImage(false);
                               setTempImage(file);
-
+                              console.log('file', file);
                               field.onChange(file);
                             }
                           }}
