@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import * as z from 'zod';
@@ -86,11 +86,6 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
       toast.error('Something went wrong');
     }
   };
-
-  useEffect(() => {
-    console.log('isValid', isValid);
-    console.log('isSubmitting', isSubmitting);
-  }, [isValid, isSubmitting]);
 
   return (
     <div className="relative mt-6 rounded-md border bg-slate-100 p-4">
