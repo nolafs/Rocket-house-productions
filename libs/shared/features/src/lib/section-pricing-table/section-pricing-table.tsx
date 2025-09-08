@@ -1,4 +1,4 @@
-'use client';
+'use server';
 import cn from 'classnames';
 import { CheckCircleIcon } from 'lucide-react';
 import { Tier } from '@prisma/client';
@@ -6,48 +6,100 @@ import { Tier } from '@prisma/client';
 import BuyButton from '../checkout/buy-button';
 import CheckoutButton from '../checkout/checkout-button';
 import StripePricing from './stripe-pricing';
-import { useUser } from '@clerk/nextjs';
+
+import { auth } from '@clerk/nextjs/server';
+import { getAppSettings } from '@rocket-house-productions/actions/server';
+
+type userMetadata =
+  | {
+      hasPurchases: boolean;
+      purchases: {
+        id: string;
+        childId: string | null;
+        category: string | null;
+        course: {
+          id: string;
+        };
+      }[];
+    }
+  | undefined;
 
 interface SectionPricingTableProps {
-  tiers: Tier[];
   checkout?: boolean;
-  upgrade?: string | null;
+  upgrade?: boolean;
   courseId?: string | null;
   purchaseId?: string | null;
 }
 
-export function SectionPricingTable({
-  tiers,
+export async function SectionPricingTable({
   checkout = false,
+  upgrade = false,
   purchaseId = null,
   courseId = null,
-  upgrade = null,
 }: SectionPricingTableProps) {
-  const { user } = useUser();
+  console.log('Rendering Pricing Table...');
 
-  if (tiers.length === 0) {
-    return null;
+  const { userId, sessionClaims } = await auth();
+  const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
+  let hasMembership = false;
+  let membershipTier = null;
+  let upgradeTier = null;
+  let tiers: Tier[] = [];
+
+  console.log('Pricing Table:', { checkout, upgrade, courseId, purchaseId });
+
+  // course ID null get membership course tiers
+  if (!courseId) {
+    const appSettings = await getAppSettings();
+
+    if (appSettings?.membershipSettings?.course.tiers.length === 0) {
+      console.log('No pricing tiers found');
+      return null;
+    }
+
+    if (appSettings?.membershipSettings?.course.tiers) {
+      tiers = appSettings?.membershipSettings?.course.tiers;
+      upgradeTier = appSettings?.membershipSettings?.course.tiers.find(tier => tier.type === 'UPGRADE');
+    }
+
+    console.log('Membership Tiers:', tiers);
+    console.log('Membership Tiers:', userId, sessionClaims);
+
+    // check if user already has a membership
+    if (userId && sessionClaims) {
+      const userData: userMetadata = sessionClaims?.metadata as userMetadata;
+
+      if (userData) {
+        if (userData?.hasPurchases === true) {
+          console.log('No purchases');
+          // find course membershipt in user purchases
+          if (userData?.purchases && userData.purchases.length) {
+            const membership = userData.purchases?.find(
+              purchase => purchase.course.id === appSettings?.membershipSettings?.course.id,
+            );
+
+            if (membership) {
+              hasMembership = true;
+              membershipTier = membership.category;
+            }
+          }
+        }
+      }
+    }
   }
 
+  if (!tiers || tiers.length === 0) {
+    console.log('No pricing tiers available');
+    return <div>No pricing tiers available</div>;
+  }
+
+  // if upgrade remove tiers below premium
   if (upgrade) {
-    // remove free tier
-    if (upgrade === 'basic') {
-      tiers = tiers.filter(tier => !tier.free && tier.type !== 'UPGRADE');
-    }
-    if (upgrade === 'standard') {
-      tiers = tiers.filter(tier => tier.type === 'UPGRADE');
-    }
-    if (upgrade === 'premium') {
-      tiers = [];
-    }
+    tiers = tiers.filter(tier => tier.type === 'UPGRADE');
   } else {
     // remove upgrade tiers
     tiers = tiers.filter(tier => tier.type !== 'UPGRADE');
   }
-
-  console.log('Tiers:', tiers);
-
-  const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
 
   return (
     <div
@@ -76,40 +128,75 @@ export function SectionPricingTable({
 
           {!tier.free ? (
             <>
-              <StripePricing productId={isProduction ? tier.stripeId : tier.stripeIdDev} sales={tier.sales} />
-              {user ? (
-                <div></div>
-              ) : checkout ? (
-                <CheckoutButton
-                  type={'payed'}
-                  mostPopular={tier.mostPopular}
-                  productId={process.env.PRODUCTION ? tier.stripeId : tier.stripeIdDev}
-                  courseId={courseId}
-                  purchaseId={purchaseId}
-                />
+              {userId && hasMembership ? (
+                membershipTier === 'standard' &&
+                tier.name === 'Premium' && (
+                  <>
+                    <StripePricing
+                      productId={isProduction ? upgradeTier?.stripeId : upgradeTier?.stripeIdDev}
+                      sales={upgradeTier?.sales}
+                    />
+
+                    {checkout ? (
+                      <CheckoutButton
+                        type={'payed'}
+                        mostPopular={tier.mostPopular}
+                        productId={process.env.PRODUCTION ? upgradeTier?.stripeId : upgradeTier?.stripeIdDev}
+                        courseId={courseId}
+                        purchaseId={purchaseId}
+                        label={'Upgrade Now'}
+                      />
+                    ) : (
+                      <BuyButton
+                        type={'payed'}
+                        mostPopular={tier.mostPopular}
+                        productId={process.env.PRODUCTION ? upgradeTier?.stripeId : upgradeTier?.stripeIdDev}
+                        courseId={courseId || null}
+                        label={'Upgrade Now'}
+                      />
+                    )}
+                  </>
+                )
               ) : (
-                <BuyButton
-                  type={'payed'}
-                  mostPopular={tier.mostPopular}
-                  productId={process.env.PRODUCTION ? tier.stripeId : tier.stripeIdDev}
-                  courseId={null}
-                />
+                <>
+                  <StripePricing productId={isProduction ? tier?.stripeId : tier?.stripeIdDev} sales={tier?.sales} />
+                  {checkout ? (
+                    <CheckoutButton
+                      type={'payed'}
+                      mostPopular={tier.mostPopular}
+                      productId={process.env.PRODUCTION ? tier.stripeId : tier.stripeIdDev}
+                      courseId={courseId}
+                      purchaseId={purchaseId}
+                    />
+                  ) : (
+                    <BuyButton
+                      type={'payed'}
+                      mostPopular={tier.mostPopular}
+                      productId={process.env.PRODUCTION ? tier.stripeId : tier.stripeIdDev}
+                      courseId={null}
+                    />
+                  )}
+                </>
               )}
             </>
           ) : (
             <>
-              <p className="mt-6 flex items-baseline gap-x-1">
-                <span className="text-4xl font-bold tracking-tight text-gray-900">Free</span>
-              </p>
-              {checkout ? (
-                <CheckoutButton
-                  type={'free'}
-                  mostPopular={tier.mostPopular}
-                  productId={null}
-                  courseId={tier.courseId}
-                />
-              ) : (
-                <BuyButton type={'free'} mostPopular={tier.mostPopular} courseId={tier.courseId} />
+              {!userId && !hasMembership && (
+                <>
+                  <p className="mt-6 flex items-baseline gap-x-1">
+                    <span className="text-4xl font-bold tracking-tight text-gray-900">Free</span>
+                  </p>
+                  {checkout ? (
+                    <CheckoutButton
+                      type={'free'}
+                      mostPopular={tier.mostPopular}
+                      productId={null}
+                      courseId={tier.courseId}
+                    />
+                  ) : (
+                    <BuyButton type={'free'} mostPopular={tier.mostPopular} courseId={tier.courseId} />
+                  )}
+                </>
               )}
             </>
           )}

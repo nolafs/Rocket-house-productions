@@ -9,9 +9,10 @@ interface BuyButtonProps {
   courseId?: string | null | undefined;
   type: 'payed' | 'free' | null;
   mostPopular: boolean | undefined;
+  label?: string | undefined;
 }
 
-export function BuyButton({ productId, courseId, type, mostPopular = false }: BuyButtonProps) {
+export function BuyButton({ productId, courseId, type, mostPopular = false, label = 'Start now' }: BuyButtonProps) {
   const router = useRouter();
   const signupUrl = type === 'free' ? '/sign-up?purchase=free' : `/sign-up?product=${productId}`;
   const { setProductId, setCourseId, setType } = usePurchaseStore();
@@ -29,7 +30,7 @@ export function BuyButton({ productId, courseId, type, mostPopular = false }: Bu
       variant={mostPopular ? 'default' : 'outline'}
       className={cn('mt-6 w-full shadow-sm shadow-black/30')}
       size={'lg'}>
-      Start now
+      {label}
     </Button>
   );
 }

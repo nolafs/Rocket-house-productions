@@ -7,9 +7,10 @@ import { useFormStatus } from 'react-dom';
 
 interface CheckoutButtonProps {
   mostPopular?: boolean;
+  label?: string;
 }
 
-export function CheckoutButton({ mostPopular }: CheckoutButtonProps) {
+export function CheckoutButton({ mostPopular, label = 'Start now' }: CheckoutButtonProps) {
   const { pending } = useFormStatus();
 
   return (
@@ -24,7 +25,7 @@ export function CheckoutButton({ mostPopular }: CheckoutButtonProps) {
           <Loader2Icon className={'h-5 w-5 animate-spin'} />
         </i>
       ) : (
-        'Start now'
+        label
       )}
     </Button>
   );

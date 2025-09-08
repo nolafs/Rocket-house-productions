@@ -75,12 +75,14 @@ export function NavLogin({
 
         {/* Toggle button */}
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger className={'absolute right-0 top-1/2 z-50 block -translate-y-1/2 items-center md:hidden'}>
+          <SheetTrigger
+            aria-controls="mobile-menu"
+            className={'absolute right-0 top-1/2 z-50 block -translate-y-1/2 items-center md:hidden'}>
             <i className="bx bx-menu">
               <Menu />
             </i>
           </SheetTrigger>
-          <SheetContent side={'right'} className={'z[999] w-[80vw] px-0 pb-0'}>
+          <SheetContent id="mobile-menu" side={'right'} className={'z[999] w-[80vw] px-0 pb-0'}>
             <SheetHeader>
               <SheetTitle className={'sr-only'}>Menu</SheetTitle>
             </SheetHeader>
