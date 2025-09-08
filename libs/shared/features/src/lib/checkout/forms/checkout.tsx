@@ -6,14 +6,15 @@ interface CheckoutProps {
   productId: string;
   purchaseId?: string | null | undefined;
   mostPopular?: boolean;
+  label?: string | undefined;
 }
 
-export function Checkout({ productId, purchaseId, mostPopular }: CheckoutProps) {
+export function Checkout({ productId, purchaseId, mostPopular, label }: CheckoutProps) {
   return (
     <form action={stripeCheckoutAction}>
       <input hidden={true} id="productId" name="productId" value={productId} readOnly={true} />
       {purchaseId && <input hidden={true} id="purchaseId" name="purchaseId" value={purchaseId} readOnly={true} />}
-      <CheckoutButton mostPopular={mostPopular} />
+      <CheckoutButton mostPopular={mostPopular} label={label} />
     </form>
   );
 }

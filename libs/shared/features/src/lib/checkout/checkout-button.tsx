@@ -8,6 +8,7 @@ interface CheckoutButtonProps {
   type: 'payed' | 'free';
   mostPopular: boolean | undefined;
   sales?: boolean | undefined;
+  label?: string | undefined;
 }
 
 export function CheckoutButton({
@@ -17,6 +18,7 @@ export function CheckoutButton({
   purchaseId,
   mostPopular = false,
   sales = false,
+  label = 'Start now',
 }: CheckoutButtonProps) {
   if (type === 'free') {
     if (!courseId) {
@@ -30,7 +32,7 @@ export function CheckoutButton({
       console.error('Product id is required for paid course');
       return null;
     }
-    return <Checkout productId={productId} purchaseId={purchaseId} mostPopular={mostPopular} />;
+    return <Checkout productId={productId} purchaseId={purchaseId} mostPopular={mostPopular} label={label} />;
   }
 }
 

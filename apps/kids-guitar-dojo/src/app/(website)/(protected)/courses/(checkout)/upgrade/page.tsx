@@ -103,12 +103,7 @@ export default async function Page(props: { params: Promise<{ product: string[];
         </div>
         <Bounded as={'section'} yPadding={'sm'}>
           <Suspense fallback={<div>Loading...</div>}>
-            <SectionPricingTable
-              tiers={purchase?.course.tiers as Tier[]}
-              checkout={true}
-              upgrade={purchase?.category || 'basic'}
-              purchaseId={params.purchaseId}
-            />
+            <SectionPricingTable checkout={true} upgrade={true} purchaseId={params.purchaseId} />
           </Suspense>
         </Bounded>
       </div>
