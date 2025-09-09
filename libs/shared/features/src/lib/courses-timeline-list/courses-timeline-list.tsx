@@ -1,19 +1,23 @@
-import { Prisma } from '@prisma/client';
+import { MembershipSettings, Prisma, Tier } from '@prisma/client';
 import Image from 'next/image';
 import Ribben from '../assets/header.png';
 import CourseCard from './course-card';
+import { userSession } from '@/types/userSesssion';
 
 export type CoursePayload = Prisma.CourseGetPayload<{
   include: {
-    modules: true; // Module[]
+    modules: true;
+    tiers: true;
   };
 }>;
 
 interface CourseTimelineProps {
   courses: CoursePayload[];
+  userData: Partial<userSession>;
+  membershipData: Partial<MembershipSettings> & { course: { tries: Tier[] } };
 }
 
-export function CoursesTimelineList({ courses }: CourseTimelineProps) {
+export function CoursesTimelineList({ courses, membershipData, userData }: CourseTimelineProps) {
   return (
     <div>
       <h1 className={'font-lesson-heading relative mb-5 text-2xl font-bold'}>
@@ -30,7 +34,7 @@ export function CoursesTimelineList({ courses }: CourseTimelineProps) {
         <ul className={'z-2 relative flex flex-col items-center justify-center space-y-10'}>
           {courses.map((course, idx) => (
             <li key={'book' + idx} className={'flex w-full justify-center py-10'}>
-              <CourseCard course={course} idx={idx} />
+              <CourseCard course={course} idx={idx} userData={userData} membershipData={membershipData} />
             </li>
           ))}
         </ul>

@@ -17,6 +17,9 @@ export const getCourses = async () => {
       order: 'asc',
     },
     include: {
+      tiers: {
+        orderBy: { position: 'asc' },
+      },
       attachments: {
         include: {
           attachmentType: {

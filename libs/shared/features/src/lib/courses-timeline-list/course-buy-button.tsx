@@ -28,6 +28,7 @@ type PriceOption = {
   id: string;
   label: string;
   description: string;
+  features?: string[];
   amount: number;
   currency: string;
 };
@@ -35,6 +36,7 @@ type PriceOption = {
 interface CourseBuyButtonProps {
   course: CoursePayload;
   options: PriceOption[];
+  label: string;
 }
 
 export function CourseBuyButton({ course, options }: CourseBuyButtonProps) {
