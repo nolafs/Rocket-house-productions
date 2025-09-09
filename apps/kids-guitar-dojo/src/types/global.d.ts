@@ -9,6 +9,16 @@ declare global {
       status: string;
       type: string;
       role?: Roles;
+      tier?: string;
+      hasMembership?: boolean;
+      purchases?: {
+        id: string;
+        childId: string | null;
+        category: string | null;
+        course: {
+          id: string;
+        };
+      }[];
     };
   }
 }

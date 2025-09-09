@@ -20,7 +20,7 @@ export default async function Page() {
       redirect('/courses/upgrade');
     }
 
-    if (sessionClaims.metadata?.type === 'paid') {
+    if (sessionClaims.metadata?.hasMembership) {
       console.info('User is already active and has a paid account');
       redirect('/courses');
     }

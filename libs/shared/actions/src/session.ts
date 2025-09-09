@@ -3,14 +3,15 @@ import { auth, clerkClient } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { SignJWT } from 'jose';
 import { computeFlagsFromUserDb } from '@rocket-house-productions/util';
+import { userSession } from '@/types/userSesssion';
 
 const secret = new TextEncoder().encode(process.env.SESSION_FLAGS_SECRET);
 
-export async function SessionFlags() {
+export async function SessionFlags(): Promise<Partial<userSession> | null> {
   const { userId, sessionId } = await auth();
 
   if (!userId || !sessionId) {
-    return NextResponse.json({ ok: false }, { status: 401 });
+    return null;
   }
 
   const flags = await computeFlagsFromUserDb(userId);

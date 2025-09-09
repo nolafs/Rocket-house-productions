@@ -3,6 +3,8 @@ import { stripe } from '@rocket-house-productions/integration/server';
 import { unstable_noStore as noStore } from 'next/cache';
 import { Stripe } from 'stripe';
 
+type ProductRef = { id: string; fallbackLabel: string };
+
 export type PriceOption = {
   id: string;
   label: string;
@@ -31,11 +33,15 @@ function pickPrice(
 }
 
 export async function getPriceOptionsForProducts(
-  productIds: { id: string; fallbackLabel: string }[],
+  productIds: Array<string | ProductRef | undefined>,
   opts?: { currency?: string; oneTimeOnly?: boolean },
 ): Promise<PriceOption[]> {
+  const normalized: ProductRef[] = productIds
+    .filter((p): p is string | ProductRef => !!p)
+    .map(p => (typeof p === 'string' ? { id: p, fallbackLabel: 'One-time purchase' } : p));
+
   const results = await Promise.all(
-    productIds.map(async ({ id, fallbackLabel }) => {
+    normalized.map(async ({ id, fallbackLabel }) => {
       const prices = await stripePrices(id);
       const choice = pickPrice(prices as any, opts);
       if (!choice) return null;
@@ -52,7 +58,7 @@ export async function getPriceOptionsForProducts(
     }),
   );
 
-  return results.filter(Boolean) as PriceOption[];
+  return results.filter((x): x is PriceOption => Boolean(x));
 }
 
 // Update Product metadata

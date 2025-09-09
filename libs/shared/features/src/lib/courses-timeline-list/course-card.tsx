@@ -3,43 +3,66 @@ import { CoursePayload } from './courses-timeline-list';
 import Link from 'next/link';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Image from 'next/image';
-import { db } from '@rocket-house-productions/integration/server';
 import CourseBuyButton from './course-buy-button';
 import { getPriceOptionsForProducts } from '@rocket-house-productions/actions/server';
+import { userSession } from '@/types/userSesssion';
+import { MembershipSettings, Tier } from '@prisma/client';
 
 interface CourseCardProps {
+  userData: Partial<userSession>;
+  membershipData: Partial<MembershipSettings> & { course: { tries: Tier[] } };
   course: CoursePayload;
   idx?: number;
 }
 
-export async function CourseCard({ course, idx = 0 }: CourseCardProps) {
-  const purchasesByCourse = await db.purchase.findMany({
-    where: {
-      courseId: course.id,
-    },
-  });
+export async function CourseCard({ membershipData, userData, course, idx = 0 }: CourseCardProps) {
+  let options = null;
 
-  const standardId =
-    process.env.NEXT_PUBLIC_PRODUCTION === 'true' ? course.stripeProductStandardId : course.stripeProductStandardIdDev;
-  const premiumId =
-    process.env.NEXT_PUBLIC_PRODUCTION === 'true' ? course.stripeProductPremiumId : course.stripeProductPremiumIdDev;
+  console.log('[COURSE CARD] userdata', course.slug, userData);
 
-  const productIds = [
-    standardId && {
-      id: standardId,
-      fallbackLabel: 'Standard',
-    },
-    premiumId && {
-      id: premiumId,
-      fallbackLabel: 'Premium',
-    },
-  ].filter(Boolean) as { id: string; fallbackLabel: string }[];
+  //check if user has purchased the course
+  const purchasesByCourse = userData.purchases?.filter(purchase => purchase?.course?.id === course.id) || [];
 
-  console.log(productIds);
+  console.log('[COURSE CARD]', course.slug, purchasesByCourse);
 
-  const options = productIds.length
-    ? await getPriceOptionsForProducts(productIds, { currency: 'eur', oneTimeOnly: true })
-    : [];
+  if (!userData.hasMembership) {
+    if (!membershipData?.course) {
+      throw new Error('No membership course found');
+    }
+    const product = membershipData.course.tries;
+
+    const productIds = product.map((tier: Tier) => {
+      if (tier.type !== 'BASIC') {
+        const stripeProductId = process.env.NEXT_PUBLIC_PRODUCTION === 'true' ? tier.stripeId : tier.stripeIdDev;
+        if (!stripeProductId) {
+          throw new Error('No stripe product id found for tier: ' + tier.name);
+        }
+        return stripeProductId;
+      }
+    });
+
+    options = productIds.length
+      ? await getPriceOptionsForProducts(productIds, { currency: 'eur', oneTimeOnly: true })
+      : [];
+  } else {
+    const product = course.tiers;
+
+    if (!product.length) {
+      throw new Error('No product tiers found for course: ' + course.title);
+    }
+
+    const productIds = product.map((tier: Tier) => {
+      const stripeProductId = process.env.NEXT_PUBLIC_PRODUCTION === 'true' ? tier.stripeId : tier.stripeIdDev;
+      if (!stripeProductId) {
+        throw new Error('No stripe product id found for tier: ' + tier.name);
+      }
+      return stripeProductId;
+    });
+
+    options = productIds.length
+      ? await getPriceOptionsForProducts(productIds, { currency: 'eur', oneTimeOnly: true })
+      : [];
+  }
 
   return (
     <div
@@ -68,16 +91,22 @@ export async function CourseCard({ course, idx = 0 }: CourseCardProps) {
           className={
             'flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5'
           }>
-          {purchasesByCourse.length ? (
+          {!userData.hasMembership ? (
+            <>
+              <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
+                Preview Course
+              </Link>
+              <Link className={buttonVariants()} href={`/courses/order`}>
+                Buy Membership
+              </Link>
+            </>
+          ) : purchasesByCourse.length ? (
             <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
               Enter Course
             </Link>
           ) : (
             <>
-              <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
-                Preview Course
-              </Link>
-              <CourseBuyButton course={course} options={options} />
+              <CourseBuyButton label={'Buy now'} course={course} options={options} />
             </>
           )}
         </div>
