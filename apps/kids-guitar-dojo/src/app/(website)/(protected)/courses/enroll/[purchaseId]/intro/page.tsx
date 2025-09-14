@@ -14,7 +14,7 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
   return (
     <DialogLayout
       title={data.onboarding_intro_header || 'Welcome to Kids Guitar Dojo'}
-      classNames={'prose prose-sm md:prose-base lg:prose-lg max-w-none'}>
+      classNames={'prose prose-sm md:prose-base lg:prose-lg max-w-none p-5'}>
       <PrismicRichText field={data.onboarding_intro_body} />
       <div className={'not-prose mt-5 w-full'}>
         <NextButton label={'Get Started'} baseUrl={baseUrl} />

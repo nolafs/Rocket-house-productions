@@ -4,7 +4,6 @@ import 'server-only';
 import { stripe } from './stripe';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { db } from './db';
-import Stripe from 'stripe';
 
 export const stripeCheckout = async (productId: string, purchaseId: string | null = null) => {
   const { userId, sessionClaims } = await auth();

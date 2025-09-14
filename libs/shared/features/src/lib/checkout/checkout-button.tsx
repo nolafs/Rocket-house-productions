@@ -20,19 +20,29 @@ export function CheckoutButton({
   sales = false,
   label = 'Start now',
 }: CheckoutButtonProps) {
+  console.log('[CheckoutButton]:', productId, type, courseId, purchaseId);
+
   if (type === 'free') {
     if (!courseId) {
       console.error('Course id is required for free course');
       return null;
     }
 
-    return <FreeCheckout courseId={courseId} mostPopular={mostPopular} />;
+    return (
+      <>
+        <FreeCheckout courseId={courseId} mostPopular={mostPopular} />
+      </>
+    );
   } else {
     if (!productId) {
       console.error('Product id is required for paid course');
       return null;
     }
-    return <Checkout productId={productId} purchaseId={purchaseId} mostPopular={mostPopular} label={label} />;
+    return (
+      <>
+        <Checkout productId={productId} purchaseId={purchaseId} mostPopular={mostPopular} label={label} />
+      </>
+    );
   }
 }
 

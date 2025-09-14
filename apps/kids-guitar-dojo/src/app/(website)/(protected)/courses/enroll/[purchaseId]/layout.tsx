@@ -9,6 +9,8 @@ import { Viewport } from 'next';
 import { headers } from 'next/headers';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { db } from '@rocket-house-productions/integration/server';
+import { getAppSettings } from '@rocket-house-productions/actions/server';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -30,24 +32,31 @@ export async function generateViewport(): Promise<Viewport> {
 
 export default async function Layout(props: LayoutProps) {
   const params = await props.params;
-
-  const { children } = props;
-
-  const { userId } = await auth();
+  const { userId, sessionClaims } = await auth();
 
   if (!userId) {
     return redirect('/');
   }
 
-  const baseUrl = `${BASE_URL}/${params.purchaseId}`;
+  const purchase = await db.purchase.findFirst({
+    where: {
+      id: params.purchaseId,
+    },
+  });
+
+  if (!purchase) {
+    return redirect('/');
+  }
+
+  console.log('[ENROLL]', params.purchaseId);
 
   return (
     <div className={'lesson'}>
       <NavbarSimple logo={logo} />
       <ParallaxScene>
         <OnBoardingContextProvider>
-          {children}
-          <StepNavigation baseUrl={baseUrl} />
+          {props.children}
+          <StepNavigation baseUrl={`${BASE_URL}/${params.purchaseId}`} />
         </OnBoardingContextProvider>
       </ParallaxScene>
     </div>

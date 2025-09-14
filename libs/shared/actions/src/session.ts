@@ -1,11 +1,8 @@
 'use server';
 import { auth, clerkClient } from '@clerk/nextjs/server';
-import { NextResponse } from 'next/server';
-import { SignJWT } from 'jose';
 import { computeFlagsFromUserDb } from '@rocket-house-productions/util';
 import { userSession } from '@/types/userSesssion';
-
-const secret = new TextEncoder().encode(process.env.SESSION_FLAGS_SECRET);
+import { setSessionCookies } from './setSessionCookies';
 
 export async function SessionFlags(): Promise<Partial<userSession> | null> {
   const { userId, sessionId } = await auth();
@@ -27,20 +24,7 @@ export async function SessionFlags(): Promise<Partial<userSession> | null> {
     },
   });
 
-  const token = await new SignJWT(flags as any)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('30m')
-    .sign(secret);
-
-  const res = NextResponse.json({ ok: true, flags });
-  res.cookies.set('sf', token, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 60 * 30,
-  });
+  await setSessionCookies(flags);
 
   return { ...user.publicMetadata, ...flags };
 }

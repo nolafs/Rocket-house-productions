@@ -7,6 +7,23 @@ import { CoursesTimelineList } from '@rocket-house-productions/features';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { LessonPageWrapper } from '@rocket-house-productions/lesson/server';
+import { cookies } from 'next/headers';
+import { jwtVerify } from 'jose/jwt/verify';
+
+const secret = new TextEncoder().encode(process.env.SESSION_FLAGS_SECRET!);
+
+async function readFlagsFromCookie() {
+  const jar = await cookies(); // Next 15: await it
+  const token = jar.get('sf')?.value;
+  if (!token) return null;
+
+  try {
+    const { payload } = await jwtVerify(token, secret, { algorithms: ['HS256'] });
+    return payload as any; // your userSession shape
+  } catch {
+    return null;
+  }
+}
 
 export default async function Page() {
   // get all courses
@@ -16,12 +33,11 @@ export default async function Page() {
     redirect('/');
   }
 
-  const courses = await getCourses();
-  const userData = await SessionFlags();
-  const appSetting = await getAppSettings();
+  const [courses, appSetting, userData] = await Promise.all([getCourses(), getAppSettings(), readFlagsFromCookie()]);
 
-  if (userData === null) {
-    redirect('/');
+  if (!userData) {
+    // cookie missing/stale → go set it in a route handler, then come back here
+    redirect('/auth/refresh?next=/courses');
   }
 
   if (!appSetting?.membershipSettings) {

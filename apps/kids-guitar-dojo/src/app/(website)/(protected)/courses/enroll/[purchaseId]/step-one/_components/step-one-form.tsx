@@ -68,7 +68,7 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
   });
 
   return (
-    <DialogLayout title={header || "🎸 Parent's Jam Session 🎸"}>
+    <DialogLayout title={header || "🎸 Parent's Jam Session 🎸"} classNames={'p-8'}>
       {isFilled.richText(body) && <div className="body">{<PrismicRichText field={body} />}</div>}
       <div className={'flex-1 text-left'}>
         <Form {...(form as any)}>

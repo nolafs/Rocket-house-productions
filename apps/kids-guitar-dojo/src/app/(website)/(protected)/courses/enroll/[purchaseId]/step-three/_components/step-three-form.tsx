@@ -78,7 +78,7 @@ export default function StepThreeForm({ baseUrl, header, body }: StepThreeFormPr
   const formRef = useRef<HTMLFormElement>(null);
 
   return (
-    <DialogLayout title={header || "🎸 Hey Kids, This Part's for You! 🎸"}>
+    <DialogLayout title={header || "🎸 Hey Kids, This Part's for You! 🎸"} classNames={'p-8'}>
       {body && <div className="body">{typeof body === 'string' ? body : <PrismicRichText field={body} />}</div>}
       {name && (
         <div className={'flex-0 mb-10 rounded-lg bg-pink-500 p-3 text-2xl font-bold text-white lg:rounded-full'}>

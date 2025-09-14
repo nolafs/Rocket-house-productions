@@ -11,7 +11,7 @@ export default clerkMiddleware(
     const url = req.nextUrl.pathname;
     let pinToken = null;
 
-    console.info('[MIDDLEWARE]', 'Route', isProtectedRoute(req));
+    console.info('[MIDDLEWARE]', 'Route', req.url, isProtectedRoute(req));
 
     // Skip Clerk processing for /slice-simulator and its sub-paths
     if (url.startsWith('/slice-simulator')) {
@@ -53,7 +53,7 @@ export default clerkMiddleware(
           }
         }
 
-        console.info('[MIDDLEWARE COURSE] flags');
+        console.info('[MIDDLEWARE COURSE] flags', flags);
 
         try {
           pinToken = req.cookies.get('pin:parents')?.value;
@@ -84,9 +84,6 @@ export default clerkMiddleware(
           if (url.startsWith(`/courses/order`)) {
             return NextResponse.next();
           }
-          return NextResponse.redirect(
-            product ? `${req.nextUrl.origin}/courses/order?product=${product}` : `${req.nextUrl.origin}/courses/order`,
-          );
         }
 
         // CHECK USER HAS PURCHASED COURSE
@@ -97,10 +94,6 @@ export default clerkMiddleware(
           if (url.startsWith(`/courses/order`)) {
             return NextResponse.next();
           }
-
-          return NextResponse.redirect(
-            product ? `${req.nextUrl.origin}/courses/order?product=${product}` : `${req.nextUrl.origin}/courses/order`,
-          );
         }
 
         // upgrade route always allowed
@@ -108,11 +101,16 @@ export default clerkMiddleware(
           return NextResponse.next();
         }
 
+        // success route always allowed
+        if (url.startsWith(`/courses/success`)) {
+          return NextResponse.next();
+        }
+
         // account route always allowed
 
-        console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', pinToken);
-
         if (url.startsWith(`/courses/account`)) {
+          console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', pinToken);
+
           try {
             if (!pinToken) throw 0;
             await jwtVerify(pinToken, pinSecret);
@@ -125,10 +123,38 @@ export default clerkMiddleware(
           }
         }
 
-        if (flags.purchases.length) {
+        const childEnrolled = flags.purchases.filter((v: { childId: string | null }) => v.childId !== null);
+
+        if (flags.hasPurchases && flags.hasMembership) {
+          if (url.endsWith(`/courses`)) {
+            if (childEnrolled.length === 0) {
+              console.info('[MIDDLEWARE COURSE]  NO CHILD ENROLLED - GO TO ENROLLMENT');
+              return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll`);
+            }
+
+            return NextResponse.next();
+          } else {
+            // allow all /courses/* routes
+            if (url.startsWith(`/courses/`)) {
+              // check enrollment status
+
+              if (url.startsWith(`/courses/enroll`)) {
+                return NextResponse.next();
+              }
+
+              if (childEnrolled.length === 0) {
+                console.info('[MIDDLEWARE COURSE]  NO CHILD ENROLLED - GO TO ENROLLMENT');
+                return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll`);
+              }
+
+              return NextResponse.next();
+            }
+          }
+
+          /*
           if (flags.purchases.length > 1) {
             console.info('[MIDDLEWARE COURSE]  MULTIPLE PURCHASES ENROLLED - GO TO COURSE SELECTION');
-            return NextResponse.redirect(`${req.nextUrl.origin}/courses`);
+
           }
 
           console.info('[MIDDLEWARE COURSE]  HAS PURCHASES', flags.purchases.length);
@@ -161,6 +187,7 @@ export default clerkMiddleware(
             }
             return NextResponse.redirect(`${req.nextUrl.origin}/courses/${flags.singleEnrolledCourseSlug}`);
           }
+         */
         }
       }
     } else {
