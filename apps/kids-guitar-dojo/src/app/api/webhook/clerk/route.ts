@@ -80,6 +80,18 @@ export async function POST(req: Request) {
           },
         });
 
+        //check if account by email already exists
+        const existingAccount = await db.account.findFirst({
+          where: {
+            email: email_addresses[0].email_address,
+          },
+        });
+
+        if (existingAccount) {
+          console.error('[CLERK WEBHOOK]', 'Account with this email already exists', existingAccount);
+          throw new Error('Cannot create user, account with this email already exists');
+        }
+
         await db.account.create({
           data: {
             userId: id,

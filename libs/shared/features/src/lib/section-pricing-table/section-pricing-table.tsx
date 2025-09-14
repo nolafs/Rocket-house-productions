@@ -37,16 +37,12 @@ export async function SectionPricingTable({
   purchaseId = null,
   courseId = null,
 }: SectionPricingTableProps) {
-  console.log('Rendering Pricing Table...');
-
   const { userId, sessionClaims } = await auth();
   const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
   let hasMembership = false;
   let membershipTier = null;
   let upgradeTier = null;
   let tiers: Tier[] = [];
-
-  console.log('Pricing Table:', { checkout, upgrade, courseId, purchaseId });
 
   // course ID null get membership course tiers
   if (!courseId) {
@@ -62,9 +58,6 @@ export async function SectionPricingTable({
       upgradeTier = appSettings?.membershipSettings?.course.tiers.find(tier => tier.type === 'UPGRADE');
     }
 
-    console.log('Membership Tiers:', tiers);
-    console.log('Membership Tiers:', userId, sessionClaims);
-
     // check if user already has a membership
     if (userId && sessionClaims) {
       const userData = sessionClaims?.metadata as Partial<userMetadata>;
@@ -72,7 +65,6 @@ export async function SectionPricingTable({
       if (userData) {
         if (userData?.hasPurchases === true) {
           console.log('No purchases');
-          // find course membershipt in user purchases
           if (userData?.purchases && userData.purchases.length) {
             const membership = userData.purchases?.find(
               purchase => purchase.course.id === appSettings?.membershipSettings?.course.id,
@@ -180,25 +172,24 @@ export async function SectionPricingTable({
               )}
             </>
           ) : (
-            <>
-              {!userId && !hasMembership && (
-                <>
-                  <p className="mt-6 flex items-baseline gap-x-1">
-                    <span className="text-4xl font-bold tracking-tight text-gray-900">Free</span>
-                  </p>
-                  {checkout ? (
-                    <CheckoutButton
-                      type={'free'}
-                      mostPopular={tier.mostPopular}
-                      productId={null}
-                      courseId={tier.courseId}
-                    />
-                  ) : (
-                    <BuyButton type={'free'} mostPopular={tier.mostPopular} courseId={tier.courseId} />
-                  )}
-                </>
-              )}
-            </>
+            !hasMembership && (
+              <>
+                <p className="mt-6 flex items-baseline gap-x-1">
+                  <span className="text-4xl font-bold tracking-tight text-gray-900">Free</span>
+                </p>
+                {checkout ? (
+                  <CheckoutButton
+                    type={'free'}
+                    mostPopular={tier.mostPopular}
+                    productId={null}
+                    courseId={tier.courseId}
+                    label={'Free Trial'}
+                  />
+                ) : (
+                  <BuyButton type={'free'} mostPopular={tier.mostPopular} courseId={tier.courseId} />
+                )}
+              </>
+            )
           )}
 
           <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">

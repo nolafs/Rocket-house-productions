@@ -21,10 +21,12 @@ export default async function Page() {
     <div className={'lesson'}>
       <ParallaxScene className={'!pt-5'}>
         <DialogLayout title={content.data?.success_page_header || 'Welcome'}>
-          <div className={'prose prose-sm md:prose-base max-w-full'}>
-            <PrismicRichText field={content.data.success_page_body} />
+          <div className={'p-5'}>
+            <div className={'prose prose-sm md:prose-base max-w-full'}>
+              <PrismicRichText field={content.data.success_page_body} />
+            </div>
+            <ButtonOnboarding userId={userId} />
           </div>
-          <ButtonOnboarding userId={userId} />
         </DialogLayout>
       </ParallaxScene>
     </div>

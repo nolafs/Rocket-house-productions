@@ -72,18 +72,28 @@ export const submitOnBoardingAction = async (
       },
     });
 
-    const child = await db.child.create({
-      data: {
+    console.log('Account updated successfully.', account.id);
+
+    console.log('Onboarding Data', onboarding);
+
+    // TODO: if account can have more children this needs to change and db schema too
+
+    const child = await db.child.upsert({
+      where: { accountId: account.id }, // relies on unique(accountId)
+      update: {
         name: onboarding.name,
-        birthday: new Date(onboarding.birthday).toISOString(),
+        birthday: new Date(onboarding.birthday), // pass a Date
         profilePicture: onboarding.avatar,
         parentConsent: onboarding.parentConsent,
         notifications: onboarding.notify,
-        account: {
-          connect: {
-            id: account.id,
-          },
-        },
+      },
+      create: {
+        name: onboarding.name,
+        birthday: new Date(onboarding.birthday),
+        profilePicture: onboarding.avatar,
+        parentConsent: onboarding.parentConsent,
+        notifications: onboarding.notify,
+        account: { connect: { id: account.id } },
       },
     });
 

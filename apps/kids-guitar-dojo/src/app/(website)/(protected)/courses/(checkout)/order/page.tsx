@@ -3,7 +3,12 @@ import { redirect } from 'next/navigation';
 import PurchaseOption from './_components/purchase-option';
 import { SectionPricingTable } from '@rocket-house-productions/features';
 
-export default async function Page() {
+interface PageProps {
+  params: Promise<{ product: string }>;
+}
+
+export default async function Page(props: PageProps) {
+  const { product } = await props.params;
   const { userId, sessionClaims } = await auth();
 
   if (!userId) {
@@ -12,6 +17,10 @@ export default async function Page() {
 
   if (!sessionClaims) {
     return redirect('/');
+  }
+
+  if (product === 'success') {
+    redirect('/courses/success');
   }
 
   if (sessionClaims.metadata?.status === 'active') {

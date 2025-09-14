@@ -64,7 +64,7 @@ export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps)
   const formRef = useRef<HTMLFormElement>(null);
 
   return (
-    <DialogLayout title={header || "🎸 Hey Kids, This Part's for You! 🎸"}>
+    <DialogLayout title={header || "🎸 Hey Kids, This Part's for You! 🎸"} classNames={'p-8'}>
       {body && <div className="body">{typeof body === 'string' ? body : <PrismicRichText field={body} />}</div>}
       <div className={'flex-1 text-left'}>
         <Form {...(form as any)}>

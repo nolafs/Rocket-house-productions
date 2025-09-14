@@ -53,7 +53,7 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
         resetLocalStorage();
 
         if (redirect) {
-          return router.push(redirect);
+          return router.push(baseUrl + redirect);
         }
       } else if (errorMsg) {
         setSubmitting(false);
@@ -71,7 +71,7 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
   return (
     <>
       {!submitSuccess && (
-        <DialogLayout title={header || 'Review'}>
+        <DialogLayout title={header || 'Review'} classNames={'p-8'}>
           {body && <div className="body">{typeof body === 'string' ? body : <PrismicRichText field={body} />}</div>}
           <form action={handleFormSubmit}>
             <h2>Parent information</h2>
@@ -146,7 +146,7 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
         </DialogLayout>
       )}
       {submitSuccess && !submitError && (
-        <DialogLayout title={header || 'Completed'}>
+        <DialogLayout title={header || 'Completed'} classNames={'p-8'}>
           <div className="body">
             <p>
               Your child’s enrollment was successful, and they’re all set to start their learning journey! We’re excited
