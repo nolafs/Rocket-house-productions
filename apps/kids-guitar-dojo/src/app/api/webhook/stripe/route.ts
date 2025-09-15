@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { db, stripe } from '@rocket-house-productions/integration/server';
 import { clerkClient } from '@clerk/nextjs/server';
-import { MailerList } from '@rocket-house-productions/actions/server';
+import { MailerList, SessionFlags } from '@rocket-house-productions/actions/server';
 
 export async function POST(req: Request) {
   let event: Stripe.Event;
@@ -38,13 +38,17 @@ export async function POST(req: Request) {
   ];
 
   if (permittedEvents.includes(event.type)) {
-    let data;
+    let data: any | null = null;
 
     try {
       switch (event.type) {
         case 'checkout.session.completed': {
           data = event.data.object as Stripe.Checkout.Session;
           console.log(`💰 CheckoutSession Completed status: ${data.payment_status}`);
+
+          if (!data?.metadata) {
+            throw new Error('No metadata found');
+          }
 
           if (data.payment_status !== 'paid') {
             throw new Error('Payment not completed');
@@ -54,115 +58,150 @@ export async function POST(req: Request) {
             throw new Error('User ID is missing from metadata');
           }
 
-          const account = await db.account.findUnique({
-            where: {
-              userId: data.metadata.userId,
-            },
-          });
-
-          if (!account || !account.id) {
-            throw new Error('Account not found');
-          }
-
           if (!data.metadata.courseId) {
             throw new Error('No Course ID found');
           }
 
-          console.info('[CheckoutSession] update (.)account', data.metadata);
-
-          await db.account.update({
-            where: {
-              userId: data.metadata.userId,
-            },
-            data: {
-              status: 'active',
-              stripeCustomerId: (data?.customer as string) || null,
-            },
-          });
-
-          console.info('[CheckoutSession] has purchase id', data.metadata?.purchaseId);
-
-          if (data.metadata?.purchaseId) {
-            const purchase = await db.purchase.findUnique({
+          // Use a database transaction to ensure atomicity
+          await db.$transaction(async tx => {
+            // Find the account
+            const account = await tx.account.findUnique({
               where: {
-                id: data.metadata.purchaseId,
+                userId: data?.metadata?.userId,
               },
             });
 
-            console.info('[CheckoutSession] purchase', purchase?.id);
-
-            if (purchase) {
-              console.info('[CheckoutSession] purchase updated', purchase?.id);
-
-              await db.purchase.update({
-                where: {
-                  id: purchase?.id as string,
-                },
-                data: {
-                  stripeChargeId: data?.id,
-                  amount: data.amount_subtotal || 0,
-                  type: 'charge',
-                  category: data.metadata.type || null,
-                  billingAddress: JSON.stringify((data?.customer_details?.address as Stripe.Address) || null),
-                },
-              });
-
-              console.info('[CheckoutSession] purchase updated complete', purchase?.id);
-            } else {
-              console.info('[CheckoutSession] no purchase found create');
-
-              await db.purchase.create({
-                data: {
-                  accountId: account?.id as string,
-                  courseId: data.metadata.courseId,
-                  childId: data.metadata.childId,
-                  stripeChargeId: data?.id,
-                  amount: data.amount_subtotal || 0,
-                  type: 'charge',
-                  category: data.metadata.type || null,
-                  billingAddress: JSON.stringify((data?.customer_details?.address as Stripe.Address) || null),
-                },
-              });
-
-              console.info('[CheckoutSession] no purchase found create complete');
+            if (!account || !account.id) {
+              throw new Error('Account not found');
             }
-          } else {
-            console.info('[CheckoutSession] NEW PURCHASE');
 
-            await db.purchase.create({
+            console.info('[CheckoutSession] update account', data?.metadata);
+
+            // Update account status
+            await tx.account.update({
+              where: {
+                userId: data?.metadata?.userId,
+              },
               data: {
-                accountId: account?.id as string,
-                courseId: data.metadata.courseId,
-                stripeChargeId: data?.id,
-                amount: data.amount_subtotal || 0,
-                category: data.metadata.type || null,
-                type: 'charge',
-                billingAddress: JSON.stringify((data?.customer_details?.address as Stripe.Address) || null),
+                status: 'active',
+                stripeCustomerId: (data?.customer as string) || null,
               },
             });
-          }
-          const client = await clerkClient();
-          await client.users.updateUserMetadata(data.metadata.userId, {
-            publicMetadata: {
-              status: 'active',
-              type: 'paid',
-            },
+
+            console.info('[CheckoutSession] has purchase id', data?.metadata?.purchaseId);
+
+            // Handle purchase creation/update
+            if (data?.metadata?.purchaseId) {
+              const purchase = await tx.purchase.findUnique({
+                where: {
+                  id: data.metadata.purchaseId,
+                },
+              });
+
+              console.info('[CheckoutSession] purchase', purchase?.id);
+
+              if (purchase) {
+                console.info('[CheckoutSession] purchase updated', purchase?.id);
+
+                await tx.purchase.update({
+                  where: {
+                    id: purchase.id,
+                  },
+                  data: {
+                    stripeChargeId: data.id,
+                    amount: data.amount_subtotal || 0,
+                    type: 'charge',
+                    category: data.metadata.type || null,
+                    billingAddress: JSON.stringify((data?.customer_details?.address as Stripe.Address) || null),
+                  },
+                });
+
+                console.info('[CheckoutSession] purchase updated complete', purchase.id);
+              } else {
+                console.info('[CheckoutSession] no purchase found create');
+
+                await tx.purchase.create({
+                  data: {
+                    accountId: account.id,
+                    courseId: data.metadata.courseId,
+                    childId: data.metadata.childId || null,
+                    stripeChargeId: data.id,
+                    amount: data.amount_subtotal || 0,
+                    type: 'charge',
+                    category: data.metadata.type || null,
+                    billingAddress: JSON.stringify((data?.customer_details?.address as Stripe.Address) || null),
+                  },
+                });
+
+                console.info('[CheckoutSession] no purchase found create complete');
+              }
+            } else {
+              console.info('[CheckoutSession] NEW PURCHASE');
+
+              if (!data?.metadata?.courseId) {
+                throw new Error('No Course ID found');
+              }
+
+              await tx.purchase.create({
+                data: {
+                  accountId: account.id,
+                  courseId: data?.metadata?.courseId,
+                  childId: data?.metadata?.childId || null,
+                  stripeChargeId: data?.id,
+                  amount: data?.amount_subtotal || 0,
+                  category: data?.metadata?.type || null,
+                  type: 'charge',
+                  billingAddress: JSON.stringify((data?.customer_details?.address as Stripe.Address) || null),
+                },
+              });
+            }
+
+            console.info('[CheckoutSession] database operations completed successfully');
           });
 
-          if (account.email) {
-            await MailerList({
-              email: account.email,
-              firstName: account.firstName || null,
-              lastName: account.lastName || null,
-              membershipGroup: true,
-              memberType: 'paid',
-              newsletterGroup: account.newsletter || false,
+          // External API calls outside transaction (they can't be rolled back anyway)
+          try {
+            const client = await clerkClient();
+            await client.users.updateUserMetadata(data.metadata.userId, {
+              publicMetadata: {
+                status: 'active',
+                type: 'paid',
+              },
             });
+
+            // Get fresh account data for email operations
+            const account = await db.account.findUnique({
+              where: {
+                userId: data.metadata.userId,
+              },
+            });
+
+            if (account?.email) {
+              await MailerList({
+                email: account.email,
+                firstName: account.firstName || null,
+                lastName: account.lastName || null,
+                membershipGroup: true,
+                memberType: 'paid',
+                newsletterGroup: account.newsletter || false,
+              });
+            }
+          } catch (externalError) {
+            // Log external API errors but don't fail the whole operation
+            console.error('[CheckoutSession] External API error:', externalError);
+            // Consider implementing retry logic or queuing for these operations
+          }
+
+          try {
+            await SessionFlags();
+          } catch (error) {
+            console.error('Error computing session flags:', error);
           }
 
           console.log(`💰 CheckoutSession Completed final: ${data.status}`);
           break;
         }
+
         case 'checkout.session.async_payment_failed':
           data = event.data.object as Stripe.Checkout.Session;
           console.log(`❌ CheckoutSession status: ${data.payment_status}`);
