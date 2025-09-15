@@ -1,12 +1,9 @@
 'use server';
 import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
 import { SessionFlags } from './session';
-import { setSessionCookies } from './setSessionCookies';
-import { revalidatePath } from 'next/cache';
 
-export async function freeCheckout(formData: FormData) {
+export async function freeCheckout(formData: FormData): Promise<{ success: boolean }> {
   const { userId } = await auth();
 
   console.log('[FREE CHECKOUT]');
