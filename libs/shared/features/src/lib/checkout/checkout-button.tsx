@@ -30,7 +30,7 @@ export function CheckoutButton({
 
     return (
       <>
-        <FreeCheckout courseId={courseId} mostPopular={mostPopular} />
+        <FreeCheckout courseId={courseId} mostPopular={mostPopular} label={label} />
       </>
     );
   } else {

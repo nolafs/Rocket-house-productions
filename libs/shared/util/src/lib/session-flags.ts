@@ -67,7 +67,7 @@ export async function computeFlagsFromUserDb(userId: string): Promise<SessionFla
   const unenrolled = purchases.filter((p: any) => !p.childId);
   const singleEnrolled = purchases.length === 1 && purchases[0]?.childId ? purchases[0] : null;
 
-  const flags: SessionFlags = {
+  return {
     status: (account.status as any) ?? 'inactive',
     hasPurchases,
     purchases: purchases,
@@ -78,8 +78,4 @@ export async function computeFlagsFromUserDb(userId: string): Promise<SessionFla
     singleEnrolledCourseSlug: singleEnrolled?.course?.slug,
     unenrolledPurchaseId: unenrolled.length === 1 ? purchases[0].id : null,
   };
-
-  console.log('computeFlagsFromUserDb', flags);
-
-  return flags;
 }

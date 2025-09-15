@@ -10,7 +10,6 @@ import { headers } from 'next/headers';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration/server';
-import { getAppSettings } from '@rocket-house-productions/actions/server';
 
 interface LayoutProps {
   children: React.ReactNode;

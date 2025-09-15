@@ -3,7 +3,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { stripeCheckout } from '@rocket-house-productions/integration/server';
 
-export const stripeCheckoutAction = async (data: FormData): Promise<void> => {
+export const stripeCheckoutAction = async (data: FormData): Promise<{ success: boolean; url: string }> => {
   const productId = data.get('productId');
   let purchaseId = data.get('purchaseId');
 
@@ -27,5 +27,8 @@ export const stripeCheckoutAction = async (data: FormData): Promise<void> => {
     throw new Error('Invalid checkout session url');
   }
 
-  redirect(checkoutSession.url);
+  return {
+    success: true,
+    url: checkoutSession?.url,
+  };
 };

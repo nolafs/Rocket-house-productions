@@ -3,16 +3,14 @@ import cn from 'classnames';
 import { Loader2Icon } from 'lucide-react';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import React from 'react';
-import { useFormStatus } from 'react-dom';
 
 interface CheckoutButtonProps {
   mostPopular?: boolean;
   label?: string;
+  pending?: boolean;
 }
 
-export function CheckoutButton({ mostPopular, label = 'Start now' }: CheckoutButtonProps) {
-  const { pending } = useFormStatus();
-
+export function CheckoutButton({ mostPopular, label = 'Start now', pending }: CheckoutButtonProps) {
   return (
     <Button
       type={'submit'}
