@@ -508,3 +508,9 @@ model ChildScore {
   @@unique([childId, courseId])
   @@index([courseId])
 }
+
+model WebhookEvent {
+  id            String   @id @default(cuid())
+  stripeEventId String   @unique
+  processedAt   DateTime @default(now())
+}
