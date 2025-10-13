@@ -137,27 +137,27 @@
 [[headers]]
   for = "/images/*"
   [headers.values]
-    	cache-control = "public, max-age=31536000, immutable"
+    	Cache-control = "public, max-age=31536000, immutable"
 [[headers]]
   for = "/images/uploads/*"
   [headers.values]
-    	cache-control = "public, max-age=31536000, immutable"
+    	Cache-control = "public, max-age=31536000, immutable"
 [[headers]]
   for = "*.jpg"
   [headers.values]
-    	cache-control = "public, max-age=31536000, immutable"
+    	Cache-control = "public, max-age=31536000, immutable"
 [[headers]]
   for = "*.css"
   [headers.values]
-    	cache-control = "public, max-age=31536000, immutable"
+    	Cache-control = "public, max-age=31536000, immutable"
 [[headers]]
   for = "*.js"
   [headers.values]
-    	cache-control = "public, max-age=31536000, immutable"
+    	Cache-control = "public, max-age=31536000, immutable"
 [[headers]]
   for = "*.html"
   [headers.values]
-    cache-control = "max-age=0, no-cache, no-store, must-revalidate"
+    Cache-control = "max-age=0, no-cache, no-store, must-revalidate"
 #[[plugins]]
 #    package = "netlify-plugin-csp-generator"
 
