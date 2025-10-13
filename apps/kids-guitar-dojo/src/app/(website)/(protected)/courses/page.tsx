@@ -47,6 +47,8 @@ export default async function Page() {
 
   //TODO: fix membership settings type
 
+  console.log(courses);
+
   return (
     <LessonPageWrapper navbar={<NavbarSimple logo={logo} />}>
       <CoursesTimelineList

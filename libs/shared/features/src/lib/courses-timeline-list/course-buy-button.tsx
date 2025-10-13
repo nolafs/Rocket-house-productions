@@ -17,6 +17,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Prisma } from '@prisma/client';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
+import { PriceTier, Tier } from '@rocket-house-productions/types';
 
 type CoursePayload = Prisma.CourseGetPayload<{
   include: {
@@ -24,24 +25,15 @@ type CoursePayload = Prisma.CourseGetPayload<{
   };
 }>;
 
-type PriceOption = {
-  id: string;
-  label: string;
-  description: string;
-  features?: string[];
-  amount: number;
-  currency: string;
-};
-
 interface CourseBuyButtonProps {
   course: CoursePayload;
-  options: PriceOption[];
+  options: PriceTier[] | null;
   label: string;
 }
 
 export function CourseBuyButton({ course, options }: CourseBuyButtonProps) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<string | undefined>(options[0]?.id);
+  const [selected, setSelected] = useState<string | undefined>(options?.[0]?.id || undefined);
   const [submitting, setSubmitting] = useState(false);
 
   const handleCheckout = async () => {
@@ -57,11 +49,13 @@ export function CourseBuyButton({ course, options }: CourseBuyButtonProps) {
     }
   }
 
-  const selectedOption = useMemo<PriceOption | undefined>(() => {
-    if (!options.length) return undefined;
+  const selectedOption = useMemo<PriceTier | undefined>(() => {
+    if (!options || !options.length) return undefined;
     if (!selected) return options[0];
-    return options.find(o => o.id === selected) ?? options[0];
+    return options.find(o => o?.id === selected) ?? options[0];
   }, [options, selected]);
+
+  console.log('[COURSE BUY BUTTON] options', course.slug, options);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -112,34 +106,42 @@ export function CourseBuyButton({ course, options }: CourseBuyButtonProps) {
               <div className="space-y-3">
                 <Label className="text-sm">Choose version</Label>
 
-                {options.length === 0 ? (
+                {!options ? (
                   <div className="text-muted-foreground text-sm">No purchase options available.</div>
                 ) : (
                   <RadioGroup value={selected} onValueChange={setSelected} className="grid gap-3">
-                    {options.map(opt => (
-                      <label
-                        key={opt.id}
-                        htmlFor={opt.id}
-                        className={[
-                          'group relative w-full cursor-pointer rounded-2xl border p-4 transition',
-                          selectedOption?.id === opt.id
-                            ? 'border-primary ring-primary/30 ring-2'
-                            : 'border-border hover:border-foreground/30',
-                        ].join(' ')}>
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <RadioGroupItem id={opt.id} value={opt.id} />
-                              <span className="font-medium">{opt.label}</span>
+                    {options.map(
+                      opt =>
+                        opt && (
+                          <label
+                            key={opt.id}
+                            htmlFor={opt.id}
+                            className={[
+                              'group relative w-full cursor-pointer rounded-2xl border p-4 transition',
+                              selectedOption?.id === opt.id
+                                ? 'border-primary ring-primary/30 ring-2'
+                                : 'border-border hover:border-foreground/30',
+                            ].join(' ')}>
+                            <div className="flex items-start justify-between gap-4">
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <RadioGroupItem id={opt.id} value={opt.id} />
+                                  <span className="font-medium">{opt.name}</span>
+                                </div>
+                                <p className="text-muted-foreground mt-1 text-sm">{opt.description}</p>
+                                <ul className={'mt-2 list-inside list-disc px-5 text-sm'}>
+                                  {opt.features?.map((feature, idx) => (
+                                    <li key={idx}>{feature}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                              <div className="shrink-0 text-right font-semibold">
+                                {formatMoney(opt.amount, opt.currency)}
+                              </div>
                             </div>
-                            <p className="text-muted-foreground mt-1 text-sm">{opt.description}</p>
-                          </div>
-                          <div className="shrink-0 text-right font-semibold">
-                            {formatMoney(opt.amount, opt.currency)}
-                          </div>
-                        </div>
-                      </label>
-                    ))}
+                          </label>
+                        ),
+                    )}
                   </RadioGroup>
                 )}
               </div>
