@@ -2,16 +2,9 @@
 import { stripe } from '@rocket-house-productions/integration/server';
 import { unstable_noStore as noStore } from 'next/cache';
 import { Stripe } from 'stripe';
+import { PriceOption } from '@rocket-house-productions/types';
 
 type ProductRef = { id: string; fallbackLabel: string };
-
-export type PriceOption = {
-  id: string;
-  label: string;
-  description: string;
-  amount: number; // minor units
-  currency: string; // e.g., 'EUR'
-};
 
 export const stripePrices = async (productId: string, sales?: boolean) => {
   noStore(); // avoid caching prices
@@ -48,6 +41,7 @@ export async function getPriceOptionsForProducts(
 
       return {
         id: choice.id,
+        productId: id,
         amount: choice.unit_amount ?? 0,
         currency: (choice.currency || 'eur').toUpperCase(),
         label: choice.nickname || (choice.metadata?.tier as string) || fallbackLabel,

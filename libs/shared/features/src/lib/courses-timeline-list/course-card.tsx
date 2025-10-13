@@ -7,6 +7,7 @@ import CourseBuyButton from './course-buy-button';
 import { getPriceOptionsForProducts } from '@rocket-house-productions/actions/server';
 import { userSession } from '@/types/userSesssion';
 import { MembershipSettings, Tier } from '@prisma/client';
+import { PriceTier } from '@rocket-house-productions/types';
 
 interface CourseCardProps {
   userData: Partial<userSession>;
@@ -16,52 +17,72 @@ interface CourseCardProps {
 }
 
 export async function CourseCard({ membershipData, userData, course, idx = 0 }: CourseCardProps) {
-  let options = null;
+  let options: PriceTier[];
 
-  console.log('[COURSE CARD] userdata', course.slug, userData);
+  console.log('[COURSE CARD] userdata', userData.purchases);
 
   //check if user has purchased the course
   const purchasesByCourse = userData.purchases?.filter(purchase => purchase?.course?.id === course.id) || [];
+  const hasPremiumPurchase = purchasesByCourse.some(purchase => purchase.category === 'premium');
 
-  console.log('[COURSE CARD]', course.slug, purchasesByCourse);
-
-  if (!userData.hasMembership) {
-    if (!membershipData?.course) {
-      throw new Error('No membership course found');
-    }
-    const product = membershipData.course.tries;
-
-    const productIds = product.map((tier: Tier) => {
-      if (tier.type !== 'BASIC') {
-        const stripeProductId = process.env.NEXT_PUBLIC_PRODUCTION === 'true' ? tier.stripeId : tier.stripeIdDev;
-        if (!stripeProductId) {
-          throw new Error('No stripe product id found for tier: ' + tier.name);
-        }
-        return stripeProductId;
-      }
-    });
-
-    options = productIds.length
-      ? await getPriceOptionsForProducts(productIds, { currency: 'eur', oneTimeOnly: true })
-      : [];
-  } else {
-    const product = course.tiers;
-
-    if (!product.length) {
+  const getPriceOptionTiers = async (tiers: Tier[]): Promise<PriceTier[]> => {
+    if (!tiers.length) {
       throw new Error('No product tiers found for course: ' + course.title);
     }
 
-    const productIds = product.map((tier: Tier) => {
+    const productData = tiers.map((tier: Tier) => {
       const stripeProductId = process.env.NEXT_PUBLIC_PRODUCTION === 'true' ? tier.stripeId : tier.stripeIdDev;
       if (!stripeProductId) {
         throw new Error('No stripe product id found for tier: ' + tier.name);
       }
-      return stripeProductId;
+      return {
+        tier,
+        stripeProductId,
+      };
     });
 
-    options = productIds.length
+    const productIds = productData.map(item => item.stripeProductId);
+
+    const priceOptions = productIds.length
       ? await getPriceOptionsForProducts(productIds, { currency: 'eur', oneTimeOnly: true })
       : [];
+
+    // Combine tier info with price options
+    const options = productData.map(({ tier, stripeProductId }) => {
+      const priceOption = priceOptions.find(option => option.productId === stripeProductId);
+
+      return {
+        ...priceOption,
+        ...tier,
+      } as PriceTier;
+    });
+
+    if (!options.length) {
+      console.error('No price options found for course: ' + course.title);
+    }
+
+    // has standard of product
+    if (hasPremiumPurchase) {
+      // only return upgrade options
+      return options.filter(option => option?.type === 'UPGRADE');
+    } else {
+      // remove upgrade options
+      return options.filter(option => option?.type !== 'UPGRADE');
+    }
+  };
+
+  if (!userData.hasMembership) {
+    if (!membershipData?.course) {
+      console.error('No membership course found');
+    }
+    const product = membershipData.course.tries;
+    options = await getPriceOptionTiers(product);
+  } else {
+    const product = course.tiers;
+    if (!product.length) {
+      throw new Error('No product tiers found for course: ' + course.title);
+    }
+    options = await getPriceOptionTiers(product);
   }
 
   return (
@@ -101,15 +122,18 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
               </Link>
             </>
           ) : purchasesByCourse.length ? (
-            <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
-              Enter Course
-            </Link>
+            <>
+              {!hasPremiumPurchase && <CourseBuyButton label={'Upgrade'} course={course} options={options || null} />}
+              <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
+                Enter Course
+              </Link>
+            </>
           ) : (
             <>
               <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
                 Preview Course
               </Link>
-              <CourseBuyButton label={'Buy now'} course={course} options={options} />
+              <CourseBuyButton label={'Buy now'} course={course} options={options || null} />
             </>
           )}
         </div>
