@@ -31,7 +31,7 @@ interface CourseBuyButtonProps {
   label: string;
 }
 
-export function CourseBuyButton({ course, options }: CourseBuyButtonProps) {
+export function CourseBuyButton({ course, options, label }: CourseBuyButtonProps) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string | undefined>(options?.[0]?.id || undefined);
   const [submitting, setSubmitting] = useState(false);
@@ -60,7 +60,7 @@ export function CourseBuyButton({ course, options }: CourseBuyButtonProps) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant={'secondary'}>Buy Course</Button>
+        <Button variant={'secondary'}>{label}</Button>
       </SheetTrigger>
       <SheetContent>
         <div className="flex-1 overflow-hidden">
