@@ -118,6 +118,7 @@
     "@babel/preset-react": "^7.27.1",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.37.0",
+    "@netlify/plugin-nextjs": "^5.13.5",
     "@nx/cypress": "21.6.4",
     "@nx/eslint": "21.6.4",
     "@nx/eslint-plugin": "21.6.4",

@@ -3994,6 +3994,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@netlify/plugin-nextjs@npm:^5.13.5":
+  version: 5.13.5
+  resolution: "@netlify/plugin-nextjs@npm:5.13.5"
+  checksum: 10c0/e777446494e15b2b320db8f11886b65c47a02f463f7fbfd9efd67bbcd600ed625b73d5a27cfcb339945eaf5b7d3064f52b27768a4517eaf8ee4e3e1c62f6f58c
+  languageName: node
+  linkType: hard
+
 "@next/bundle-analyzer@npm:15.5.4":
   version: 15.5.4
   resolution: "@next/bundle-analyzer@npm:15.5.4"
@@ -6647,6 +6654,7 @@ __metadata:
     "@hookform/resolvers": "npm:^5.2.2"
     "@madzadev/audio-player": "npm:^2.1.14"
     "@mailerlite/mailerlite-nodejs": "npm:^1.5.0"
+    "@netlify/plugin-nextjs": "npm:^5.13.5"
     "@next/bundle-analyzer": "npm:15.5.4"
     "@next/third-parties": "npm:15.5.4"
     "@nx/cypress": "npm:21.6.4"

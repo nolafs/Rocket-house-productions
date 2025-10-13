@@ -1,9 +1,9 @@
 #[build.environment]
 #  NEXT_USE_NETLIFY_EDGE = "false"
 [build]
-  command = "nx reset && yarn prisma generate && nx build kids-guitar-dojo --skip-nx-cache"
-  functions = "apps/kids-guitar-dojo/netlify/function"
-  publish = "apps/kids-guitar-dojo/.next"
+  command = "nx reset && yarn prisma generate  --no-engine && nx build kids-guitar-dojo --skip-nx-cache"
+  #functions = "apps/kids-guitar-dojo/netlify/function"
+  #publish = "apps/kids-guitar-dojo/.next"
 
 [build.environment]
     NODE_VERSION = "20"  # Use major version only
