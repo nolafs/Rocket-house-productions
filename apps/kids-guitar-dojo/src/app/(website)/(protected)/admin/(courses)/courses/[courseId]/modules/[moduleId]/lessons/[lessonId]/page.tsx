@@ -26,10 +26,10 @@ import { createClient } from '@/prismicio';
 
 type Params = { courseId: string; moduleId: string; lessonId: string };
 
-async function getLesson(params: Params) {
+async function getLesson(lessonId: string, moduleId: string) {
   noStore();
   return db.lesson.findUnique({
-    where: { id: params.lessonId, moduleId: params.moduleId },
+    where: { id: lessonId, moduleId: moduleId },
     include: { bunnyData: true, category: true, questionaries: true },
   });
 }
@@ -51,12 +51,16 @@ async function getPrismicLessons() {
   }
 }
 
-export default async function LessonIdPage({ params }: { params: Params }) {
+export default async function LessonIdPage(props: {
+  params: Promise<{ courseId: string; moduleId: string; lessonId: string }>;
+}) {
   const { userId } = await auth();
+  const { lessonId, moduleId, courseId } = await props.params;
+
   if (!userId) redirect('/');
 
   const [lesson, categories, prismicPages] = await Promise.all([
-    getLesson(params),
+    getLesson(lessonId, moduleId),
     getCategories(),
     getPrismicLessons(),
   ]);
@@ -78,7 +82,7 @@ export default async function LessonIdPage({ params }: { params: Params }) {
         <div className="flex items-center justify-between">
           <div className="w-full">
             <Link
-              href={`/admin/courses/${params.courseId}/modules/${params.moduleId}`}
+              href={`/admin/courses/${courseId}/modules/${moduleId}`}
               className="mb-6 flex items-center text-sm transition hover:opacity-75">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Module setup
@@ -90,9 +94,9 @@ export default async function LessonIdPage({ params }: { params: Params }) {
               </div>
               <LessonActions
                 disabled={!isComplete}
-                courseId={params.courseId}
-                moduleId={params.moduleId}
-                lessonId={params.lessonId}
+                courseId={courseId}
+                moduleId={moduleId}
+                lessonId={lessonId}
                 isPublished={lesson.isPublished}
               />
             </div>
@@ -107,33 +111,23 @@ export default async function LessonIdPage({ params }: { params: Params }) {
                 <h2 className="text-xl">Customize your chapter</h2>
               </div>
 
-              <LessonTitleForm
-                initialData={lesson}
-                courseId={params.courseId}
-                moduleId={params.moduleId}
-                lessonId={params.lessonId}
-              />
+              <LessonTitleForm initialData={lesson} courseId={courseId} moduleId={moduleId} lessonId={lessonId} />
 
               <LessonCategoryForm
                 initialData={lesson}
-                courseId={params.courseId}
-                moduleId={params.moduleId}
-                lessonId={params.lessonId}
+                courseId={courseId}
+                moduleId={moduleId}
+                lessonId={lessonId}
                 options={categories.map(c => ({ label: c.name, value: c.id }))}
               />
 
-              <LessonDescriptionForm
-                initialData={lesson}
-                courseId={params.courseId}
-                moduleId={params.moduleId}
-                lessonId={params.lessonId}
-              />
+              <LessonDescriptionForm initialData={lesson} courseId={courseId} moduleId={moduleId} lessonId={lessonId} />
 
               <LessonPrismicForm
                 initialData={lesson}
-                courseId={params.courseId}
-                moduleId={params.moduleId}
-                lessonId={params.lessonId}
+                courseId={courseId}
+                moduleId={moduleId}
+                lessonId={lessonId}
                 options={prismicPages.map(p => ({ label: p?.data?.title || 'No title', value: p.uid }))}>
                 <PreviewPrismic value={lesson.prismaSlug} />
               </LessonPrismicForm>
@@ -144,12 +138,7 @@ export default async function LessonIdPage({ params }: { params: Params }) {
                 <IconBadge icon={Eye} />
                 <h2 className="text-xl">Access Settings</h2>
               </div>
-              <LessonAccessForm
-                initialData={lesson}
-                courseId={params.courseId}
-                moduleId={params.moduleId}
-                lessonId={params.lessonId}
-              />
+              <LessonAccessForm initialData={lesson} courseId={courseId} moduleId={moduleId} lessonId={lessonId} />
             </div>
           </div>
 
@@ -158,12 +147,7 @@ export default async function LessonIdPage({ params }: { params: Params }) {
               <IconBadge icon={Video} />
               <h2 className="text-xl">Add a video</h2>
             </div>
-            <LessonVideoForm
-              initialData={lesson}
-              courseId={params.courseId}
-              moduleId={params.moduleId}
-              lessonId={params.lessonId}
-            />
+            <LessonVideoForm initialData={lesson} courseId={courseId} moduleId={moduleId} lessonId={lessonId} />
 
             <div className="flex items-center gap-x-2">
               <IconBadge icon={FileQuestionIcon} />
@@ -171,21 +155,16 @@ export default async function LessonIdPage({ params }: { params: Params }) {
             </div>
             <LessonQuestionanaireForm
               initialData={lesson}
-              courseId={params.courseId}
-              moduleId={params.moduleId}
-              lessonId={params.lessonId}
+              courseId={courseId}
+              moduleId={moduleId}
+              lessonId={lessonId}
             />
 
             <div className="flex items-center gap-x-2">
               <IconBadge icon={MegaphoneIcon} />
               <h2 className="text-xl">Add a Book CTA</h2>
             </div>
-            <LessonBookCtaForm
-              initialData={lesson}
-              courseId={params.courseId}
-              moduleId={params.moduleId}
-              lessonId={params.lessonId}
-            />
+            <LessonBookCtaForm initialData={lesson} courseId={courseId} moduleId={moduleId} lessonId={lessonId} />
           </div>
         </div>
       </div>
