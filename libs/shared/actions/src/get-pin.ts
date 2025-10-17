@@ -6,17 +6,16 @@ interface PinProps {
   pinCipher?: string | null;
   pinIv?: string | null;
   pinAuthTag?: string | null;
+  skipAuth?: boolean;
 }
 
-export const getGlobalPin = async (): Promise<PinProps> => {
-  const { userId } = await auth();
+export const getGlobalPin = async ({ skipAuth = false }): Promise<PinProps> => {
+  if (!skipAuth) {
+    const { userId } = await auth();
 
-  if (!userId) {
-    return {
-      pinCipher: undefined,
-      pinIv: undefined,
-      pinAuthTag: undefined,
-    };
+    if (!userId) {
+      throw new Error('Unauthenticated');
+    }
   }
 
   const pin = await db.parentPin.findFirst({

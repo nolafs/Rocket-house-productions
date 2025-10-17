@@ -27,3 +27,4 @@ export { encryptPin } from './encrypt-pin';
 export { decryptPin } from './encrypt-pin';
 export { getGlobalPin } from './get-pin';
 export { triggerMail } from './trigger-mail';
+export { sendPinEmail } from './send-pin-email';

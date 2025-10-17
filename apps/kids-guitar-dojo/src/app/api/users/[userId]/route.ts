@@ -47,8 +47,6 @@ export async function GET(req: NextRequest, context: { params: Promise<{ userId:
       },
     });
 
-    console.log('[USER GET]', response);
-
     return NextResponse.json(response);
   } catch (error) {
     console.error('[USERS]', error);

@@ -13,6 +13,7 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import { Badge, Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Account, Purchase } from '@prisma/client';
+import { SendPinButton } from './send-pin-button';
 
 export const columns: ColumnDef<Account>[] = [
   {
@@ -132,6 +133,19 @@ export const columns: ColumnDef<Account>[] = [
         </i>
       );
     },
+  },
+  {
+    id: 'trigger-pin',
+    cell: ({row})=> {
+      const { email, firstName } = row.original;
+
+      return (
+        <SendPinButton 
+          email={email ?? ''} 
+          firstName={firstName ?? ''} 
+        />
+      )
+    }
   },
   {
     id: 'actions',

@@ -3,11 +3,13 @@
 const crypto = require('crypto');
 
 const KEY = process.env.CIPHER_KEY;
+
+const CIPHER_KEY = Buffer.from(KEY!, 'hex');
 const IV_LENGTH = 12;
 
 export const encryptPin = async (pin: string) => {
   const iv = crypto.randomBytes(IV_LENGTH);
-  const cipher = crypto.createCipheriv('aes-256-gcm', KEY, iv);
+  const cipher = crypto.createCipheriv('aes-256-gcm', CIPHER_KEY, iv);
 
   let ciphertext = cipher.update(pin, 'utf8');
   ciphertext = Buffer.concat([ciphertext, cipher.final()]);
@@ -21,7 +23,7 @@ export const encryptPin = async (pin: string) => {
 };
 
 export const decryptPin = async (pinCipher: string, pinIv: string, pinAuthTag: string) => {
-  const decipher = crypto.createDecipheriv('aes-256-gcm', KEY, Buffer.from(pinIv, 'hex'));
+  const decipher = crypto.createDecipheriv('aes-256-gcm', CIPHER_KEY, Buffer.from(pinIv, 'hex'));
   decipher.setAuthTag(Buffer.from(pinAuthTag, 'hex'));
   const plaintext = decipher.update(Buffer.from(pinCipher, 'hex'));
   return Buffer.concat([plaintext, decipher.final()]).toString('utf8');

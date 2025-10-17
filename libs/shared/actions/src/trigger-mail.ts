@@ -1,6 +1,7 @@
 'use server';
 
-import { EmailParams, MailerSend, Recipient, Sender } from 'mailersend';
+import { auth } from '@clerk/nextjs/server';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend"
 import { z } from 'zod';
 
 interface MailData {
@@ -17,24 +18,34 @@ export const transformZodErrors = async (error: z.ZodError) => {
   }));
 };
 
-export async function triggerMail(prevState: any, mailData: MailData) {
+export async function triggerMail(prevState: any, mailData: MailData, skipAuth = false) {
+  if (!skipAuth) {
+    const { userId } = await auth();
+
+    if (!userId) {
+      throw new Error("Unathenticated");
+    }
+  }
+
   const mailerSend = new MailerSend({
     apiKey: process.env.MAILERSEND_API_KEY || '',
   });
 
   try {
-    
-    const sentFrom = new Sender(`noreply@${process.env.MAILERSEND_DOMAIN}`, 'Paul');
-    const recipients: Recipient[] = [new Recipient(mailData.email,mailData.name)];
 
-    
+    const sentFrom = new Sender(`noreply@${process.env.MAILERSEND_DOMAIN}`, "Paul");
+    const recipients = [
+      new Recipient(mailData.email, mailData.name)
+    ]
+
     const emailParams = new EmailParams()
       .setFrom(sentFrom)
       .setTo(recipients)
       .setReplyTo(sentFrom)
       .setSubject(mailData.subject)
-      .setText(mailData.message)
-      .setHtml(mailData.message);
+      .setHtml(mailData.message)
+      .setText(mailData.message);
+
 
     const mailer = await mailerSend.email.send(emailParams);
 

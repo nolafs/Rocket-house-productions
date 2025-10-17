@@ -1,3 +1,4 @@
+export const runtime = 'nodejs';
 import { NextResponse } from 'next/server';
 import { Webhook } from 'svix';
 import { db } from '@rocket-house-productions/integration/server';
@@ -6,6 +7,7 @@ import { headers } from 'next/headers';
 import { getGlobalPin } from '@rocket-house-productions/actions/server';
 import { decryptPin } from '@rocket-house-productions/actions/server';
 import { triggerMail } from '@rocket-house-productions/actions/server';
+import { sendPinEmail } from '@rocket-house-productions/actions/server';
 
 const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || ``;
 
@@ -40,92 +42,12 @@ export async function POST(req: Request) {
   try {
     const payload = await validateRequest(req);
 
-    const { pinCipher, pinIv, pinAuthTag } = await getGlobalPin();
-
     const eventType = payload.type;
 
     switch (eventType) {
       case 'user.created': {
-        const { id, first_name, last_name, email_addresses } = payload.data;
-        if (!id) {
-          console.error('[CLERK WEBHOOK]', 'Invalid user ID', id);
-          throw new Error('Invalid user ID');
-        }
-
-        //check if user is already in the database
-        const user = await db.account.findUnique({
-          where: {
-            userId: id,
-          },
-        });
-
-        if (user) {
-          console.error('[CLERK WEBHOOK]', 'User already exists', user);
-
-          //check if email is identical
-          if (user.email === email_addresses[0].email_address) {
-            console.error('[CLERK WEBHOOK]', 'Email already exists', user.email);
-            throw new Error('Cannot create user, user email already exists');
-          }
-
-          throw new Error('Cannot create user, user id already exists');
-        }
-
-        await (
-          await clerkClient()
-        ).users.updateUserMetadata(id, {
-          publicMetadata: {
-            status: 'inactive',
-            role: 'member',
-          },
-        });
-
-        //check if account by email already exists
-        const existingAccount = await db.account.findFirst({
-          where: {
-            email: email_addresses[0].email_address,
-          },
-        });
-
-        if (existingAccount) {
-          console.error('[CLERK WEBHOOK]', 'Account with this email already exists', existingAccount);
-          throw new Error('Cannot create user, account with this email already exists');
-        }
-
-        await db.account.create({
-          data: {
-            userId: id,
-            firstName: first_name,
-            lastName: last_name,
-            email: email_addresses[0].email_address,
-          },
-        });
-
-        if (pinCipher && pinIv && pinAuthTag) {
-          try {
-            const parentPin = decryptPin(pinCipher, pinIv, pinAuthTag);
-
-            console.log(parentPin);
-
-            const emailMessage = `Hi ${first_name || 'Parent'},\n\nWe'd like to remind you of your <strong>Parent PIN</strong> that keeps your account secure:\n\n<strong>Your Parent PIN:</strong> ${parentPin}\n\nWith this Pin, you can:\n\n<ul><li>Manage your account details</li><li>Make purchases</li><li>Upgrade memberships</li></ul> \n\n👉Remember to keep this PIN safe and private. It ensures your child can enjoy their lessons while you stay in control of account and payment settings. \n\nThank you for being part of the Kids Guitar Dojo family!\n\nWarm Regards, \n\nThe Kids Guitar Dojo Team🎶P`;
-            const mailData = {
-              name: first_name || 'Parent',
-              email: email_addresses[0].email_address,
-              subject: "Here's Your Parent PIN for Easy Access 🎸",
-              message: emailMessage,
-            };
-
-            const { data, errors } = await triggerMail(null, mailData);
-
-            if (!data || errors) {
-              console.error('[CLERK WEBHOOK]', 'Error sending email', errors);
-            }
-          } catch (error) {
-            console.error('[CLERK WEBHOOK]', 'Error sending email', error);
-          }
-        }
-
-        break;
+        await handleUserCreated(payload.data);
+        return NextResponse.json({ message: 'User created and email sent' }, { status: 200 });
       }
       case 'user.updated': {
         const { id, first_name, last_name, email_addresses } = payload.data;
@@ -188,4 +110,83 @@ export async function POST(req: Request) {
     console.log('error', error);
     return NextResponse.json({ message: 'Error' }, { status: 400 });
   }
+}
+
+async function handleUserCreated(data: any) {
+  const { id, first_name, last_name, email_addresses } = data;
+  console.log('CLERK WEBHOOK] About to process user.created webhook for user ID:', id);
+  if (!id) {
+    console.error('[CLERK WEBHOOK]', 'Invalid user ID', id);
+    return;
+  }
+
+  //check if user is already in the database
+  const user = await db.account.findUnique({
+    where: {
+      userId: id,
+    },
+  });
+
+  if (user) {
+    console.error('[CLERK WEBHOOK]', 'User already exists', user);
+    return;
+    // //check if email is identical
+    // if (user.email === email_addresses[0].email_address) {
+    //   console.error('[CLERK WEBHOOK]', 'Email already exists', user.email);
+    //   return NextResponse.json({ message: 'Cannot create user, user with email already exists' }, { status: 200 });
+    // }
+    // return NextResponse.json({ message: 'Cannot create user, user id already exists' }, { status: 200 });
+    // throw new Error('Cannot create user, user id already exists');
+  }
+
+
+  //check if account by email already exists
+  const existingAccount = await db.account.findFirst({
+    where: {
+      email: email_addresses[0].email_address,
+    },
+  });
+
+  if (existingAccount) {
+    console.error('[CLERK WEBHOOK]', 'Account with this email already exists', existingAccount);
+    // throw new Error('Cannot create user, account with this email already exists');
+    return;
+  }
+
+  console.log('[CLERK WEBHOOK]', 'Creating account for user');
+  const accountCreated = await db.account.create({
+    data: {
+      userId: id,
+      firstName: first_name,
+      lastName: last_name,
+      email: email_addresses[0].email_address,
+    },
+  });
+
+  console.log('[CLERK WEBHOOK]', 'Account created', accountCreated);
+  console.log('[USER.CREATED] Skipping Clerk metadata...');
+  // const clerk = await clerkClient();
+  // await clerk.users.updateUserMetadata(id, {
+  //   publicMetadata: {
+  //     status: 'inactive',
+  //     role: 'member',
+  //   },
+  // });
+
+  console.log('[CLERK WEBHOOK] about to send PIN email');
+  try {
+    const emailResult = await sendPinEmail({
+      email: email_addresses[0].email_address,
+      firstName: first_name ?? '',
+      skipAuth: true,
+    });
+    if (!emailResult.success) {
+      console.error('[CLERK WEBHOOK]', 'Error sending email:', emailResult.error);
+    } else {
+      console.log('[CLERK WEBHOOK]', 'PIN email sent successfully');
+    }
+  } catch (err) {
+    console.error('[CLERK WEBHOOK]', 'Unexpected error sending email:', err);
+  }
+  console.log('[USER.CREATED] Processing complete');
 }

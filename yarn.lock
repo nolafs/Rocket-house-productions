@@ -6196,6 +6196,7 @@ __metadata:
     lucide-react: "npm:^0.541.0"
     maath: "npm:^0.10.8"
     mailersend: "npm:^2.6.0"
+    mailtrap: "npm:^4.3.0"
     meshline: "npm:^3.3.1"
     micro: "npm:^10.0.1"
     nanoid: "npm:^5.1.5"
@@ -9408,6 +9409,17 @@ __metadata:
     form-data: "npm:^4.0.4"
     proxy-from-env: "npm:^1.1.0"
   checksum: 10c0/5de273d33d43058610e4d252f0963cc4f10714da0bfe872e8ef2cbc23c2c999acc300fd357b6bce0fc84a2ca9bd45740fa6bb28199ce2c1266c8b1a393f2b36e
+  languageName: node
+  linkType: hard
+
+"axios@npm:>=0.27":
+  version: 1.12.2
+  resolution: "axios@npm:1.12.2"
+  dependencies:
+    follow-redirects: "npm:^1.15.6"
+    form-data: "npm:^4.0.4"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 10c0/80b063e318cf05cd33a4d991cea0162f3573481946f9129efb7766f38fde4c061c34f41a93a9f9521f02b7c9565ccbc197c099b0186543ac84a24580017adfed
   languageName: node
   linkType: hard
 
@@ -17237,6 +17249,23 @@ __metadata:
     isomorphic-unfetch: "npm:^4.0.0"
     qs: "npm:^6.11.0"
   checksum: 10c0/8af9b0a7d1e7fa0dbb4987556afbb649c317f7145fc94c2213e5c74fb7a780d614085d2e380da90627f9c38ba78c3daa3e037bdd5976fcd88a9061146c762f65
+  languageName: node
+  linkType: hard
+
+"mailtrap@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "mailtrap@npm:4.3.0"
+  dependencies:
+    axios: "npm:>=0.27"
+  peerDependencies:
+    "@types/nodemailer": ^6.4.9
+    nodemailer: ^6.9.4
+  peerDependenciesMeta:
+    "@types/nodemailer":
+      optional: true
+    nodemailer:
+      optional: true
+  checksum: 10c0/0bb219810ad3c4fb446f64ff92780ea4ffeb4acebc3f9cdb3fa06345ca48a05418bfacaf87265442879d3bd5d3091d66222ad60d59fa1d21fb19d5780e67dfdd
   languageName: node
   linkType: hard
 
