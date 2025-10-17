@@ -16,6 +16,7 @@ import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
 import { Lesson } from '@prisma/client';
+import LessonPicker from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-picker';
 
 interface LessonDescriptionFormProps {
   initialData: Lesson;
@@ -99,18 +100,7 @@ const LessonPrismicForm = ({
       {isEditing && (
         <Form {...(form as any)}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4 space-y-4">
-            <FormField
-              control={form.control as any}
-              name="prismaSlug"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Combobox options={options} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <LessonPicker form={form} options={options} />
             <div className="flex items-center gap-x-2">
               <Button disabled={isSubmitting} onClick={form.handleSubmit(onDelete)}>
                 Delete
