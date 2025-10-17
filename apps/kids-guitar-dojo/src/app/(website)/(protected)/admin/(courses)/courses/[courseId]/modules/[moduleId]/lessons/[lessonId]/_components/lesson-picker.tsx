@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import useSWR from 'swr';
 import {
   FormControl,
@@ -54,18 +54,27 @@ export const LessonPicker = ({
   const { data, error, isLoading, mutate } = useSWR<{ items: { id: string; title: string }[] }>(
     open ? url : null,
     jsonFetcher,
-    { revalidateOnFocus: false, keepPreviousData: true },
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: true,
+      keepPreviousData: false,
+      dedupingInterval: 0,
+    },
   );
 
-  const apiOptions: Option[] = data?.items?.map(d => ({ label: d.title, value: d.id })) ?? [];
-
   // ✅ Keep defaults, then merge in fresh results (dedup by value, preserving the order: defaults first)
-  const mergedOptions: Option[] = useMemo(() => {
-    const map = new Map<string, Option>();
-    for (const o of options) map.set(o.value, o); // defaults first
-    for (const o of apiOptions) map.set(o.value, o); // then API (overwrites same value w/ new label)
-    return Array.from(map.values());
-  }, [options, apiOptions]);
+  const mergedOptions = useMemo(() => {
+    // If we have API data, use it
+    if (data?.items && data.items.length > 0) {
+      return data.items.map(d => ({ label: d.title, value: d.id }));
+    }
+
+    // Otherwise fall back to the initial options
+    return options;
+  }, [options, data, form]);
+
+  const commandVersion = useMemo(() => (data?.items ? data.items.map(i => i.id).join('|') : 'seed'), [data]);
 
   return (
     <div className="relative w-full">
@@ -93,16 +102,16 @@ export const LessonPicker = ({
                   </PopoverTrigger>
 
                   <PopoverContent className="w-[320px] p-0" align="start">
-                    <Command>
+                    <Command key={commandVersion}>
                       <CommandInput
                         placeholder="Search lessons…"
-                        className={'mb-2'}
                         value={query}
                         onValueChange={setQuery}
+                        className="mb-2"
                       />
                       <CommandEmpty>{isLoading ? 'Loading…' : error ? 'Failed to load.' : 'No results.'}</CommandEmpty>
 
-                      <CommandList>
+                      <CommandList key={open ? `k-${mergedOptions.length}` : 'k-seed'}>
                         <CommandGroup>
                           {/* Optional clear */}
                           <CommandItem
@@ -112,7 +121,7 @@ export const LessonPicker = ({
                               setOpen(false);
                             }}>
                             <Check className={cn('mr-2 h-4 w-4 opacity-0')} />
-                            <span className="text-muted-foreground">None</span>
+                            <span className="text-muted-foreground">Select none</span>
                           </CommandItem>
 
                           {mergedOptions.map(opt => {
@@ -120,7 +129,7 @@ export const LessonPicker = ({
                             return (
                               <CommandItem
                                 key={opt.value}
-                                value={opt.label}
+                                value={`${opt.label} ${opt.value}`}
                                 onSelect={() => {
                                   field.onChange(opt.value);
                                   setOpen(false);
