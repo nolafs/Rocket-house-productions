@@ -1,69 +1,72 @@
+// app/admin/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/page.tsx
+export const revalidate = 0;
+export const dynamic = 'force-dynamic';
+// export const runtime = 'nodejs' // ensure NOT 'edge' if you ever set runtime
+
+import { unstable_noStore as noStore } from 'next/cache';
 import Link from 'next/link';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { ArrowLeft, Eye, LayoutDashboard, Video, FileQuestionIcon, MegaphoneIcon } from 'lucide-react';
 
-// Components
 import LessonTitleForm from './_components/lesson-title-form';
 import LessonDescriptionForm from './_components/lesson-description-form';
 import LessonAccessForm from './_components/lesson-access-form';
 import LessonVideoForm from './_components/lesson-video-form';
 import LessonActions from './_components/lesson-actions';
-
 import LessonCategoryForm from './_components/lesson-category-form';
-import { createClient } from '@/prismicio';
 import LessonPrismicForm from './_components/lesson-prismic-form';
-
 import LessonQuestionanaireForm from './_components/lesson-questionanaire-form';
 import LessonBookCtaForm from './_components/lesson-book-cta-form';
 
 import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { PreviewPrismic } from '@rocket-house-productions/integration/server';
 import { db } from '@rocket-house-productions/integration/server';
+import { createClient } from '@/prismicio';
 
-const LessonIdPage = async (props: { params: Promise<{ courseId: string; moduleId: string; lessonId: string }> }) => {
-  const params = await props.params;
-  const { userId } = await auth();
+type Params = { courseId: string; moduleId: string; lessonId: string };
 
-  if (!userId) {
-    return redirect('/');
-  }
-
-  const lesson = await db.lesson.findUnique({
-    where: {
-      id: params.lessonId,
-      moduleId: params.moduleId,
-    },
-    include: {
-      bunnyData: true,
-      category: true,
-      questionaries: true,
-    },
+async function getLesson(params: Params) {
+  noStore();
+  return db.lesson.findUnique({
+    where: { id: params.lessonId, moduleId: params.moduleId },
+    include: { bunnyData: true, category: true, questionaries: true },
   });
+}
 
-  if (!lesson) {
-    return redirect('/');
-  }
+async function getCategories() {
+  noStore();
+  return db.categoryLesson.findMany({ orderBy: { name: 'asc' } });
+}
 
-  // Query to database to load the seeded categories list
-  const categories = await db.categoryLesson.findMany({
-    orderBy: {
-      name: 'asc',
-    },
-  });
-
+async function getPrismicLessons() {
+  noStore();
   const client = createClient();
-  const page = await client.getAllByType('lesson').catch(() => {
+  try {
+    // If your Prismic client delegates to fetch(), you can also do:
+    // client.enableAutoPreviewsFromReq() if needed, or pass next: { revalidate: 0 }
+    return await client.getAllByType('lesson');
+  } catch {
     return [];
-  });
+  }
+}
+
+export default async function LessonIdPage({ params }: { params: Params }) {
+  const { userId } = await auth();
+  if (!userId) redirect('/');
+
+  const [lesson, categories, prismicPages] = await Promise.all([
+    getLesson(params),
+    getCategories(),
+    getPrismicLessons(),
+  ]);
+
+  if (!lesson) redirect('/');
 
   const requiredFields = [lesson.title, lesson.description || lesson.prismaSlug, lesson.categoryId, lesson.videoId];
-
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
-
   const completionText = `(${completedFields}/${totalFields})`;
-
   const isComplete = requiredFields.every(Boolean);
 
   return (
@@ -95,6 +98,7 @@ const LessonIdPage = async (props: { params: Promise<{ courseId: string; moduleI
             </div>
           </div>
         </div>
+
         <div className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-4">
             <div>
@@ -102,6 +106,7 @@ const LessonIdPage = async (props: { params: Promise<{ courseId: string; moduleI
                 <IconBadge icon={LayoutDashboard} />
                 <h2 className="text-xl">Customize your chapter</h2>
               </div>
+
               <LessonTitleForm
                 initialData={lesson}
                 courseId={params.courseId}
@@ -114,10 +119,7 @@ const LessonIdPage = async (props: { params: Promise<{ courseId: string; moduleI
                 courseId={params.courseId}
                 moduleId={params.moduleId}
                 lessonId={params.lessonId}
-                options={categories.map(category => ({
-                  label: category.name,
-                  value: category.id,
-                }))}
+                options={categories.map(c => ({ label: c.name, value: c.id }))}
               />
 
               <LessonDescriptionForm
@@ -132,13 +134,11 @@ const LessonIdPage = async (props: { params: Promise<{ courseId: string; moduleI
                 courseId={params.courseId}
                 moduleId={params.moduleId}
                 lessonId={params.lessonId}
-                options={page.map(page => ({
-                  label: page?.data.title || 'No title',
-                  value: page.uid,
-                }))}>
+                options={prismicPages.map(p => ({ label: p?.data?.title || 'No title', value: p.uid }))}>
                 <PreviewPrismic value={lesson.prismaSlug} />
               </LessonPrismicForm>
             </div>
+
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={Eye} />
@@ -152,6 +152,7 @@ const LessonIdPage = async (props: { params: Promise<{ courseId: string; moduleI
               />
             </div>
           </div>
+
           <div className="space-y-4">
             <div className="flex items-center gap-x-2">
               <IconBadge icon={Video} />
@@ -190,6 +191,4 @@ const LessonIdPage = async (props: { params: Promise<{ courseId: string; moduleI
       </div>
     </>
   );
-};
-
-export default LessonIdPage;
+}
