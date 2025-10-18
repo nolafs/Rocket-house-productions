@@ -28,6 +28,7 @@ async function jsonFetcher<T>(url: string): Promise<T> {
 }
 
 type Option = { label: string; value: string };
+type Lesson = { id: string; title: string; slug: string };
 
 interface LessonPickerProps {
   form: any; // RHF useForm return
@@ -51,30 +52,23 @@ export const LessonPicker = ({
   const url = `${endpoint}${qs.toString() ? `?${qs.toString()}` : ''}`;
 
   // Fetch ONLY when popover is open
-  const { data, error, isLoading, mutate } = useSWR<{ items: { id: string; title: string }[] }>(
-    open ? url : null,
-    jsonFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      revalidateIfStale: true,
-      keepPreviousData: false,
-      dedupingInterval: 0,
-    },
-  );
+  const { data, error, isLoading, mutate } = useSWR<Lesson[]>(open ? url : null, jsonFetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    revalidateIfStale: true,
+    keepPreviousData: true,
+    dedupingInterval: 0,
+  });
+
+  const apiOptions: Option[] = data?.map(d => ({ label: d.title, value: d.slug })) ?? [];
 
   // ✅ Keep defaults, then merge in fresh results (dedup by value, preserving the order: defaults first)
-  const mergedOptions = useMemo(() => {
-    // If we have API data, use it
-    if (data?.items && data.items.length > 0) {
-      return data.items.map(d => ({ label: d.title, value: d.id }));
-    }
-
-    // Otherwise fall back to the initial options
-    return options;
-  }, [options, data, form]);
-
-  const commandVersion = useMemo(() => (data?.items ? data.items.map(i => i.id).join('|') : 'seed'), [data]);
+  const mergedOptions: Option[] = useMemo(() => {
+    const map = new Map<string, Option>();
+    for (const o of options) map.set(o.value, o); // defaults first
+    for (const o of apiOptions) map.set(o.value, o); // then API (overwrites same value w/ new label)
+    return Array.from(map.values());
+  }, [options, apiOptions]);
 
   return (
     <div className="relative w-full">
@@ -102,7 +96,7 @@ export const LessonPicker = ({
                   </PopoverTrigger>
 
                   <PopoverContent className="w-[320px] p-0" align="start">
-                    <Command key={commandVersion}>
+                    <Command>
                       <CommandInput
                         placeholder="Search lessons…"
                         value={query}
