@@ -91,8 +91,6 @@ export default async function LessonIdPage(props: {
   const completionText = `(${completedFields}/${totalFields})`;
   const isComplete = requiredFields.every(Boolean);
 
-  console.log('Lesson completion:', prismicPages);
-
   return (
     <>
       {!lesson.isPublished && (
