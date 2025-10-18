@@ -41,7 +41,7 @@ async function getCategories() {
   return db.categoryLesson.findMany({ orderBy: { name: 'asc' } });
 }
 
-export async function getPrismicLessons() {
+async function getPrismicLessons() {
   noStore();
 
   // Next 15: both are async
