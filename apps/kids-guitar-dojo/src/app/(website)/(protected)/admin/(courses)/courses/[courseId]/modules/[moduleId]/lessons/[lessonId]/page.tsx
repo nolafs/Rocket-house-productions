@@ -1,4 +1,6 @@
 // app/admin/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/page.tsx
+import { cookies, headers } from 'next/headers';
+
 export const revalidate = 0;
 export const dynamic = 'force-dynamic';
 // export const runtime = 'nodejs' // ensure NOT 'edge' if you ever set runtime
@@ -22,7 +24,7 @@ import LessonBookCtaForm from './_components/lesson-book-cta-form';
 import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { PreviewPrismic } from '@rocket-house-productions/integration/server';
 import { db } from '@rocket-house-productions/integration/server';
-import { createClient } from '@/prismicio';
+import { Lesson } from '@prisma/client';
 
 type Params = { courseId: string; moduleId: string; lessonId: string };
 
@@ -39,16 +41,32 @@ async function getCategories() {
   return db.categoryLesson.findMany({ orderBy: { name: 'asc' } });
 }
 
-async function getPrismicLessons() {
+export async function getPrismicLessons() {
   noStore();
-  const client = createClient();
-  try {
-    // If your Prismic client delegates to fetch(), you can also do:
-    // client.enableAutoPreviewsFromReq() if needed, or pass next: { revalidate: 0 }
-    return await client.getAllByType('lesson');
-  } catch {
-    return [];
+
+  // Next 15: both are async
+  const h = await headers();
+  const c = await cookies();
+  const base = process.env.BASE_URL;
+
+  // Serialize cookies into a header Clerk can read inside the API route
+  const cookieHeader = c
+    .getAll()
+    .map(({ name, value }) => `${name}=${value}`)
+    .join('; ');
+
+  const res = await fetch(`${base}/api/courses/lessons-prismic`, {
+    headers: { cookie: cookieHeader },
+    cache: 'no-store',
+    next: { revalidate: 0 },
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`lessons-prismic failed: ${res.status} ${res.statusText} ${text}`);
   }
+
+  return res.json();
 }
 
 export default async function LessonIdPage(props: {
@@ -72,6 +90,8 @@ export default async function LessonIdPage(props: {
   const completedFields = requiredFields.filter(Boolean).length;
   const completionText = `(${completedFields}/${totalFields})`;
   const isComplete = requiredFields.every(Boolean);
+
+  console.log('Lesson completion:', prismicPages);
 
   return (
     <>
@@ -128,7 +148,10 @@ export default async function LessonIdPage(props: {
                 courseId={courseId}
                 moduleId={moduleId}
                 lessonId={lessonId}
-                options={prismicPages.map(p => ({ label: p?.data?.title || 'No title', value: p.uid }))}>
+                options={prismicPages.map((p: { uid: string; data: Lesson }) => ({
+                  label: p?.data?.title || 'No title',
+                  value: p.uid,
+                }))}>
                 <PreviewPrismic value={lesson.prismaSlug} />
               </LessonPrismicForm>
             </div>
