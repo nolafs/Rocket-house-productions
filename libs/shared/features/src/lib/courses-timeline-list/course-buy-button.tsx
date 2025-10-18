@@ -28,10 +28,14 @@ type CoursePayload = Prisma.CourseGetPayload<{
 interface CourseBuyButtonProps {
   course: CoursePayload;
   options: PriceTier[] | null;
+  userData?: {
+    hasPremiumPurchase: boolean;
+    hasPurchasedCourse: boolean;
+  };
   label: string;
 }
 
-export function CourseBuyButton({ course, options, label }: CourseBuyButtonProps) {
+export function CourseBuyButton({ course, options, label, userData }: CourseBuyButtonProps) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string | undefined>(options?.[0]?.id || undefined);
   const [submitting, setSubmitting] = useState(false);
@@ -49,13 +53,28 @@ export function CourseBuyButton({ course, options, label }: CourseBuyButtonProps
     }
   }
 
+  const optionsFiltered = useMemo<PriceTier[] | null>(() => {
+    if (userData?.hasPurchasedCourse && options) {
+      return options.filter(opt => opt?.type === 'PREMIUM');
+    }
+    return options;
+  }, [userData?.hasPremiumPurchase]);
+
   const selectedOption = useMemo<PriceTier | undefined>(() => {
-    if (!options || !options.length) return undefined;
-    if (!selected) return options[0];
-    return options.find(o => o?.id === selected) ?? options[0];
-  }, [options, selected]);
+    if (!optionsFiltered || !optionsFiltered.length) return undefined;
+
+    if (!selected) return optionsFiltered[0];
+    return optionsFiltered.find(o => o?.id === selected) ?? optionsFiltered[0];
+  }, [optionsFiltered, selected]);
 
   console.log('[COURSE BUY BUTTON] options', course.slug, options);
+
+  // user have premium access → no need to show buy button
+  if (userData?.hasPremiumPurchase) {
+    return null;
+  }
+
+  // remove basic and standard options if user already purchased the course
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -106,11 +125,11 @@ export function CourseBuyButton({ course, options, label }: CourseBuyButtonProps
               <div className="space-y-3">
                 <Label className="text-sm">Choose version</Label>
 
-                {!options ? (
+                {!optionsFiltered ? (
                   <div className="text-muted-foreground text-sm">No purchase options available.</div>
                 ) : (
                   <RadioGroup value={selected} onValueChange={setSelected} className="grid gap-3">
-                    {options.map(
+                    {optionsFiltered.map(
                       opt =>
                         opt && (
                           <label

@@ -123,7 +123,17 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
             </>
           ) : purchasesByCourse.length ? (
             <>
-              {!hasPremiumPurchase && <CourseBuyButton label={'Upgrade'} course={course} options={options || null} />}
+              {!hasPremiumPurchase && (
+                <CourseBuyButton
+                  label={'Upgrade'}
+                  userData={{
+                    hasPremiumPurchase,
+                    hasPurchasedCourse: true,
+                  }}
+                  course={course}
+                  options={options || null}
+                />
+              )}
               <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
                 Enter Course
               </Link>
