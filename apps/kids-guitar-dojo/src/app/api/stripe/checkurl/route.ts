@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (!email) {
-    throw new Error('Invalid email');
+    console.log('No email provided');
   }
 
   try {

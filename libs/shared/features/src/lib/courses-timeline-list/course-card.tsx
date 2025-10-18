@@ -19,7 +19,7 @@ interface CourseCardProps {
 export async function CourseCard({ membershipData, userData, course, idx = 0 }: CourseCardProps) {
   let options: PriceTier[];
 
-  console.log('[COURSE CARD] userdata', userData.purchases);
+  console.log('[COURSE CARD] userdata', userData);
 
   //check if user has purchased the course
   const purchasesByCourse = userData.purchases?.filter(purchase => purchase?.course?.id === course.id) || [];
