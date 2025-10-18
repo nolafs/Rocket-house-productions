@@ -47,7 +47,7 @@ export default async function Page() {
 
   //TODO: fix membership settings type
 
-  console.log(courses);
+  console.log('[COURSE LANDING]', courses, userData);
 
   return (
     <LessonPageWrapper navbar={<NavbarSimple logo={logo} />}>

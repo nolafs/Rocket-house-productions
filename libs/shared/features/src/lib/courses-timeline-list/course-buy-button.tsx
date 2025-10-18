@@ -18,6 +18,9 @@ import { Prisma } from '@prisma/client';
 import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { PriceTier, Tier } from '@rocket-house-productions/types';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
 
 type CoursePayload = Prisma.CourseGetPayload<{
   include: {
@@ -36,13 +39,35 @@ interface CourseBuyButtonProps {
 }
 
 export function CourseBuyButton({ course, options, label, userData }: CourseBuyButtonProps) {
+  const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<string | undefined>(options?.[0]?.id || undefined);
   const [submitting, setSubmitting] = useState(false);
+  const router = useRouter();
+  const { isSignedIn, user } = useUser();
 
   const handleCheckout = async () => {
     // Implement checkout logic here
+    setSubmitting(true);
+    const product = options?.find((opt: PriceTier) => opt?.id === selected);
+    if (!product) {
+      setSubmitting(false);
+      return;
+    }
     console.log('Initiating checkout for course:', course.slug);
+
+    const redirectUrl = await axios.post('/api/stripe/checkurl', {
+      productId: isProduction ? product.stripeId : product.stripeIdDev,
+      userId: user?.id,
+    });
+
+    console.log('[REDIRECT]', redirectUrl);
+
+    if (redirectUrl.data?.url) {
+      router.push(redirectUrl.data.url);
+    } else {
+      setSubmitting(false);
+    }
   };
 
   function formatMoney(amount: number, currency: string) {
@@ -67,7 +92,9 @@ export function CourseBuyButton({ course, options, label, userData }: CourseBuyB
     return optionsFiltered.find(o => o?.id === selected) ?? optionsFiltered[0];
   }, [optionsFiltered, selected]);
 
-  console.log('[COURSE BUY BUTTON] options', course.slug, options);
+  if (!isSignedIn) {
+    return null;
+  }
 
   // user have premium access → no need to show buy button
   if (userData?.hasPremiumPurchase) {
