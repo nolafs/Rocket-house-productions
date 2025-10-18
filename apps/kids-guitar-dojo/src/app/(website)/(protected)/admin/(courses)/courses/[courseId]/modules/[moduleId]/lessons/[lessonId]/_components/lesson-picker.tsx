@@ -28,7 +28,7 @@ async function jsonFetcher<T>(url: string): Promise<T> {
 }
 
 type Option = { label: string; value: string };
-type Lesson = { id: string; title: string; slug: string };
+type Lesson = { uid: string; data: { title: string; slug: string } };
 
 interface LessonPickerProps {
   form: any; // RHF useForm return
@@ -60,15 +60,24 @@ export const LessonPicker = ({
     dedupingInterval: 0,
   });
 
-  const apiOptions: Option[] = data?.map(d => ({ label: d.title, value: d.slug })) ?? [];
-
   // ✅ Keep defaults, then merge in fresh results (dedup by value, preserving the order: defaults first)
   const mergedOptions: Option[] = useMemo(() => {
+    const apiOptions: Option[] = data?.map(d => ({ label: d.data.title, value: d.uid })) ?? [];
     const map = new Map<string, Option>();
-    for (const o of options) map.set(o.value, o); // defaults first
-    for (const o of apiOptions) map.set(o.value, o); // then API (overwrites same value w/ new label)
+
+    // Add defaults first
+    for (const o of options) {
+      map.set(o.value, o);
+    }
+
+    // API overwrites duplicates
+    for (const o of apiOptions) {
+      map.set(o.value, o);
+    }
+
+    // Map guarantees unique keys, so this should be safe
     return Array.from(map.values());
-  }, [options, apiOptions]);
+  }, [options, data]);
 
   return (
     <div className="relative w-full">
