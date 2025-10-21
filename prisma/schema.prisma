@@ -21,6 +21,13 @@ enum TierType {
   UPGRADE
 }
 
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELED
+  EXPIRED
+}
+
 model AppSettings {
   // Hard-coded single row
   id                   String              @id @default("singleton")
@@ -394,12 +401,74 @@ model Purchase {
 
   billingAddress String?
 
+  purchaseTransactions PurchaseTransaction[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
 
   @@unique([accountId, courseId, childId, stripeChargeId])
   @@unique([accountId, courseId, childId])
   @@index([courseId, accountId, childId])
+}
+
+model PurchaseTransaction {
+  id         String   @id @default(cuid())
+  purchaseId String
+  purchase   Purchase @relation(fields: [purchaseId], references: [id])
+
+  // Stripe identifiers
+  paymentIntentId String  @unique
+  chargeId        String?
+
+  // Domain context
+  accountId String
+  courseId  String
+  childId   String? // keep if your legacy schema uses it
+
+  // Upgrade trail (if you need to track old→new “tiers” but cannot alter Purchase)
+  fromTierId String? // null for initial
+  toTierId   String? // the new tier after this payment
+
+  amount   Int // minor units for THIS payment only
+  currency String
+
+  type      String   @default("payment") // e.g., "initial" | "upgrade" if you like
+  createdAt DateTime @default(now())
+
+  @@index([purchaseId])
+  @@index([accountId, courseId, childId])
+}
+
+model Order {
+  id        String  @id @default(cuid())
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  // Stripe reconciliation
+  stripeCheckoutSessionId String? @unique
+  stripePaymentIntentId   String? @unique
+  clientReferenceId       String? // mirrors Checkout client_reference_id
+  stripeCustomerId        String?
+
+  // Money
+  amountTotal Int?
+  currency    String?
+
+  // State
+  status      OrderStatus @default(PENDING)
+  completedAt DateTime?
+  expiresAt   DateTime?
+
+  // Cart snapshot (your planned line items, membership flag, etc.)
+  cart Json?
+
+  // Anything else you want to remember
+  metadata Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([accountId])
 }
 
 model Account {
@@ -422,6 +491,7 @@ model Account {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
+  Order     Order[]
 
   @@index([userId])
 }

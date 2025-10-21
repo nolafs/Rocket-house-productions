@@ -78,7 +78,7 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
     const product = membershipData.course.tries;
     options = await getPriceOptionTiers(product);
   } else {
-    const product = course.tiers;
+    const product: Tier[] = course.tiers;
     if (!product.length) {
       throw new Error('No product tiers found for course: ' + course.title);
     }
