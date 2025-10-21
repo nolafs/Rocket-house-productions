@@ -19,35 +19,11 @@ export async function POST(req: NextRequest) {
     console.log('No email provided');
   }
 
-  try {
-    await (
-      await clerkClient()
-    ).users.updateUserMetadata(userId, {
-      publicMetadata: {
-        status: 'pending',
-        type: 'paid',
-      },
-    });
-  } catch (error) {
-    console.error('Failed to update user metadata', error);
-  }
-
   const checkoutSession = await stripeCheckout(productId);
 
   if (!checkoutSession?.url) {
     return new NextResponse('Invalid checkout session url', { status: 500 });
   }
-
-  // update db (.)account status to pending
-  await db.account.update({
-    where: {
-      userId: userId,
-    },
-    data: {
-      status: 'pending',
-      recentStripeCheckoutId: checkoutSession.id || null,
-    },
-  });
 
   return NextResponse.json({ url: checkoutSession.url });
 }

@@ -63,7 +63,30 @@
       }
     },
     "prisma": { "command": "prisma" },
-    "migrate": { "command": "prisma migrate dev" },
+    "migrate:status": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": ".",
+        "command": "npx prisma migrate status --schema prisma/schema.prisma"
+      },
+      "cache": false
+    },
+    "migrate": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": ".",
+        "command": "npx prisma migrate dev --schema prisma/schema.prisma"
+      },
+      "cache": false
+    },
+    "migrate:deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": ".",
+        "command": "npx prisma migrate deploy --schema prisma/schema.prisma"
+      },
+      "cache": false
+    },
     "generate-types": { "command": "prisma generate" },
     "generate-types-no-engine": { "command": "prisma generate --no-engine" },
     "prisma-studio": { "command": "prisma studio" },
