@@ -81,10 +81,14 @@ const QuestionTitleForm = ({ initialData, courseId, moduleId, lessonId, question
                 <FormItem>
                   <FormControl>
                     <Input
-                      type={'number'}
+                      type="number"
                       disabled={isSubmitting}
-                      onChangeCapture={e => setPoints(Number(e.currentTarget.value))}
                       {...field}
+                      onChange={e => {
+                        const value = e.target.value === '' ? null : Number(e.target.value);
+                        field.onChange(value);
+                      }}
+                      value={field.value ?? ''}
                     />
                   </FormControl>
                   <FormMessage />
