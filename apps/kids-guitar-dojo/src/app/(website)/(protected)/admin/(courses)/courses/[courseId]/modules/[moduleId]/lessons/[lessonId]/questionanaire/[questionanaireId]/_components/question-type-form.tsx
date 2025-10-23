@@ -41,7 +41,7 @@ interface QuestionFormProps {
 
 const formSchema = z.object({
   type: z.string().min(1, 'Type is required'),
-  boardSize: z.number().nullable(),
+  boardSize: z.number().int().min(1).nullable(),
 });
 
 const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questionanaireId }: QuestionFormProps) => {
@@ -150,13 +150,12 @@ const QuestionTypeForm = ({ initialData, courseId, moduleId, lessonId, questiona
                         disabled={isSubmitting}
                         type={'number'}
                         {...field}
-                        value={field.value ?? ''}
                         placeholder={'Board Size (default 11 rows)'}
                         onChange={e => {
-                          const newValue = parseInt(e.target.value, 10);
-                          setRows(newValue); // Update local state
-                          field.onChange(e); // Update form state
+                          const value = e.target.value === '' ? null : Number(e.target.value);
+                          field.onChange(value);
                         }}
+                        value={field.value ?? ''}
                       />
                     </FormControl>
                     <FormLabel htmlFor="boardSize">Board Size (default 11 rows)</FormLabel>
