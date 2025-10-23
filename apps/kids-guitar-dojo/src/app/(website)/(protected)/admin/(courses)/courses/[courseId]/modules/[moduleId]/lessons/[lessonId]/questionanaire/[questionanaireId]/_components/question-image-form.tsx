@@ -23,7 +23,7 @@ interface ImageFormProps {
 }
 
 const formSchema = z.object({
-  imageUrl: z.string().optional(),
+  imageUrl: z.string().optional().nullable(),
 });
 
 const QuestionImageForm = ({ initialData, courseId, moduleId, lessonId, questionanaireId }: ImageFormProps) => {
@@ -88,7 +88,12 @@ const QuestionImageForm = ({ initialData, courseId, moduleId, lessonId, question
               }
             }}
           />
-          <div className="text-muted-foreground mt-4 text-xs">1:1 aspect ratio recommended</div>
+          <div className={'mt-3 flex justify-between'}>
+            <div className="text-muted-foreground mt-4 text-xs">1:1 aspect ratio recommended</div>
+            <Button size={'sm'} onClick={() => onSubmit({ imageUrl: null })}>
+              Delete
+            </Button>
+          </div>
         </div>
       )}
     </div>
