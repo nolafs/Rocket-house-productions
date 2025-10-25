@@ -84,6 +84,11 @@ export default clerkMiddleware(
           if (url.startsWith(`/courses/order`)) {
             return NextResponse.next();
           }
+
+          //todo: check if this still works with purchase flow
+          if (!flags.hasPurchases) {
+            return NextResponse.redirect(new URL('/error?code=unauthorized', req.url));
+          }
         }
 
         // CHECK USER HAS PURCHASED COURSE

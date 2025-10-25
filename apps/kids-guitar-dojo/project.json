@@ -55,6 +55,12 @@
         "command": "tsc --noEmit -p apps/kids-guitar-dojo/tsconfig.json --generateTrace .ts-trace"
       }
     },
+    "scan": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "next dev & npx react-scan@latest localhost:3000"
+      }
+    },
     "slicemachine": {
       "executor": "nx:run-commands",
       "options": {
