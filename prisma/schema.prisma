@@ -408,6 +408,7 @@ model Purchase {
 
   @@unique([accountId, courseId, childId, stripeChargeId])
   @@unique([accountId, courseId, childId])
+  @@unique([accountId, courseId])
   @@index([courseId, accountId, childId])
 }
 

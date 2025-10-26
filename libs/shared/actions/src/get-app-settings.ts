@@ -31,5 +31,7 @@ export const getAppSettings = async () => {
     },
   });
 
+  console.log('getAppSettings', appSettings);
+
   return appSettings;
 };
