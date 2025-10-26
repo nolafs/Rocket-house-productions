@@ -11,6 +11,7 @@ export const stripeCheckoutAction = async (data: FormData): Promise<{ success: b
     throw new Error('Invalid product ID');
   }
 
+  //Todo: this can be removed we deal with updates in webhook
   if (typeof purchaseId !== 'string' || !purchaseId) {
     purchaseId = null;
   }

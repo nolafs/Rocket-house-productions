@@ -5,7 +5,12 @@ import { createClient } from '@/prismicio';
 import { PrismicRichText } from '@prismicio/react';
 import ButtonOnboarding from './_components/button-onboarding';
 
-export default async function Page() {
+interface PageProps {
+  params: Promise<{ CHECKOUT_SESSION_ID: string }>;
+}
+
+export default async function Page(props: PageProps) {
+  const { CHECKOUT_SESSION_ID } = await props.params;
   const { userId } = await auth();
 
   if (!userId) {
@@ -25,7 +30,7 @@ export default async function Page() {
             <div className={'prose prose-sm md:prose-base max-w-full'}>
               <PrismicRichText field={content.data.success_page_body} />
             </div>
-            <ButtonOnboarding userId={userId} />
+            <ButtonOnboarding userId={userId} checkOutSessionId={CHECKOUT_SESSION_ID} />
           </div>
         </DialogLayout>
       </ParallaxScene>

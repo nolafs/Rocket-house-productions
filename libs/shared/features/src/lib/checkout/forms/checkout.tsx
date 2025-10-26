@@ -18,6 +18,7 @@ export function Checkout({ productId, purchaseId, mostPopular, label }: Checkout
 
     startTransition(async () => {
       try {
+        //TODO: this looks wrong, check if upgrade later in webhook
         const formData = new FormData();
         formData.append('productId', productId);
 

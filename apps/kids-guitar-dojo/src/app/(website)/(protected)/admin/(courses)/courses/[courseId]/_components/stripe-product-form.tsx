@@ -71,7 +71,7 @@ const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) =>
 
       if (values.stripeProductStandardId) {
         await updateProductMetadata(values.stripeProductStandardId, {
-          course_id: courseId,
+          courseId: courseId,
           productType: 'standard',
           position: '1',
           product_group: 'kidGuitarDojo',
@@ -80,7 +80,7 @@ const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) =>
       }
       if (values.stripeProductPremiumId) {
         await updateProductMetadata(values.stripeProductPremiumId, {
-          courseId,
+          course_id: courseId,
           productType: 'premium',
           position: '2',
           product_group: 'kidGuitarDojo',
@@ -99,7 +99,7 @@ const StripeProductForm = ({ initialData, courseId }: StripeProductFormProps) =>
       }
       if (values.stripeProductPremiumIdDev) {
         await updateProductMetadata(values.stripeProductPremiumIdDev, {
-          courseId,
+          course_id: courseId,
           productType: 'premium',
           position: '2',
           product_group: 'kidGuitarDojo',

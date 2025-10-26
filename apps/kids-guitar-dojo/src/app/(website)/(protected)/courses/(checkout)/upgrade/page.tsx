@@ -7,7 +7,6 @@ import LogoFull from '@assets/logo_full.png';
 import { getAccount, getAppSettings } from '@rocket-house-productions/actions/server';
 
 import { db } from '@rocket-house-productions/integration/server';
-import { Tier } from '@prisma/client';
 import { Suspense } from 'react';
 
 export default async function Page(props: { params: Promise<{ product: string[]; purchaseId: string }> }) {

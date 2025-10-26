@@ -2,22 +2,84 @@
 import 'server-only';
 
 import { stripe } from './stripe';
-import { auth, clerkClient } from '@clerk/nextjs/server';
+import Stripe from 'stripe';
+import { auth } from '@clerk/nextjs/server';
 import { db } from './db';
+import { PlannedCart } from '@rocket-house-productions/types/server';
+import { getAppSettings } from '@rocket-house-productions/actions/server';
 
-export const stripeCheckout = async (productId: string, purchaseId: string | null = null) => {
+export const stripeCheckout = async (
+  productId: string,
+  opts?: {
+    childId?: string | null;
+  },
+) => {
   const { userId, sessionClaims } = await auth();
-
-  if (!userId) {
-    return null;
-  }
+  if (!userId) throw new Error('Unauthorized');
 
   try {
-    const productPrice = await stripe.prices.search({
-      query: `product:'${productId}' AND active:'true'`,
+    // 1) Resolve the active price for the product
+    const prices = await stripe.prices.search({ query: `product:'${productId}' AND active:'true'` });
+    const price = prices.data?.[0];
+    if (!price) throw new Error(`No active price for product ${productId}`);
+
+    // 2) Get the product metadata to recover your courseId/type for later
+    const product = await stripe.products.retrieve(productId);
+    const courseId = (product.metadata?.course_id as string | undefined) ?? undefined;
+    const tierType = (product.metadata?.type as string | undefined) ?? undefined;
+
+    const appSettingsRes = await getAppSettings();
+
+    // Check if product is membership product
+
+    const isMembershipMeta = appSettingsRes?.membershipSettings?.course.id === courseId;
+
+    // Build the planned cart snapshot
+    const cart: PlannedCart = {
+      items: [
+        {
+          priceId: price.id,
+          productId,
+          courseId,
+          childId: opts?.childId ?? null,
+          isMembership: !!isMembershipMeta,
+        },
+      ],
+    };
+
+    const account = await db.account.findFirst({ where: { userId } });
+    if (!account) throw new Error('Account not found');
+
+    const order = await db.order.create({
+      data: {
+        accountId: account.id,
+        status: 'PENDING',
+        cart,
+        metadata: { userId, source: 'checkout' },
+      },
     });
 
-    const { metadata } = await stripe.products.retrieve(productId);
+    // Build safe metadata
+    const meta = {
+      userId: String(userId),
+      orderId: String(order.id),
+      accountId: String(account.id),
+      ...(courseId ? { courseId: String(courseId) } : {}),
+      ...(tierType ? { type: String(tierType) } : {}), // if tierType is enum/null, coerce to string
+    } satisfies Record<string, string>;
+
+    // Optional: help TS with allowed country literals
+    const allowedCountries = [
+      'US',
+      'AU',
+      'NZ',
+      'CA',
+      'GB',
+      'AE',
+      'DE',
+      'FR',
+      'SG',
+    ] as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry[];
 
     const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
@@ -28,29 +90,15 @@ export const stripeCheckout = async (productId: string, purchaseId: string | nul
       },
       billing_address_collection: 'required',
       shipping_address_collection: {
-        allowed_countries: ['US', 'AU', 'NZ', 'CA', 'GB', 'AE', 'DE', 'FR', 'SG'],
+        allowed_countries: allowedCountries,
       },
-      line_items: [
-        {
-          price: productPrice.data[0].id,
-          quantity: 1,
-        },
-      ],
-      success_url: `${process.env.BASE_URL}/courses/success`,
+      line_items: [{ price: price.id, quantity: 1 }],
+      success_url: `${process.env.BASE_URL}/courses/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.BASE_URL}`,
-      metadata: {
-        userId: userId,
-        courseId: metadata?.course_id,
-        type: metadata?.type,
-        purchaseId: purchaseId,
-      },
+      client_reference_id: order.id,
+      metadata: meta,
       payment_intent_data: {
-        metadata: {
-          userId: userId,
-          courseId: metadata?.course_id,
-          purchaseId: purchaseId,
-          type: metadata?.type,
-        },
+        metadata: meta,
       },
     });
 
@@ -58,101 +106,157 @@ export const stripeCheckout = async (productId: string, purchaseId: string | nul
       throw new Error('Invalid checkout session url');
     }
 
+    //db set order and transaction here
+
+    // 5) Update Order with session ids
+    await db.order.update({
+      where: { id: order.id },
+      data: {
+        stripeCheckoutSessionId: checkoutSession.id,
+        clientReferenceId: order.id,
+      },
+    });
+
     return checkoutSession;
   } catch (error) {
     console.error('[stripeCheckout] Error creating checkout session', error);
   }
 };
 
-export const stripeCheckoutSessionStatus = async (sessionId: string, userId: string, childId: string | null = null) => {
-  const checkoutSession = await stripe.checkout.sessions.retrieve(sessionId);
+export const stripeCheckoutSessionStatus = async (sessionId: string) => {
+  return await stripe.checkout.sessions.retrieve(sessionId);
+};
 
-  if (!checkoutSession) {
-    throw new Error('Invalid checkout session');
-  }
+export const stripeReconcile = async (sessionId: string) => {
+  // 1) Fetch session + expand line items (same as webhook)
+  const full = await stripe.checkout.sessions.retrieve(sessionId, {
+    expand: ['line_items.data.price.product'],
+  });
 
-  if (checkoutSession.payment_status === 'paid') {
-    const account = await db.account.findUnique({
+  // 2) Locate the Order
+  const orderId = (full.client_reference_id ?? full.metadata?.orderId) as string | undefined;
+  if (!orderId) return { success: true }; // nothing to do
+
+  const order = await db.order.findUnique({ where: { id: orderId } });
+  if (!order) return { success: true };
+
+  // 3) If already PAID, bail (idempotent)
+  if (order.status === 'PAID') return { success: true };
+
+  // 4) Only reconcile if Stripe shows paid
+  if (full.payment_status !== 'paid') return { success: true };
+
+  // 5) Run the same finalize steps as your webhook (factor into a shared function if you like)
+  const paymentIntentId = full.payment_intent?.toString() ?? null;
+  const customerId = (full.customer as string) ?? null;
+
+  await db.order.update({
+    where: { id: order.id },
+    data: {
+      status: 'PAID',
+      completedAt: new Date(),
+      stripePaymentIntentId: paymentIntentId,
+      stripeCustomerId: customerId,
+      amountTotal: full.amount_total ?? null,
+      currency: full.currency ?? null,
+    },
+  });
+
+  const planned = (order.cart as any)?.items ?? [];
+  for (const li of full.line_items?.data ?? []) {
+    const priceId = li.price?.id;
+    const product = li.price?.product as Stripe.Product | null;
+    const plannedItem = planned.find((p: any) => p.priceId === priceId);
+    const courseId = plannedItem?.courseId ?? (product?.metadata?.course_id as string | undefined);
+    const childId = plannedItem?.childId ?? null;
+    if (!courseId) continue;
+
+    const lineAmount = (li as any).amount_total ?? 1;
+
+    const existing = await db.purchase.findUnique({
       where: {
-        userId: userId,
+        accountId_courseId_childId: {
+          accountId: order.accountId,
+          courseId,
+          childId,
+        },
       },
     });
 
-    if (!account) {
-      throw new Error('Account not found');
-    }
-
-    if (!checkoutSession.metadata?.courseId) {
-      throw new Error('No Course ID found');
-    }
-
-    await db.account.update({
-      where: {
-        userId: userId,
-      },
-      data: {
-        status: 'active',
-        stripeCustomerId: (checkoutSession?.customer as string) || null,
-        recentStripeCheckoutId: null,
-      },
-    });
-
-    if (childId) {
-      const purchase = await db.purchase.findUnique({
-        where: {
-          accountId_courseId_childId: {
-            accountId: account.id,
-            courseId: checkoutSession.metadata?.courseId,
-            childId: childId,
-          },
+    if (!existing) {
+      const created = await db.purchase.create({
+        data: {
+          accountId: order.accountId,
+          courseId,
+          childId,
+          stripeChargeId: full.id,
+          amount: lineAmount,
+          type: 'charge',
+          category: product?.metadata?.type ?? null,
+          billingAddress: JSON.stringify(full.customer_details?.address ?? {}),
         },
       });
 
-      if (purchase) {
-        await db.purchase.update({
-          where: {
-            id: purchase?.id as string,
-          },
+      // idempotency via paymentIntentId unique
+      if (paymentIntentId) {
+        await db.purchaseTransaction.create({
           data: {
-            stripeChargeId: checkoutSession?.id,
-            amount: checkoutSession.amount_total || 0,
-            type: 'charge',
-          },
-        });
-      } else {
-        await db.purchase.create({
-          data: {
-            accountId: account?.id as string,
-            courseId: checkoutSession.metadata?.courseId,
-            childId: childId,
-            stripeChargeId: checkoutSession?.id,
-            amount: checkoutSession.amount_total || 0,
-            type: 'charge',
-            billingAddress: JSON.stringify(checkoutSession.customer_details?.address || {}),
+            purchaseId: created.id,
+            accountId: order.accountId,
+            courseId,
+            childId,
+            paymentIntentId,
+            chargeId: (full.id as string) ?? null,
+            fromTierId: null,
+            toTierId: product?.metadata?.tier_id ?? null,
+            amount: lineAmount,
+            currency: full.currency!,
+            type: 'initial',
           },
         });
       }
     } else {
-      await db.purchase.create({
+      await db.purchase.update({
+        where: { id: existing.id },
         data: {
-          accountId: account?.id as string,
-          courseId: checkoutSession.metadata?.courseId,
-          stripeChargeId: checkoutSession?.id,
-          amount: checkoutSession.amount_total || 0,
-          type: 'charge',
+          amount: (existing.amount ?? 0) + lineAmount,
+          stripeChargeId: full.id,
+          category: product?.metadata?.type ?? existing.category,
+          billingAddress: JSON.stringify(full.customer_details?.address ?? {}),
         },
       });
+
+      if (paymentIntentId) {
+        await db.purchaseTransaction.create({
+          data: {
+            purchaseId: existing.id,
+            accountId: order.accountId,
+            courseId,
+            childId,
+            paymentIntentId,
+            chargeId: (full.id as string) ?? null,
+            fromTierId: null,
+            toTierId: product?.metadata?.tier_id ?? null,
+            amount: lineAmount,
+            currency: full.currency!,
+            type: 'upgrade',
+          },
+        });
+      }
     }
 
-    const client = await clerkClient();
+    const isMembership =
+      plannedItem?.isMembership ||
+      product?.metadata?.is_membership === 'true' ||
+      product?.metadata?.type?.toLowerCase?.() === 'membership';
 
-    await client.users.updateUserMetadata(userId, {
-      publicMetadata: {
-        status: 'active',
-        type: 'paid',
-      },
-    });
+    if (isMembership) {
+      await db.account.update({
+        where: { id: order.accountId },
+        data: { status: 'active', stripeCustomerId: customerId },
+      });
+    }
   }
 
-  return checkoutSession;
+  return { success: true };
 };

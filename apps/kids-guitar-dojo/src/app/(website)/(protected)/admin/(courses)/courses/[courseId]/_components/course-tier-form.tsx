@@ -139,7 +139,7 @@ const CourseTiersForm = ({ initialData, courseId }: Props) => {
       for (const tier of tiers) {
         const productType = tier.type.toLowerCase();
         const baseMeta = {
-          course_id: courseId,
+          courseId: courseId,
           productType,
           position: String(tier.position),
           product_group: 'kidGuitarDojo',
