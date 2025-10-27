@@ -14,6 +14,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
+  ScrollArea,
   Table,
   TableBody,
   TableHead,
@@ -58,10 +59,12 @@ export function CourseLeaderboard({ courseId, childId }: CourseLeaderboardProps)
             <DialogTitle>Leaderboard</DialogTitle>
           </DialogHeader>
           <div className={'px-5'}>
-            <LeaderboardList courseId={courseId} childId={childId} />
+            <ScrollArea className={'h-[350px] w-full'}>
+              <LeaderboardList courseId={courseId} childId={childId} />
+            </ScrollArea>
           </div>
           <DialogBody>
-            <DialogDescription>Top 10 students in the course</DialogDescription>
+            <DialogDescription>Top 100 students in the course</DialogDescription>
           </DialogBody>
         </DialogContent>
       </Dialog>
