@@ -23,7 +23,7 @@ export default async function Page(props: PageProps) {
   const course = await getCourse({ courseSlug: params.slug });
 
   if (!child?.data) {
-    return redirect(`/courses/error?status=error&message=No%20child%20found`);
+    return redirect(`/courses/enroll/${child.purchaseId}`);
   }
 
   if (!course) {

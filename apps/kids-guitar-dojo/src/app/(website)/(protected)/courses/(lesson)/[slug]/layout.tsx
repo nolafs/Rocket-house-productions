@@ -44,7 +44,7 @@ export default async function Layout(props: LayoutProps) {
   const child = await getChild(params.slug);
 
   if (!child?.data) {
-    return redirect(`/courses/enroll`);
+    return redirect(`/courses/enroll/${child.purchaseId}`);
   }
 
   return (

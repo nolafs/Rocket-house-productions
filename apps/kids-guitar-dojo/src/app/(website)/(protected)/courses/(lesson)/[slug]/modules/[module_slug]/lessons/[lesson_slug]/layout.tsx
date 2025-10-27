@@ -29,7 +29,7 @@ export default async function Layout(props: LayoutProps) {
   const child = await getChild(params.slug);
 
   if (!child.data) {
-    return redirect(`/courses/error?status=error&message=No%20child%20found`);
+    return redirect(`/courses/enroll/${child.purchaseId}`);
   }
 
   const data = await getLesson({
