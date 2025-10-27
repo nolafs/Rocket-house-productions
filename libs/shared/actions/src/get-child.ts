@@ -45,7 +45,7 @@ export const getChild = cache(async (slug: string) => {
       });
 
       if (!child) {
-        return redirect(`/courses/enroll`);
+        return redirect(`/courses/enroll/${purchase?.id}`);
       }
 
       return {
@@ -69,14 +69,18 @@ export const getChild = cache(async (slug: string) => {
       });
     } else {
       if (!purchase.childId) {
-        return redirect(`/courses/error?status=error&message=No%20child%20found`);
+        child = await db.child.findFirst({
+          where: {
+            accountId: account?.id,
+          },
+        });
+      } else {
+        child = await db.child.findFirst({
+          where: {
+            id: purchase?.childId,
+          },
+        });
       }
-
-      child = await db.child.findFirst({
-        where: {
-          id: purchase?.childId,
-        },
-      });
     }
   }
 
@@ -86,6 +90,7 @@ export const getChild = cache(async (slug: string) => {
 
   return {
     data: child,
+    defaultData: child,
     purchaseId: purchase?.id,
     purchaseType: purchase?.type || 'free', // default to 'free' if type is not set
     purchaseCategory: purchase?.category || 'free', // default to 'free' if category is not set
