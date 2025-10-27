@@ -133,7 +133,9 @@ export async function POST(req: Request) {
                       },
                     })
                   ).id
-                : (
+                : // check if user has account child
+
+                  (
                     await tx.purchase.create({
                       data: {
                         accountId: order.accountId,

@@ -15,7 +15,7 @@ export default async function Layout(props: LayoutProps) {
   // find purchase by course slug
   const child = await getChild(params.slug);
 
-  if (!child) {
+  if (!child?.data) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }
 
