@@ -6,7 +6,7 @@ const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 export function useLeaderboard(courseId: string) {
   const { data, error, isValidating, mutate } = useSWR(
-    courseId ? `/api/courses/leaderboard?courseId=${courseId}}` : null,
+    courseId ? `/api/courses/leaderboard?courseId=${courseId}` : null,
     fetcher,
     {
       revalidateOnFocus: false,

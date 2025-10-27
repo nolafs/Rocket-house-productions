@@ -21,25 +21,39 @@ export async function GET(req: NextRequest) {
       return new NextResponse('Missing required parameters', { status: 400 });
     }
 
-    // Fetch child data from the database
     const children = await db.child.findMany({
+      where: {
+        childScores: {
+          some: { courseId },
+        },
+      },
       include: {
         account: true,
         childScores: {
-          select: {
-            score: true,
-          },
+          where: { courseId },
+          select: { score: true },
+          orderBy: { score: 'desc' },
+          take: 1, // highest score for this course only
         },
-        childProgress: true,
+        childProgress: true, // or { where: { courseId } } if course-specific
       },
+      take: 100,
     });
 
-    // Filter and sort the leaderboard based on scores
-    const leaderboard = children.filter(child => child.childScores[0]?.score);
-    const orderByScore = leaderboard.sort((a, b) => b.childScores[0]?.score - a.childScores[0]?.score);
+    console.log('[LEADEROARD]', children, courseId);
 
+    // map each child with a stable topScore value (0 if none)
+    const leaderboard = children
+      .map(child => ({
+        ...child,
+        topScore: Number(child.childScores[0]?.score ?? 0),
+      }))
+      // keep only those who have a score record at all
+      .filter(child => child.childScores.length > 0)
+      // sort by topScore descending
+      .sort((a, b) => b.topScore - a.topScore);
     // Respond with the sorted leaderboard data
-    return new NextResponse(JSON.stringify(orderByScore), { status: 200 });
+    return new NextResponse(JSON.stringify(leaderboard), { status: 200 });
   } catch (error) {
     if (isDynamicServerError(error)) {
       throw error;
