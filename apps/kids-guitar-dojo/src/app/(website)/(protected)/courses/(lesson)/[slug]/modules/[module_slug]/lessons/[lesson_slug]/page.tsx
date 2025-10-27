@@ -25,7 +25,7 @@ export default async function Page(props: PageProps) {
 
   const child = await getChild(params.slug);
 
-  if (!child) {
+  if (!child?.data) {
     return redirect(`/courses/error?status=error&message=No%20child%20found`);
   }
 
@@ -41,7 +41,7 @@ export default async function Page(props: PageProps) {
 
   if (child.purchaseType === 'free' && !data.lesson.isFree) {
     return redirect(
-      `/courses/upgrade?purchaseType=${child.purchaseType}&courseSlug=${params.slug}&childId=${child.id}`,
+      `/courses/upgrade?purchaseType=${child.purchaseType}&courseSlug=${params.slug}&childId=${child.data.id}`,
     );
   }
 
@@ -66,7 +66,7 @@ export default async function Page(props: PageProps) {
     <>
       <LessonHeader url={`/courses/${params.slug}`} lessonId={data.lesson.id} module={data.module} />
       <main className={'lesson container mx-auto mb-20 mt-[100px] flex max-w-5xl flex-col space-y-5 px-5'}>
-        <LessonComponent data={data} child={child} page={page} />
+        <LessonComponent data={data} child={child.data} page={page} />
       </main>
     </>
   );

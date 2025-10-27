@@ -22,7 +22,7 @@ export const stripeCheckoutAction = async (data: FormData): Promise<{ success: b
     redirect('/sign-in');
   }
 
-  const checkoutSession = await stripeCheckout(productId, purchaseId);
+  const checkoutSession = await stripeCheckout(productId);
 
   if (!checkoutSession?.url) {
     throw new Error('Invalid checkout session url');

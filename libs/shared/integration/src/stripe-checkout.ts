@@ -34,6 +34,16 @@ export const stripeCheckout = async (
 
     const isMembershipMeta = appSettingsRes?.membershipSettings?.course.id === courseId;
 
+    const account = await db.account.findFirst({ where: { userId } });
+    if (!account) throw new Error('Account not found');
+
+    const firstChild = !isMembershipMeta
+      ? await db.child.findFirst({
+          where: { accountId: account.id },
+          orderBy: { createdAt: 'asc' },
+        })
+      : null;
+
     // Build the planned cart snapshot
     const cart: PlannedCart = {
       items: [
@@ -41,14 +51,11 @@ export const stripeCheckout = async (
           priceId: price.id,
           productId,
           courseId,
-          childId: opts?.childId ?? null,
+          childId: opts?.childId ?? firstChild?.id ?? null,
           isMembership: !!isMembershipMeta,
         },
       ],
     };
-
-    const account = await db.account.findFirst({ where: { userId } });
-    if (!account) throw new Error('Account not found');
 
     const order = await db.order.create({
       data: {

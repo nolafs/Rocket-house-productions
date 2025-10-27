@@ -3,8 +3,9 @@ import { db } from '@rocket-house-productions/integration/server';
 import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { getAccount } from './get-account';
+import { cache } from 'react';
 
-export const getChild = async (slug: string) => {
+export const getChild = cache(async (slug: string) => {
   const { userId, sessionClaims } = await auth();
 
   if (!userId) {
@@ -37,17 +38,23 @@ export const getChild = async (slug: string) => {
     }
 
     if (!purchase.childId) {
-      return redirect(`/courses/error?status=error&message=No%20child%20found`);
-    }
+      child = await db.child.findFirst({
+        where: {
+          accountId: account?.id,
+        },
+      });
 
-    child = await db.child.findFirst({
-      where: {
-        id: purchase?.childId,
-      },
-    });
+      if (!child) {
+        return redirect(`/courses/enroll`);
+      }
 
-    if (!child) {
-      return redirect(`/courses/error?status=error&message=No%20child%20found`);
+      return {
+        data: null,
+        defaultData: child,
+        purchaseId: purchase?.id,
+        purchaseType: purchase?.type || 'free', // default to 'free' if type is not set
+        purchaseCategory: purchase?.category || 'free', // default to 'free' if category is not set
+      };
     }
   } else {
     if (!purchase) {
@@ -78,9 +85,9 @@ export const getChild = async (slug: string) => {
   }
 
   return {
-    ...child,
+    data: child,
     purchaseId: purchase?.id,
     purchaseType: purchase?.type || 'free', // default to 'free' if type is not set
     purchaseCategory: purchase?.category || 'free', // default to 'free' if category is not set
   };
-};
+});

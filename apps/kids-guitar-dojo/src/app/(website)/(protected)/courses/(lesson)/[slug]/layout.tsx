@@ -35,24 +35,24 @@ export default async function Layout(props: LayoutProps) {
 
   const { children } = props;
 
-  const child = await getChild(params.slug);
-
-  if (!child) {
-    return redirect(`/courses/error?status=error&message=No%20child%20found`);
-  }
-
   const course = await getCourse({ courseSlug: params.slug });
 
   if (!course) {
     return redirect(`/courses/error?status=error&message=No%20course%20found`);
   }
 
+  const child = await getChild(params.slug);
+
+  if (!child?.data) {
+    return redirect(`/courses/enroll`);
+  }
+
   return (
-    <CourseProgressionProvider userId={child.id} course={course}>
+    <CourseProgressionProvider userId={child?.data.id} course={course}>
       <ModuleWrapper>
         <Suspense fallback={''}>
           <ClerkProvider dynamic>
-            <Header childId={child.id} avatar={child?.profilePicture} name={child?.name} />
+            <Header childId={child?.data.id} avatar={child?.data?.profilePicture} name={child?.data.name} />
             <ModuleAwards />
           </ClerkProvider>
         </Suspense>

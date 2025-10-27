@@ -22,11 +22,19 @@ export default async function Page(props: PageProps) {
   const child = await getChild(params.slug);
   const course = await getCourse({ courseSlug: params.slug });
 
+  if (!child?.data) {
+    return redirect(`/courses/error?status=error&message=No%20child%20found`);
+  }
+
+  if (!course) {
+    return redirect(`/courses/error?status=error&message=No%20Course%20found`);
+  }
+
   return (
     <CourseNavigationPage
       purchaseType={child.purchaseType}
       course={course}
-      childId={child.id}
+      childId={child?.data.id}
       role={sessionClaims.metadata.role as string}
     />
   );
