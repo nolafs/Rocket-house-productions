@@ -106,7 +106,19 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
         if (result === 'done') {
           setPolling(false);
           // Option A: navigate immediately
-          router.replace('/courses');
+          // Refresh flags & set cookie for middleware
+          try {
+            await fetch('/refresh', {
+              method: 'POST',
+              cache: 'no-store',
+              credentials: 'include',
+            });
+          } catch (e) {
+            console.warn('refresh-flags failed; proceeding anyway', e);
+          }
+
+          router.replace('/courses'); // next request sees fresh cookie
+
           return;
           // Option B (if you prefer a clickable CTA instead of auto-redirect):
           // setState('active'); setPolling(false); return;
@@ -122,7 +134,18 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
         const result = await checkOnce();
         if (result === 'done') {
           setPolling(false);
-          router.replace('/courses');
+          // Refresh flags & set cookie for middleware
+          try {
+            await fetch('/refresh', {
+              method: 'POST',
+              cache: 'no-store',
+              credentials: 'include',
+            });
+          } catch (e) {
+            console.warn('refresh-flags failed; proceeding anyway', e);
+          }
+
+          router.replace('/courses'); // next request sees fresh cookie
           return;
         }
       }
