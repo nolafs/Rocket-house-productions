@@ -97,7 +97,7 @@ export function Header({ childId, name, avatar, background = 'transparent' }: He
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>
-                  <span className={'mr-5 inline-block'}>Account </span>
+                  <span className={'mr-5 inline-block'}>Account</span>
                   <Badge>
                     <span className={'capitalize'}>{tier}</span>
                   </Badge>
