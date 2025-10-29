@@ -133,7 +133,7 @@ export async function SectionPricingTable({
                       <CheckoutButton
                         type={'payed'}
                         mostPopular={tier.mostPopular}
-                        productId={process.env.PRODUCTION ? upgradeTier?.stripeId : upgradeTier?.stripeIdDev}
+                        productId={isProduction ? upgradeTier?.stripeId : upgradeTier?.stripeIdDev}
                         courseId={courseId}
                         purchaseId={purchaseId}
                         label={'Upgrade Now'}
@@ -142,7 +142,7 @@ export async function SectionPricingTable({
                       <BuyButton
                         type={'payed'}
                         mostPopular={tier.mostPopular}
-                        productId={process.env.PRODUCTION ? upgradeTier?.stripeId : upgradeTier?.stripeIdDev}
+                        productId={isProduction ? upgradeTier?.stripeId : upgradeTier?.stripeIdDev}
                         courseId={courseId || null}
                         label={'Upgrade Now'}
                       />
@@ -156,7 +156,7 @@ export async function SectionPricingTable({
                     <CheckoutButton
                       type={'payed'}
                       mostPopular={tier.mostPopular}
-                      productId={process.env.PRODUCTION ? tier.stripeId : tier.stripeIdDev}
+                      productId={isProduction ? tier.stripeId : tier.stripeIdDev}
                       courseId={courseId}
                       purchaseId={purchaseId}
                     />
@@ -164,7 +164,7 @@ export async function SectionPricingTable({
                     <BuyButton
                       type={'payed'}
                       mostPopular={tier.mostPopular}
-                      productId={process.env.PRODUCTION ? tier.stripeId : tier.stripeIdDev}
+                      productId={isProduction ? tier.stripeId : tier.stripeIdDev}
                       courseId={null}
                     />
                   )}

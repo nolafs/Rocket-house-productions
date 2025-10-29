@@ -11,6 +11,8 @@ export default async function Page(props: PageProps) {
   const { product } = await props.params;
   const { userId, sessionClaims } = await auth();
 
+  console.log('ORDER PAGE', product, sessionClaims);
+
   if (!userId) {
     return redirect('/');
   }

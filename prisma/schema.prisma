@@ -415,7 +415,7 @@ model Purchase {
 model PurchaseTransaction {
   id         String   @id @default(cuid())
   purchaseId String
-  purchase   Purchase @relation(fields: [purchaseId], references: [id])
+  purchase   Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
 
   // Stripe identifiers
   paymentIntentId String  @unique
@@ -443,7 +443,7 @@ model PurchaseTransaction {
 model Order {
   id        String  @id @default(cuid())
   accountId String
-  account   Account @relation(fields: [accountId], references: [id])
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   // Stripe reconciliation
   stripeCheckoutSessionId String? @unique

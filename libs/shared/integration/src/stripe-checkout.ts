@@ -21,6 +21,7 @@ export const stripeCheckout = async (
     // 1) Resolve the active price for the product
     const prices = await stripe.prices.search({ query: `product:'${productId}' AND active:'true'` });
     const price = prices.data?.[0];
+
     if (!price) throw new Error(`No active price for product ${productId}`);
 
     // 2) Get the product metadata to recover your courseId/type for later
