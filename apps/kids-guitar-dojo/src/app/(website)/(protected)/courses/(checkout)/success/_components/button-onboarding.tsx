@@ -39,6 +39,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
 
     if (!user) {
       setState('error');
+      router.replace('/');
       return;
     }
 
@@ -104,7 +105,6 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
         const result = await checkOnce();
         if (cancelled) return;
         if (result === 'done') {
-          setPolling(false);
           // Option A: navigate immediately
           // Refresh flags & set cookie for middleware
           try {
@@ -116,8 +116,8 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
           } catch (e) {
             console.warn('refresh-flags failed; proceeding anyway', e);
           }
-
-          router.replace('/courses'); // next request sees fresh cookie
+          setPolling(false);
+          router.replace('/refresh?next=/courses'); // next request sees fresh cookie
 
           return;
           // Option B (if you prefer a clickable CTA instead of auto-redirect):
@@ -133,7 +133,6 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
         await reconcileOnce();
         const result = await checkOnce();
         if (result === 'done') {
-          setPolling(false);
           // Refresh flags & set cookie for middleware
           try {
             await fetch('/refresh', {
@@ -144,8 +143,8 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
           } catch (e) {
             console.warn('refresh-flags failed; proceeding anyway', e);
           }
-
-          router.replace('/courses'); // next request sees fresh cookie
+          setPolling(false);
+          router.replace('/refresh?next=/courses'); // next request sees fresh cookie
           return;
         }
       }
@@ -179,7 +178,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
 
   if (state === 'active') {
     return (
-      <Link href="/courses" className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
+      <Link href="/refresh?next=/courses" className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
         Start Onboarding
       </Link>
     );
@@ -187,7 +186,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
 
   if (state === 'returning') {
     return (
-      <Link href="/courses" className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
+      <Link href="/refresh?next=/courses" className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
         Return to Course
       </Link>
     );

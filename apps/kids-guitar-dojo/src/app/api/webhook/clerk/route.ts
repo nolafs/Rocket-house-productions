@@ -70,10 +70,8 @@ export async function POST(req: Request) {
 
           throw new Error('Cannot create user, user id already exists');
         }
-
-        await (
-          await clerkClient()
-        ).users.updateUserMetadata(id, {
+        const client = await clerkClient();
+        await client.users.updateUserMetadata(id, {
           publicMetadata: {
             status: 'inactive',
             role: 'member',
