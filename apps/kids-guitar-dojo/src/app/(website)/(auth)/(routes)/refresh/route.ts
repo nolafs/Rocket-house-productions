@@ -10,6 +10,8 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const { userId } = await auth();
 
+  const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
+
   // sanitize "next" to avoid open redirects
   const next = url.searchParams.get('next') || '/courses';
   const nextSafe = next.startsWith('/') ? next : '/courses';
@@ -45,7 +47,7 @@ export async function GET(req: Request) {
   res.cookies.set('sf', token, {
     httpOnly: true,
     sameSite: 'lax',
-    secure: process.env.NODE_ENV === 'production', // false on localhost
+    secure: isProduction, // false on localhost
     path: '/',
     maxAge: 60 * 30,
   });
