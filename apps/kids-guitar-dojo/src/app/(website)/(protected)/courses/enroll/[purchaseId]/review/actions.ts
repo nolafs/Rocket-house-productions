@@ -146,5 +146,6 @@ export const submitOnBoardingAction = async (
   // Update purchase with child id
 
   const retVal = { success: true, redirect: OnBoardingRoutes.COMPLETED };
+  console.log('[ONBOARDING] [REVIEW] retVal', retVal);
   return retVal;
 };

@@ -28,10 +28,15 @@ export async function POST(req: Request) {
   // Successfully constructed event.
   // Record event id for idempotency up-front
   const already = await db.webhookEvent.findUnique({ where: { stripeEventId: event.id } });
+
   if (already) {
     return NextResponse.json({ message: 'Already processed' }, { status: 200 });
   }
-  await db.webhookEvent.create({ data: { stripeEventId: event.id } });
+  await db.webhookEvent.upsert({
+    where: { stripeEventId: event.id },
+    create: { stripeEventId: event.id, type: event.type ?? null },
+    update: {},
+  });
 
   const permittedEvents: string[] = [
     'invoice.paid',

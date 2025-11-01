@@ -53,7 +53,7 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
         resetLocalStorage();
 
         if (redirect) {
-          return router.push(baseUrl + redirect);
+          return router.push(redirect);
         }
       } else if (errorMsg) {
         setSubmitting(false);
@@ -61,9 +61,6 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
         setSubmitError(true);
         setActive(true);
         toast.error(errorMsg);
-        if (redirect) {
-          return router.push(baseUrl + redirect);
-        }
       }
     }
   };
@@ -159,7 +156,9 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
             </p>
           </div>
           <div className="mt-5 flex justify-center">
-            <Link href={'/courses'} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'w-full')}>
+            <Link
+              href={'/refresh?next=/courses'}
+              className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'w-full')}>
               Go to course
             </Link>
           </div>

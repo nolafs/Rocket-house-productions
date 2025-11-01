@@ -8,7 +8,7 @@ export enum OnBoardingRoutes {
   CHILD_DETAILS = '/step-two',
   CHILD_AVATAR = '/step-three',
   REVIEW = '/review',
-  COMPLETED = '/courses',
+  COMPLETED = '/refresh?next=/courses',
 }
 
 /* eslint-enable @typescript-eslint/no-duplicate-enum-values */

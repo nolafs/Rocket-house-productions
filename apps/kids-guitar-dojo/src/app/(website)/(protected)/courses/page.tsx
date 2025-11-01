@@ -37,7 +37,7 @@ export default async function Page() {
 
   if (!userData) {
     // cookie missing/stale → go set it in a route handler, then come back here
-    redirect('/auth/refresh?next=/courses');
+    redirect('/refresh?next=/courses');
   }
 
   if (!appSetting?.membershipSettings) {
