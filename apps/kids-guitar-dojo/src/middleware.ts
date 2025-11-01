@@ -174,6 +174,8 @@ export default clerkMiddleware(
     const purchases = Array.isArray(flags.purchases) ? flags.purchases : [];
     const childEnrolled = purchases.filter(v => v.childId !== null);
 
+    console.info('[MIDDLEWARE COURSE] CHECK PURCHASES');
+
     if (flags.hasPurchases && flags.hasMembership) {
       if (urlPath.endsWith(`/courses`)) {
         if (childEnrolled.length === 0) {
@@ -192,10 +194,12 @@ export default clerkMiddleware(
           console.info('[MIDDLEWARE COURSE] NO CHILD ENROLLED - GO TO ENROLLMENT');
           return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll`);
         }
+
+        console.info('[MIDDLEWARE COURSE] GO TO COURSE LESSON');
         return NextResponse.next();
       }
     }
-
+    console.info('[MIDDLEWARE COURSE] ALL CHECKS PASSED');
     return NextResponse.next();
   },
   { debug: false },
