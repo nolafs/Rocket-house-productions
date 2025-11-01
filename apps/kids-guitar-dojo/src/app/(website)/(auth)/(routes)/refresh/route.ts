@@ -36,6 +36,8 @@ export async function GET(req: Request) {
     },
   });
 
+  console.log('[REFRESH]', user.publicMetadata, flags);
+
   // 3) Sign the flags into a short-lived cookie for middleware
   const token = await new SignJWT(flags as any)
     .setProtectedHeader({ alg: 'HS256' })
