@@ -28,6 +28,7 @@ export const getChild = cache(async (slug: string) => {
   // is user admin
 
   console.log('[getChild] sessionClaims', sessionClaims);
+  console.log('[getChild] purchase', purchase);
 
   const isAdmin = (sessionClaims?.metadata as { role: string })?.role === 'admin';
   let child = null;
@@ -50,6 +51,20 @@ export const getChild = cache(async (slug: string) => {
 
       return {
         data: null,
+        defaultData: child,
+        purchaseId: purchase?.id,
+        purchaseType: purchase?.type || 'free', // default to 'free' if type is not set
+        purchaseCategory: purchase?.category || 'free', // default to 'free' if category is not set
+      };
+    } else {
+      child = db.child.findFirst({
+        where: {
+          id: purchase.childId,
+        },
+      });
+
+      return {
+        data: child,
         defaultData: child,
         purchaseId: purchase?.id,
         purchaseType: purchase?.type || 'free', // default to 'free' if type is not set
