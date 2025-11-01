@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { getAccount } from './get-account';
 import { cache } from 'react';
+import { Child } from '@prisma/client';
 
 export const getChild = cache(async (slug: string) => {
   const { userId, sessionClaims } = await auth();
@@ -31,7 +32,7 @@ export const getChild = cache(async (slug: string) => {
   console.log('[getChild] purchase', purchase);
 
   const isAdmin = (sessionClaims?.metadata as { role: string })?.role === 'admin';
-  let child = null;
+  let child: Child | null = null;
 
   if (!isAdmin) {
     if (!purchase) {
@@ -57,7 +58,7 @@ export const getChild = cache(async (slug: string) => {
         purchaseCategory: purchase?.category || 'free', // default to 'free' if category is not set
       };
     } else {
-      child = db.child.findFirst({
+      child = await db.child.findFirst({
         where: {
           id: purchase.childId,
         },

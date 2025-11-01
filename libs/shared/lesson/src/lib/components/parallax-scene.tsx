@@ -18,27 +18,32 @@ export function ParallaxScene({ children, className }: ParallaxSceneProps) {
   const container = useRef<HTMLDivElement | null>(null);
 
   useGSAP(() => {
-    //check if window is defined
-    if (typeof window === 'undefined') {
-      return;
-    }
+    if (typeof window === 'undefined') return;
 
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
 
-    window.addEventListener('mousemove', e => {
+    const handleMouseMove = (e: MouseEvent) => {
       const dx = e.clientX - cx;
       const dy = e.clientY - cy;
       const tiltx = dy / cy;
       const tilty = -(dx / cx);
-      const radius = Math.sqrt(Math.pow(tiltx, 2) + Math.pow(tilty, 2));
+      const radius = Math.sqrt(tiltx ** 2 + tilty ** 2);
       const degree = radius * 12;
-      gsap.to(container.current, 1, {
+      gsap.to(container.current, {
         rotationX: tiltx * 2,
         rotationY: tilty * 2,
         ease: 'power2',
+        duration: 1,
       });
-    });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
+    // ✅ cleanup function
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, [container]);
 
   return (
