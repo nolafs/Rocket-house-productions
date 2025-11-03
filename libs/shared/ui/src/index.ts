@@ -12,3 +12,4 @@ export * from './paginagtion/pagination';
 export * from './star-rating/star-rating';
 export * from './button-group/button-group';
 export * from './notification/notification-block';
+export * from './data-table/data-table';
