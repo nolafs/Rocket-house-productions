@@ -16,11 +16,10 @@ import ButtonSubmit from './button-submit';
 interface ButtonAddChildProps {
   baseUrl: string; // where "Create New Child" should go
   purchaseId: string;
-  courseSlug: string; // add this so we can redirect properly
   students: Child[];
 }
 
-const ButtonAddChild = ({ baseUrl, purchaseId, courseSlug, students }: ButtonAddChildProps) => {
+const ButtonAddChild = ({ baseUrl, purchaseId, students }: ButtonAddChildProps) => {
   const router = useRouter();
   const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -44,7 +43,6 @@ const ButtonAddChild = ({ baseUrl, purchaseId, courseSlug, students }: ButtonAdd
 
     // include courseSlug in the payload for the server action
     formData.set('purchaseId', purchaseId);
-    formData.set('courseSlug', courseSlug);
     formData.set('childId', childId);
 
     const res = await assignChildToPurchase(formData);
@@ -58,7 +56,7 @@ const ButtonAddChild = ({ baseUrl, purchaseId, courseSlug, students }: ButtonAdd
         router.push(res.redirect);
       } else {
         // fallback refresh route
-        router.push(`/auth/refresh?next=/courses/${courseSlug}`);
+        router.push(`/refresh?next=/courses`);
       }
     } else {
       setSubmitError(res.errorMsg ?? 'Something went wrong');
@@ -74,7 +72,6 @@ const ButtonAddChild = ({ baseUrl, purchaseId, courseSlug, students }: ButtonAdd
           {!submitSuccess && (
             <form action={handleFormSubmit} className="mb-5 flex flex-col gap-4">
               <input type="hidden" name="purchaseId" value={purchaseId} />
-              <input type="hidden" name="courseSlug" value={courseSlug} />
 
               <div>
                 <div className="font-lesson-heading !mt-0 font-semibold">Select existing student</div>
@@ -119,9 +116,9 @@ const ButtonAddChild = ({ baseUrl, purchaseId, courseSlug, students }: ButtonAdd
                 <p className="mt-2">If you aren’t redirected automatically, click below to go to the course.</p>
               </div>
               <Link
-                href={`/auth/refresh?next=/courses/${courseSlug}`}
+                href={`/refresh?next=/courses`}
                 className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'w-full')}>
-                Go to course
+                Go to courses
               </Link>
             </div>
           )}
