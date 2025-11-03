@@ -1,3 +1,6 @@
+export * from './lib/parent/parent-orders-transactions';
+export * from './lib/parent/transactions';
+export * from './lib/parent/orders';
 export * from './lib/courses-timeline-list/courses-timeline-list';
 export { CookieConsent } from './lib/cookie-consent/cookie-consent';
 export * from './lib/section-pricing-table/stripe-pricing';

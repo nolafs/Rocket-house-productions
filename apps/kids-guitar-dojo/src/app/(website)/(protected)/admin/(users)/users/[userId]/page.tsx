@@ -5,9 +5,24 @@ import { columns } from './_components/columns';
 import { redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration/server';
 import { Banner } from '@rocket-house-productions/features/ui';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@rocket-house-productions/shadcn-ui';
 import Actions from './_components/actions';
 import ActionRole from './_components/action-role';
+import { getOrders, getTransactions } from '@rocket-house-productions/actions/server';
+import TransactionsTable from '../../../../../../../../../../libs/shared/features/src/lib/parent/components/transaction-table';
+import { TransactionRow } from '../../../../../../../../../../libs/shared/features/src/lib/parent/components/transactions-columns';
+import OrdersTable from '../../../../../../../../../../libs/shared/features/src/lib/parent/components/order-table';
+import { OrderRow } from '../../../../../../../../../../libs/shared/features/src/lib/parent/components/order-columns';
 
 export default async function Page(props: { params: Promise<{ userId: string }> }) {
   const params = await props.params;
@@ -21,18 +36,21 @@ export default async function Page(props: { params: Promise<{ userId: string }> 
     return redirect('/');
   }
 
-  const user = await db.account.findFirst({
-    where: {
-      id: params.userId,
-    },
-    include: {
-      purchases: {
-        include: {
-          course: true,
+  const getAccount = async () =>
+    await db.account.findFirst({
+      where: {
+        id: params.userId,
+      },
+      include: {
+        purchases: {
+          include: {
+            course: true,
+          },
         },
       },
-    },
-  });
+    });
+
+  const [user, orders, transactions] = await Promise.all([getAccount(), getOrders(userId), getTransactions(userId)]);
 
   return (
     <>
@@ -93,8 +111,23 @@ export default async function Page(props: { params: Promise<{ userId: string }> 
           </Card>
         </div>
 
-        {user?.purchases.length === 0 && <p>No purchases found</p>}
-        {user?.purchases && <DataTable columns={columns} data={user.purchases} />}
+        <Tabs defaultValue="purchases" className="w-full">
+          <TabsList className={'w-full'}>
+            <TabsTrigger value="purchases">Purchase</TabsTrigger>
+            <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="transactions">Transactions</TabsTrigger>
+          </TabsList>
+          <TabsContent value="purchases">
+            {user?.purchases.length === 0 && <p>No purchases found</p>}
+            {user?.purchases && <DataTable columns={columns} data={user.purchases} />}
+          </TabsContent>
+          <TabsContent value="orders">
+            <OrdersTable rows={orders as OrderRow[]} />
+          </TabsContent>
+          <TabsContent value="transactions">
+            <TransactionsTable rows={transactions as TransactionRow[]} />
+          </TabsContent>
+        </Tabs>
       </div>
     </>
   );
