@@ -23,7 +23,9 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
 
   //check if user has purchased the course
   const purchasesByCourse = userData.purchases?.filter(purchase => purchase?.course?.id === course.id) || [];
-  const hasPremiumPurchase = purchasesByCourse.some(purchase => purchase.category === 'premium');
+  const hasPremiumPurchase = purchasesByCourse.some(
+    purchase => purchase.category === 'premium' || purchase.category === 'included',
+  );
 
   const getPriceOptionTiers = async (tiers: Tier[]): Promise<PriceTier[]> => {
     if (!tiers.length) {
