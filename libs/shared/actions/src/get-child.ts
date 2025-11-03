@@ -6,7 +6,7 @@ import { getAccount } from './get-account';
 import { cache } from 'react';
 import { Child } from '@prisma/client';
 
-export const getChild = cache(async (slug: string) => {
+export const getChild = cache(async (slug: string, next = true) => {
   const { userId, sessionClaims } = await auth();
 
   if (!userId) {
@@ -47,7 +47,9 @@ export const getChild = cache(async (slug: string) => {
       });
 
       if (!child) {
-        return redirect(`/courses/enroll/${purchase?.id}`);
+        if (next) {
+          return redirect(`/courses/enroll/${purchase?.id}`);
+        }
       }
 
       return {
