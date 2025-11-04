@@ -87,6 +87,38 @@ export const ordersColumns: ColumnDef<OrderRow>[] = [
     sortingFn: 'datetime',
   },
   {
+    accessorKey: 'metadata',
+    header: 'Notes',
+    cell: ({ getValue }) => {
+      const meta = getValue() as Record<string, any> | null;
+      return meta && Object.keys(meta).length ? (
+        <details className="text-xs">
+          <summary className="text-primary cursor-pointer">view</summary>
+          <pre className="mt-1 whitespace-pre-wrap break-words">{JSON.stringify(meta, null, 2)}</pre>
+        </details>
+      ) : (
+        '—'
+      );
+    },
+    enableSorting: false,
+  },
+  {
+    accessorKey: 'cart',
+    header: 'Cart',
+    cell: ({ getValue }) => {
+      const meta = getValue() as Record<string, any> | null;
+      return meta && Object.keys(meta).length ? (
+        <details className="text-xs">
+          <summary className="text-primary cursor-pointer">view</summary>
+          <pre className="mt-1 whitespace-pre-wrap break-words">{JSON.stringify(meta, null, 2)}</pre>
+        </details>
+      ) : (
+        '—'
+      );
+    },
+    enableSorting: false,
+  },
+  {
     accessorKey: 'accountId',
     header: 'Account',
     cell: ({ getValue }) => (
