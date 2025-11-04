@@ -3,6 +3,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@rocket-house-productions/shadcn-ui/server';
+import Link from 'next/link';
 
 export type TransactionRow = {
   id?: string;
