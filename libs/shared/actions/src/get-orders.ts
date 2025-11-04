@@ -81,6 +81,9 @@ export async function getAllTransactions(skip: 0, take: 50): Promise<Partial<Pur
     orderBy: { createdAt: 'desc' },
     skip: skip,
     take: take,
+    include: {
+      purchase: true,
+    },
   });
 
   return purchaseTransactions || [];

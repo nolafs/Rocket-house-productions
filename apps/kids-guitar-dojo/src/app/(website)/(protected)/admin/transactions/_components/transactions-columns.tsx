@@ -3,6 +3,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { Badge } from '@rocket-house-productions/shadcn-ui/server';
+import Link from 'next/link';
 
 export type TransactionRow = {
   id?: string;
@@ -92,7 +93,14 @@ export const txColumns: ColumnDef<TransactionRow>[] = [
   {
     accessorKey: 'courseId',
     header: 'Course',
-    cell: ({ getValue }) => (getValue() ? <code className="text-xs">{String(getValue())}</code> : '—'),
+    cell: ({ getValue }) =>
+      getValue() ? (
+        <Link className={'text-blue-800 underline'} href={`/admin/courses/${getValue()}`}>
+          <code className="text-xs">{String(getValue())}</code>
+        </Link>
+      ) : (
+        '—'
+      ),
     enableSorting: true,
   },
   {

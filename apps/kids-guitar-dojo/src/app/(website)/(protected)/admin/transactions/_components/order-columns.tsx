@@ -86,4 +86,14 @@ export const ordersColumns: ColumnDef<OrderRow>[] = [
     cell: ({ getValue }) => fmtDate(getValue() as any),
     sortingFn: 'datetime',
   },
+  {
+    accessorKey: 'accountId',
+    header: 'Account',
+    cell: ({ getValue }) => (
+      <Link className={'text-blue-800 underline'} href={`/admin/users/${getValue()}`}>
+        <code className="text-xs">{String(getValue())}</code>
+      </Link>
+    ),
+    enableSorting: true,
+  },
 ];
