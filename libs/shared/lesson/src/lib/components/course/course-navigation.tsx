@@ -22,6 +22,7 @@ import { useClientMediaQuery } from '@rocket-house-productions/hooks';
 import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
 
 import dynamic from 'next/dynamic';
+import { SoftShadows } from '@react-three/drei';
 
 const Landscape = dynamic(() => import('./course-scene/landscape').then(mod => mod.Landscape), {
   ssr: false,
@@ -270,6 +271,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
         <SafeSkyBox skyUrl={course?.bookScene?.skyUrl} />
 
+        <SoftShadows size={5} samples={20} focus={40} />
+
         {/* rest of your 3D content */}
         <directionalLight
           shadow-mapSize-width={1024 * (isMobile ? 2 : 4)}
@@ -280,7 +283,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
           shadow-camera-top={500}
           shadow-camera-bottom={-100}
           position={[-40, 100, 250]}
-          intensity={2.5}
+          rotation={[0, Math.PI, 0]}
+          intensity={2}
           castShadow
         />
 
@@ -357,5 +361,3 @@ const ZoomControl = forwardRef((_, ref) => {
 
   return null;
 });
-
-export default CourseNavigation;

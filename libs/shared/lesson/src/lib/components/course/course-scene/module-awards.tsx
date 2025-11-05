@@ -306,41 +306,40 @@ type DownloadCollection = {
 export function ModuleAwards({ display = null }: ModuleAwardsProps) {
   const { getAwards, modules, getAttachment } = useModuleProgressStore(store => store);
   const { courses, getCurrentCourse } = useCourseProgressionStore(store => store);
-  const [awardCollection, setAwardCollection] = useState<AwardCollection[] | null>(null);
 
-  useEffect(() => {
-    if (!display) return;
+  const awardCollection: AwardCollection[] = useMemo(() => {
+    if (!display) return [];
 
-    const awards = getAwards();
-    if (!awards) return;
+    const awards = getAwards?.() ?? [];
+    if (!awards.length) return [];
 
-    if (awards.length !== 0) {
-      const awardsData: AwardCollection[] = display.modulePosition.reduce((acc: AwardCollection[], item) => {
-        const award = awards.find((awardItem: AvailableAward) => awardItem.moduleId === item.id);
-        const attachment = getAttachment(item.id);
+    // Build a fast lookup
+    const awardByModuleId = new Map<string, AvailableAward>();
+    for (const a of awards) awardByModuleId.set(a.moduleId, a);
 
-        const certificates: ModuleAttachment[] = attachment?.filter(att => att.attachmentType.name === 'Certificate');
+    const mods = display.modulePosition ?? [];
+    const out: AwardCollection[] = [];
 
-        if (award) {
-          acc.push({
-            ...award,
-            certificates: certificates,
-            position: item.position,
-          });
-        }
-        return acc;
-      }, []);
+    for (let i = 0; i < mods.length; i++) {
+      const item = mods[i];
+      const nextPos = mods[i + 1]?.position ?? item.position;
 
-      setAwardCollection(prevState => awardsData);
+      const award = awardByModuleId.get(item.id);
+      if (!award) continue;
 
-      // Preload award textures when collection changes
-      awardsData.forEach(item => {
-        if (item?.awardType.badgeUrl) {
-          useLoader.preload(THREE.TextureLoader, item.awardType.badgeUrl);
-        }
+      const attachment = getAttachment?.(item.id) ?? [];
+      const certificates: ModuleAttachment[] = attachment.filter(att => att.attachmentType?.name === 'Certificate');
+
+      out.push({
+        ...award,
+        certificates,
+        position: nextPos,
       });
     }
-  }, [display, modules]);
+
+    return out;
+    // keep deps tight; if getAwards/getAttachment are recreated each render, wrap them with useCallback
+  }, [display?.modulePosition, getAwards, getAttachment]);
 
   const downloadCollection = useMemo(() => {
     if (!display) return;
@@ -379,7 +378,7 @@ export function ModuleAwards({ display = null }: ModuleAwardsProps) {
           {awardCollection?.map((item, idx) => {
             if (item?.awardType.badgeUrl) {
               return (
-                <group key={item.id} position={awardCollection[idx + 1]?.position || [0, display?.pathLength, 0]}>
+                <group key={item.id} position={awardCollection[idx]?.position || [0, display?.pathLength, 0]}>
                   <AwardPlaneManual image={item.awardType.badgeUrl} />
                 </group>
               );
@@ -390,9 +389,7 @@ export function ModuleAwards({ display = null }: ModuleAwardsProps) {
           {awardCollection?.map((item, idx) => {
             if (item?.certificates?.length) {
               return (
-                <group
-                  key={`cert-${item.id}`}
-                  position={awardCollection[idx + 1]?.position || [0, display?.pathLength, 0]}>
+                <group key={`cert-${item.id}`} position={awardCollection[idx]?.position || [0, display?.pathLength, 0]}>
                   {item.certificates.map(attachment => (
                     <DownloadPlaneManual
                       key={attachment.id}

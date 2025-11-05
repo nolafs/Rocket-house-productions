@@ -106,7 +106,14 @@ export const txColumns: ColumnDef<TransactionRow>[] = [
   {
     accessorKey: 'childId',
     header: 'Child',
-    cell: ({ getValue }) => (getValue() ? <code className="text-xs">{String(getValue())}</code> : '—'),
+    cell: ({ getValue }) =>
+      getValue() ? (
+        <Link className={'text-blue-800 underline'} href={`/admin/enrolment/${getValue()}`}>
+          <code className="text-xs">{String(getValue())}</code>
+        </Link>
+      ) : (
+        '—'
+      ),
     enableSorting: true,
   },
 ];

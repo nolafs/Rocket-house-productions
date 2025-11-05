@@ -46,6 +46,14 @@ export async function getAllOrders(skip: 0, take: 50): Promise<Partial<Order>[] 
     orderBy: { createdAt: 'desc' },
     skip: skip,
     take: take,
+    include: {
+      account: {
+        select: {
+          id: true,
+          email: true,
+        },
+      },
+    },
   });
 
   return ordersData || [];
