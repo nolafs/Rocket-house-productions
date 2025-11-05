@@ -13,6 +13,10 @@ export type OrderRow = {
   amountTotal?: number | null; // minor units
   currency?: string | null;
   metadata?: Record<string, any> | null;
+  account?: {
+    id?: string;
+    email?: string;
+  };
 };
 
 const fmtDate = (d?: string | Date | null) =>
@@ -127,5 +131,12 @@ export const ordersColumns: ColumnDef<OrderRow>[] = [
       </Link>
     ),
     enableSorting: true,
+  },
+  {
+    accessorKey: 'account.email',
+    header: 'Email',
+    enableSorting: true,
+    cell: ({ row }) => row.original.account?.email ?? '—',
+    enableGlobalFilter: true,
   },
 ];
