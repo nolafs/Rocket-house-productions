@@ -2,7 +2,7 @@
 import { db } from '@rocket-house-productions/integration/server';
 
 export const getAppSettings = async () => {
-  const appSettings = await db.appSettings.findFirst({
+  return await db.appSettings.findFirst({
     include: {
       membershipSettings: {
         include: {
@@ -30,8 +30,4 @@ export const getAppSettings = async () => {
       },
     },
   });
-
-  console.log('getAppSettings', appSettings);
-
-  return appSettings;
 };

@@ -45,10 +45,6 @@ export default async function Page() {
     redirect('/courses/error?status=error&message=No%20membership%20settings%20found');
   }
 
-  //TODO: fix membership settings type
-
-  console.log('[COURSE LANDING]', courses, userData);
-
   return (
     <LessonPageWrapper navbar={<NavbarSimple logo={logo} />}>
       <CoursesTimelineList

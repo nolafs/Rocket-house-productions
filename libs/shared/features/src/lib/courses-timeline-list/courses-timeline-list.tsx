@@ -14,7 +14,7 @@ export type CoursePayload = Prisma.CourseGetPayload<{
 interface CourseTimelineProps {
   courses: CoursePayload[];
   userData: Partial<userSession>;
-  membershipData: Partial<MembershipSettings> & { course: { tries: Tier[] } };
+  membershipData: Partial<MembershipSettings> & { course: { tiers: Tier[] } }; // corrected property name
 }
 
 export function CoursesTimelineList({ courses, membershipData, userData }: CourseTimelineProps) {

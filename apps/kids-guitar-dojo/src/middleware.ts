@@ -156,7 +156,7 @@ export default clerkMiddleware(
     }
 
     // Account area requires valid parent PIN
-    if (urlPath.startsWith(`/courses/account`)) {
+    if (urlPath.startsWith(`/courses/account`) || urlPath.startsWith(`/courses/order`)) {
       console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', !!pinToken);
       try {
         if (!pinToken) throw new Error('no pin');
