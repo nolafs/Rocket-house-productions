@@ -11,7 +11,6 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from '@rocket-house-productions/shadcn-ui';
 
 import { useRouter } from 'next/navigation';
@@ -21,7 +20,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import axios from 'axios';
-import { Button } from '@rocket-house-productions/ui';
+import { Button } from '@rocket-house-productions/shadcn-ui/server';
 
 type CoursePayload = Prisma.CourseGetPayload<{
   include: {
@@ -106,6 +105,8 @@ export default function BuySheet({ course, options, userData }: BuySheetProps) {
   if (userData?.hasPremiumPurchase) {
     return null;
   }
+
+  console.log('Initiating checkout for course:', userData);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>

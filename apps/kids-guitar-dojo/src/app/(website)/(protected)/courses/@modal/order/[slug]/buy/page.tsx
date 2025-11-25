@@ -25,7 +25,7 @@ async function readFlagsFromCookie() {
 }
 
 export default async function BuyCourseSheet({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const [course, appSetting, userData] = await Promise.all([
     getCourse({ courseSlug: slug }),

@@ -6,8 +6,6 @@ import Image from 'next/image';
 import CourseBuyButton from './course-buy-button';
 import { userSession } from '@/types/userSesssion';
 import { MembershipSettings, Tier } from '@prisma/client';
-import { PriceTier } from '@rocket-house-productions/types';
-import { getPriceOptionTiers } from '@rocket-house-productions/actions/server';
 
 interface CourseCardProps {
   userData: Partial<userSession>;
@@ -17,27 +15,11 @@ interface CourseCardProps {
 }
 
 export async function CourseCard({ membershipData, userData, course, idx = 0 }: CourseCardProps) {
-  let options: PriceTier[];
-
   //check if user has purchased the course
   const purchasesByCourse = userData.purchases?.filter(purchase => purchase?.course?.id === course.id) || [];
   const hasPremiumPurchase = purchasesByCourse.some(
     purchase => purchase.category === 'premium' || purchase.category === 'included',
   );
-
-  if (!userData.hasMembership) {
-    if (!membershipData?.course) {
-      console.error('No membership course found');
-    }
-    const product = membershipData.course.tiers; // corrected
-    options = await getPriceOptionTiers(product);
-  } else {
-    const product: Tier[] = course.tiers;
-    if (!product.length) {
-      throw new Error('No product tiers found for course: ' + course.title);
-    }
-    options = await getPriceOptionTiers(product);
-  }
 
   return (
     <div
@@ -85,7 +67,6 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
                     hasPurchasedCourse: true,
                   }}
                   course={course}
-                  options={options || null}
                 />
               )}
               <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
@@ -97,7 +78,7 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
               <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
                 Preview Course
               </Link>
-              <CourseBuyButton label={'Buy now'} course={course} options={options || null} />
+              <CourseBuyButton label={'Buy now'} course={course} />
             </>
           )}
         </div>
