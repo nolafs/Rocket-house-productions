@@ -157,7 +157,7 @@ export async function generateMetadata(_props: any, parent: ResolvingMetadata): 
   };
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode; modal: React.ReactNode }) {
   return (
     <html
       lang="en"

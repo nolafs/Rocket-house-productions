@@ -20,6 +20,9 @@ export const getCourse = async ({ courseSlug }: GetCourseProps) => {
       isPublished: true,
     },
     include: {
+      tiers: {
+        orderBy: { position: 'asc' },
+      },
       bookScene: true,
       attachments: {
         include: {

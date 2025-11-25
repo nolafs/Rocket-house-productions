@@ -26,4 +26,5 @@ export { encryptPin } from './encrypt-pin';
 export { decryptPin } from './encrypt-pin';
 export { getGlobalPin } from './get-pin';
 export { triggerMail } from './trigger-mail';
+export { getPurchaseTiers, getPriceOptionTiers } from './get-purchase-tiers';
 export { getOrders, getAllOrders, getTransactions, getAllTransactions } from './get-orders';
