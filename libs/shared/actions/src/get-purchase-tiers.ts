@@ -18,7 +18,7 @@ export const getPurchaseTiers = (courseId: string | null | undefined) => {
   ];
 };
 
-export const getPriceOptionTiers = async (tiers: Tier[], hasPremiumPurchase = false): Promise<PriceTier[]> => {
+export const getPriceOptionTiers = async (tiers: Tier[], hasStandardPurchase = false): Promise<PriceTier[]> => {
   if (!tiers.length) {
     throw new Error('No product tiers found for course');
   }
@@ -55,7 +55,7 @@ export const getPriceOptionTiers = async (tiers: Tier[], hasPremiumPurchase = fa
   }
 
   // has standard of product
-  if (hasPremiumPurchase) {
+  if (hasStandardPurchase) {
     // only return upgrade options
     return options.filter(option => option?.type === 'UPGRADE');
   } else {
