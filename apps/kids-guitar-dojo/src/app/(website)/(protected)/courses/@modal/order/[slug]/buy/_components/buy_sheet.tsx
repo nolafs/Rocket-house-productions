@@ -22,7 +22,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 
-type CoursePayload = Prisma.CourseGetPayload<{
+export type CoursePayload = Prisma.CourseGetPayload<{
   include: {
     modules: true; // Module[]
   };
@@ -31,13 +31,9 @@ type CoursePayload = Prisma.CourseGetPayload<{
 interface BuySheetProps {
   course: CoursePayload;
   options: PriceTier[] | null;
-  userData?: {
-    hasPremiumPurchase: boolean;
-    hasPurchasedCourse: boolean;
-  };
 }
 
-export default function BuySheet({ course, options, userData }: BuySheetProps) {
+export default function BuySheet({ course, options }: BuySheetProps) {
   const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState<string | undefined>(options?.[0]?.id || undefined);
@@ -83,30 +79,18 @@ export default function BuySheet({ course, options, userData }: BuySheetProps) {
     }
   }
 
-  const optionsFiltered = useMemo<PriceTier[] | null>(() => {
-    if (userData?.hasPurchasedCourse && options) {
-      return options.filter(opt => opt?.type === 'PREMIUM');
-    }
-    return options;
-  }, [userData?.hasPremiumPurchase]);
-
   const selectedOption = useMemo<PriceTier | undefined>(() => {
-    if (!optionsFiltered || !optionsFiltered.length) return undefined;
+    if (!options || !options.length) return undefined;
 
-    if (!selected) return optionsFiltered[0];
-    return optionsFiltered.find(o => o?.id === selected) ?? optionsFiltered[0];
-  }, [optionsFiltered, selected]);
+    if (!selected) return options[0];
+    return options.find(o => o?.id === selected) ?? options[0];
+  }, [options, selected]);
 
   if (!isSignedIn) {
     return null;
   }
 
-  // user have premium access → no need to show buy button
-  if (userData?.hasPremiumPurchase) {
-    return null;
-  }
-
-  console.log('Initiating checkout for course:', userData);
+  console.log('Initiating checkout for course', options);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -154,11 +138,11 @@ export default function BuySheet({ course, options, userData }: BuySheetProps) {
               <div className="space-y-3">
                 <Label className="text-sm">Choose version</Label>
 
-                {!optionsFiltered ? (
+                {!options ? (
                   <div className="text-muted-foreground text-sm">No purchase options available.</div>
                 ) : (
                   <RadioGroup value={selected} onValueChange={setSelected} className="grid gap-3">
-                    {optionsFiltered.map(
+                    {options.map(
                       opt =>
                         opt && (
                           <label

@@ -1,36 +1,23 @@
-import { getAppSettings, getCourse, getPriceOptionTiers } from '@rocket-house-productions/actions/server';
-import { jwtVerify } from 'jose/jwt/verify';
-import { cookies } from 'next/headers';
-import BuySheet from './_components/buy_sheet';
+import { getAccount, getAppSettings, getCourse, getPriceOptionTiers } from '@rocket-house-productions/actions/server';
+import BuySheet, { CoursePayload } from './_components/buy_sheet';
 import { PriceTier } from '@rocket-house-productions/types';
 
-import { Tier } from '@prisma/client';
+import { Course, Tier } from '@prisma/client';
 import { redirect } from 'next/navigation';
-
-const rawSecret = process.env.SESSION_FLAGS_SECRET;
-if (!rawSecret) throw new Error('Missing SESSION_FLAGS_SECRET env var');
-const secret = new TextEncoder().encode(rawSecret);
-
-async function readFlagsFromCookie() {
-  const jar = await cookies(); // Next 15: await it
-  const token = jar.get('sf')?.value;
-  if (!token) return null;
-
-  try {
-    const { payload } = await jwtVerify(token, secret, { algorithms: ['HS256'] });
-    return payload as any; // your userSession shape
-  } catch {
-    return null;
-  }
-}
+import { auth } from '@clerk/nextjs/server';
 
 export default async function BuyCourseSheet({ params }: { params: { slug: string } }) {
   const { slug } = await params;
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect('/');
+  }
 
   const [course, appSetting, userData] = await Promise.all([
     getCourse({ courseSlug: slug }),
     getAppSettings(),
-    readFlagsFromCookie(),
+    getAccount(userId),
   ]);
 
   if (!userData) {
@@ -43,26 +30,64 @@ export default async function BuyCourseSheet({ params }: { params: { slug: strin
     redirect('/courses/error?status=error&message=No%20membership%20settings%20found');
   }
 
-  let options: PriceTier[];
+  let userPurchaseOptions: PriceTier[] = [];
 
-  if (!userData.hasMembership) {
-    if (!appSetting?.membershipSettings?.course) {
-      console.error('No membership course found');
+  const membershipCourseId = appSetting?.membershipSettings?.courseId;
+  const isMembershipCourse = appSetting?.membershipSettings?.courseId === course.id;
+
+  console.log('userdata', userData);
+
+  // true = user ALREADY has membership
+  const hasMembershipPurchase = userData.purchases.some(p => p.courseId === membershipCourseId && p.type === 'charge');
+
+  let userCourse: Course;
+
+  if (hasMembershipPurchase) {
+    userCourse = course;
+    const productTiers: Tier[] = course.tiers;
+    const options: PriceTier[] = await getPriceOptionTiers(productTiers);
+    const coursePurchased = options.length ? options.find(option => option?.courseId === course.id) : null;
+
+    if (coursePurchased) {
+      console.log('purchased', coursePurchased);
+      console.log('hasMembershipPurchase', hasMembershipPurchase);
+      console.log('options', options);
+      if (isMembershipCourse) {
+        const membershipTiers = appSetting?.membershipSettings?.course?.tiers ?? [];
+        const tiers = await getPriceOptionTiers(membershipTiers, true);
+        console.log('tiers', tiers);
+        userPurchaseOptions = tiers;
+      } else {
+        userPurchaseOptions = options.filter(option => option && option.id !== coursePurchased.id);
+      }
+    } else {
+      // no specific course tier purchased – just use all options
+      userPurchaseOptions = options;
     }
-
-    const product = appSetting?.membershipSettings?.course.tiers;
-    options = await getPriceOptionTiers(product);
   } else {
-    const product: Tier[] = course.tiers;
-    if (!product.length) {
-      throw new Error('No product tiers found for course: ' + course.title);
+    // user already has membership → use membership tiers
+    const membershipCourseSlug = appSetting?.membershipSettings?.course.slug;
+
+    if (!membershipCourseSlug) {
+      throw new Error('Membership course slug is missing');
     }
-    options = await getPriceOptionTiers(product);
+
+    const mc = await getCourse({ courseSlug: membershipCourseSlug });
+
+    if (!mc) {
+      throw new Error('Membership course not found');
+    }
+
+    userCourse = mc;
+    const membershipTiers = appSetting?.membershipSettings?.course?.tiers ?? [];
+    const options = await getPriceOptionTiers(membershipTiers);
+
+    userPurchaseOptions = options.filter(option => !option?.free);
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <BuySheet course={course} userData={userData} options={options} />
+      <BuySheet course={userCourse as CoursePayload} options={userPurchaseOptions} />
     </div>
   );
 }
