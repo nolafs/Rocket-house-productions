@@ -14,22 +14,15 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 
 import { useRouter } from 'next/navigation';
-import { PriceTier } from '@rocket-house-productions/types';
-import { Prisma } from '@prisma/client';
+import type { CourseModules, PriceTier } from '@rocket-house-productions/types';
 import { useEffect, useMemo, useState } from 'react';
 import { useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import axios from 'axios';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 
-export type CoursePayload = Prisma.CourseGetPayload<{
-  include: {
-    modules: true; // Module[]
-  };
-}>;
-
 interface BuySheetProps {
-  course: CoursePayload;
+  course: CourseModules;
   options: PriceTier[] | null;
 }
 
