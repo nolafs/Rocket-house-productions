@@ -10,7 +10,7 @@ export * from './lib/section-blog/section-blog';
 export { SharePage } from './lib/share-page/share-page';
 export { ContactForm } from './lib/contact-form/contact-form';
 export { SectionFaqs } from './lib/section-faqs/section-faqs';
-export { SectionPricingTable } from './lib/section-pricing-table/section-pricing-table';
+
 export { CtaTwoColumnText } from './lib/cta/cta-two-column-text';
 export { SectionTestimonials } from './lib/section-testimonials/section-testimonials';
 export { TestimonialItem } from './lib/section-testimonials/testimonial-item';

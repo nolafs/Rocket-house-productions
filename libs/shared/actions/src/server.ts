@@ -13,8 +13,6 @@ export { getCourse } from './get-course';
 export { getCourses } from './get-courses';
 export { freeCheckout } from './free-checkout';
 export { stripeCheckoutAction } from './stripe-checkout-action';
-export { MailerList } from './mailer-lite';
-export type { MailerListType } from './mailer-lite';
 export { sendMail } from './send-mail';
 export { VerifyCaptcha } from './verifiy-captcha';
 export { updateUserRole } from './update-user-role';
@@ -26,5 +24,9 @@ export { encryptPin } from './encrypt-pin';
 export { decryptPin } from './encrypt-pin';
 export { getGlobalPin } from './get-pin';
 export { triggerMail } from './trigger-mail';
-export { getPurchaseTiers, getPriceOptionTiers } from './get-purchase-tiers';
+export {
+  getPurchaseTiers,
+  getPriceOptionTiers,
+  getPriceOptionTiersByCourseSlugByUserSubscriptions,
+} from './get-purchase-tiers';
 export { getOrders, getAllOrders, getTransactions, getAllTransactions } from './get-orders';

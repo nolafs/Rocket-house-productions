@@ -10,3 +10,5 @@ export type { IContactFormInput } from './lib/email.type';
 export type { OGImage } from './lib/ogimage.type';
 export type { Tier, PriceTier, PriceOption } from './lib/tier.type';
 export type { SectionModule, SectionLesson, SectionCourse } from './lib/section-module.type';
+export type { CourseModules } from './lib/course.type';
+export type { MailerListType } from './lib/mailer-lite';
