@@ -1,7 +1,7 @@
 import { Content } from '@prismicio/client';
 import { SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
-import { SectionPricingTable } from '@rocket-house-productions/features';
+import { SectionPricingTable } from '@rocket-house-productions/features/server';
 
 /**
  * Props for `PricingTable`.

@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import PurchaseOption from './_components/purchase-option';
-import { SectionPricingTable } from '@rocket-house-productions/features';
+import { SectionPricingTable } from '@rocket-house-productions/features/server';
 
 interface PageProps {
   params: Promise<{ product: string }>;
@@ -10,8 +10,6 @@ interface PageProps {
 export default async function Page(props: PageProps) {
   const { product } = await props.params;
   const { userId, sessionClaims } = await auth();
-
-  console.log('ORDER PAGE', product, sessionClaims);
 
   if (!userId) {
     return redirect('/');
