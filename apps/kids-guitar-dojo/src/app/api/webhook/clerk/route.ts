@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { Webhook } from 'svix';
 import { db } from '@rocket-house-productions/integration/server';
-import { clerkClient, WebhookEvent } from '@clerk/nextjs/server';
+import { clerkClient as getClerkClient, WebhookEvent } from '@clerk/nextjs/server';
 import { headers } from 'next/headers';
 import { getGlobalPin } from '@rocket-house-productions/actions/server';
 import { decryptPin } from '@rocket-house-productions/actions/server';
@@ -9,15 +9,8 @@ import { triggerMail } from '@rocket-house-productions/actions/server';
 
 const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || ``;
 
-async function validateRequest(request: Request) {
+async function validateRequest(request: Request, svixHeaders: Record<string, string>) {
   const payloadString = await request.text();
-  const headerPayload = await headers();
-
-  const svixHeaders = {
-    'svix-id': headerPayload.get('svix-id')!,
-    'svix-timestamp': headerPayload.get('svix-timestamp')!,
-    'svix-signature': headerPayload.get('svix-signature')!,
-  };
   const wh = new Webhook(WEBHOOK_SECRET);
   return wh.verify(payloadString, svixHeaders) as WebhookEvent;
 }
@@ -38,7 +31,11 @@ export async function POST(req: Request) {
   }
 
   try {
-    const payload = await validateRequest(req);
+    const payload = await validateRequest(req, {
+      'svix-id': svix_id,
+      'svix-timestamp': svix_timestamp,
+      'svix-signature': svix_signature,
+    });
 
     const { pinCipher, pinIv, pinAuthTag } = await getGlobalPin();
 
@@ -48,8 +45,8 @@ export async function POST(req: Request) {
       case 'user.created': {
         const { id, first_name, last_name, email_addresses } = payload.data;
         if (!id) {
-          console.error('[CLERK WEBHOOK]', 'Invalid user ID', id);
-          throw new Error('Invalid user ID');
+          console.warn('[CLERK WEBHOOK]', 'Invalid user ID');
+          return NextResponse.json({ message: 'Invalid user ID' }, { status: 200 });
         }
 
         //check if user is already in the database
@@ -60,20 +57,13 @@ export async function POST(req: Request) {
         });
 
         if (user) {
-          console.error('[CLERK WEBHOOK]', 'User already exists', user);
-
-          //check if email is identical
-          if (user.email === email_addresses[0].email_address) {
-            console.error('[CLERK WEBHOOK]', 'Email already exists', user.email);
-            throw new Error('Cannot create user, user email already exists');
-          }
-
-          throw new Error('Cannot create user, user id already exists');
+          console.info('[CLERK WEBHOOK]', 'User already exists, skipping', { userId: id });
+          return NextResponse.json({ message: 'User already exists, skipping' }, { status: 200 });
         }
 
-        const client = await clerkClient();
-
-        await client.users.updateUserMetadata(id, {
+        // Update Clerk public metadata (no-op if already set)
+        const clerk = await getClerkClient();
+        await clerk.users.updateUserMetadata(id, {
           publicMetadata: {
             status: 'inactive',
             role: 'member',
@@ -88,8 +78,10 @@ export async function POST(req: Request) {
         });
 
         if (existingAccount) {
-          console.error('[CLERK WEBHOOK]', 'Account with this email already exists', existingAccount);
-          throw new Error('Cannot create user, account with this email already exists');
+          console.info('[CLERK WEBHOOK]', 'Account with this email already exists, skipping', {
+            email: email_addresses[0].email_address,
+          });
+          return NextResponse.json({ message: 'Account already exists, skipping' }, { status: 200 });
         }
 
         await db.account.create({
@@ -104,8 +96,6 @@ export async function POST(req: Request) {
         if (pinCipher && pinIv && pinAuthTag) {
           try {
             const parentPin = decryptPin(pinCipher, pinIv, pinAuthTag);
-
-            console.log(parentPin);
 
             const emailMessage = `Hi ${first_name || 'Parent'},\n\nWe'd like to remind you of your <strong>Parent PIN</strong> that keeps your account secure:\n\n<strong>Your Parent PIN:</strong> ${parentPin}\n\nWith this Pin, you can:\n\n<ul><li>Manage your account details</li><li>Make purchases</li><li>Upgrade memberships</li></ul> \n\n👉Remember to keep this PIN safe and private. It ensures your child can enjoy their lessons while you stay in control of account and payment settings. \n\nThank you for being part of the Kids Guitar Dojo family!\n\nWarm Regards, \n\nThe Kids Guitar Dojo Team🎶P`;
             const mailData = {
@@ -131,7 +121,8 @@ export async function POST(req: Request) {
         const { id, first_name, last_name, email_addresses } = payload.data;
 
         if (!id) {
-          throw new Error('Invalid user ID');
+          console.warn('[CLERK WEBHOOK]', 'Invalid user ID');
+          return NextResponse.json({ message: 'Invalid user ID' }, { status: 200 });
         }
 
         const count = await db.account.count({
@@ -158,7 +149,8 @@ export async function POST(req: Request) {
         const { id } = payload.data;
 
         if (!id) {
-          throw new Error('Invalid user ID');
+          console.warn('[CLERK WEBHOOK]', 'Invalid user ID');
+          return NextResponse.json({ message: 'Invalid user ID' }, { status: 200 });
         }
 
         const count = await db.account.count({
