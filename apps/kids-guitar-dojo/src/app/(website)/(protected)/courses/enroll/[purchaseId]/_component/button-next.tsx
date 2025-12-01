@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import path from 'path';
 import { STEPS } from './path-types';
@@ -16,16 +16,15 @@ const steps = STEPS;
 export const NextButton = ({ label = 'Next', baseUrl = '/' }: NextButtonProps) => {
   const pathname = usePathname();
   const currentPath = path.basename(pathname);
-  const [currentStep, setCurrentStep] = useState(1);
 
-  useEffect(() => {
-    setCurrentStep(steps.findIndex(step => step.route === currentPath));
+  const currentStep = useMemo(() => {
+    return steps.findIndex(step => step.route === currentPath);
   }, [currentPath]);
 
   return (
     <Link
       className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }))}
-      href={baseUrl + steps[currentStep + 1]?.link || steps[steps.length - 1].link}>
+      href={baseUrl + (steps[currentStep + 1]?.link || steps[steps.length - 1].link)}>
       {label}
     </Link>
   );

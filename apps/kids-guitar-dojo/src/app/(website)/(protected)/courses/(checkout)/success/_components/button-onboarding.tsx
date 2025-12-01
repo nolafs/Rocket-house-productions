@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { useUser } from '@rocket-house-productions/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
 interface ButtonOnboardingProps {
@@ -17,7 +17,6 @@ type StatusState = 'pending' | 'inactive' | 'unverified' | 'active' | 'returning
 
 export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboardingProps) {
   const { user, isLoading, isError, isValidating } = useUser(userId);
-  const [state, setState] = useState<StatusState | null>(null);
   const [polling, setPolling] = useState(false);
   const triedReconcile = useRef(false);
   const router = useRouter();
@@ -28,51 +27,45 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
     [checkOutSessionId, user?.recentStripeCheckoutId],
   );
 
-  // Initial state derivation (no writes, just compute)
-  useEffect(() => {
-    if (isLoading || isValidating) return;
-
-    if (isError) {
-      setState('error');
-      return;
-    }
-
-    if (!user) {
-      setState('error');
-      router.replace('/');
-      return;
-    }
+  // Derive state from user data (no setState in effect)
+  const state = useMemo<StatusState>(() => {
+    if (isLoading || isValidating) return null;
+    if (isError || !user) return 'error';
 
     // If the user already has purchases
     if (user.purchases?.length) {
-      if (user.purchases[0]?.childId) {
-        setState('returning');
-      } else {
-        setState('active');
-      }
-      return;
+      return user.purchases[0]?.childId ? 'returning' : 'active';
     }
 
     // No purchases yet
-    // If you mark accounts inactive/pending until webhook finishes, treat both as “unverified”
+    // If you mark accounts inactive/pending until webhook finishes, treat both as "unverified"
     if (user.status === 'inactive' || user.status === 'pending') {
-      setState('unverified');
-      return;
+      return 'unverified';
     }
 
     // Fallback
-    setState('inactive');
+    return 'inactive';
   }, [user, isLoading, isValidating, isError]);
+
+  // Determine if we should poll based on state and sessionId
+  const shouldPoll = useMemo(() => {
+    return state === 'unverified' && !!sessionId;
+  }, [state, sessionId]);
+
+  // Handle side effects (routing) based on state changes
+  useEffect(() => {
+    if (state === 'error' && !user && !isLoading && !isValidating) {
+      router.replace('/');
+    }
+  }, [state, user, isLoading, isValidating, router]);
 
   // Poll Stripe session status until webhook lands (paid + complete),
   // then either push to /courses or set 'active'
   useEffect(() => {
-    if (state !== 'unverified') return;
-    if (!sessionId) return;
+    if (!shouldPoll) return;
 
     let cancelled = false;
     let tries = 0;
-    setPolling(true);
 
     async function checkOnce(): Promise<'done' | 'again'> {
       // Read-only status
@@ -101,6 +94,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
     }
 
     async function loop() {
+      setPolling(true);
       while (!cancelled && tries < 30) {
         const result = await checkOnce();
         if (cancelled) return;
@@ -156,8 +150,9 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
     loop();
     return () => {
       cancelled = true;
+      setPolling(false);
     };
-  }, [state, sessionId, router]);
+  }, [shouldPoll, sessionId, router]);
 
   // Renders
   if (

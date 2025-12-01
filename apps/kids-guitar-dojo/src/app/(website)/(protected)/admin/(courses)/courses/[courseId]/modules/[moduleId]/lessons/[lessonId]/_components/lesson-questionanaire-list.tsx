@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Questionary } from '@prisma/client';
 
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
@@ -17,40 +17,36 @@ interface LessonListProps {
 }
 
 export const LessonQuestionanaireList = ({ items, onReorder, onEdit }: LessonListProps) => {
-  const [isMounted, setIsMounted] = useState(false);
-  const [questionanaire, setQuestionanaire] = useState<Questionary[] | null>(null);
+  // Track local reordered state after drag-and-drop for optimistic UI
+  const [localItems, setLocalItems] = useState<Questionary[] | null>(null);
 
-  useEffect(() => {
-    // To avoid hydration issues between server side rendering & client side
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    // sort items by position
-    if (items) {
-      items.sort((a, b) => a.position - b.position);
-      setQuestionanaire(items);
-    }
-  }, [items]);
+  // Compute sorted items from props, preferring local state after a drag
+  const questionanaire = useMemo(() => {
+    const source = localItems || items;
+    if (!source) return null;
+    return [...source].sort((a, b) => a.position - b.position);
+  }, [items, localItems]);
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
     if (questionanaire === null) return;
-    const items = Array.from(questionanaire);
-    const [reorderedItem] = items.splice(result.source.index, 1);
 
-    items.splice(result.destination.index, 0, reorderedItem);
+    const reorderedItems = Array.from(questionanaire);
+    const [reorderedItem] = reorderedItems.splice(result.source.index, 1);
+
+    reorderedItems.splice(result.destination.index, 0, reorderedItem);
 
     const startIndex = Math.min(result.source.index, result.destination.index);
     const endIndex = Math.max(result.source.index, result.destination.index);
 
-    const updatedChapters = items.slice(startIndex, endIndex + 1);
+    const updatedChapters = reorderedItems.slice(startIndex, endIndex + 1);
 
-    setQuestionanaire(items);
+    // Update local state optimistically
+    setLocalItems(reorderedItems);
 
     const bulkUpdateData = updatedChapters.map(chapter => ({
       id: chapter.id,
-      position: items.findIndex(item => item.id === chapter.id),
+      position: reorderedItems.findIndex(item => item.id === chapter.id),
     }));
 
     onReorder(bulkUpdateData);
@@ -68,10 +64,6 @@ export const LessonQuestionanaireList = ({ items, onReorder, onEdit }: LessonLis
         return 'Text';
     }
   };
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
