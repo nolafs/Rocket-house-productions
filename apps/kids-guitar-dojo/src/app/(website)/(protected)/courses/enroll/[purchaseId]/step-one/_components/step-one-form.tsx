@@ -14,7 +14,7 @@ import {
   Input,
   Switch,
 } from '@rocket-house-productions/shadcn-ui';
-import z from 'zod';
+import { z } from 'zod';
 import { stepOneSchema } from '../../_component/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useActionState } from 'react';
@@ -51,10 +51,13 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
 
   useEffect(() => {
     setActive(true);
-  }, []);
+  }, [setActive]);
 
   const form = useForm<z.infer<typeof stepOneSchema>>({
     resolver: zodResolver(stepOneSchema),
+    mode: 'onChange',
+    reValidateMode: 'onChange',
+    shouldFocusError: true,
     defaultValues: {
       firstName: onBoardingData.firstName || purchase?.account.firstName || '',
       lastName: onBoardingData.lastName || purchase?.account.lastName || '',
@@ -99,16 +102,26 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
             ref={formRef}
             className="mt-3 space-y-4"
             action={formAction}
-            onChange={e => {
-              const formData = new FormData(formRef.current!);
+            onSubmit={async e => {
+              // Run client-side validation first; prevent submit if invalid
+              const isValid = await form.trigger();
+              if (!isValid) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+              }
+            }}
+            onChange={() => {
+              if (!formRef.current) return;
+              const formData = new FormData(formRef.current);
               const formUpdate = Object.fromEntries(formData.entries());
               updateOnBoardingDetails({
                 ...onBoardingData,
                 ...formUpdate,
-                confirmTerms: formUpdate.confirmTerms === 'on' ? true : false,
-                parentConsent: formUpdate.parentConsent === 'on' ? true : false,
-                notify: formUpdate.notify === 'on' ? true : false,
-                newsletter: formUpdate.newsletter === 'on' ? true : false,
+                confirmTerms: formUpdate.confirmTerms === 'on',
+                parentConsent: formUpdate.parentConsent === 'on',
+                notify: formUpdate.notify === 'on',
+                newsletter: formUpdate.newsletter === 'on',
               });
             }}>
             <div className={'grid grid-cols-1 items-center justify-center gap-x-3 md:grid-cols-2'}>
