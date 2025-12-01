@@ -6,9 +6,10 @@ export async function assignChildToPurchase(
 ): Promise<{ success: boolean; message?: string; errorMsg?: string; redirect?: string | null }> {
   const purchaseId = formData.get('purchaseId') as string;
   const childId = formData.get('childId') as string;
-  const courseSlug = formData.get('courseSlug') as string;
 
-  if (!purchaseId || !childId || !courseSlug) return { success: false, errorMsg: 'Missing required values.' };
+  console.log('[assignChildToPurchase]', { purchaseId, childId });
+
+  if (!purchaseId || !childId) return { success: false, errorMsg: 'Missing required values.' };
 
   try {
     // define a redirect variable outside
