@@ -15,6 +15,7 @@ import { SplitText } from 'gsap/SplitText';
 import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
 
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
+
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
 
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
@@ -55,6 +56,17 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(SplitText);
 }
 
+type CourseWithModules = Course & {
+  modules: Array<{
+    id: string;
+    title: string;
+    slug?: string | null;
+    color?: string | null;
+    lessons: LessonType[];
+  }>;
+  bookScene?: BookScene;
+};
+
 interface CourseNavigationProps {
   course: Course & { modules: any[]; bookScene?: BookScene };
   purchaseType?: string | null;
@@ -73,7 +85,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   const [lesson, setLesson] = useState<LessonButton | null>(null);
 
-  const [courseProgression, setCourseProgression] = useState<number | null>(null);
+  const [, forceRender] = useState(0);
 
   const currentModule = useRef<Module | null>(null);
   const router = useRouter();
@@ -93,18 +105,15 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   useEffect(() => {
     // Calculate the current course progress
-    const newProgress = courseState.getCourseProgress(course.id);
+    const newProgress = courseState.getCourseProgress(course.id) ?? 0;
 
     // Update only if the progression data has actually changed
     if (newProgress !== previousProgress.current) {
-      setCourseProgression(newProgress);
       previousProgress.current = newProgress;
+      // force a render so the spinner can disappear
+      forceRender(x => x + 1);
     }
-
-    return () => {
-      setCourseProgression(null);
-    };
-  }, [courseState]);
+  }, [courseState, course.id]);
 
   const display = useMemo<ModuleButtonDisplay>(() => {
     if (lessonState.getLessonCompleted === undefined)
@@ -114,7 +123,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     let next: number | null = null;
     const modulePosition: ModulePosition[] = [];
 
-    const buttonList: ModuleButtonPosition[] = course.modules.reduce((acc: ModuleButtonPosition[], item) => {
+    const buttonList: ModuleButtonPosition[] = (course.modules || []).reduce((acc: ModuleButtonPosition[], item) => {
       return [
         ...acc,
         ...item.lessons.map((lesson: LessonType, lessonIndex: number) => {
@@ -164,15 +173,16 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
       ];
     }, []);
 
+    const lastY = buttonList.length ? buttonList[buttonList.length - 1].position.y : 0;
     return {
       buttons: buttonList,
       total: buttonList.length,
       modulePosition: modulePosition,
-      pathLength: buttonList[buttonList.length - 1].position.y + 15,
+      pathLength: lastY + 15,
       current,
       next,
     };
-  }, [LESSON_SPACING, lessonState]);
+  }, [lessonState, course.modules]);
 
   useGSAP(
     () => {
@@ -357,7 +367,7 @@ const ZoomControl = forwardRef((_, ref) => {
       duration: 1,
       ease: 'power2.inOut',
     });
-  }, [camera, zoom]);
+  }, [camera, zoom, active]);
 
   return null;
 });
