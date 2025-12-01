@@ -16,7 +16,7 @@ import z from 'zod';
 import { stepThreeSchema } from '../../_component/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { XIcon } from 'lucide-react';
-import { useEffect, useRef, useState, useActionState } from 'react';
+import { useEffect, useRef, useActionState, useMemo } from 'react';
 import { PrevButton } from '../../_component/button-prev';
 import Image from 'next/image';
 import checked from './_assets/checked.png';
@@ -40,12 +40,30 @@ export interface StepThreeFormProps {
 export default function StepThreeForm({ baseUrl, header, body }: StepThreeFormProps) {
   const [serverError, formAction] = useActionState(stepThreeFormAction, initialState);
   const { updateOnBoardingDetails, onBoardingData } = useOnBoardingContext();
-  const [name, setName] = useState<string | null>('');
+
   const setActive = useMenuActive(state => state.setActive);
 
   useEffect(() => {
     setActive(true);
   }, []);
+
+  const name = useMemo(() => {
+    if (
+      onBoardingData.favoriteColor &&
+      onBoardingData.favoriteAnimal &&
+      onBoardingData.favoriteHobby &&
+      onBoardingData.favoriteSuperpower
+    ) {
+      return generateFunName({
+        gender: onBoardingData.gender || 'other',
+        favoriteColor: onBoardingData.favoriteColor,
+        favoriteAnimal: onBoardingData.favoriteAnimal,
+        favoriteHobby: onBoardingData.favoriteHobby,
+        favoriteSuperpower: onBoardingData.favoriteSuperpower,
+      });
+    }
+    return '';
+  }, [onBoardingData]);
 
   const form = useForm<z.infer<typeof stepThreeSchema>>({
     resolver: zodResolver(stepThreeSchema),
@@ -55,25 +73,6 @@ export default function StepThreeForm({ baseUrl, header, body }: StepThreeFormPr
       productId: baseUrl,
     },
   }); // zodResolver(stepThreeSchema)
-
-  useEffect(() => {
-    if (
-      onBoardingData.favoriteColor &&
-      onBoardingData.favoriteAnimal &&
-      onBoardingData.favoriteHobby &&
-      onBoardingData.favoriteSuperpower
-    ) {
-      const generatedName = generateFunName({
-        gender: onBoardingData.gender || 'other',
-        favoriteColor: onBoardingData.favoriteColor,
-        favoriteAnimal: onBoardingData.favoriteAnimal,
-        favoriteHobby: onBoardingData.favoriteHobby,
-        favoriteSuperpower: onBoardingData.favoriteSuperpower,
-      });
-
-      setName(generatedName);
-    }
-  }, [onBoardingData]);
 
   const formRef = useRef<HTMLFormElement>(null);
 

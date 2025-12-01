@@ -32,58 +32,44 @@ type OnBoardingContextType = {
 export const OnBoardingContext = createContext<OnBoardingContextType | null>(null);
 
 export const OnBoardingContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [onBoardingData, setOnBoardingData] = useState<OnBoardingInitialValuesType>(defaultOnBoarding);
-  const [dataLoaded, setDataLoaded] = useState(false);
+  // Initialize from localStorage on first mount
+  const [onBoardingData, setOnBoardingData] = useState<OnBoardingInitialValuesType>(() => {
+    if (typeof window === 'undefined') return defaultOnBoarding;
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
+    const loadedDataString = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!loadedDataString) return defaultOnBoarding;
 
-    readFromLocalStorage();
-    setDataLoaded(true);
-  }, []);
+    const validated = onBoardingInitialValuesSchema.safeParse(JSON.parse(loadedDataString));
+    return validated.success ? validated.data : defaultOnBoarding;
+  });
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
+  // Start as true since we lazy-initialize from localStorage above
+  const dataLoaded = true;
 
-    if (dataLoaded) {
-      saveDataToLocalStorage(onBoardingData);
-    }
-  }, [onBoardingData, dataLoaded]);
-
-  // Fixed: Use functional update and removed dependency
-  const updateOnBoardingDetails = useCallback((onBoardingDetails: Partial<OnBoardingType>) => {
-    setOnBoardingData(prev => ({ ...prev, ...onBoardingDetails }));
-  }, []);
-
-  const saveDataToLocalStorage = (currentDealData: OnBoardingInitialValuesType) => {
+  // Save to localStorage whenever data changes (after initial load)
+  const saveDataToLocalStorage = useCallback((currentDealData: OnBoardingInitialValuesType) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(currentDealData));
     }
-  };
+  }, []);
 
-  const readFromLocalStorage = () => {
-    if (typeof window !== 'undefined') {
-      const loadedDataString = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (!loadedDataString) return setOnBoardingData(defaultOnBoarding);
-      const validated = onBoardingInitialValuesSchema.safeParse(JSON.parse(loadedDataString));
-
-      if (validated.success) {
-        setOnBoardingData(validated.data);
-      } else {
-        setOnBoardingData(defaultOnBoarding);
-      }
-    } else {
-      setOnBoardingData(defaultOnBoarding);
-    }
-  };
-
-  // Fixed: Added window check before accessing localStorage
-  const resetLocalStorage = () => {
+  const resetLocalStorage = useCallback(() => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem(LOCAL_STORAGE_KEY);
     }
     setOnBoardingData(defaultOnBoarding);
-  };
+  }, []);
+
+  const updateOnBoardingDetails = useCallback((onBoardingDetails: Partial<OnBoardingType>) => {
+    setOnBoardingData(prev => ({ ...prev, ...onBoardingDetails }));
+  }, []);
+
+  // Save to localStorage whenever data changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    saveDataToLocalStorage(onBoardingData);
+  }, [onBoardingData, saveDataToLocalStorage]);
 
   const contextValue = useMemo(
     () => ({
@@ -92,7 +78,7 @@ export const OnBoardingContextProvider = ({ children }: { children: React.ReactN
       updateOnBoardingDetails,
       resetLocalStorage,
     }),
-    [onBoardingData, dataLoaded, updateOnBoardingDetails],
+    [onBoardingData, dataLoaded, updateOnBoardingDetails, resetLocalStorage],
   );
 
   return <OnBoardingContext.Provider value={contextValue}>{children}</OnBoardingContext.Provider>;

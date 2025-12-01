@@ -1,6 +1,4 @@
 //@ts-check
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { composePlugins, withNx } = require('@nx/next');
 const headers = require('./config/headers');
 const pluginsExtends = require('./config/plugins');
@@ -41,8 +39,6 @@ const nextConfig = {
   ],
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   experimental: {
-    taint: true,
-    ppr: false,
     serverSourceMaps: true,
   },
   ...(process.env.NEXT_PUBLIC_PRODUCTION && headers),
@@ -64,9 +60,17 @@ const nextConfig = {
   },
 };
 
+/** @param nextConfig {import('next').NextConfig} */
+
+const withNxNext16 = nextConfig => {
+  if ('eslint' in nextConfig) delete nextConfig.eslint;
+  return nextConfig;
+};
+
 const plugins = [
   // Add more Next.js plugins to this list if needed.
   withNx,
+  withNxNext16,
   ...pluginsExtends,
 ];
 

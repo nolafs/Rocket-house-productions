@@ -3,7 +3,6 @@ import path from 'path';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { STEPS } from './path-types';
 import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
@@ -16,12 +15,7 @@ interface StepNavigationProps {
 export default function StepNavigation({ baseUrl }: StepNavigationProps) {
   const pathname = usePathname();
   const currentPath = path.basename(pathname);
-  const [currentStep, setCurrentStep] = useState(1);
   const active = useMenuActive(state => state.active);
-
-  useEffect(() => {
-    setCurrentStep(steps.findIndex(step => step.route === currentPath));
-  }, [currentPath]);
 
   return (
     <div

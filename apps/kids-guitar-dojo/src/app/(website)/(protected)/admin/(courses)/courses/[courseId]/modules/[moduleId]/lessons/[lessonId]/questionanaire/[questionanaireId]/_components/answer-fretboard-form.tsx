@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useMemo } from 'react';
 
 interface GridSelectorProps {
   rows: number;
@@ -13,37 +13,28 @@ export interface GridSelectorHandle {
 
 const AnswerFretboardForm = forwardRef<GridSelectorHandle, GridSelectorProps>(
   ({ rows, cols = 6, value = '', onChange }, ref) => {
-    const [selectedCells, setSelectedCells] = useState<string[]>([]);
-
-    // Initialize selectedCells based on value prop
-    useEffect(() => {
-      if (value) {
-        setSelectedCells(value.split(',').filter(Boolean));
-      } else {
-        // Set default selected values, e.g., 'a-1', 'b-1'
-        setSelectedCells([]); // Modify this to your desired default selection
-      }
+    // Derive selectedCells from value prop (fully controlled component)
+    const selectedCells = useMemo(() => {
+      return value ? value.split(',').filter(Boolean) : [];
     }, [value]);
 
     const handleCellClick = (cell: string) => {
-      setSelectedCells(prev => {
-        const newSelectedCells = prev.includes(cell) ? prev.filter(c => c !== cell) : [...prev, cell];
+      if (!onChange) return;
 
-        // Call the onChange callback if provided
-        if (onChange) {
-          onChange(newSelectedCells.join(','));
-        }
-        return newSelectedCells;
-      });
+      const newSelectedCells = selectedCells.includes(cell)
+        ? selectedCells.filter(c => c !== cell)
+        : [...selectedCells, cell];
+
+      onChange(newSelectedCells.join(','));
     };
 
-    const getSelectedString = () => {
-      return selectedCells.join(',');
-    };
-
-    useImperativeHandle(ref, () => ({
-      getValue: getSelectedString,
-    }));
+    useImperativeHandle(
+      ref,
+      () => ({
+        getValue: () => selectedCells.join(','),
+      }),
+      [selectedCells],
+    );
 
     const createGrid = () => {
       const grid = [];
