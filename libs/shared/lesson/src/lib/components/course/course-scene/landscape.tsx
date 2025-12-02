@@ -1,7 +1,7 @@
 'use client';
 
 import * as THREE from 'three';
-import React, { MutableRefObject, useRef } from 'react';
+import React, { RefObject, useRef } from 'react';
 import { Center, Plane, Text3D, useTexture } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { FretBoard } from './fretboard';
@@ -18,6 +18,11 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP);
 }
 
+// Preload default textures to prevent suspense-related render issues
+useTexture.preload('/images/course/guitar.webp');
+useTexture.preload('/images/course/lessons-mid.webp');
+useTexture.preload('/images/course/lessons-fore.webp');
+
 interface LandscapeProps {
   rotation?: [number, number, number];
   position?: [number, number, number];
@@ -29,7 +34,7 @@ interface LandscapeProps {
   onModulePosition?: (position: ModulePosition[]) => void;
   onPathLength?: (length: number) => void;
   onReady?: (ready: boolean) => void;
-  container?: MutableRefObject<HTMLElement | null>;
+  container?: RefObject<HTMLElement | null>;
   bookScene?: BookScene;
 }
 

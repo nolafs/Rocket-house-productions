@@ -56,17 +56,6 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(SplitText);
 }
 
-type CourseWithModules = Course & {
-  modules: Array<{
-    id: string;
-    title: string;
-    slug?: string | null;
-    color?: string | null;
-    lessons: LessonType[];
-  }>;
-  bookScene?: BookScene;
-};
-
 interface CourseNavigationProps {
   course: Course & { modules: any[]; bookScene?: BookScene };
   purchaseType?: string | null;
@@ -81,60 +70,35 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
   const courseState = useCourseProgressionStore(store => store);
   const lessonState = useLessonProgressionStore(store => store);
 
-  const previousProgress = useRef<unknown | null>(null);
-
   const [lesson, setLesson] = useState<LessonButton | null>(null);
 
-  const [, forceRender] = useState(0);
-
-  const currentModule = useRef<Module | null>(null);
   const router = useRouter();
-  const zoomDirectionRef = useRef<number>(0); // To store zoom direction
-  const zoomControlRef = useRef<{ handleZoom: (dir: number) => void; handleReset: () => void } | null>(null); // Ref to call child functions
+  const zoomControlRef = useRef<{ handleZoom: (dir: number) => void; handleReset: () => void } | null>(null);
   const isMobile = useClientMediaQuery('(max-width: 600px)');
 
-  // check if device is mobile
-  const isMounted = useRef(false);
-
-  useEffect(() => {
-    isMounted.current = true;
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    // Calculate the current course progress
-    const newProgress = courseState.getCourseProgress(course.id) ?? 0;
-
-    // Update only if the progression data has actually changed
-    if (newProgress !== previousProgress.current) {
-      previousProgress.current = newProgress;
-      // force a render so the spinner can disappear
-      forceRender(x => x + 1);
-    }
-  }, [courseState, course.id]);
+  const courseProgression = useMemo(() => courseState.getCourseProgress(course.id) ?? 0, [courseState, course.id]);
 
   const display = useMemo<ModuleButtonDisplay>(() => {
-    if (lessonState.getLessonCompleted === undefined)
-      return { buttons: [], modulePosition: [], total: null, current: null, next: null };
+    if (lessonState.getLessonCompleted === undefined) {
+      return { buttons: [], modulePosition: [], total: 0, current: null, next: null, pathLength: 15 };
+    }
 
     let current: number | null = null;
     let next: number | null = null;
     const modulePosition: ModulePosition[] = [];
+    const buttonList: ModuleButtonPosition[] = [];
+    let lessonCount = 0;
 
-    const buttonList: ModuleButtonPosition[] = (course.modules || []).reduce((acc: ModuleButtonPosition[], item) => {
-      return [
-        ...acc,
-        ...item.lessons.map((lesson: LessonType, lessonIndex: number) => {
-          const count = acc.length + lessonIndex + 1;
+    course.modules?.forEach(item => {
+      if (item.lessons && item.lessons.length > 0) {
+        item.lessons.forEach((lesson: LessonType, lessonIndex: number) => {
+          const count = lessonCount + 1;
           const complete = lessonState.getLessonCompleted(lesson.id);
+          let moduleSection: Module | null = null;
 
-          let moduleSection = null;
-
-          if (currentModule.current?.id !== item.id) {
-            currentModule.current = item;
-            moduleSection = item;
+          // Only assign the module to the first lesson of that module
+          if (lessonIndex === 0) {
+            moduleSection = item as Module;
             modulePosition.push({
               id: item.id,
               name: item.title,
@@ -143,15 +107,17 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
           }
 
           if (!complete) {
-            if (!current) {
+            if (current === null) {
               current = count - 1;
             }
-            if (!next) {
+            if (next === null) {
               next = count;
             }
           }
 
-          return {
+          lessonCount++;
+
+          buttonList.push({
             id: lesson.id,
             name: lesson.title,
             count,
@@ -164,16 +130,17 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
             isFree: lesson.isFree || false,
             moduleSlug: item.slug || '',
             position: {
-              x: lessonIndex % 2 ? -1 : 1,
+              x: (count - 1) % 2 ? -1 : 1,
               y: LESSON_SPACING * count,
               z: 0,
             },
-          };
-        }),
-      ];
-    }, []);
+          });
+        });
+      }
+    });
 
-    const lastY = buttonList.length ? buttonList[buttonList.length - 1].position.y : 0;
+    const lastY = buttonList.length > 0 ? buttonList[buttonList.length - 1].position.y : 0;
+
     return {
       buttons: buttonList,
       total: buttonList.length,
@@ -216,36 +183,17 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         tl.fromTo('.lesson-loader', { autoAlpha: 0, y: 100 }, { autoAlpha: 1, y: 0, duration: 0.2 }, '-=0.2');
       }
     },
-    { scope: containerRef, dependencies: [lesson] },
+    { scope: containerRef, dependencies: [lesson, course.slug, router] },
   );
-
-  const handleLoaded = (load: boolean) => {
-    if (isMounted.current) {
-      onLoaded && onLoaded(load);
-    }
-  };
 
   const handleOpenLesson = (lesson: LessonButton) => {
     setLesson(lesson);
-    if (isMounted.current) {
-      onLoaded && onLoaded(false);
-    }
+    onLoaded?.(false);
   };
 
   const handleZoom = (dir: number) => {
-    zoomDirectionRef.current = dir; // Update zoom direction
-    if (zoomControlRef.current) {
-      zoomControlRef.current.handleZoom(dir); // Call the child's handleZoom directly
-    }
+    zoomControlRef.current?.handleZoom(dir);
   };
-
-  if (previousProgress.current === null) {
-    return (
-      <div className={'flex h-screen w-full items-center justify-center'}>
-        <Loader2 className={'mb-5 h-12 w-12 animate-spin text-white'} />
-      </div>
-    );
-  }
 
   return (
     <div ref={containerRef} className={'relative h-screen w-full'}>
@@ -300,13 +248,13 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
         <Landscape
           lessonSpacing={LESSON_SPACING}
-          courseCompleted={previousProgress.current === 100}
+          courseCompleted={courseProgression === 100}
           position={[0, 0, 0]}
           container={containerRef}
           purchaseType={purchaseType}
           onOpenLesson={handleOpenLesson}
           display={display}
-          onReady={load => handleLoaded(load)}
+          onReady={onLoaded}
           bookScene={course.bookScene}
         />
 
@@ -342,15 +290,12 @@ const ZoomControl = forwardRef((_, ref) => {
       setActive(true);
 
       setZoom(prevZoom => {
-        let newZoom = prevZoom;
-        if (dir === 1 && prevZoom < maxZoom) {
-          newZoom = 200;
-        } else if (dir === -1 && prevZoom > minZoom) {
-          newZoom = 100;
-        }
-
-        return newZoom;
+        const newZoom = prevZoom + dir * -20; // Simplified zoom logic
+        return Math.max(minZoom, Math.min(maxZoom, newZoom));
       });
+    },
+    handleReset: () => {
+      setZoom(baseZoom);
     },
   }));
 

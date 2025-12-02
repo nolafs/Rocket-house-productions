@@ -1,7 +1,7 @@
 'use client';
 import { Module } from '@prisma/client';
 import * as THREE from 'three';
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { ModuleLabel } from './module-label';
 import { Button3d } from './button';
 import { LessonButton, ModulePosition } from './course.types';
@@ -51,15 +51,23 @@ export const ModulePath: React.FC<{
   purchaseType?: string | null;
   onOpenLesson?: (lesson: LessonButton) => void;
 }> = ({ display, lessonSpacing = 7, courseCompleted, onBackToCurrentLesson, onOpenLesson, purchaseType = null }) => {
+  const lessonCurrent = display?.current || 0;
+
+  const fullPath: Point[] = useMemo(() => display.buttons?.map(p => p.position) || [], [display.buttons]);
+
+  const { completePath, unCompletePath } = useMemo(() => {
+    if (lessonCurrent > 0 && fullPath.length > 0) {
+      const complete = fullPath.slice(0, lessonCurrent);
+      // Ensure the uncompleted path starts from the last point of the completed path
+      const uncomplete = fullPath.slice(lessonCurrent - 1);
+      return { completePath: complete, unCompletePath: uncomplete };
+    }
+    return { completePath: [], unCompletePath: fullPath };
+  }, [fullPath, lessonCurrent]);
+
   if (!display) {
     return null;
   }
-
-  const lessonCurrent = display?.current || 0;
-
-  const fullPath: Point[] = display.buttons?.map(p => p.position);
-  const unCompletePath = fullPath.slice(lessonCurrent - 1 || 0);
-  const completePath = fullPath.slice(0, lessonCurrent);
 
   return (
     <>
@@ -123,11 +131,6 @@ const Path: React.FC<{
   color?: string;
   onPathLength?: (length: number) => void;
 }> = ({ points, opacity = 1, color = 'white', onPathLength }) => {
-  // Ensure there are enough points to create a line
-  useEffect(() => {
-    extend({ MeshLineGeometry, MeshLineMaterial });
-  }, []);
-
   const curvePath: CurvePath | null = useMemo(() => {
     if (points.length < 2) return null;
 
@@ -147,14 +150,14 @@ const Path: React.FC<{
     <group frustumCulled={false}>
       {curvePath && (
         <mesh>
-          <meshLineGeometry isMeshLine={true} frustumCulled={false} points={curvePath.curvePoints} />
+          <meshLineGeometry points={curvePath.curvePoints} />
 
           <meshLineMaterial
             lineWidth={2}
             transparent={true}
             color={new THREE.Color(color)}
             depthWrite={true}
-            dashArray={1 / curvePath.length}
+            dashArray={curvePath.length > 0 ? 1 / curvePath.length : 0}
             dashRatio={0.4}
             sizeAttenuation={1}
             toneMapped={false}
