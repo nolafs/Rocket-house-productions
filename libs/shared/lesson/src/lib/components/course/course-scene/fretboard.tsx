@@ -1,9 +1,11 @@
 'use client';
 import { useTexture } from '@react-three/drei';
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 
 import * as THREE from 'three';
-import { Vector3 } from 'three';
+
+// Preload the texture to prevent suspense-related render issues
+useTexture.preload('/images/course/fret.webp');
 
 interface FredBoardProps {
   rotation?: [number, number, number];

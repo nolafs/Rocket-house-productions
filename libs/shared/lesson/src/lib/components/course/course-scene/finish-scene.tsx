@@ -14,6 +14,11 @@ if (typeof window !== 'undefined') {
   extend({ MeshLineGeometry, MeshLineMaterial });
 }
 
+// Preload textures to prevent suspense-related render issues
+useTexture.preload('/images/course/guitar-head.webp');
+useTexture.preload('/images/course/finish.png');
+useTexture.preload('/images/course/ninja.png');
+
 interface FinalSceneProps {
   position?: [number, number, number];
   rotation?: [number, number, number];
