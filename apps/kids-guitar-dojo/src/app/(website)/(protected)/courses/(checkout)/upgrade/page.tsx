@@ -1,13 +1,13 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { Bounded } from '@components/Bounded';
-import { SectionPricingTable } from '@rocket-house-productions/features';
+
 import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
 import { getAccount, getAppSettings } from '@rocket-house-productions/actions/server';
 
 import { db } from '@rocket-house-productions/integration/server';
-import { Suspense } from 'react';
+import { SectionPricingTable } from '@rocket-house-productions/features/server';
 
 export default async function Page(props: { params: Promise<{ product: string[]; purchaseId: string }> }) {
   const params = await props.params;
@@ -20,8 +20,6 @@ export default async function Page(props: { params: Promise<{ product: string[];
 
   let purchase = null;
   const account = await getAccount(userId);
-
-  // check if params contain childId and (.)account
 
   if (!params.purchaseId) {
     // get childId from (.)account
@@ -68,25 +66,6 @@ export default async function Page(props: { params: Promise<{ product: string[];
     console.log('[UPGRADE]', purchase);
   }
 
-  /*
-  const client = createClient();
-  const tiers = await client.getAllByType('pricing', {
-    orderings: [
-      {
-        field: 'my.pricing.position',
-        direction: 'asc',
-      },
-    ],
-  });
-
-  console.log(tiers);
-
-  console.log('[UPGRADE]', tiers);
-  console.log('[UPGRADE]', purchase?.category);
-  console.log('[UPGRADE]', purchase);
-
-   */
-
   return (
     <main>
       <div className={'mt-5 flex min-h-svh w-full flex-col items-center justify-center'}>
@@ -101,9 +80,7 @@ export default async function Page(props: { params: Promise<{ product: string[];
           </p>
         </div>
         <Bounded as={'section'} yPadding={'sm'}>
-          <Suspense fallback={<div>Loading...</div>}>
-            <SectionPricingTable checkout={true} upgrade={true} purchaseId={params.purchaseId} />
-          </Suspense>
+          <SectionPricingTable />
         </Bounded>
       </div>
     </main>

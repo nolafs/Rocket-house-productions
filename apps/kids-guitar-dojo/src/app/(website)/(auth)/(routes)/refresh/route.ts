@@ -2,7 +2,7 @@
 import { NextResponse } from 'next/server';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { SignJWT } from 'jose';
-import { computeFlagsFromUserDb } from '@rocket-house-productions/util';
+import { getAccountData } from '@rocket-house-productions/actions/server';
 
 const secret = new TextEncoder().encode(process.env.SESSION_FLAGS_SECRET!);
 
@@ -21,7 +21,7 @@ export async function GET(req: Request) {
   }
 
   // 1) Compute flags
-  const flags = await computeFlagsFromUserDb(userId);
+  const flags = await getAccountData(userId);
 
   // 2) (Optional) persist to Clerk for later reads
   const client = await clerkClient();

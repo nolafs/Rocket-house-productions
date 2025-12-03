@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
       return new NextResponse('Missing required parameters', { status: 400 });
     }
 
+    // First, get ALL children with scores for this course
     const children = await db.child.findMany({
       where: {
         childScores: {
@@ -35,23 +36,19 @@ export async function GET(req: NextRequest) {
           orderBy: { score: 'desc' },
           take: 1, // highest score for this course only
         },
-        childProgress: true, // or { where: { courseId } } if course-specific
+        childProgress: true,
       },
-      take: 100,
     });
 
-    console.log('[LEADEROARD]', children, courseId);
-
-    // map each child with a stable topScore value (0 if none)
+    // Map, filter, sort ALL children, THEN take top 20
     const leaderboard = children
       .map(child => ({
         ...child,
         topScore: Number(child.childScores[0]?.score ?? 0),
       }))
-      // keep only those who have a score record at all
-      .filter(child => child.childScores.length > 0)
-      // sort by topScore descending
-      .sort((a, b) => b.topScore - a.topScore);
+      .filter(child => child.childScores.length > 0) // only those with scores
+      .sort((a, b) => b.topScore - a.topScore) // sort by highest score
+      .slice(0, 30); // NOW take top 20
     // Respond with the sorted leaderboard data
     return new NextResponse(JSON.stringify(leaderboard), { status: 200 });
   } catch (error) {

@@ -8,90 +8,31 @@ import CheckoutButton from '../checkout/checkout-button';
 import StripePricing from './stripe-pricing';
 
 import { auth } from '@clerk/nextjs/server';
-import { getAppSettings } from '@rocket-house-productions/actions/server';
-
-type userMetadata =
-  | {
-      hasPurchases: boolean;
-      purchases: {
-        id: string;
-        childId: string | null;
-        category: string | null;
-        course: {
-          id: string;
-        };
-      }[];
-    }
-  | undefined;
+import {
+  getAppSettings,
+  getPriceOptionTiersByCourseSlugByUserSubscriptions,
+} from '@rocket-house-productions/actions/server';
 
 interface SectionPricingTableProps {
-  checkout?: boolean;
-  upgrade?: boolean;
-  courseId?: string | null;
-  purchaseId?: string | null;
+  courseSlug?: string;
 }
 
-export async function SectionPricingTable({
-  checkout = false,
-  upgrade = false,
-  purchaseId = null,
-  courseId = null,
-}: SectionPricingTableProps) {
-  const { userId, sessionClaims } = await auth();
+export async function SectionPricingTable({ courseSlug }: SectionPricingTableProps) {
+  const { userId } = await auth();
+  let slug = courseSlug;
   const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
-  let hasMembership = false;
-  let membershipTier = null;
-  let upgradeTier = null;
   let tiers: Tier[] = [];
 
-  // course ID null get membership course tiers
-  if (!courseId) {
+  if (!courseSlug) {
     const appSettings = await getAppSettings();
-
-    if (appSettings?.membershipSettings?.course.tiers.length === 0) {
-      console.log('No pricing tiers found');
-      return null;
+    if (!appSettings?.membershipSettings?.course) {
+      throw new Error('No membership course found in app settings');
     }
-
-    if (appSettings?.membershipSettings?.course.tiers) {
-      tiers = appSettings?.membershipSettings?.course.tiers;
-      upgradeTier = appSettings?.membershipSettings?.course.tiers.find(tier => tier.type === 'UPGRADE');
-    }
-
-    // check if user already has a membership
-    if (userId && sessionClaims) {
-      const userData = sessionClaims?.metadata as Partial<userMetadata>;
-
-      if (userData) {
-        if (userData?.hasPurchases === true) {
-          console.log('No purchases');
-          if (userData?.purchases && userData.purchases.length) {
-            const membership = userData.purchases?.find(
-              purchase => purchase.course.id === appSettings?.membershipSettings?.course.id,
-            );
-
-            if (membership) {
-              hasMembership = true;
-              membershipTier = membership.category;
-            }
-          }
-        }
-      }
-    }
+    slug = appSettings.membershipSettings.course.slug;
   }
 
-  if (!tiers || tiers.length === 0) {
-    console.log('No pricing tiers available');
-    return <div>No pricing tiers available</div>;
-  }
-
-  // if upgrade remove tiers below premium
-  if (upgrade) {
-    tiers = tiers.filter(tier => tier.type === 'UPGRADE');
-  } else {
-    // remove upgrade tiers
-    tiers = tiers.filter(tier => tier.type !== 'UPGRADE');
-  }
+  const userPurchaseOptions = await getPriceOptionTiersByCourseSlugByUserSubscriptions(userId, slug);
+  tiers = userPurchaseOptions.tiers;
 
   return (
     <div
