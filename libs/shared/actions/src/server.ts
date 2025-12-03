@@ -1,5 +1,5 @@
 export { stripePrices, getPriceOptionsForProducts, updateProductMetadata } from './stripe-products';
-export { getAccount } from './get-account';
+export { getAccount, getAccountData } from './get-account';
 export { getAccountChildren } from './get-account-children';
 export { uploadFile } from './storage';
 export { uploadImageAction } from './upload-image';

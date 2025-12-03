@@ -1,3 +1,3 @@
-import { SessionFlags } from '@rocket-house-productions/util';
+import { AccountData } from '@rocket-house-productions/types';
 
-export type userSession = UserPublicMetadata & SessionFlags;
+export type userSession = UserPublicMetadata & AccountData;

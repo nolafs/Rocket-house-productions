@@ -39,7 +39,7 @@ export default async function Page(props: PageProps) {
     <main>
       <PurchaseOption userId={userId} email={sessionClaims?.email as string}>
         <section className={'container px-5'}>
-          <SectionPricingTable checkout={true} />
+          <SectionPricingTable />
         </section>
       </PurchaseOption>
     </main>
