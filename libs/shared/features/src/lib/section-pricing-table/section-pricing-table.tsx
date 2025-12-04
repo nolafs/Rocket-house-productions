@@ -60,6 +60,8 @@ export async function SectionPricingTable({ courseSlug, checkout = true }: Secti
 
     const membershipTiers = appSetting.membershipSettings.course?.tiers ?? [];
     tiers = await getPriceOptionTiers(membershipTiers);
+
+    console.log('[SECTION PRICING TABLE] No userId, using membership tiers', tiers);
   }
 
   return (
@@ -92,16 +94,33 @@ export async function SectionPricingTable({ courseSlug, checkout = true }: Secti
                 ) : null}
               </div>
               <div className="mt-4 leading-6 text-gray-600">{tier.description}</div>
-
-              <StripePricing productId={isProduction ? tier?.stripeId : tier?.stripeIdDev} sales={tier?.sales} />
+              {tier.free ? (
+                <p className="mt-6 flex items-baseline gap-x-1">
+                  <span className="text-4xl font-bold tracking-tight text-gray-900">Free</span>
+                </p>
+              ) : (
+                <StripePricing productId={isProduction ? tier?.stripeId : tier?.stripeIdDev} sales={tier?.sales} />
+              )}
               {checkout ? (
-                <CheckoutButton
-                  type={'payed'}
-                  mostPopular={tier.mostPopular}
-                  productId={isProduction ? tier.stripeId : tier.stripeIdDev}
-                  courseId={tier.courseId}
-                  purchaseId={tier.productId}
-                />
+                tier.free ? (
+                  <CheckoutButton
+                    type={'free'}
+                    mostPopular={tier.mostPopular}
+                    productId={null}
+                    courseId={tier.courseId}
+                    label={'Free Trial'}
+                  />
+                ) : (
+                  <CheckoutButton
+                    type={'payed'}
+                    mostPopular={tier.mostPopular}
+                    productId={isProduction ? tier.stripeId : tier.stripeIdDev}
+                    courseId={tier.courseId}
+                    purchaseId={tier.productId}
+                  />
+                )
+              ) : tier.free ? (
+                <BuyButton type={'free'} mostPopular={tier.mostPopular} courseId={tier.courseId} />
               ) : (
                 <BuyButton
                   type={'payed'}
