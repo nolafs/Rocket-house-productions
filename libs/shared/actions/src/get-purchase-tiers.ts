@@ -6,7 +6,6 @@ import {
   getCourse,
   getPriceOptionsForProducts,
 } from '@rocket-house-productions/actions/server';
-import { userAccountData } from '@rocket-house-productions/util';
 
 type PurchaseCategory = 'standard' | 'premium';
 type PurchaseLike = { courseId?: string | null; type?: string | null; category?: string | null };
