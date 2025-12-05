@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@rocket-house-productions/integration/server';
-import { AccountWithPurchases, AccountData } from '@rocket-house-productions/types';
+import { AccountWithPurchases, AccountData, AccountStatus, NoAccountData } from '@rocket-house-productions/types';
 
 export async function getAccount(userId: string): Promise<AccountWithPurchases | null> {
   return db.account.findFirst({
@@ -31,7 +31,7 @@ export async function getAccount(userId: string): Promise<AccountWithPurchases |
   });
 }
 
-export async function getAccountData(userId: string): Promise<AccountData> {
+export async function getAccountData(userId: string): Promise<Partial<AccountData> | NoAccountData> {
   try {
     const account = await db.account.findFirst({
       where: { userId },
@@ -78,23 +78,23 @@ export async function getAccountData(userId: string): Promise<AccountData> {
       return appSettings?.membershipSettings?.course.id === p.course.id;
     });
 
-    const unenrolled = purchases.filter((p: any) => !p.childId);
+    const unenrolled = purchases.filter(p => !p.childId);
     const singleEnrolled = purchases.length === 1 && purchases[0]?.childId ? purchases[0] : null;
 
     return {
       id: account.id,
-      firstName: account?.firstName,
-      lastName: account?.lastName,
-      email: account?.email,
-      status: (account.status as any) ?? 'inactive',
+      firstName: account?.firstName ?? undefined,
+      lastName: account?.lastName ?? undefined,
+      email: account.email ?? undefined,
+      status: (account.status as AccountStatus) ?? 'inactive',
       hasPurchases,
       purchases: purchases,
-      tier: hasMembershipPurchase[0]?.category || hasMembershipPurchase[0]?.type || null,
+      tier: hasMembershipPurchase[0]?.category || hasMembershipPurchase[0]?.type || undefined,
       type: hasMembershipPurchase[0]?.type || 'free',
       hasMembership: hasMembershipPurchase.length > 0,
-      singleEnrolledCourseType: singleEnrolled?.type,
-      singleEnrolledCourseSlug: singleEnrolled?.course?.slug,
-      unenrolledPurchaseId: unenrolled.length === 1 ? purchases[0].id : null,
+      singleEnrolledCourseType: singleEnrolled?.type || undefined,
+      singleEnrolledCourseSlug: singleEnrolled?.course.slug || undefined,
+      unenrolledPurchaseId: unenrolled.length === 1 ? purchases[0].id : undefined,
     };
   } catch (error) {
     console.error('Error computing session flags:', error);

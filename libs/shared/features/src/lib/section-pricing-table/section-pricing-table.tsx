@@ -29,7 +29,7 @@ export async function SectionPricingTable({ courseSlug, checkout = true }: Secti
   if (userId) {
     const account = await getAccountData(userId);
 
-    if (!account) {
+    if (!account || account.status === 'inactive') {
       throw new Error('No account found for user');
     }
 

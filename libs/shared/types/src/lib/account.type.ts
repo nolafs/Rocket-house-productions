@@ -24,18 +24,25 @@ export type AccountWithPurchases = Prisma.AccountGetPayload<{
   };
 }>;
 
+export type AccountStatus = 'active' | 'pending' | 'inactive';
+
 export type AccountData = {
-  id?: string;
-  firstName?: string | null;
-  lastName?: string | null;
-  email?: string | null;
-  status: 'active' | 'pending' | 'inactive';
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  status: AccountStatus;
   hasPurchases: boolean;
-  tier?: string | null | undefined;
-  type?: string | null | undefined;
-  purchases?: Partial<PurchaseCourse>[] | null | undefined;
-  hasMembership?: boolean | undefined;
-  singleEnrolledCourseSlug?: string | undefined | null;
-  singleEnrolledCourseType?: string | undefined | null;
-  unenrolledPurchaseId?: string | null | undefined;
+  tier?: string;
+  type?: string;
+  purchases?: Partial<PurchaseCourse>[];
+  hasMembership?: boolean;
+  singleEnrolledCourseSlug?: string;
+  singleEnrolledCourseType?: string;
+  unenrolledPurchaseId?: string;
+};
+
+export type NoAccountData = {
+  status: 'inactive';
+  hasPurchases: false;
 };
