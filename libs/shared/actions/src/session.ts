@@ -1,8 +1,9 @@
 'use server';
 import { auth, clerkClient } from '@clerk/nextjs/server';
-import { userAccountData } from '@rocket-house-productions/util';
+
 import { userSession } from '@/types/userSesssion';
 import { setSessionCookies } from './setSessionCookies';
+import { getAccountData } from './server';
 
 export async function SessionFlags(): Promise<Partial<userSession> | null> {
   const { userId, sessionId } = await auth();
@@ -11,7 +12,7 @@ export async function SessionFlags(): Promise<Partial<userSession> | null> {
     return null;
   }
 
-  const flags = await userAccountData(userId);
+  const flags = await getAccountData(userId);
   const client = await clerkClient();
   const user = await client.users.getUser(userId);
 
