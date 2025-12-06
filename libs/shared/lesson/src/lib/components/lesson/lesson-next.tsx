@@ -76,7 +76,17 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
     }
   }, [getLessonProgress(lesson.id), lessonCompleted]);
 
-  const nextLesson = module?.lessons?.find(l => l.position === position + 1);
+  const nextLesson = useMemo(() => {
+    console.log('Calculating next lesson for position:', position, module?.lessons);
+    const currentLesson = module?.lessons?.findIndex(l => l.id === lesson.id);
+    console.log('Calculating next lesson for position:', currentLesson);
+    if (currentLesson !== undefined) {
+      if (module.lessons?.length !== currentLesson + 1) {
+        return module?.lessons?.[currentLesson + 1] || null;
+      }
+    }
+    return;
+  }, [module?.lessons, lesson?.id]);
 
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {
