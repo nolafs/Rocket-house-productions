@@ -38,7 +38,7 @@ export default function BuySheet({ course, options }: BuySheetProps) {
     if (!open) {
       router.back();
     }
-  }, [open]);
+  }, [open, router]);
 
   const handleCheckout = async () => {
     // Implement checkout logic here

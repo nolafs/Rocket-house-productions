@@ -79,7 +79,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const nextLesson = useMemo(() => {
     console.log('Calculating next lesson for position:', position, module?.lessons);
     const currentLesson = module?.lessons?.findIndex(l => l.id === lesson.id);
-    if (currentLesson) {
+    if (currentLesson !== undefined) {
       if (module.lessons?.length !== currentLesson + 1) {
         return module?.lessons?.[currentLesson + 1] || null;
       }
