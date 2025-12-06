@@ -123,9 +123,15 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
   const isMembershipCourse = membershipCourseId === course.id;
 
   // What has the user bought for the membership course (if anything)?
-  const membershipPurchaseCategory = getCoursePurchaseCategory(userData?.purchases ?? [], membershipCourseId);
+  const membershipPurchaseCategory = userData?.tier ?? null;
+  const hasMembershipPurchase = userData?.hasMembership ?? false;
 
-  const hasMembershipPurchase = membershipPurchaseCategory !== null;
+  console.log(
+    '[getPriceOptionTiersByCourseSlugByUserSubscriptions]',
+    hasMembershipPurchase,
+    membershipPurchaseCategory,
+    userData,
+  );
 
   // --------------------------
   // CASE 1: user has NO membership → always show membership tiers (paid only)
@@ -158,6 +164,9 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
     // --------------------------
     // CASE 2: user HAS membership
     // --------------------------
+
+    console.log('User has membership:', membershipPurchaseCategory);
+
     userCourse = course;
 
     if (isMembershipCourse) {
@@ -165,7 +174,7 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
       const membershipTiers = appSetting.membershipSettings.course?.tiers ?? [];
       const membershipOptions = await getPriceOptionTiers(membershipTiers, true);
 
-      if (membershipPurchaseCategory === 'premium') {
+      if (membershipPurchaseCategory?.toLowerCase() === 'premium') {
         // User already has premium membership → no tiers
         userPurchaseOptions = [];
         // UI should show "You already own premium membership"

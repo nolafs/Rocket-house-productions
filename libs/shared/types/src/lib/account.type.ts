@@ -45,5 +45,8 @@ export type AccountData = {
 export type NoAccountData = {
   status: 'inactive';
   hasPurchases: false;
+  hasMembership?: undefined;
+  tier?: undefined;
+  type?: undefined;
   purchases?: undefined;
 };
