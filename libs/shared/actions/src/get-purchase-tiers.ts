@@ -126,13 +126,6 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
   const membershipPurchaseCategory = userData?.tier ?? null;
   const hasMembershipPurchase = userData?.hasMembership ?? false;
 
-  console.log(
-    '[getPriceOptionTiersByCourseSlugByUserSubscriptions]',
-    hasMembershipPurchase,
-    membershipPurchaseCategory,
-    userData,
-  );
-
   // --------------------------
   // CASE 1: user has NO membership → always show membership tiers (paid only)
   // --------------------------
