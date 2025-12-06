@@ -1,17 +1,16 @@
 import type { Course, Tier } from '@prisma/client';
-import type { CourseModules, PriceTier } from '@rocket-house-productions/types';
+import { CourseModules, PriceTier, PurchaseCourse } from '@rocket-house-productions/types';
 import {
-  getAccount,
+  getAccountData,
   getAppSettings,
   getCourse,
   getPriceOptionsForProducts,
 } from '@rocket-house-productions/actions/server';
 
 type PurchaseCategory = 'standard' | 'premium';
-type PurchaseLike = { courseId?: string | null; type?: string | null; category?: string | null };
 
 function getCoursePurchaseCategory(
-  purchases: PurchaseLike[],
+  purchases: Partial<PurchaseCourse>[],
   courseId: string | null | undefined,
 ): PurchaseCategory | null {
   if (!courseId) return null;
@@ -102,7 +101,7 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
   const [course, appSetting, userData] = await Promise.all([
     getCourse({ courseSlug: slug }),
     getAppSettings(),
-    getAccount(userId),
+    getAccountData(userId),
   ]);
 
   if (!userData) {
@@ -124,14 +123,14 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
   const isMembershipCourse = membershipCourseId === course.id;
 
   // What has the user bought for the membership course (if anything)?
-  const membershipPurchaseCategory = getCoursePurchaseCategory(userData.purchases, membershipCourseId);
+  const membershipPurchaseCategory = getCoursePurchaseCategory(userData?.purchases ?? [], membershipCourseId);
 
   const hasMembershipPurchase = membershipPurchaseCategory !== null;
 
   // --------------------------
   // CASE 1: user has NO membership → always show membership tiers (paid only)
   // --------------------------
-  if (!hasMembershipPurchase) {
+  if (!hasMembershipPurchase || !userData.hasPurchases) {
     const membershipCourseSlug = appSetting.membershipSettings.course.slug;
 
     if (!membershipCourseSlug) {
@@ -150,7 +149,11 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
     const options = await getPriceOptionTiers(membershipTiers);
 
     // spec: show all membership tiers except free
-    userPurchaseOptions = options.filter(o => o && o.type !== 'BASIC');
+    if (userData.hasPurchases) {
+      userPurchaseOptions = options.filter(o => o && o.type !== 'BASIC');
+    } else {
+      userPurchaseOptions = options;
+    }
   } else {
     // --------------------------
     // CASE 2: user HAS membership
@@ -174,21 +177,25 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
       }
     } else {
       // ---- 2b) Course is any other course ----
-      const productTiers: Tier[] = course.tiers;
-      const options: PriceTier[] = await getPriceOptionTiers(productTiers);
+      if (userData?.purchases) {
+        const productTiers: Tier[] = course.tiers;
+        const options: PriceTier[] = await getPriceOptionTiers(productTiers);
 
-      const coursePurchaseCategory = getCoursePurchaseCategory(userData.purchases, course.id);
+        const coursePurchaseCategory = getCoursePurchaseCategory(userData.purchases, course.id);
 
-      if (!coursePurchaseCategory) {
-        // no purchase for this course → show all non-free options (or all, your choice)
-        userPurchaseOptions = options.filter(o => o && o.type !== 'BASIC' && o.type !== 'UPGRADE');
-      } else if (coursePurchaseCategory === 'standard') {
-        // user has STANDARD for this course → offer PREMIUM upgrades
-        userPurchaseOptions = options.filter(o => o && o.type === 'UPGRADE');
+        if (!coursePurchaseCategory) {
+          // no purchase for this course → show all non-free options (or all, your choice)
+          userPurchaseOptions = options.filter(o => o && o.type !== 'BASIC' && o.type !== 'UPGRADE');
+        } else if (coursePurchaseCategory === 'standard') {
+          // user has STANDARD for this course → offer PREMIUM upgrades
+          userPurchaseOptions = options.filter(o => o && o.type === 'UPGRADE');
+        } else {
+          // user has PREMIUM for this course → no upgrades
+          userPurchaseOptions = [];
+          // UI: "You already own the premium version of this course"
+        }
       } else {
-        // user has PREMIUM for this course → no upgrades
-        userPurchaseOptions = [];
-        // UI: "You already own the premium version of this course"
+        throw new Error('User purchases data is missing');
       }
     }
   }

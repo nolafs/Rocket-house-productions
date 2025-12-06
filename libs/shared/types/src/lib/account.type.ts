@@ -45,4 +45,5 @@ export type AccountData = {
 export type NoAccountData = {
   status: 'inactive';
   hasPurchases: false;
+  purchases?: undefined;
 };

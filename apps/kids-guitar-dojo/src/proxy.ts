@@ -142,7 +142,7 @@ export default clerkMiddleware(
         return NextResponse.next();
       }
       if (!flags.hasPurchases) {
-        return NextResponse.redirect(new URL('/error?code=unauthorized', req.url));
+        return NextResponse.redirect(`${req.nextUrl.origin}/courses/order`);
       }
     }
 

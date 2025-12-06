@@ -29,7 +29,9 @@ export async function SectionPricingTable({ courseSlug, checkout = true }: Secti
   if (userId) {
     const account = await getAccountData(userId);
 
-    if (!account || account.status === 'inactive') {
+    console.log(account);
+
+    if (!account) {
       throw new Error('No account found for user');
     }
 
@@ -47,6 +49,8 @@ export async function SectionPricingTable({ courseSlug, checkout = true }: Secti
 
     const userPurchaseOptions = await getPriceOptionTiersByCourseSlugByUserSubscriptions(userId, slug);
     tiers = userPurchaseOptions.tiers;
+
+    console.log(tiers);
 
     if (tiers.length === 0) {
       throw new Error('No pricing tiers found for course: ' + slug);
