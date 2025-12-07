@@ -142,11 +142,20 @@ export async function POST(req: Request) {
     console.log('[Webhook] Duplicate event ignored', { eventId: event.id, type: event.type });
     return NextResponse.json({ message: 'Already processed' }, { status: 200 });
   }
-  await db.webhookEvent.upsert({
-    where: { stripeEventId: event.id },
-    create: { stripeEventId: event.id, type: event.type ?? null },
-    update: {},
-  });
+
+  // Use create + try/catch instead of upsert to avoid P2002 race when two requests
+  // try to create the same webhookEvent concurrently. If a duplicate unique
+  // constraint error occurs, treat it as already processed and return 200.
+  try {
+    await db.webhookEvent.create({ data: { stripeEventId: event.id, type: event.type ?? null } });
+  } catch (err) {
+    // Prisma unique constraint error code P2002 -> another process already created it
+    if ((err as any)?.code === 'P2002') {
+      console.log('[Webhook] Duplicate create detected (race) - ignoring', { eventId: event.id });
+      return NextResponse.json({ message: 'Already processed' }, { status: 200 });
+    }
+    throw err;
+  }
 
   const permittedEvents: string[] = [
     'checkout.session.completed',
@@ -295,6 +304,7 @@ export async function POST(req: Request) {
                     data: {
                       amount: (existing.amount ?? 0) + lineAmount,
                       stripeChargeId: full.id,
+                      type: 'charge',
                       category: (product?.metadata as any)?.type ?? existing.category,
                       billingAddress: JSON.stringify(full.customer_details?.address ?? {}),
                     },
