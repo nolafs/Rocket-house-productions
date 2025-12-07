@@ -20,12 +20,18 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
   const [polling, setPolling] = useState(false);
   const triedReconcile = useRef(false);
   const router = useRouter();
+  const purchaseId = useRef<string | null>(null);
+  // State mirror for render-safe access (ESLint: cannot access refs during render)
+  const [purchaseIdState, setPurchaseIdState] = useState<string | null>(null);
 
   // Convenience flags
   const sessionId = useMemo(
     () => checkOutSessionId ?? user?.recentStripeCheckoutId ?? null,
     [checkOutSessionId, user?.recentStripeCheckoutId],
   );
+
+  // Seeded purchase id derived from user data for render-time fallback (no setState in effect)
+  const seededPurchaseId = useMemo(() => user?.purchases?.[0]?.id ?? null, [user?.purchases]);
 
   // Derive state from user data (no setState in effect)
   const state = useMemo<StatusState>(() => {
@@ -34,6 +40,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
 
     // If the user already has purchases
     if (user.purchases?.length) {
+      // ensure purchaseId is set if available
       return user.purchases[0]?.childId ? 'returning' : 'active';
     }
 
@@ -66,6 +73,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
 
     let cancelled = false;
     let tries = 0;
+    const prevResolvedRef = { current: null as string | null };
 
     async function checkOnce(): Promise<'done' | 'again'> {
       // Read-only status
@@ -78,6 +86,14 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
 
       const paid = s?.payment_status === 'paid';
       const complete = s?.status === 'complete';
+
+      const resolved = s?.metadata?.purchase_id ?? null;
+      // update ref and only set render state when it actually changes to avoid cascading renders
+      purchaseId.current = resolved;
+      if (resolved && prevResolvedRef.current !== resolved) {
+        prevResolvedRef.current = resolved;
+        setPurchaseIdState(resolved);
+      }
 
       if (paid && complete) return 'done';
       return 'again';
@@ -111,7 +127,9 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
             console.warn('refresh-flags failed; proceeding anyway', e);
           }
           setPolling(false);
-          router.replace('/refresh?next=/courses'); // next request sees fresh cookie
+          // Prefer the most up-to-date ref value inside the effect (safe) and fallback to seeded value
+          const redirectId = purchaseId.current ?? seededPurchaseId;
+          router.replace(redirectId ? `/courses/enroll/${redirectId}` : '/courses');
 
           return;
           // Option B (if you prefer a clickable CTA instead of auto-redirect):
@@ -138,7 +156,8 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
             console.warn('refresh-flags failed; proceeding anyway', e);
           }
           setPolling(false);
-          router.replace('/refresh?next=/courses'); // next request sees fresh cookie
+          const redirectId2 = purchaseId.current ?? seededPurchaseId;
+          router.replace(redirectId2 ? `/courses/enroll/${redirectId2}` : '/courses');
           return;
         }
       }
@@ -152,7 +171,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
       cancelled = true;
       setPolling(false);
     };
-  }, [shouldPoll, sessionId, router]);
+  }, [shouldPoll, sessionId, router, seededPurchaseId]);
 
   // Renders
   if (
@@ -172,8 +191,11 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
   }
 
   if (state === 'active') {
+    const hrefId = purchaseIdState ?? seededPurchaseId;
     return (
-      <Link href="/refresh?next=/courses" className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
+      <Link
+        href={hrefId ? `/refresh?next=/courses/enroll/${hrefId}` : '/refresh?next=/courses'}
+        className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
         Start Onboarding
       </Link>
     );
@@ -181,7 +203,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
 
   if (state === 'returning') {
     return (
-      <Link href="/refresh?next=/courses" className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
+      <Link href={'/refresh?next=/courses'} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
         Return to Course
       </Link>
     );
