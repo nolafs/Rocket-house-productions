@@ -91,7 +91,7 @@ export async function getAccountData(userId: string): Promise<Partial<AccountDat
       purchases: purchases,
       tier: hasMembershipPurchase[0]?.category || hasMembershipPurchase[0]?.type || undefined,
       type: hasMembershipPurchase[0]?.type || 'free',
-      hasMembership: hasMembershipPurchase.length > 0,
+      hasMembership: hasMembershipPurchase.length > 0 && hasMembershipPurchase[0]?.type !== 'free',
       singleEnrolledCourseType: singleEnrolled?.type || undefined,
       singleEnrolledCourseSlug: singleEnrolled?.course.slug || undefined,
       unenrolledPurchaseId: unenrolled.length === 1 ? purchases[0].id : undefined,
