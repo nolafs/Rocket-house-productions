@@ -1,4 +1,4 @@
-import { getAppSettings, getCourses, SessionFlags } from '@rocket-house-productions/actions/server';
+import { getAppSettings, getCourses } from '@rocket-house-productions/actions/server';
 
 import { NavbarSimple } from '@rocket-house-productions/layout';
 import logo from '@assets/logo.png';
