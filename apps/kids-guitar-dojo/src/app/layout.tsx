@@ -157,14 +157,14 @@ export async function generateMetadata(_props: any, parent: ResolvingMetadata): 
   };
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode; modal: React.ReactNode }) {
+export default async function RootLayout(props: { children: React.ReactNode; modal?: React.ReactNode }) {
   return (
     <html
       lang="en"
       className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
       suppressHydrationWarning={true}>
       <body className={'bg-background min-h-screen font-sans antialiased'}>
-        <ClientProviders domain={'https://plausible.biffify.com'}>{children}</ClientProviders>
+        <ClientProviders domain={'https://plausible.biffify.com'}>{props.children}</ClientProviders>
         {/* Preview */}
         <PrismicPreview repositoryName={repositoryName} />
         {/* Cookie consent */}

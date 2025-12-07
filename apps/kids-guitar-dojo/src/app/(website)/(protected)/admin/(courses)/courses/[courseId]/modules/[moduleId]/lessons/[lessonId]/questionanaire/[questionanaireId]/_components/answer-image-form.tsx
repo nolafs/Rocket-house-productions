@@ -8,7 +8,8 @@ import { FileImageUpload } from '@rocket-house-productions/features';
 
 interface ImageFormProps {
   imageUrl: string | null;
-  onChange: (file: File) => void;
+  // FileImageUpload returns the uploaded image URL (string) or undefined on no-op
+  onChange: (imageUrl?: string | null) => void;
 }
 
 const AnswerImageForm = ({ imageUrl, onChange }: ImageFormProps) => {
@@ -53,9 +54,10 @@ const AnswerImageForm = ({ imageUrl, onChange }: ImageFormProps) => {
         <div>
           <FileImageUpload
             onChange={file => {
+              // file is a string URL or undefined
               if (file) {
                 onChange(file);
-                setImage(file);
+                setImage(file ?? null);
                 toggleEdit();
               }
             }}
