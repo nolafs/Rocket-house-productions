@@ -15,8 +15,6 @@ const generateRandomPosition = (width: number, height: number, depth: number): [
   (Math.random() - 0.5) * depth * 2,
 ];
 
-const NUM_CLOUDS = 10;
-
 interface CloudsProps {
   width: number;
   height: number;
@@ -44,10 +42,13 @@ const Cloud = ({ textureUrl, position }: CloudProps) => {
   const [size, setSize] = useState([1, 1]);
 
   useEffect(() => {
-    if (texture) {
-      // Ensure texture is loaded before calculating size
-      const aspect = texture.image.width / texture.image.height;
-      setSize([aspect * 5, 5]); // Adjust size as needed
+    if (texture && texture.image) {
+      // Type guard: check if image has width and height properties
+      const image = texture.image as { width?: number; height?: number };
+      if (image.width && image.height) {
+        const aspect = image.width / image.height;
+        setSize([aspect * 5, 5]); // Adjust size as needed
+      }
     }
   }, [texture]);
 

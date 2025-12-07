@@ -3,6 +3,7 @@ import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { getAccount } from './get-account';
+import { LessonWithQuestionaries, ModuleWithLessons } from '@rocket-house-productions/types';
 
 interface GetQuizProps {
   courseSlug: string;
@@ -19,23 +20,25 @@ export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizPro
 
   const isAdmin = (sessionClaims?.metadata as { role: string })?.role === 'admin';
 
-  const account = await getAccount(userId);
+  // Run account and course queries in parallel for better performance
+  const [account, course] = await Promise.all([
+    getAccount(userId),
+    db.course.findUnique({
+      where: {
+        slug: courseSlug,
+      },
+    }),
+  ]);
 
   if (!account) {
     throw new Error('User not found');
   }
 
-  const course = await db.course.findUnique({
-    where: {
-      slug: courseSlug,
-    },
-  });
-
   if (!course) {
     throw new Error('Course not found');
   }
 
-  const module = await db.module.findUnique({
+  const module = (await db.module.findUnique({
     where: isAdmin
       ? {
           slug: moduleSlug,
@@ -68,13 +71,13 @@ export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizPro
         },
       },
     },
-  });
+  })) as ModuleWithLessons | null;
 
   if (!module) {
     throw new Error('Module not found');
   }
 
-  const lesson = await db.lesson.findUnique({
+  const lesson = (await db.lesson.findUnique({
     where: {
       slug: lessonSlug,
       moduleId: module.id,
@@ -100,7 +103,7 @@ export const getQuiz = async ({ courseSlug, moduleSlug, lessonSlug }: GetQuizPro
         },
       },
     },
-  });
+  })) as LessonWithQuestionaries | null;
 
   if (!lesson) {
     throw new Error('Lesson not found');

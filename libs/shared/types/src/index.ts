@@ -10,6 +10,15 @@ export type { IContactFormInput } from './lib/email.type';
 export type { OGImage } from './lib/ogimage.type';
 export type { Tier, PriceTier, PriceOption } from './lib/tier.type';
 export type { SectionModule, SectionLesson, SectionCourse } from './lib/section-module.type';
-export type { CourseModules, PurchaseCourse } from './lib/course.type';
+export type {
+  CourseModules,
+  PurchaseCourse,
+  CoursePayload,
+  CoursesPayload,
+  ModuleWithLessons,
+  LessonWithQuestionaries,
+} from './lib/course.type';
 export type { MailerListType, MailerListSubscriberFields } from './lib/mailer-lite';
 export type { AccountWithPurchases, AccountData, NoAccountData, AccountStatus } from './lib/account.type';
+export type { PurchaseWithAccount } from './lib/purchase.type';
+export type { ChildWithScores, ChildWithTopScore } from './lib/child.type';

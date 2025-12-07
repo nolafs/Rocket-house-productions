@@ -96,7 +96,7 @@
     "generate-types-no-engine": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "prisma generate --schema prisma/schema.prisma"
+        "command": "prisma generate"
       }
     },
     "prisma-studio": { "command": "prisma studio" },

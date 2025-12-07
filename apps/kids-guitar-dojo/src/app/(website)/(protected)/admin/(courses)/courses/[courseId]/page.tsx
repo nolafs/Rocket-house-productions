@@ -12,30 +12,12 @@ import Actions from './_components/actions';
 import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { auth } from '@clerk/nextjs/server';
 import { BookSceneForm } from './_components/book-scene';
-import { Prisma } from '@prisma/client';
+
 import OrderForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/order-form';
-import StripeProductForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/stripe-product-form';
 import MembershipForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/membership-form';
 import { getCourses } from '@rocket-house-productions/actions/server';
 import CourseTierForm from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/_components/course-tier-form';
-
-export type CoursePayload = Prisma.CourseGetPayload<{
-  include: {
-    modules: true; // Module[]
-    bookScene: true;
-    tiers: true;
-    membershipSettings: {
-      include: {
-        included: {
-          include: { includedCourse: true };
-        };
-      };
-    };
-    attachments: {
-      include: { attachmentType: true }; // Attachment & { attachmentType: AttachmentType }
-    };
-  };
-}>;
+import type { CoursePayload } from '@rocket-house-productions/types';
 
 const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) => {
   const params = await props.params;
@@ -47,7 +29,7 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
   }
 
   // Query to database to check for presence of course id passed in url
-  const course: CoursePayload | null = await db.course.findUnique({
+  const course = (await db.course.findUnique({
     where: {
       id: params.courseId,
     },
@@ -76,7 +58,7 @@ const CourseIdPage = async (props: { params: Promise<{ courseId: string }> }) =>
         },
       },
     },
-  });
+  })) as CoursePayload | null;
 
   // Query to database to load the seeded categories list
   const categories = await db.category.findMany({

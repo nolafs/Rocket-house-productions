@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { isDynamicServerError } from 'next/dist/client/components/hooks-server-context';
+import type { ChildWithScores } from '@rocket-house-productions/types';
 
 export async function GET(req: NextRequest) {
   try {
@@ -22,7 +23,7 @@ export async function GET(req: NextRequest) {
     }
 
     // First, get ALL children with scores for this course
-    const children = await db.child.findMany({
+    const children = (await db.child.findMany({
       where: {
         childScores: {
           some: { courseId },
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
         },
         childProgress: true,
       },
-    });
+    })) as ChildWithScores[];
 
     // Map, filter, sort ALL children, THEN take top 20
     const leaderboard = children

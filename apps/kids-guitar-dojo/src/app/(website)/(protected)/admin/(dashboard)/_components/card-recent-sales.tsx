@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@rocket-house-productions/shadcn-ui';
 import { db } from '@rocket-house-productions/integration/server';
+import type { PurchaseWithAccount } from '@rocket-house-productions/types';
 
 function ItemCard({
   firstName,
@@ -36,7 +37,7 @@ function ItemCard({
         <p className="text-sm font-medium leading-none">
           {firstName} {lastName}
         </p>
-        <p className="text-muted-foreground text-sm">{email}</p>
+        <p className="text-sm text-muted-foreground">{email}</p>
       </div>
       <div className="ml-auto font-medium">+{spend}</div>
     </div>
@@ -44,7 +45,7 @@ function ItemCard({
 }
 
 export async function CardRecentSales() {
-  const purchases = await db.purchase.findMany({
+  const purchases = (await db.purchase.findMany({
     take: 5,
     orderBy: {
       createdAt: 'desc',
@@ -60,7 +61,7 @@ export async function CardRecentSales() {
         },
       },
     },
-  });
+  })) as unknown as PurchaseWithAccount[];
 
   return (
     <Card x-chunk="dashboard-01-chunk-5">

@@ -15,6 +15,7 @@ import ModuleAwardForm from './_components/module-award-form';
 
 import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { db } from '@rocket-house-productions/integration/server';
+import { Module, ModuleAttachment, Lesson } from '@prisma/client';
 
 const ModuleIdPage = async (props: { params: Promise<{ courseId: string; moduleId: string }> }) => {
   const params = await props.params;
@@ -24,7 +25,7 @@ const ModuleIdPage = async (props: { params: Promise<{ courseId: string; moduleI
     return redirect('/');
   }
 
-  const moduleSection = await db.module.findUnique({
+  const moduleSection = (await db.module.findUnique({
     where: {
       id: params.moduleId,
     },
@@ -45,7 +46,13 @@ const ModuleIdPage = async (props: { params: Promise<{ courseId: string; moduleI
         },
       },
     },
-  });
+  })) as
+    | (Module & {
+        attachments: ModuleAttachment[];
+        lessons: Lesson[];
+        availableAwards: Array<{ awardType: any }>;
+      })
+    | null;
 
   if (!moduleSection) {
     return redirect('/');
