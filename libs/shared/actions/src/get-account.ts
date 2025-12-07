@@ -70,7 +70,7 @@ export async function getAccountData(userId: string): Promise<Partial<AccountDat
       return { status: 'inactive', hasPurchases: false };
     }
 
-    const purchases = account.purchases ?? null;
+    const purchases = account.purchases ?? [];
     const hasPurchases = purchases.length > 0;
 
     //check if user has membership purchase, if so, consider as unenrolled
