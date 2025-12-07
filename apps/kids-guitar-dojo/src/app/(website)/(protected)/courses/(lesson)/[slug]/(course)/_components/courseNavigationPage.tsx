@@ -43,7 +43,7 @@ const LessonCourseProgression = dynamic(
 );
 
 interface CourseNavigationPageProps {
-  course: Course & { modules: any[] };
+  course: Course & { modules: any[]; attachments: any[] };
   childId?: string | null;
   purchaseType?: string | null;
   role: string;
@@ -86,7 +86,10 @@ export function CourseNavigationPage({ course, role, childId = null, purchaseTyp
               <LessonCourseProgression type={'radial'} />
             </div>
             <div className={'grid w-full grid-cols-2 items-center justify-start gap-x-2'}>
-              <ModuleAttachments course={course} purchaseType={purchaseType} />
+              <ModuleAttachments
+                course={{ ...course, attachments: course.attachments ?? [] }}
+                purchaseType={purchaseType}
+              />
               <CourseQuickNavigation course={course} role={role} />
             </div>
           </div>
@@ -98,7 +101,10 @@ export function CourseNavigationPage({ course, role, childId = null, purchaseTyp
           <div className={'flex items-center justify-center gap-x-2 pb-5 md:pb-0'}>
             <CourseJukeBox course={course} purchaseType={purchaseType} />
             <CourseLeaderboard courseId={course.id} childId={childId} />
-            <ModuleAttachments course={course} purchaseType={purchaseType} />
+            <ModuleAttachments
+              course={{ ...course, attachments: course.attachments ?? [] }}
+              purchaseType={purchaseType}
+            />
             <CourseQuickNavigation course={course} role={role} />
           </div>
         </div>
