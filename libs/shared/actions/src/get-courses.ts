@@ -12,7 +12,7 @@ export const getCourses = async () => {
   const isAdmin = (sessionClaims?.metadata as { role: string })?.role === 'admin';
 
   const courses = await db.course.findMany({
-    where: isAdmin ? undefined : { isPublished: true },
+    ...(isAdmin ? {} : { where: { isPublished: true } }),
     orderBy: {
       order: 'asc',
     },
@@ -33,13 +33,13 @@ export const getCourses = async () => {
         },
       },
       modules: {
-        where: isAdmin ? undefined : { isPublished: true },
+        ...(isAdmin ? {} : { where: { isPublished: true } }),
         orderBy: {
           position: 'asc',
         },
         include: {
           lessons: {
-            where: isAdmin ? undefined : { isPublished: true },
+            ...(isAdmin ? {} : { where: { isPublished: true } }),
             include: {
               category: {
                 select: {

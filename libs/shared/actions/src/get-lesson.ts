@@ -87,7 +87,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
           },
         },
         lessons: {
-          where: isAdmin ? undefined : { isPublished: true },
+          ...(isAdmin ? {} : { where: { isPublished: true } }),
           select: {
             id: true,
             title: true,
