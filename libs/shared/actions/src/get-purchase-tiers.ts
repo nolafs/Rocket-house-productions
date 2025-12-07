@@ -159,6 +159,7 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
     // --------------------------
 
     console.log('User has membership:', membershipPurchaseCategory);
+    console.log('User has membership:', isMembershipCourse);
 
     userCourse = course;
 
@@ -167,15 +168,30 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
       const membershipTiers = appSetting.membershipSettings.course?.tiers ?? [];
       const membershipOptions = await getPriceOptionTiers(membershipTiers, true);
 
-      if (membershipPurchaseCategory?.toLowerCase() === 'premium') {
-        // User already has premium membership → no tiers
-        userPurchaseOptions = [];
-        // UI should show "You already own premium membership"
-      } else {
-        // User has STANDARD membership → offer PREMIUM upgrade only
-        console.log('STANDARD membership -> upgrade', membershipOptions);
+      const category = (membershipPurchaseCategory ?? '').toString().toLowerCase();
 
-        userPurchaseOptions = membershipOptions.filter(o => o && o.type === 'UPGRADE');
+      console.log('category:', category);
+
+      switch (category) {
+        case 'premium':
+          // User already has premium membership → no tiers
+          userPurchaseOptions = [];
+          break;
+
+        case 'standard':
+          // User has STANDARD membership → offer PREMIUM upgrade only
+          userPurchaseOptions = membershipOptions.filter(o => o && o.type === 'UPGRADE');
+          break;
+
+        case 'free':
+          // User has FREE membership → show all non-free options (standard + premium)
+          userPurchaseOptions = membershipOptions.filter(o => o && o.type !== 'BASIC');
+          break;
+
+        default:
+          // Unknown / null category → return all membership options
+          userPurchaseOptions = membershipOptions;
+          break;
       }
     } else {
       // ---- 2b) Course is any other course ----
@@ -184,6 +200,8 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
         const options: PriceTier[] = await getPriceOptionTiers(productTiers);
 
         const coursePurchaseCategory = getCoursePurchaseCategory(userData.purchases, course.id);
+
+        console.log('[coursePurchaseCategory]', coursePurchaseCategory);
 
         if (!coursePurchaseCategory) {
           // no purchase for this course → show all non-free options (or all, your choice)
