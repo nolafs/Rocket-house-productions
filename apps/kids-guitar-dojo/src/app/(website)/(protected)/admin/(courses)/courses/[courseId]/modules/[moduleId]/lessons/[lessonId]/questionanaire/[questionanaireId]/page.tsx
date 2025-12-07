@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { ArrowLeft, CircleHelpIcon, LayoutDashboard } from 'lucide-react';
 
 import { db } from '@rocket-house-productions/integration/server';
+import { Questionary, Question } from '@prisma/client';
 
 // Components
 import QuestionTitleForm from './_components/question-title-form';
@@ -25,7 +26,7 @@ const QuestionnaireIdPage = async (props: {
     return redirect('/');
   }
 
-  const questionary = await db.questionary.findUnique({
+  const questionary = (await db.questionary.findUnique({
     where: {
       id: params.questionanaireId,
       lessonId: params.lessonId,
@@ -38,7 +39,7 @@ const QuestionnaireIdPage = async (props: {
         },
       },
     },
-  });
+  })) as (Questionary & { questions: Question[] }) | null;
 
   if (!questionary) {
     return redirect('/');

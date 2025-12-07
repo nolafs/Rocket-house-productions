@@ -2,7 +2,9 @@
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration/server';
 import { redirect } from 'next/navigation';
-export const getCourses = async () => {
+import type { CoursesPayload } from '@rocket-house-productions/types';
+
+export const getCourses = async (): Promise<CoursesPayload[] | never> => {
   const { userId, sessionClaims } = await auth();
 
   if (!userId) {
@@ -11,7 +13,7 @@ export const getCourses = async () => {
 
   const isAdmin = (sessionClaims?.metadata as { role: string })?.role === 'admin';
 
-  const courses = await db.course.findMany({
+  const courses = (await db.course.findMany({
     ...(isAdmin ? {} : { where: { isPublished: true } }),
     orderBy: {
       order: 'asc',
@@ -54,7 +56,7 @@ export const getCourses = async () => {
         },
       },
     },
-  });
+  })) as CoursesPayload[];
 
   if (!courses) {
     return redirect('/');

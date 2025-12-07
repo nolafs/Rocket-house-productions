@@ -1,11 +1,12 @@
 'use client';
-import { CoursePayload } from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/page';
+
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import { BookScene } from '@prisma/client';
 import BookSceneCreateEdit from './book-scene-create-edit';
 import { BookSceneCourseForm } from './book-scene-course';
+import type { CoursePayload } from '@rocket-house-productions/types';
 
 interface BookSceneProps {
   initialData?: CoursePayload | null;

@@ -1,11 +1,10 @@
 // app/api/(.)pin/verify/route.ts
 import { NextResponse } from 'next/server';
 import { cookies, headers } from 'next/headers';
-import { PrismaClient } from '@prisma/client';
 import argon2 from 'argon2';
 import { signPinToken } from '@rocket-house-productions/pin/server';
+import { db } from '@rocket-house-productions/integration/server';
 
-const db = new PrismaClient();
 const DEFAULT_SCOPE = 'parents';
 
 // (optional) very small DB-backed rate limiter

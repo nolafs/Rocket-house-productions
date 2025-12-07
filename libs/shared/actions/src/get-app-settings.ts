@@ -1,8 +1,34 @@
 'use server';
 import { db } from '@rocket-house-productions/integration/server';
+import { Prisma } from '@prisma/client';
 
-export const getAppSettings = async () => {
-  return await db.appSettings.findFirst({
+export type AppSettingsPayload = Prisma.AppSettingsGetPayload<{
+  include: {
+    membershipSettings: {
+      include: {
+        included: {
+          include: {
+            includedCourse: {
+              include: {
+                category: true;
+                tiers: true;
+              };
+            };
+          };
+        };
+        course: {
+          include: {
+            category: true;
+            tiers: true;
+          };
+        };
+      };
+    };
+  };
+}>;
+
+export const getAppSettings = async (): Promise<AppSettingsPayload | null> => {
+  return (await db.appSettings.findFirst({
     include: {
       membershipSettings: {
         include: {
@@ -29,5 +55,5 @@ export const getAppSettings = async () => {
         },
       },
     },
-  });
+  })) as AppSettingsPayload | null;
 };
