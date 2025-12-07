@@ -33,7 +33,7 @@ export async function getAccount(userId: string): Promise<AccountWithPurchases |
 
 export async function getAccountData(userId: string): Promise<Partial<AccountData> | NoAccountData> {
   try {
-    const account = await db.account.findFirst({
+    const account = (await db.account.findFirst({
       where: { userId },
       select: {
         id: true,
@@ -42,11 +42,30 @@ export async function getAccountData(userId: string): Promise<Partial<AccountDat
         email: true,
         status: true,
         purchases: {
-          select: { id: true, childId: true, type: true, category: true, course: { select: { slug: true, id: true } } },
+          select: {
+            id: true,
+            childId: true,
+            type: true,
+            category: true,
+            course: { select: { slug: true, id: true } },
+          },
           orderBy: { createdAt: 'asc' },
         },
       },
-    });
+    })) as {
+      id: string;
+      firstName: string | null;
+      lastName: string | null;
+      email: string | null;
+      status: string;
+      purchases: Array<{
+        id: string;
+        childId: string | null;
+        type: string | null;
+        category: string | null;
+        course: { slug: string | null; id: string };
+      }>;
+    } | null;
 
     // Get app settings to determine membership course
     const appSettings = await db.appSettings.findFirst({
