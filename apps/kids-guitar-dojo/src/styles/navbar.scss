@@ -1,5 +1,5 @@
 .navbar-area {
-  @apply fixed z-[40] w-full transform-gpu backdrop-blur-sm;
+  @apply fixed z-[40] w-full transform-gpu;
 
   .dropdown-toggle {
     @apply relative;
@@ -69,6 +69,7 @@
     @apply z-[40];
     @apply right-0;
     @apply bg-white;
+    @apply backdrop-blur-sm;
     box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.09);
     animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
   }

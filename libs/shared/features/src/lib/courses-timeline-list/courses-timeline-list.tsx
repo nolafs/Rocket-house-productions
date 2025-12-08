@@ -20,16 +20,16 @@ interface CourseTimelineProps {
 export function CoursesTimelineList({ courses, membershipData, userData }: CourseTimelineProps) {
   return (
     <div>
-      <h1 className={'font-lesson-heading relative mb-5 text-2xl font-bold'}>
+      <h1 className={'font-lesson-heading relative mb-4 text-lg font-bold md:mb-5 md:text-2xl'}>
         <div>
           <Image src={Ribben} alt="Ribben" className="w-full" />
         </div>
-        <div className={'absolute top-4 flex w-full flex-col py-1 text-center text-white'}>
+        <div className={'absolute top-2 flex w-full flex-col py-1 text-center text-white md:top-4'}>
           <span>Welcome</span>
           <span>Kid's guitar dojo</span>
         </div>
       </h1>
-      <div className={'relative isolate w-full'}>
+      <div className={'relative isolate w-full px-5'}>
         <div className={'absolute left-0 top-0 z-0 h-full w-1/2 border-r-4 border-dashed border-black'}></div>
         <ul className={'z-2 relative flex flex-col items-center justify-center space-y-10'}>
           {courses.map((course, idx) => (
