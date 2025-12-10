@@ -25,6 +25,7 @@ const ButtonAddChild = ({ baseUrl, purchaseId, students }: ButtonAddChildProps) 
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [redirectUrl, setRedirectUrl] = useState('/refresh?next=/courses');
 
   const hasChildren = students?.length > 0;
 
@@ -53,6 +54,7 @@ const ButtonAddChild = ({ baseUrl, purchaseId, students }: ButtonAddChildProps) 
 
       // prefer using redirect returned by the action if provided
       if (res.redirect) {
+        setRedirectUrl(res.redirect);
         router.push(res.redirect);
       } else {
         // fallback refresh route
@@ -74,8 +76,8 @@ const ButtonAddChild = ({ baseUrl, purchaseId, students }: ButtonAddChildProps) 
               <input type="hidden" name="purchaseId" value={purchaseId} />
 
               <div>
-                <div className="font-lesson-heading !mt-0 font-semibold">Select existing student</div>
-                <p className="text-muted-foreground text-sm">
+                <div className="!mt-0 font-lesson-heading font-semibold">Select existing student</div>
+                <p className="text-sm text-muted-foreground">
                   Choose one of your existing child profiles to enroll in this course, or create a new one.
                 </p>
               </div>
@@ -88,7 +90,7 @@ const ButtonAddChild = ({ baseUrl, purchaseId, students }: ButtonAddChildProps) 
                 {students.map(child => (
                   <div
                     key={child.id}
-                    className="border-muted hover:bg-muted/50 flex items-center gap-3 rounded-md border p-3">
+                    className="flex items-center gap-3 rounded-md border border-muted p-3 hover:bg-muted/50">
                     <RadioGroupItem id={child.id} value={child.id} />
                     <Label htmlFor={child.id} className="flex-1 cursor-pointer">
                       {child.name}
@@ -115,9 +117,7 @@ const ButtonAddChild = ({ baseUrl, purchaseId, students }: ButtonAddChildProps) 
                 </p>
                 <p className="mt-2">If you aren’t redirected automatically, click below to go to the course.</p>
               </div>
-              <Link
-                href={`/refresh?next=/courses`}
-                className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'w-full')}>
+              <Link href={redirectUrl} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'w-full')}>
                 Go to courses
               </Link>
             </div>
