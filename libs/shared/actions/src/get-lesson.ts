@@ -55,7 +55,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
     });
 
     if (!purchase && !isAdmin) {
-      return redirect(`/courses/error?status=error&message=No%20purchase%20found`);
+      return redirect(`/courses/error?status=error&message=No%20purchase%20found%20Lesson`);
     }
 
     const module = await db.module.findUnique({

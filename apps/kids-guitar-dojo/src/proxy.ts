@@ -125,7 +125,6 @@ export default clerkMiddleware(
     } catch (e) {
       console.error('[MIDDLEWARE COURSE] Pin Error', e);
     }
-
     // ---- Status / access logic (after early-allow + flags loaded) ----
     if (flags.status === 'pending') {
       console.info('[MIDDLEWARE COURSE] PENDING');

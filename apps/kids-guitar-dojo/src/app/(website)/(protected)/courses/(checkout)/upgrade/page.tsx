@@ -48,7 +48,7 @@ export default async function Page(props: { params: Promise<{ product: string[];
     });
 
     if (!purchase) {
-      return redirect(`/courses/error?status=error&message=No%20purchase%20found`);
+      return redirect(`/courses/error?status=error&message=No%20purchase%20found%20Upgrade`);
     }
 
     if (!purchase.childId) {
