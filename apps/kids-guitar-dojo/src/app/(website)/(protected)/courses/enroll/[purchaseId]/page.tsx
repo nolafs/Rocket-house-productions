@@ -5,8 +5,10 @@ import { db } from '@rocket-house-productions/integration/server';
 export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {
   const params = await props.params;
 
+  console.info('[ENROLL PAGE] params', params);
+
   if (!params.purchaseId) {
-    redirect('/courses/error?status=error&message=No%PurchaseId%20found');
+    redirect('/courses/error?status=error&message=No%PurchaseId%20found%20Enroll');
   }
 
   const destination = `${BASE_URL}${params.purchaseId}/intro`;
@@ -21,7 +23,7 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
   console.log('purchase', purchase);
 
   if (!purchase) {
-    redirect('/courses/error?status=error&message=No%Purchase%20found');
+    redirect('/courses/error?status=error&message=No%Purchase%20found%20Enroll%20Account');
   }
 
   if (purchase.childId !== null) {
