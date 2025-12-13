@@ -138,7 +138,7 @@ const JukePlayer = ({ course, purchaseType }: JukeboxProps) => {
           </Link>
         </>
       )}
-      {purchaseType === 'charge' && playList && (
+      {purchaseType !== 'free' && playList && (
         <div className={'max-h-[600px]'}>
           <Player trackList={playList} customColorScheme={colors} />
         </div>

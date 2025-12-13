@@ -74,7 +74,7 @@ export function ModuleAttachments({ course, purchaseType }: ModuleAttachmentsPro
                   </Link>
                 </>
               )}
-              {purchaseType === 'charge' && (
+              {purchaseType !== 'free' && (
                 <>
                   <div>
                     Enhance your course experience with our exclusive additional downloads! Whether it’s in-depth PDF
