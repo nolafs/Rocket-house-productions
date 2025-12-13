@@ -157,7 +157,7 @@ export default clerkMiddleware(
     // Account area requires valid parent PIN
     // only check if user has purchases or membership
     if (flags.hasPurchases || flags.hasMembership) {
-      console.info('[MIDDLEWARE COURSE] CHECKING FOR ACCOUNT AREA');
+      console.info('[MIDDLEWARE COURSE] CHECKING FOR ACCOUNT AREA', flags.hasPurchases || flags.hasMembership, flags);
 
       if (urlPath.startsWith(`/courses/account`) || urlPath.startsWith(`/courses/order`)) {
         console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', !!pinToken);
