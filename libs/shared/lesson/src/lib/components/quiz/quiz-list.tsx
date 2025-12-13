@@ -8,7 +8,6 @@ import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import Quiz from './quiz';
 import QuizQuestionResult from './quiz-question-result';
 import Fretboard from './fretboard/fretboard';
-import cn from 'classnames';
 
 gsap.registerPlugin(useGSAP);
 
@@ -44,6 +43,12 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
         });
 
         gsap.set('.inner', { width: containerWidth * slides.length });
+
+        // Update height based on current slide
+        const items: HTMLDivElement[] = gsap.utils.toArray('.slide > .item');
+        if (items.length && items[slideIndex]) {
+          gsap.set('.inner', { height: items[slideIndex].offsetHeight || 'auto' });
+        }
       };
 
       const resizeObserver = new ResizeObserver(() => {
@@ -54,18 +59,16 @@ export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, on
 
       resizeObserver.observe(ref.current);
 
+      // Initial size update
       setTimeout(() => {
-        const item: HTMLDivElement[] = gsap.utils.toArray('.slide > .item');
-        if (item.length) {
-          gsap.set('.inner', { height: item[0].offsetHeight || 'auto' });
-        }
-      }, 1000);
+        updateSizes();
+      }, 100);
 
       return () => {
         resizeObserver.disconnect();
       };
     },
-    { scope: ref },
+    { scope: ref, dependencies: [slideIndex] },
   );
 
   useEffect(() => {
