@@ -361,13 +361,18 @@ export async function POST(req: Request) {
 
             const isMembershipPurchase = Boolean(membershipCourseId) && courseId === membershipCourseId;
 
-            console.log('[Webhook] Membership decision', {
+            console.log('[Webhook] 🔍 Membership decision', {
               idx,
               isMembershipPremiumPurchase,
+              isMembershipPurchase,
               tierType,
               premiumMeta,
               courseId,
               membershipCourseId,
+              hasMembershipCourseId: Boolean(membershipCourseId),
+              courseMatches: courseId === membershipCourseId,
+              isPremiumTier: tierType === 'PREMIUM',
+              hasPremiumMeta: premiumMeta === true,
             });
 
             // Activate account for STANDARD or PREMIUM
@@ -379,9 +384,10 @@ export async function POST(req: Request) {
             }
 
             if (isMembershipPremiumPurchase) {
-              console.log('[Webhook] Granting included courses', {
+              console.log('[Webhook] ✅ PREMIUM MEMBERSHIP PURCHASED - Granting included courses', {
                 count: includedList.length,
                 accountId: order.accountId,
+                includedCourseIds: includedList.map(inc => inc.includedCourseId),
               });
 
               // 2) Grant included courses
@@ -392,19 +398,47 @@ export async function POST(req: Request) {
                   where: { accountId_courseId: { accountId: order.accountId, courseId: includedCourseId } },
                 });
 
+                console.log('[Webhook] Processing included course', {
+                  includedCourseId,
+                  hasExisting: !!existingIncluded,
+                  existingType: existingIncluded?.type,
+                  existingCategory: existingIncluded?.category,
+                  existingId: existingIncluded?.id,
+                });
+
                 let includedPurchaseId: string;
 
                 if (existingIncluded) {
+                  console.log('[Webhook] 🔄 UPDATING existing purchase to INCLUDED', {
+                    purchaseId: existingIncluded.id,
+                    oldType: existingIncluded.type,
+                    oldCategory: existingIncluded.category,
+                    newType: 'included',
+                    newCategory: 'included',
+                  });
+
                   const updated = await tx.purchase.update({
                     where: { id: existingIncluded.id },
                     data: {
                       amount: existingIncluded.amount ?? 0,
-                      type: existingIncluded.type ?? 'included',
-                      category: existingIncluded.category ?? 'included',
+                      type: 'included', // ✅ Always set to 'included'
+                      category: 'included',
                     },
                   });
                   includedPurchaseId = updated.id;
+
+                  console.log('[Webhook] ✅ Successfully UPDATED purchase to INCLUDED', {
+                    purchaseId: updated.id,
+                    courseId: includedCourseId,
+                    type: updated.type,
+                    category: updated.category,
+                  });
                 } else {
+                  console.log('[Webhook] 📝 CREATING new included purchase', {
+                    courseId: includedCourseId,
+                    accountId: order.accountId,
+                  });
+
                   const created = await tx.purchase.create({
                     data: {
                       accountId: order.accountId,
@@ -418,6 +452,11 @@ export async function POST(req: Request) {
                     },
                   });
                   includedPurchaseId = created.id;
+
+                  console.log('[Webhook] ✅ Successfully CREATED included purchase', {
+                    purchaseId: created.id,
+                    courseId: includedCourseId,
+                  });
                 }
 
                 const syntheticPi = `${paymentIntentId ?? (full.payment_intent as string)}-included-${includedCourseId}`;
@@ -442,7 +481,17 @@ export async function POST(req: Request) {
                     type: 'included',
                   },
                 });
+
+                console.log('[Webhook] ✅ Synthetic transaction created/updated', {
+                  syntheticPi,
+                  includedCourseId,
+                });
               }
+
+              console.log('[Webhook] ✅ ALL INCLUDED COURSES PROCESSED', {
+                count: includedList.length,
+                accountId: order.accountId,
+              });
             }
           }
         });
