@@ -155,17 +155,22 @@ export default clerkMiddleware(
     }
 
     // Account area requires valid parent PIN
-    if (urlPath.startsWith(`/courses/account`) || urlPath.startsWith(`/courses/order`)) {
-      console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', !!pinToken);
-      try {
-        if (!pinToken) throw new Error('no pin');
-        await jwtVerify(pinToken, pinSecret);
-        console.log('[MIDDLEWARE COURSE] HAS PIN TOKEN - ALLOW ACCOUNT');
-        return NextResponse.next();
-      } catch (error) {
-        console.error('[MIDDLEWARE COURSE] PIN Error', error);
-        const to = `/courses/pin?returnTo=${encodeURIComponent(req.nextUrl.pathname)}`;
-        return NextResponse.redirect(new URL(to, req.url));
+    // only check if user has purchases or membership
+    if (flags.hasPurchases || flags.hasMembership) {
+      console.info('[MIDDLEWARE COURSE] CHECKING FOR ACCOUNT AREA');
+
+      if (urlPath.startsWith(`/courses/account`) || urlPath.startsWith(`/courses/order`)) {
+        console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', !!pinToken);
+        try {
+          if (!pinToken) throw new Error('no pin');
+          await jwtVerify(pinToken, pinSecret);
+          console.log('[MIDDLEWARE COURSE] HAS PIN TOKEN - ALLOW ACCOUNT');
+          return NextResponse.next();
+        } catch (error) {
+          console.error('[MIDDLEWARE COURSE] PIN Error', error);
+          const to = `/courses/pin?returnTo=${encodeURIComponent(req.nextUrl.pathname)}`;
+          return NextResponse.redirect(new URL(to, req.url));
+        }
       }
     }
 
