@@ -40,6 +40,10 @@ const nextConfig = {
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   experimental: {
     serverSourceMaps: true,
+    serverActions: {
+      // set to number of bytes or a string like '10mb'
+      bodySizeLimit: 10 * 1024 * 1024, // 10 MB
+    },
   },
   ...(process.env.NEXT_PUBLIC_PRODUCTION && headers),
   images: {
