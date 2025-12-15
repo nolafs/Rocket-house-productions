@@ -57,6 +57,7 @@ export async function SectionPricingTable({ courseSlug, checkout = true }: Secti
     }
   } else {
     const appSetting = await getAppSettings();
+    checkout = false;
 
     if (!appSetting?.membershipSettings?.course) {
       throw new Error('No membership course found in app settings');
