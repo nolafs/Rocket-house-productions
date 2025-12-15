@@ -6,6 +6,7 @@ import Image from 'next/image';
 import CourseBuyButton from './course-buy-button';
 import { userSession } from '@/types/userSesssion';
 import { MembershipSettings, Tier } from '@prisma/client';
+import { ArrowRight } from 'lucide-react';
 
 interface CourseCardProps {
   userData: Partial<userSession>;
@@ -46,7 +47,7 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
         <div className={'my-4 text-center text-sm'}>{course.description}</div>
         <div
           className={
-            'flex w-full items-center justify-center gap-2 rounded-xl border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5'
+            'grid w-full grid-cols-2 items-center justify-center gap-2 rounded-xl border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5'
           }>
           {!userData.hasMembership ? (
             <>
@@ -70,7 +71,7 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
                 />
               )}
               <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
-                Enter Course
+                Enter Course <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </>
           ) : (
