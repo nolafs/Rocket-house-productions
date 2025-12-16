@@ -2,28 +2,19 @@
 import * as THREE from 'three';
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useThree } from '@react-three/fiber';
-
+import { SoftShadows } from '@react-three/drei'; // TODO: Re-enable after updatin
 import { type Course, type BookScene, type Module } from '@prisma/client';
-
 import { Loader2 } from 'lucide-react';
-
 import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { SplitText } from 'gsap/SplitText';
-
 import { useCourseProgressionStore, useLessonProgressionStore } from '@rocket-house-productions/providers';
-
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
-
 import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module-path';
-
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
-
 import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
-
 import dynamic from 'next/dynamic';
-import { SoftShadows } from '@react-three/drei';
 
 const Landscape = dynamic(() => import('./course-scene/landscape').then(mod => mod.Landscape), {
   ssr: false,
