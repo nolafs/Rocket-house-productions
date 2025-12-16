@@ -1,6 +1,7 @@
 import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
+import { logger } from '@rocket-house-productions/util';
 
 type PointsState = {
   points: number;
@@ -47,7 +48,7 @@ export const createPointsStore = (userId: string, courseId: string, initState: P
               }
             }
           } catch (error) {
-            console.error('Error syncing points:', error);
+            logger.error('Error syncing points:', error);
           }
         },
       }),
@@ -69,7 +70,7 @@ export async function updateScore(courseId: string, childId: string, score: numb
       courseId,
     });
   } catch (error) {
-    console.error('Error updating score:', error);
+    logger.error('Error updating score:', error);
   }
 }
 
@@ -79,7 +80,7 @@ export async function getScore(courseId: string, childId: string) {
 
     return response.data;
   } catch (error) {
-    console.error('Error getting score:', error);
+    logger.error('Error getting score:', error);
     return { score: 0 }; // Default to 0 if there's an error
   }
 }

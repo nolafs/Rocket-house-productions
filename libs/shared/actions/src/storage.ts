@@ -1,4 +1,5 @@
 //import 'server-only';
+import { logger } from '@rocket-house-productions/util';
 const BUNNY_STORAGE_API_HOST = 'storage.bunnycdn.com';
 
 export const uploadFile = async (path: string, file: Buffer | any) => {
@@ -18,7 +19,7 @@ export const uploadFile = async (path: string, file: Buffer | any) => {
       body: file,
     });
   } catch (error) {
-    console.error('[uploadFile] Error uploading file', error);
-    return null;
+    logger.error('[uploadFile] Error uploading file', error);
+    return false;
   }
 };

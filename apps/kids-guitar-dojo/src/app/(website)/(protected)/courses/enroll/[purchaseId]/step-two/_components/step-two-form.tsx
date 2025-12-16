@@ -46,7 +46,7 @@ export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps)
 
   useEffect(() => {
     setActive(true);
-  }, []);
+  }, [setActive]);
 
   const form = useForm<z.infer<typeof stepTwoSchema>>({
     resolver: zodResolver(stepTwoSchema),

@@ -1,11 +1,12 @@
 import { redirect } from 'next/navigation';
 import { BASE_URL } from './_component/path-types';
 import { db } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
 
 export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {
   const params = await props.params;
 
-  console.info('[ENROLL PAGE] params', params);
+  logger.debug('[ENROLL PAGE] params', { purchaseId: params.purchaseId });
 
   if (!params.purchaseId) {
     redirect('/courses/error?status=error&message=No%PurchaseId%20found%20Enroll');
@@ -20,7 +21,7 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
     },
   });
 
-  console.log('purchase', purchase);
+  logger.debug('[ENROLL PAGE] purchase found id=', purchase?.id ?? null, 'childId=', purchase?.childId ?? null);
 
   if (!purchase) {
     redirect('/courses/error?status=error&message=No%Purchase%20found%20Enroll%20Account');

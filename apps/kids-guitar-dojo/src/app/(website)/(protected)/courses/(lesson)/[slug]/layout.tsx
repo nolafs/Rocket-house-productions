@@ -35,19 +35,13 @@ export default async function Layout(props: LayoutProps) {
 
   const { children } = props;
 
-  console.info('[COURSE LESSONS] START');
-
   const course = await getCourse({ courseSlug: params.slug });
 
   if (!course) {
     return redirect(`/courses/error?status=error&message=No%20course%20found`);
   }
 
-  console.info('[COURSE LESSONS] COURSE FOUND');
-
   const child = await getChild(params.slug);
-
-  console.info('[COURSE LESSONS] CHILD', child);
 
   if (!child?.data) {
     return redirect(`/courses/enroll/${child.purchaseId}`);

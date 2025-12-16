@@ -1,5 +1,6 @@
 import Checkout from './forms/checkout';
 import FreeCheckout from './forms/free-checkout';
+import { logger } from '@rocket-house-productions/util';
 
 interface CheckoutButtonProps {
   productId?: string | null | undefined;
@@ -20,11 +21,11 @@ export function CheckoutButton({
   sales = false,
   label = 'Start now',
 }: CheckoutButtonProps) {
-  console.log('[CheckoutButton]:', productId, type, courseId, purchaseId);
+  logger.debug('[CheckoutButton]', { productId, type, courseId, purchaseId });
 
   if (type === 'free') {
     if (!courseId) {
-      console.error('Course id is required for free course');
+      logger.error('Course id is required for free course');
       return null;
     }
 
@@ -35,7 +36,7 @@ export function CheckoutButton({
     );
   } else {
     if (!productId) {
-      console.error('Product id is required for paid course');
+      logger.error('Product id is required for paid course');
       return null;
     }
     return (

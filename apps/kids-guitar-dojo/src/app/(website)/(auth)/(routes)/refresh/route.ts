@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { SignJWT } from 'jose';
 import { getAccountData } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 
 const secret = new TextEncoder().encode(process.env.SESSION_FLAGS_SECRET!);
 
@@ -36,7 +37,7 @@ export async function GET(req: Request) {
     },
   });
 
-  console.log('[REFRESH]', user.publicMetadata, flags);
+  logger.debug('[REFRESH]', { publicMetadata: user.publicMetadata, flags });
 
   // 3) Sign the flags into a short-lived cookie for middleware
   const token = await new SignJWT(flags as any)

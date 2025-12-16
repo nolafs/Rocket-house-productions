@@ -210,7 +210,6 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
                             if (file) {
                               setIsEditingImage(false);
                               setTempImage(file);
-                              console.log('file', file);
                               field.onChange(file);
                             }
                           }}
@@ -221,7 +220,7 @@ const ModuleDescriptionForm = ({ initialData, courseId, moduleId }: ModuleDescri
                   )}
                 />
               )}
-              <div className="text-muted-foreground mt-4 text-xs">16:9 aspect ratio recommended</div>
+              <div className="mt-4 text-xs text-muted-foreground">16:9 aspect ratio recommended</div>
             </div>
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">

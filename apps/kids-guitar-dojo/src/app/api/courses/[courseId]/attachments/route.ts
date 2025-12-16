@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
 
 export async function POST(req: Request, props: { params: Promise<{ courseId: string }> }) {
   const params = await props.params;
@@ -33,7 +34,7 @@ export async function POST(req: Request, props: { params: Promise<{ courseId: st
 
     return NextResponse.json(attachment);
   } catch (error) {
-    console.error('[COURSE_ID_ATTACHMENTS]', error);
+    logger.error('[COURSE_ID_ATTACHMENTS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

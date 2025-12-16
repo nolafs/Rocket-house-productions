@@ -78,8 +78,6 @@ export default async function Page(props: { searchParams: Promise<{ page: string
     return notFound();
   }
 
-  console.log('', pages);
-
   return (
     <main>
       {/* Header */}

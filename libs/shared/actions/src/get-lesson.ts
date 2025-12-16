@@ -3,6 +3,7 @@ import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { getAccountChildren } from './get-account-children';
+import { logger } from '@rocket-house-productions/util';
 
 interface GetLessonProps {
   courseSlug: string;
@@ -150,7 +151,7 @@ export const getLesson = async ({ courseSlug, moduleSlug, lessonSlug }: GetLesso
       childProgress,
     };
   } catch (error) {
-    console.error('Error getting lesson', error);
+    logger.error('Error getting lesson', error);
     return null;
   }
 };

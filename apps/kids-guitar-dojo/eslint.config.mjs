@@ -4,5 +4,8 @@ export default [
   ...nextVitals,
   {
     ignores: ['.next/**', 'out/**', 'build/**', 'next-env.d.ts'],
+    rules: {
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+    },
   },
 ];

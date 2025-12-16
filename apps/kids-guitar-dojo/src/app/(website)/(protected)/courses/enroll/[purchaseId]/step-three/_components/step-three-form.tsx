@@ -45,7 +45,7 @@ export default function StepThreeForm({ baseUrl, header, body }: StepThreeFormPr
 
   useEffect(() => {
     setActive(true);
-  }, []);
+  }, [setActive]);
 
   const name = useMemo(() => {
     if (

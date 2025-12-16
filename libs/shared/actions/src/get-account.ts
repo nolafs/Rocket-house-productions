@@ -2,6 +2,7 @@
 
 import { db } from '@rocket-house-productions/integration/server';
 import { AccountWithPurchases, AccountData, AccountStatus, NoAccountData } from '@rocket-house-productions/types';
+import { logger } from '@rocket-house-productions/util';
 
 export async function getAccount(userId: string): Promise<AccountWithPurchases | null> {
   return db.account.findFirst({
@@ -116,7 +117,7 @@ export async function getAccountData(userId: string): Promise<Partial<AccountDat
       unenrolledPurchaseId: unenrolled.length === 1 ? purchases[0].id : undefined,
     };
   } catch (error) {
-    console.error('Error computing session flags:', error);
+    logger.error('Error computing session flags:', error);
     return { status: 'inactive', hasPurchases: false };
   }
 }

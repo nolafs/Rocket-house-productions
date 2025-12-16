@@ -70,7 +70,6 @@ export const BookSceneCreateEdit = ({
   });
 
   const onSubmit = async (data: FormValues) => {
-    console.log('[BookSceneCreateEdit] onSubmit', data);
     try {
       await axios.post(`/api/courses/book-scene`, data);
       toast.success('Create successful');

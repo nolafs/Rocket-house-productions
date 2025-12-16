@@ -10,3 +10,4 @@ export { CurrencyToSymbol } from './lib/currencyToSymbole';
 export { debounce } from './lib/debounce';
 export { LogRocketComponent } from './lib/logRocketComponent';
 export * from './lib/url';
+export * from './lib/logger';

@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { ClerkProvider, UserProfile } from '@clerk/nextjs';
 import { Suspense } from 'react';
 import AccountDetails from '@/app/(website)/(protected)/courses/account/_components/account-details';
+import { logger } from '@rocket-house-productions/util';
 
 export default async function Page() {
   const { userId, sessionClaims } = await auth();
@@ -12,7 +13,7 @@ export default async function Page() {
     redirect('/');
   }
 
-  console.log('sessionClaims', sessionClaims);
+  logger.debug('sessionClaims name', sessionClaims?.firstName ?? '(unknown)');
   const name = sessionClaims.firstName || 'Parent';
 
   return (

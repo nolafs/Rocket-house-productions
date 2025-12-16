@@ -3,6 +3,7 @@
 import Dropzone from 'react-dropzone';
 import { CloudUploadIcon, File } from 'lucide-react';
 import { uploadFileAction } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 import { useState } from 'react';
 
 interface FileUploadProps {
@@ -18,7 +19,7 @@ export const FileUpload = ({ onChange }: FileUploadProps) => {
     setError(null);
     setFile(null);
     if (files.length === 0) {
-      console.warn('No files selected');
+      logger.warn('No files selected');
     }
 
     setLoading(true);
@@ -36,7 +37,7 @@ export const FileUpload = ({ onChange }: FileUploadProps) => {
     } else {
       setLoading(false);
       setError('Error uploading file');
-      console.error('[FileUpload] error uploading file', response);
+      logger.error('[FileUpload] error uploading file', response);
     }
   };
 

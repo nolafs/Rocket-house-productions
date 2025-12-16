@@ -48,8 +48,6 @@ export const BookSceneCourseForm = ({ initialData, courseId, bookScenes }: BookS
   });
 
   const onSubmitCourseUpdate = async (values: z.infer<typeof bookSelectionSchema>) => {
-    console.log(values);
-
     try {
       await axios.patch(`/api/courses/${courseId}`, { bookSceneId: values.bookId });
       setBookSceneId(values.bookId);

@@ -7,6 +7,7 @@ import { useUser } from '@rocket-house-productions/hooks';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import { logger } from '@rocket-house-productions/util';
 
 interface ButtonOnboardingProps {
   userId: string;
@@ -105,7 +106,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
         method: 'POST',
         cache: 'no-store',
       }).catch(e => {
-        console.error(e);
+        logger.error('[ButtonOnboarding] reconcileOnce failed', e);
       });
     }
 
@@ -124,7 +125,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
               credentials: 'include',
             });
           } catch (e) {
-            console.warn('refresh-flags failed; proceeding anyway', e);
+            logger.warn('[ButtonOnboarding] refresh-flags failed; proceeding anyway', e);
           }
           setPolling(false);
           // Prefer the most up-to-date ref value inside the effect (safe) and fallback to seeded value
@@ -153,7 +154,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
               credentials: 'include',
             });
           } catch (e) {
-            console.warn('refresh-flags failed; proceeding anyway', e);
+            logger.warn('[ButtonOnboarding] refresh-flags failed; proceeding anyway', e);
           }
           setPolling(false);
           const redirectId2 = purchaseId.current ?? seededPurchaseId;

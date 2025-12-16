@@ -94,8 +94,6 @@ const CourseTiersForm = ({ initialData, courseId }: Props) => {
   };
 
   const addFeature = (tierIndex: number, feature: string) => {
-    console.log(tierIndex, feature);
-
     if (!feature.trim()) return;
     const newTiers = [...tiers];
     newTiers[tierIndex].features = [...newTiers[tierIndex].features, feature.trim()];

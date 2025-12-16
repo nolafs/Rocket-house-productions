@@ -3,6 +3,7 @@ import { ModuleProgressStore } from './use-module-progress-store';
 import { persist } from 'zustand/middleware';
 import { Module as ModuleDB } from '@prisma/client';
 import { LessonProgressStore } from './use-lesson-progress-store';
+import { logger } from '@rocket-house-productions/util';
 
 type Course = {
   id: string;
@@ -57,7 +58,7 @@ export const createCourseStore = (
           const existingCourse = get().courses[courseId];
 
           if (existingCourse) {
-            console.warn(`Course with ID ${courseId} already exists.`);
+            logger.warn(`Course with ID ${courseId} already exists.`);
             progress = existingCourse.progress;
             completed = existingCourse.completed;
             total = existingCourse.total;

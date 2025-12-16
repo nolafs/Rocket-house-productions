@@ -6,6 +6,7 @@ import {
   getCourse,
   getPriceOptionsForProducts,
 } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 
 type PurchaseCategory = 'standard' | 'premium';
 
@@ -77,7 +78,7 @@ export const getPriceOptionTiers = async (tiers: Tier[], hasStandardPurchase = f
   });
 
   if (!options.length) {
-    console.error('No price options found for course');
+    logger.error('No price options found for course');
   }
 
   // has standard of product
@@ -158,8 +159,8 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
     // CASE 2: user HAS membership
     // --------------------------
 
-    console.log('User has membership:', membershipPurchaseCategory);
-    console.log('User has membership:', isMembershipCourse);
+    logger.debug('User has membership:', membershipPurchaseCategory);
+    logger.debug('User has membership course flag?:', isMembershipCourse);
 
     userCourse = course;
 
@@ -170,7 +171,7 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
 
       const category = (membershipPurchaseCategory ?? '').toString().toLowerCase();
 
-      console.log('category:', category);
+      logger.debug('category:', category);
 
       switch (category) {
         case 'premium':
@@ -201,7 +202,7 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
 
         const coursePurchaseCategory = getCoursePurchaseCategory(userData.purchases, course.id);
 
-        console.log('[coursePurchaseCategory]', coursePurchaseCategory);
+        logger.debug('[coursePurchaseCategory]', coursePurchaseCategory);
 
         if (!coursePurchaseCategory) {
           // no purchase for this course → show all non-free options (or all, your choice)

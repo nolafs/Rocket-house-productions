@@ -1,8 +1,9 @@
 'use server';
 import { stripe } from '@rocket-house-productions/integration/server';
 import { unstable_noStore as noStore } from 'next/cache';
-import { Stripe } from 'stripe';
+import Stripe from 'stripe';
 import { PriceOption } from '@rocket-house-productions/types';
+import { logger } from '@rocket-house-productions/util';
 
 type ProductRef = { id: string; fallbackLabel: string };
 
@@ -63,6 +64,6 @@ export const updateProductMetadata = async (productId: string, metadata: Record<
       metadata,
     });
   } catch (error) {
-    console.error('Error updating product metadata:', error);
+    logger.error('Error updating product metadata:', error);
   }
 };

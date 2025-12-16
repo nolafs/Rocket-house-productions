@@ -7,8 +7,6 @@ export async function assignChildToPurchase(
   const purchaseId = formData.get('purchaseId') as string;
   const childId = formData.get('childId') as string;
 
-  console.log('[assignChildToPurchase]', { purchaseId, childId });
-
   if (!purchaseId || !childId) return { success: false, errorMsg: 'Missing required values.' };
 
   try {

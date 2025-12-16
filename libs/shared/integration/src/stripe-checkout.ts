@@ -7,6 +7,7 @@ import { auth } from '@clerk/nextjs/server';
 import { db } from './db';
 import { PlannedCart } from '@rocket-house-productions/types/server';
 import { getAppSettings } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 
 export const stripeCheckout = async (
   productId: string,
@@ -127,7 +128,7 @@ export const stripeCheckout = async (
 
     return checkoutSession;
   } catch (error) {
-    console.error('[stripeCheckout] Error creating checkout session', error);
+    logger.error('[stripeCheckout] Error creating checkout session', error);
   }
 };
 

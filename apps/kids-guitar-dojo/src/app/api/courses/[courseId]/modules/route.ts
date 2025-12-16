@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
 
 export async function POST(req: Request, props: { params: Promise<{ courseId: string }> }) {
   const params = await props.params;
@@ -44,7 +45,7 @@ export async function POST(req: Request, props: { params: Promise<{ courseId: st
 
     return NextResponse.json(moduleSection);
   } catch (error) {
-    console.error('[COURSES_COURSE-ID_MODULE]', error);
+    logger.error('[COURSES_COURSE-ID_MODULE]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

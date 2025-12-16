@@ -5,6 +5,7 @@ import { auth } from '@clerk/nextjs/server';
 import { getAccountData } from './get-account';
 import { cache } from 'react';
 import { Child } from '@prisma/client';
+import { logger } from '@rocket-house-productions/util';
 
 /**
  * Creates a free purchase for a course if it doesn't exist
@@ -44,7 +45,7 @@ async function createFreePurchaseIfNeeded(accountId: string, courseSlug: string)
     },
   });
 
-  console.log('[createFreePurchaseIfNeeded] Created free purchase:', freePurchase.id);
+  logger.info('[createFreePurchaseIfNeeded] Created free purchase id=', freePurchase.id);
   return freePurchase;
 }
 
@@ -64,15 +65,15 @@ export const getChild = cache(async (slug: string, next = true) => {
 
   let purchase = account.purchases?.find(p => p.course?.slug === slug);
 
-  console.log('[getChild] sessionClaims', sessionClaims);
-  console.log('[getChild] account', account);
+  logger.debug('[getChild] sessionClaims', { userId: userId, role: (sessionClaims?.metadata as any)?.role });
+  logger.debug('[getChild] account', { accountId: account?.id, purchases: account?.purchases?.length ?? 0 });
 
   const isAdmin = (sessionClaims?.metadata as { role: string })?.role === 'admin';
   let child: Child | null = null;
 
   // If no purchase found, create a free purchase to allow preview access
   if (!purchase) {
-    console.log('[getChild] No purchase found, creating free purchase for preview access');
+    logger.info('[getChild] No purchase found, creating free purchase for preview access');
     try {
       const newPurchase = await createFreePurchaseIfNeeded(account.id, slug);
       purchase = {
@@ -83,7 +84,7 @@ export const getChild = cache(async (slug: string, next = true) => {
         course: { slug, id: newPurchase.courseId },
       };
     } catch (error) {
-      console.error('[getChild] Failed to create free purchase:', error);
+      logger.error('[getChild] Failed to create free purchase:', error);
       return redirect(`/courses/error?status=error&message=Unable%20to%20access%20course`);
     }
   }

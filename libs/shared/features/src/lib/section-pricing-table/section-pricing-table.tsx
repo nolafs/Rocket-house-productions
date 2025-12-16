@@ -14,6 +14,7 @@ import {
   getPriceOptionTiersByCourseSlugByUserSubscriptions,
 } from '@rocket-house-productions/actions/server';
 import { PriceTier } from '@rocket-house-productions/types';
+import { logger } from '@rocket-house-productions/util';
 
 interface SectionPricingTableProps {
   courseSlug?: string;
@@ -28,8 +29,6 @@ export async function SectionPricingTable({ courseSlug, checkout = true }: Secti
 
   if (userId) {
     const account = await getAccountData(userId);
-
-    console.log(account);
 
     if (!account) {
       throw new Error('No account found for user');
@@ -49,8 +48,7 @@ export async function SectionPricingTable({ courseSlug, checkout = true }: Secti
 
     const userPurchaseOptions = await getPriceOptionTiersByCourseSlugByUserSubscriptions(userId, slug);
     tiers = userPurchaseOptions.tiers;
-
-    console.log(tiers);
+    logger.debug('[SECTION PRICING TABLE] tiers length', { length: tiers.length });
 
     if (tiers.length === 0) {
       throw new Error('No pricing tiers found for course: ' + slug);
@@ -66,7 +64,7 @@ export async function SectionPricingTable({ courseSlug, checkout = true }: Secti
     const membershipTiers = appSetting.membershipSettings.course?.tiers ?? [];
     tiers = await getPriceOptionTiers(membershipTiers);
 
-    console.log('[SECTION PRICING TABLE] No userId, using membership tiers', tiers);
+    logger.info('[SECTION PRICING TABLE] No userId, using membership tiers', { tiersCount: tiers.length });
   }
 
   return (

@@ -1,4 +1,7 @@
 'use server';
+import { db } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
+
 export async function getVideoList(page = 0, itemsPerPage = 50, search: string | null = null, orderBy = 'date') {
   const url = `https://video.bunnycdn.com/library/${process.env.BUNNYCDN_STREAM_LIB_ID}/videos?page=${page}&itemsPerPage=${itemsPerPage}&orderBy=${orderBy}&search=${search}`;
   const options = {
@@ -13,7 +16,7 @@ export async function getVideoList(page = 0, itemsPerPage = 50, search: string |
     const response = await fetch(url, options);
     return response.json();
   } catch (error) {
-    console.error('Error getting video list', error);
-    return { message: 'Error getting video list' };
+    logger.error('Error getting video list', error);
+    return [];
   }
 }

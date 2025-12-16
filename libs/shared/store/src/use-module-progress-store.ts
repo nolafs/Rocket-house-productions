@@ -3,6 +3,7 @@ import { LessonProgressStore } from './use-lesson-progress-store';
 import { persist } from 'zustand/middleware';
 import { AwardType, Lesson, Module as ModuleDB, ModuleAttachmemtType, ModuleAwardType } from '@prisma/client';
 import axios from 'axios';
+import { logger } from '@rocket-house-productions/util';
 
 type ModuleSection = ModuleDB & {
   lessons: Lesson[]; // Array of lesson IDs
@@ -84,7 +85,7 @@ export const createModuleStore = (
           const existingModule = get().modules[moduleId];
           // Check if the module already exists
           if (existingModule) {
-            console.warn(`Module with ID ${moduleId} already exists.`);
+            logger.warn(`Module with ID ${moduleId} already exists.`);
             // merge the existing module with the new one
             progress = existingModule.progress;
             // merge awards if they are not already awarded
@@ -136,7 +137,7 @@ export const createModuleStore = (
           if (module) {
             set({ currentModule: module });
           } else {
-            console.warn(`Module with ID ${moduleId} does not exist.`);
+            logger.warn(`Module with ID ${moduleId} does not exist.`);
           }
         },
 
@@ -155,7 +156,7 @@ export const createModuleStore = (
           const module = get().modules[moduleId];
 
           if (!module) {
-            console.warn(`[MODULE STORE] Module with ID ${moduleId} does not exist.`);
+            logger.warn(`[MODULE STORE] Module with ID ${moduleId} does not exist.`);
             return;
           }
 
@@ -210,13 +211,13 @@ export const createModuleStore = (
         setAwardNotification: (moduleId, awardId) => {
           const module = get().modules[moduleId];
           if (!module) {
-            console.warn(`Module with ID ${moduleId} does not exist.`);
+            logger.warn(`Module with ID ${moduleId} does not exist.`);
             return;
           }
 
           const updateAward = module.availableAwards.find(award => award.id === awardId);
           if (!updateAward) {
-            console.warn(`Award with ID ${awardId} does not exist in module ${moduleId}.`);
+            logger.warn(`Award with ID ${awardId} does not exist in module ${moduleId}.`);
             return;
           }
 
@@ -358,7 +359,7 @@ export const createModuleStore = (
 
             set({ modules: updatedModules });
           } catch (error) {
-            console.error('Error syncing module progress:', error);
+            logger.error('Error syncing module progress:', error);
           }
         },
       }),
@@ -385,7 +386,7 @@ const updateDbChildAwards = async (
       moduleId: moduleId || null,
     });
   } catch (error) {
-    console.error('Error updating child awards:', error);
+    logger.error('Error updating child awards:', error);
   }
 };
 
@@ -394,7 +395,7 @@ const getModuleProgress = async (childId: string, courseId: string) => {
     const response = await axios.get(`/api/courses/progress?childId=${childId}&courseId=${courseId}`);
     return response.data;
   } catch (error) {
-    console.error('Error getting lessons progress:', error);
+    logger.error('Error getting lessons progress:', error);
     return {};
   }
 };
@@ -404,7 +405,7 @@ const getModuleAwards = async (childId: string, courseId: string) => {
     const response = await axios.get(`/api/courses/awards?childId=${childId}&courseId=${courseId}`);
     return response.data;
   } catch (error) {
-    console.error('Error getting lessons progress:', error);
+    logger.error('Error getting lessons progress:', error);
     return {};
   }
 };

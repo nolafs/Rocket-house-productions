@@ -5,6 +5,7 @@ import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { MailerList } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 
 interface SubmitDealActionReturnType {
   redirect?: OnBoardingRoutes;
@@ -72,12 +73,6 @@ export const submitOnBoardingAction = async (
       },
     });
 
-    console.log('Account updated successfully.', account.id);
-
-    console.log('Onboarding Data', onboarding);
-
-    // TODO: if account can have more children this needs to change and db schema too
-
     const child = await db.child.upsert({
       where: { accountId: account.id }, // relies on unique(accountId)
       update: {
@@ -132,10 +127,10 @@ export const submitOnBoardingAction = async (
         });
       }
     } else {
-      console.error('[ONBOARDING] [REVIEW] Already enrolled a child on purchase');
+      logger.error('[ONBOARDING] [REVIEW] Already enrolled a child on purchase');
     }
   } catch (error) {
-    console.error('[ONBOARDING] [REVIEW] Error updating purchase with child id', error);
+    logger.error('[ONBOARDING] [REVIEW] Error updating purchase with child id', error);
 
     return {
       redirect: OnBoardingRoutes.REVIEW,
@@ -146,6 +141,5 @@ export const submitOnBoardingAction = async (
   // Update purchase with child id
 
   const retVal = { success: true, redirect: OnBoardingRoutes.COMPLETED };
-  console.log('[ONBOARDING] [REVIEW] retVal', retVal);
   return retVal;
 };

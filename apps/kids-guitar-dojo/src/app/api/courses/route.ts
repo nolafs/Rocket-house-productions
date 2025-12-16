@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
+import { logger } from '@rocket-house-productions/util';
 
 export async function POST(req: Request) {
   try {
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(course);
   } catch (error) {
-    console.error('[COURSES]', error);
+    logger.error('[COURSES]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

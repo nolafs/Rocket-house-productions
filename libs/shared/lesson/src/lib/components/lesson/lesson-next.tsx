@@ -7,6 +7,7 @@ import cn from 'classnames';
 import { useRouter } from 'next/navigation';
 import { ArrowBigLeftIcon, Loader2Icon } from 'lucide-react';
 import Link from 'next/link';
+import { logger } from '@rocket-house-productions/util';
 
 interface LessonNextProps {
   module: SectionModule;
@@ -77,7 +78,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   }, [getLessonProgress(lesson.id), lessonCompleted]);
 
   const nextLesson = useMemo(() => {
-    console.log('Calculating next lesson for position:', position, module?.lessons);
+    logger.debug('Calculating next lesson for position', { position, lessons: module?.lessons?.length ?? 0 });
     const currentLesson = module?.lessons?.findIndex(l => l.id === lesson.id);
     if (currentLesson !== undefined) {
       if (module.lessons?.length !== currentLesson + 1) {

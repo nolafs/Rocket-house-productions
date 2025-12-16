@@ -10,6 +10,7 @@ import { headers } from 'next/headers';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { db } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -47,7 +48,7 @@ export default async function Layout(props: LayoutProps) {
     return redirect('/');
   }
 
-  console.log('[ENROLL]', params.purchaseId);
+  logger.debug('[ENROLL]', { purchaseId: params.purchaseId });
 
   return (
     <div className={'lesson'}>

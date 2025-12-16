@@ -4,6 +4,7 @@ import { Bounded } from '@components/Bounded';
 import { SectionFaqs } from '@rocket-house-productions/features';
 import { createClient } from '@/prismicio';
 import { AllDocumentTypes } from '../../../prismicio-types';
+import { logger } from '@rocket-house-productions/util';
 
 /**
  * Props for `Faqs`.
@@ -18,7 +19,7 @@ const Faqs = async ({ slice }: FaqsProps) => {
   const faqItems: AllDocumentTypes[] = [];
 
   if (!slice.primary.faqs.length) {
-    console.log('No faqs found');
+    logger.debug('No faqs found');
     return null;
   }
 
@@ -32,7 +33,7 @@ const Faqs = async ({ slice }: FaqsProps) => {
   }
 
   if (faqItems.length === 0) {
-    console.log('No faq items found');
+    logger.debug('No faq items found');
   }
 
   return (
