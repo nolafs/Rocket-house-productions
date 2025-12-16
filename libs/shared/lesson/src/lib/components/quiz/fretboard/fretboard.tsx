@@ -4,7 +4,7 @@ import { Question, Questionary } from '@prisma/client';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import Draggable from 'gsap/draggable';
+import 'gsap/draggable';
 
 gsap.registerPlugin(Draggable);
 
@@ -67,8 +67,8 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         if (dragItems.length === 0 || !dropZones.length) return;
 
         const dragSetup = () => {
-          for (let i = 0; i <= dragItems.length; i++) {
-            Draggable.create(dragItems[i], {
+          for (let i = 0; i < dragItems.length; i++) {
+            (globalThis as any).Draggable.create(dragItems[i], {
               autoScroll: 1,
               bounds: {
                 top: 0,
@@ -82,11 +82,11 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
               },
               inertia: true,
               type: 'x,y',
-              onDragStart: function (event) {
+              onDragStart: function (this: any, event: Event) {
                 this.target.classList.add('!border-0');
                 this.target.classList.add('!shadow-none');
               },
-              onRelease: function (event) {
+              onRelease: function (this: any, event: Event) {
                 let current: { correct: boolean; x: string; y: string } | null = null;
 
                 dropZones.forEach(dropZone => {
@@ -141,7 +141,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         resizeObserver.observe(fretboardRef.current);
 
         return () => {
-          dragItems.forEach(item => Draggable.get(item)?.kill());
+          dragItems.forEach(item => (globalThis as any).Draggable.get(item)?.kill());
           resizeObserver.disconnect();
         };
       },
@@ -158,7 +158,7 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         <h2 className={'!font-lesson-body mb-5 text-2xl font-bold'}>{questionary.title}</h2>
         <div id={'drag-items'} className={'relative flex w-full space-x-2 rounded border border-amber-700 p-3'}>
           {/* items */}
-          {questionary.questions.map((item, index) => (
+          {questionary.questions.map(item => (
             <div key={item.id} className={'relative'}>
               <div
                 data-value={item.boardCordinates}
