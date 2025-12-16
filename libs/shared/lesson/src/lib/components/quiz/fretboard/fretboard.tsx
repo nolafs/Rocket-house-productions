@@ -4,7 +4,7 @@ import { Question, Questionary } from '@prisma/client';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import Draggable from 'gsap/Draggable';
+import Draggable from 'gsap/draggable';
 
 gsap.registerPlugin(Draggable);
 
