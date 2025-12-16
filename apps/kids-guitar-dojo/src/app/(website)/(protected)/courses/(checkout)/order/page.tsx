@@ -2,6 +2,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import PurchaseOption from './_components/purchase-option';
 import { SectionPricingTable } from '@rocket-house-productions/features/server';
+import { logger } from '@rocket-house-productions/util';
 
 interface PageProps {
   params: Promise<{ product: string }>;
@@ -25,12 +26,12 @@ export default async function Page(props: PageProps) {
 
   if (sessionClaims.metadata?.status === 'active') {
     if (sessionClaims.metadata?.type === 'free') {
-      console.info('User is already active and has a free account');
+      logger.info('User is already active and has a free account');
       redirect('/courses/upgrade');
     }
 
     if (sessionClaims.metadata?.hasMembership) {
-      console.info('User is already active and has a paid account');
+      logger.info('User is already active and has a paid account');
       redirect('/courses');
     }
   }

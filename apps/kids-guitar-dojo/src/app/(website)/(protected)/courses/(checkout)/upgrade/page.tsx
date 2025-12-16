@@ -8,6 +8,7 @@ import { getAccount, getAppSettings } from '@rocket-house-productions/actions/se
 
 import { db } from '@rocket-house-productions/integration/server';
 import { SectionPricingTable } from '@rocket-house-productions/features/server';
+import { logger } from '@rocket-house-productions/util';
 
 export default async function Page(props: { params: Promise<{ product: string[]; purchaseId: string }> }) {
   const params = await props.params;
@@ -61,9 +62,9 @@ export default async function Page(props: { params: Promise<{ product: string[];
 
     params.purchaseId = purchase.id;
 
-    console.log('[UPGRADE]', purchase);
+    logger.debug('[UPGRADE] purchaseId=', purchase.id);
   } else {
-    console.log('[UPGRADE]', purchase);
+    logger.debug('[UPGRADE] purchase param provided', { purchaseId: params.purchaseId });
   }
 
   return (

@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useUser } from '@rocket-house-productions/hooks';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import { logger } from '@rocket-house-productions/util';
 
 interface PurchaseOptionProps {
   children?: ReactNode;
@@ -50,7 +51,7 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
             router.push('/courses/success');
           }
         } catch (error) {
-          console.error('Free account creation failed:', error);
+          logger.error('Free account creation failed:', error);
           hasProcessed.current = false;
         } finally {
           setIsProcessing(false);
@@ -74,7 +75,7 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
               router.push(redirectUrl.data.url);
             }
           } catch (error) {
-            console.error('Payment redirect failed:', error);
+            logger.error('Payment redirect failed:', error);
             hasProcessed.current = false;
           } finally {
             setIsProcessing(false);
@@ -95,7 +96,7 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
   if (isLoading || isValidating) {
     return (
       <div className={'mt-5 flex h-svh w-full flex-col items-center justify-center'}>
-        <Loader2 className={'text-primary h-12 w-12 animate-spin'} />
+        <Loader2 className={'h-12 w-12 animate-spin text-primary'} />
       </div>
     );
   }
@@ -118,7 +119,7 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
         </>
       ) : (
         <div>
-          <Loader2 className={'text-primary h-12 w-12 animate-spin'} />
+          <Loader2 className={'h-12 w-12 animate-spin text-primary'} />
         </div>
       )}
     </div>

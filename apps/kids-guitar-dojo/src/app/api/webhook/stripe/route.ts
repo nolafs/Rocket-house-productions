@@ -5,6 +5,7 @@ import Stripe from 'stripe';
 import { db, stripe } from '@rocket-house-productions/integration/server';
 import { clerkClient } from '@clerk/nextjs/server';
 import { MailerList, SessionFlags } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 import { Prisma } from '@prisma/client/extension';
 import TransactionClient = Prisma.TransactionClient;
 
@@ -125,21 +126,17 @@ export async function POST(req: Request) {
 
     event = stripe.webhooks.constructEvent(rawBody, sig, webhookSecret);
 
-    console.log('[Webhook] Received', {
-      type: event.type,
-      id: event.id,
-      created: event.created,
-    });
+    logger.info('[Webhook] Received', { type: event.type, id: event.id, created: event.created });
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown error';
-    console.error('❌ Webhook signature error:', { msg });
+    logger.error('❌ Webhook signature error', { msg });
     return NextResponse.json({ message: `Webhook Error: ${msg}` }, { status: 400 });
   }
 
   // Idempotency (event-level)
   const already = await db.webhookEvent.findUnique({ where: { stripeEventId: event.id } });
   if (already) {
-    console.log('[Webhook] Duplicate event ignored', { eventId: event.id, type: event.type });
+    logger.info('[Webhook] Duplicate event ignored', { eventId: event.id, type: event.type });
     return NextResponse.json({ message: 'Already processed' }, { status: 200 });
   }
 
@@ -151,7 +148,7 @@ export async function POST(req: Request) {
   } catch (err) {
     // Prisma unique constraint error code P2002 -> another process already created it
     if ((err as any)?.code === 'P2002') {
-      console.log('[Webhook] Duplicate create detected (race) - ignoring', { eventId: event.id });
+      logger.info('[Webhook] Duplicate create detected (race) - ignoring', { eventId: event.id });
       return NextResponse.json({ message: 'Already processed' }, { status: 200 });
     }
     throw err;
@@ -170,7 +167,7 @@ export async function POST(req: Request) {
   ];
 
   if (!permittedEvents.includes(event.type)) {
-    console.log('[Webhook] Event ignored (not permitted)', { type: event.type });
+    logger.debug('[Webhook] Event ignored (not permitted)', { type: event.type });
     return NextResponse.json({ message: 'Ignored' }, { status: 200 });
   }
 
@@ -179,16 +176,15 @@ export async function POST(req: Request) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
 
-        console.log('[Webhook] checkout.session.completed', {
+        logger.info('[Webhook] checkout.session.completed', {
           sessionId: session.id,
           payment_status: session.payment_status,
-          customer: session.customer,
           client_reference_id: session.client_reference_id,
           hasLineItems: !!(session as any).line_items,
         });
 
         if (session.payment_status !== 'paid') {
-          console.log('[Webhook] Session not paid yet → exit early');
+          logger.info('[Webhook] Session not paid yet → exit early');
           return NextResponse.json({ message: 'Session not paid yet' }, { status: 200 });
         }
 
@@ -199,18 +195,18 @@ export async function POST(req: Request) {
 
         const orderId = (full.client_reference_id ?? full.metadata?.orderId) as string | undefined;
         if (!orderId) {
-          console.warn('[Webhook] No orderId on session', { sessionId: full.id });
+          logger.warn('[Webhook] No orderId on session', { sessionId: full.id });
           return NextResponse.json({ message: 'No orderId' }, { status: 200 });
         }
 
         const order = await db.order.findUnique({ where: { id: orderId } });
         if (!order) {
-          console.warn('[Webhook] Order not found', { orderId });
+          logger.warn('[Webhook] Order not found', { orderId });
           return NextResponse.json({ message: 'Order not found' }, { status: 200 });
         }
 
         if (order.status === 'PAID') {
-          console.log('[Webhook] Order already paid → exit early', { orderId });
+          logger.info('[Webhook] Order already paid → exit early', { orderId });
           return NextResponse.json({ message: 'Order already paid' }, { status: 200 });
         }
 
@@ -219,7 +215,7 @@ export async function POST(req: Request) {
         const planned = (order.cart as any)?.items ?? [];
         const items = full.line_items?.data ?? [];
 
-        console.log('[Webhook] Session expanded', {
+        logger.debug('[Webhook] Session expanded', {
           orderId,
           sessionId: full.id,
           itemsCount: items.length,
@@ -237,7 +233,7 @@ export async function POST(req: Request) {
         const membershipCourseId = app?.membershipSettings?.courseId ?? null;
         const includedList = app?.membershipSettings?.included ?? [];
 
-        console.log('[Webhook] Membership config', {
+        logger.debug('[Webhook] Membership config', {
           membershipCourseId,
           includedCount: includedList.length,
           hasAppSettings: Boolean(app),
@@ -270,7 +266,7 @@ export async function POST(req: Request) {
             const { courseId, tierType, premiumMeta } = await resolveLineItem(tx, plannedItem, price, product);
             const childId = plannedItem?.childId ?? null;
 
-            console.log('[Webhook] Line item resolved', {
+            logger.debug('[Webhook] Line item resolved', {
               idx,
               priceId: price?.id,
               productId: product?.id,
@@ -280,13 +276,12 @@ export async function POST(req: Request) {
                 tierType: plannedItem?.tierType,
                 childId: plannedItem?.childId,
               },
-              metadata: { product: product?.metadata, price: price?.metadata },
               resolved: { courseId, tierType, premiumMeta },
               membershipCourseId,
             });
 
             if (!courseId) {
-              console.warn('[Webhook] Skipping line item: could not resolve courseId', { idx, priceId: price?.id });
+              logger.warn('[Webhook] Skipping line item: could not resolve courseId', { idx, priceId: price?.id });
               continue;
             }
 
@@ -361,7 +356,7 @@ export async function POST(req: Request) {
 
             const isMembershipPurchase = Boolean(membershipCourseId) && courseId === membershipCourseId;
 
-            console.log('[Webhook] 🔍 Membership decision', {
+            logger.debug('[Webhook] 🔍 Membership decision', {
               idx,
               isMembershipPremiumPurchase,
               isMembershipPurchase,
@@ -369,10 +364,6 @@ export async function POST(req: Request) {
               premiumMeta,
               courseId,
               membershipCourseId,
-              hasMembershipCourseId: Boolean(membershipCourseId),
-              courseMatches: courseId === membershipCourseId,
-              isPremiumTier: tierType === 'PREMIUM',
-              hasPremiumMeta: premiumMeta === true,
             });
 
             // Activate account for STANDARD or PREMIUM
@@ -384,10 +375,9 @@ export async function POST(req: Request) {
             }
 
             if (isMembershipPremiumPurchase) {
-              console.log('[Webhook] ✅ PREMIUM MEMBERSHIP PURCHASED - Granting included courses', {
+              logger.info('[Webhook] ✅ PREMIUM MEMBERSHIP PURCHASED - Granting included courses', {
                 count: includedList.length,
                 accountId: order.accountId,
-                includedCourseIds: includedList.map(inc => inc.includedCourseId),
               });
 
               // 2) Grant included courses
@@ -398,23 +388,18 @@ export async function POST(req: Request) {
                   where: { accountId_courseId: { accountId: order.accountId, courseId: includedCourseId } },
                 });
 
-                console.log('[Webhook] Processing included course', {
+                logger.debug('[Webhook] Processing included course', {
                   includedCourseId,
                   hasExisting: !!existingIncluded,
-                  existingType: existingIncluded?.type,
-                  existingCategory: existingIncluded?.category,
-                  existingId: existingIncluded?.id,
                 });
 
                 let includedPurchaseId: string;
 
                 if (existingIncluded) {
-                  console.log('[Webhook] 🔄 UPDATING existing purchase to INCLUDED', {
+                  logger.debug('[Webhook] 🔄 UPDATING existing purchase to INCLUDED', {
                     purchaseId: existingIncluded.id,
                     oldType: existingIncluded.type,
                     oldCategory: existingIncluded.category,
-                    newType: 'included',
-                    newCategory: 'included',
                   });
 
                   const updated = await tx.purchase.update({
@@ -427,14 +412,12 @@ export async function POST(req: Request) {
                   });
                   includedPurchaseId = updated.id;
 
-                  console.log('[Webhook] ✅ Successfully UPDATED purchase to INCLUDED', {
+                  logger.info('[Webhook] ✅ Successfully UPDATED purchase to INCLUDED', {
                     purchaseId: updated.id,
                     courseId: includedCourseId,
-                    type: updated.type,
-                    category: updated.category,
                   });
                 } else {
-                  console.log('[Webhook] 📝 CREATING new included purchase', {
+                  logger.debug('[Webhook] 📝 CREATING new included purchase', {
                     courseId: includedCourseId,
                     accountId: order.accountId,
                   });
@@ -453,7 +436,7 @@ export async function POST(req: Request) {
                   });
                   includedPurchaseId = created.id;
 
-                  console.log('[Webhook] ✅ Successfully CREATED included purchase', {
+                  logger.info('[Webhook] ✅ Successfully CREATED included purchase', {
                     purchaseId: created.id,
                     courseId: includedCourseId,
                   });
@@ -482,13 +465,13 @@ export async function POST(req: Request) {
                   },
                 });
 
-                console.log('[Webhook] ✅ Synthetic transaction created/updated', {
+                logger.debug('[Webhook] ✅ Synthetic transaction created/updated', {
                   syntheticPi,
                   includedCourseId,
                 });
               }
 
-              console.log('[Webhook] ✅ ALL INCLUDED COURSES PROCESSED', {
+              logger.info('[Webhook] ✅ ALL INCLUDED COURSES PROCESSED', {
                 count: includedList.length,
                 accountId: order.accountId,
               });
@@ -519,9 +502,9 @@ export async function POST(req: Request) {
           }
 
           await SessionFlags();
-          console.log('[Webhook] External side-effects completed', { orderId });
+          logger.info('[Webhook] External side-effects completed', { orderId });
         } catch (extErr) {
-          console.error('[Webhook] External side-effects failed', { error: String(extErr) });
+          logger.error('[Webhook] External side-effects failed', { error: String(extErr) });
         }
 
         break;
@@ -529,22 +512,22 @@ export async function POST(req: Request) {
 
       case 'checkout.session.async_payment_failed': {
         const s = event.data.object as Stripe.Checkout.Session;
-        console.log('❌ async_payment_failed', { sessionId: s.id, payment_status: s.payment_status });
+        logger.warn('❌ async_payment_failed', { sessionId: s.id, payment_status: s.payment_status });
         break;
       }
       case 'checkout.session.async_payment_succeeded': {
         const s = event.data.object as Stripe.Checkout.Session;
-        console.log('💰 async_payment_succeeded', { sessionId: s.id, payment_status: s.payment_status });
+        logger.info('💰 async_payment_succeeded', { sessionId: s.id, payment_status: s.payment_status });
         break;
       }
       case 'checkout.session.expired': {
         const s = event.data.object as Stripe.Checkout.Session;
-        console.log('⌛ checkout.session.expired', { sessionId: s.id });
+        logger.warn('⌛ checkout.session.expired', { sessionId: s.id });
         break;
       }
       case 'payment_intent.payment_failed': {
         const pi = event.data.object as Stripe.PaymentIntent;
-        console.log('❌ payment_intent.payment_failed', {
+        logger.warn('❌ payment_intent.payment_failed', {
           id: pi.id,
           last_error: pi.last_payment_error?.message,
         });
@@ -552,29 +535,29 @@ export async function POST(req: Request) {
       }
       case 'payment_intent.succeeded': {
         const pi = event.data.object as Stripe.PaymentIntent;
-        console.log('💰 payment_intent.succeeded', { id: pi.id, status: pi.status });
+        logger.info('💰 payment_intent.succeeded', { id: pi.id, status: pi.status });
         break;
       }
       case 'charge.failed': {
         const c = event.data.object as Stripe.Charge;
-        console.log('❌ charge.failed', { id: c.id, status: c.status });
+        logger.warn('❌ charge.failed', { id: c.id, status: c.status });
         break;
       }
       case 'charge.succeeded': {
         const c = event.data.object as Stripe.Charge;
-        console.log('💰 charge.succeeded', { id: c.id, status: c.status });
+        logger.info('💰 charge.succeeded', { id: c.id, status: c.status });
         break;
       }
       case 'invoice.paid': {
         const inv = event.data.object as Stripe.Invoice;
-        console.log('💰 invoice.paid', { id: inv.id, status: inv.status, customer: inv.customer });
+        logger.info('💰 invoice.paid', { id: inv.id, status: inv.status, customer: inv.customer });
         break;
       }
       default:
-        console.log('[Webhook] Unhandled event type (permitted but not implemented)', { type: event.type });
+        logger.debug('[Webhook] Unhandled event type (permitted but not implemented)', { type: event.type });
     }
   } catch (error) {
-    console.error('[Webhook] Handler failed', {
+    logger.error('[Webhook] Handler failed', {
       error: String(error),
       eventId: event.id,
       type: event.type,
@@ -583,6 +566,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Webhook handler failed' }, { status: 500 });
   }
 
-  console.log('[Webhook] Done', { eventId: event.id, type: event.type, elapsedMs: Date.now() - startTs });
+  logger.info('[Webhook] Done', { eventId: event.id, type: event.type, elapsedMs: Date.now() - startTs });
   return NextResponse.json({ message: 'Received' }, { status: 200 });
 }

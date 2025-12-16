@@ -4,6 +4,7 @@ import { uploadFile } from './storage';
 import sharp from 'sharp';
 import { nanoid } from 'nanoid';
 import { UploadImageSchema } from './schema/upload-image.schema';
+import { logger } from '@rocket-house-productions/util';
 
 export const uploadImageAction = async (formData: FormData) => {
   const formDataObject = Object.fromEntries(formData.entries());
@@ -36,7 +37,7 @@ export const uploadImageAction = async (formData: FormData) => {
         };
       }
     } catch (error) {
-      console.error('[uploadImageAction] Error uploading image', error);
+      logger.error('[uploadImageAction] Error uploading image', error);
     }
   }
 };

@@ -6,6 +6,7 @@ import { headers } from 'next/headers';
 import { getGlobalPin } from '@rocket-house-productions/actions/server';
 import { decryptPin } from '@rocket-house-productions/actions/server';
 import { triggerMail } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 
 const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || ``;
 
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
       case 'user.created': {
         const { id, first_name, last_name, email_addresses } = payload.data;
         if (!id) {
-          console.warn('[CLERK WEBHOOK]', 'Invalid user ID');
+          logger.warn('[CLERK WEBHOOK] Invalid user ID');
           return NextResponse.json({ message: 'Invalid user ID' }, { status: 200 });
         }
 
@@ -57,7 +58,7 @@ export async function POST(req: Request) {
         });
 
         if (user) {
-          console.info('[CLERK WEBHOOK]', 'User already exists, skipping', { userId: id });
+          logger.info('[CLERK WEBHOOK] User already exists, skipping', { userId: id });
           return NextResponse.json({ message: 'User already exists, skipping' }, { status: 200 });
         }
 
@@ -78,7 +79,7 @@ export async function POST(req: Request) {
         });
 
         if (existingAccount) {
-          console.info('[CLERK WEBHOOK]', 'Account with this email already exists, skipping', {
+          logger.info('[CLERK WEBHOOK] Account with this email already exists, skipping', {
             email: email_addresses[0].email_address,
           });
           return NextResponse.json({ message: 'Account already exists, skipping' }, { status: 200 });
@@ -108,10 +109,10 @@ export async function POST(req: Request) {
             const { data, errors } = await triggerMail(null, mailData);
 
             if (!data || errors) {
-              console.error('[CLERK WEBHOOK]', 'Error sending email', errors);
+              logger.error('[CLERK WEBHOOK] Error sending email', errors);
             }
           } catch (error) {
-            console.error('[CLERK WEBHOOK]', 'Error sending email', error);
+            logger.error('[CLERK WEBHOOK] Error sending email', error);
           }
         }
 
@@ -121,7 +122,7 @@ export async function POST(req: Request) {
         const { id, first_name, last_name, email_addresses } = payload.data;
 
         if (!id) {
-          console.warn('[CLERK WEBHOOK]', 'Invalid user ID');
+          logger.warn('[CLERK WEBHOOK] Invalid user ID');
           return NextResponse.json({ message: 'Invalid user ID' }, { status: 200 });
         }
 
@@ -149,7 +150,7 @@ export async function POST(req: Request) {
         const { id } = payload.data;
 
         if (!id) {
-          console.warn('[CLERK WEBHOOK]', 'Invalid user ID');
+          logger.warn('[CLERK WEBHOOK] Invalid user ID');
           return NextResponse.json({ message: 'Invalid user ID' }, { status: 200 });
         }
 
@@ -170,14 +171,14 @@ export async function POST(req: Request) {
         break;
       }
       default: {
-        console.info('Unhandled event', eventType);
+        logger.info('[CLERK WEBHOOK] Unhandled event', { eventType });
         break;
       }
     }
 
     return NextResponse.json({ message: 'Success' });
   } catch (error) {
-    console.log('error', error);
+    logger.error('[CLERK WEBHOOK] Handler failed', error);
     return NextResponse.json({ message: 'Error' }, { status: 400 });
   }
 }

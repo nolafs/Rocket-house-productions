@@ -12,6 +12,7 @@ import { saveAs } from 'file-saver';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ModuleButtonDisplay } from './module-path';
+import { logger } from '@rocket-house-productions/util';
 
 // Preload textures at module level using THREE.TextureLoader
 const textureLoader = new THREE.TextureLoader();
@@ -62,7 +63,7 @@ const AwardPlaneManual = ({ image }: { image: string }) => {
       },
       undefined,
       error => {
-        console.error('Error loading texture:', error);
+        logger.error('Error loading texture:', error);
       },
     );
 

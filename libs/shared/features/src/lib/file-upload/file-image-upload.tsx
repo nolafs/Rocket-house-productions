@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Dropzone from 'react-dropzone';
 import { CloudUploadIcon } from 'lucide-react';
 import { uploadImageAction } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 
 interface FileUploadProps {
   onChange: (file?: string) => void;
@@ -39,10 +40,10 @@ export const FileImageUpload = ({ onChange, image }: FileUploadProps) => {
         onChange(response.file);
       } else {
         setError('Error uploading image');
-        console.error('[FileUpload] error uploading image', response);
+        logger.error('[FileUpload] error uploading image', response);
       }
     } catch (err) {
-      console.error('[FileUpload] unexpected error', err);
+      logger.error('[FileUpload] unexpected error', err);
       setError('Unexpected error uploading image');
     } finally {
       setLoading(false);

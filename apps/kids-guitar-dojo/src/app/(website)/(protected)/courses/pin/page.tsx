@@ -1,7 +1,8 @@
-import { LessonPageWrapper } from '@rocket-house-productions/lesson/server';
+import { LessonPageWrapper } from '@rocket-house-productions/lesson';
 
 import { PinInputWrapper } from './_components/PinInputWrapper';
 import { DialogReturnUrl } from '@rocket-house-productions/lesson';
+import { logger } from '@rocket-house-productions/util';
 
 type PageProps = {
   searchParams: Promise<{
@@ -13,7 +14,7 @@ export default async function Page({ searchParams }: PageProps) {
   // query string for pin
   const query = await searchParams;
 
-  console.log('query', query);
+  logger.debug('pin page query', { returnTo: query.returnTo });
 
   return (
     <LessonPageWrapper>

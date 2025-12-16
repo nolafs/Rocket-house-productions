@@ -3,6 +3,7 @@ import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-produ
 import { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
+import { logger } from '@rocket-house-productions/util';
 
 const LessonContent = dynamic(() => import('@rocket-house-productions/lesson').then(mod => mod.LessonContent), {
   ssr: false,
@@ -29,9 +30,9 @@ interface LessonComponentProps {
 export function LessonComponent({ data, child, page }: LessonComponentProps) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      console.info('Window is defined here');
+      logger.info('Window is defined here');
     } else {
-      console.warn('Window is undefined here');
+      logger.warn('Window is undefined here');
     }
   }, []);
 

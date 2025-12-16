@@ -1,7 +1,8 @@
 import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
-import { Child, ChildProgress } from '@prisma/client';
+import { ChildProgress } from '@prisma/client';
+import { logger } from '@rocket-house-productions/util';
 
 interface QuestionProgress {
   [questionId: string]: boolean;
@@ -155,7 +156,7 @@ export const createLessonStore = (
             });
             set({ lessons: updatedLessons });
           } catch (error) {
-            console.error('Error syncing lesson progress:', error);
+            logger.error('Error syncing lesson progress:', error);
           }
         },
       }),
@@ -188,7 +189,7 @@ const updateDBLessonProgress = async (
       replayCount,
     });
   } catch (error) {
-    console.error('Error updating lesson progress:', error);
+    logger.error('Error updating lesson progress:', error);
   }
 };
 
@@ -197,7 +198,7 @@ const getLessonsProgress = async (childId: string, courseId: string) => {
     const response = await axios.get(`/api/courses/progress?childId=${childId}&courseId=${courseId}`);
     return response.data;
   } catch (error) {
-    console.error('Error getting lessons progress:', error);
+    logger.error('Error getting lessons progress:', error);
     return {};
   }
 };

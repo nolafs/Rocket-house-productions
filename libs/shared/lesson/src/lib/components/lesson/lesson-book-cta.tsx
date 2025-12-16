@@ -7,6 +7,7 @@ import Image from 'next/image';
 import bookCtaImage from '../../assets/bookcta.png';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { useRouter } from 'next/navigation';
+import { logger } from '@rocket-house-productions/util';
 
 interface LessonBookCtaProps {
   course: SectionCourse;
@@ -25,7 +26,7 @@ export function LessonBookCta({ course, bookCta, bookMessage }: LessonBookCtaPro
           const child = await getChild(course.slug);
           setPurchaseCategory(child?.purchaseCategory);
         } catch (error) {
-          console.error('Error fetching purchase type:', error);
+          logger.error('Error fetching purchase type:', error);
         }
       };
 

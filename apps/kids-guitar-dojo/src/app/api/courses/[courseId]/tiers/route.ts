@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { db } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
 
 export const dynamic = 'force-dynamic'; // avoids static caching for admin mutations
 const TierInputSchema = z.object({
@@ -68,7 +69,7 @@ export async function PATCH(req: Request, props: { params: Promise<{ courseId: s
 
   const payload = parsed.tiers;
 
-  console.log('[TIERS_PATCH]', { courseId, payload });
+  logger.debug('[TIERS_PATCH]', { courseId, payload: payload.map(p => ({ type: p.type, id: p.id })) });
 
   try {
     const result = await db.$transaction(async tx => {
@@ -165,7 +166,7 @@ export async function PATCH(req: Request, props: { params: Promise<{ courseId: s
       const target = Array.isArray(err?.meta?.target) ? err.meta.target.join(',') : err?.meta?.target;
       return NextResponse.json({ error: `Unique constraint failed on: ${target ?? 'unknown'}` }, { status: 409 });
     }
-    console.error('PATCH /tiers error:', err);
+    logger.error('PATCH /tiers error:', err);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }

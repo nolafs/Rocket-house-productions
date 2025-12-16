@@ -7,6 +7,7 @@ import { Loader2 } from 'lucide-react';
 import * as THREE from 'three';
 import ModuleAwards from '../components/course/course-scene/module-awards';
 import LessonPageWrapper from '../components/lesson-page-wrapper';
+import { logger } from '@rocket-house-productions/util';
 
 // Error Boundary Component
 class ThreeErrorBoundary extends React.Component<
@@ -40,14 +41,14 @@ class ThreeErrorBoundary extends React.Component<
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('Three.js Error:', error, errorInfo);
+    logger.error('[ThreeErrorBoundary] Three.js Error:', { message: error.message, info: errorInfo });
 
     // Log specific error types for debugging
     if (error.message?.includes('WebGL context lost')) {
-      console.warn('WebGL context was lost - likely due to GPU issues or browser tab switching');
+      logger.warn('[ThreeErrorBoundary] WebGL context was lost - likely due to GPU issues or browser tab switching');
     }
     if (error.message?.includes('403') || error.message?.includes('404')) {
-      console.warn('Resource loading failed - check CDN/image URLs');
+      logger.warn('[ThreeErrorBoundary] Resource loading failed - check CDN/image URLs');
     }
   }
 
@@ -175,7 +176,7 @@ export function SafeLoader() {
   const [isVisible, setIsVisible] = useState(true);
   const [debouncedActive, setDebouncedActive] = useState(false);
 
-  ///console.log('[SafeLoader] Progress:', progress, loaded, total, errors, active, item);
+  ///logger.debug('[SafeLoader] Progress:', { progress, loaded, total, errors, active, item });
 
   // Debounce the active state to prevent flickering
   useEffect(() => {
@@ -250,7 +251,7 @@ export function SafeModuleAwards({ display }: { display: any }) {
   try {
     return <ModuleAwards display={display} />;
   } catch (error) {
-    console.warn('ModuleAwards failed, skipping:', error);
+    logger.warn('ModuleAwards failed, skipping:', { error });
     return null;
   }
 }
@@ -269,7 +270,7 @@ export function SafeCourseNavigation({
   return (
     <ThreeErrorBoundary
       onContinue={() => {
-        console.log('User chose to continue without full graphics');
+        logger.info('User chose to continue without full graphics');
         setSkipAwards(true); // Disable awards when user skips
       }}>
       <Canvas {...canvasProps}>

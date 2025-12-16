@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { CurrencyToSymbol } from '@rocket-house-productions/util';
 import { stripePrices } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 
 interface StripePricingProps {
   productId?: string | null | undefined;
@@ -20,14 +21,14 @@ export default function StripePricing({ productId, sales = false }: StripePricin
       try {
         const productPrices = await stripePrices(productId, sales);
 
-        console.log('Fetching prices for productId:', productPrices);
+        logger.debug('Fetching prices for productId', { productPrices });
 
         if (productPrices && productPrices[0]?.unit_amount) {
           setPrice(productPrices[0].unit_amount);
           setCurrency(productPrices[0].currency);
         }
       } catch (err) {
-        console.error('Error fetching stripe prices:', err);
+        logger.error('Error fetching stripe prices:', err);
       }
     };
 

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
+import { logger } from '@rocket-house-productions/util';
 
 export async function GET(req: Request, props: { params: Promise<{ courseId: string }> }) {
   const params = await props.params;
@@ -21,7 +22,7 @@ export async function GET(req: Request, props: { params: Promise<{ courseId: str
 
     return NextResponse.json(course);
   } catch (error) {
-    console.error('[COURSE_ID_GET]', error);
+    logger.error('[COURSE_ID_GET]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -53,7 +54,7 @@ export async function DELETE(req: Request, props: { params: Promise<{ courseId: 
 
     return NextResponse.json(deletedCourse);
   } catch (error) {
-    console.error('[COURSE_ID_DELETE]', error);
+    logger.error('[COURSE_ID_DELETE]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -80,7 +81,7 @@ export async function PATCH(req: Request, props: { params: Promise<{ courseId: s
 
     return NextResponse.json(course);
   } catch (error) {
-    console.error('[COURSE_ID_PATCH]', error);
+    logger.error('[COURSE_ID_PATCH]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

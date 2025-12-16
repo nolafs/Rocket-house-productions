@@ -2,11 +2,12 @@
 import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { SessionFlags } from './session';
+import { logger } from '@rocket-house-productions/util';
 
 export async function freeCheckout(formData: FormData): Promise<{ success: boolean }> {
   const { userId } = await auth();
 
-  console.log('[FREE CHECKOUT]');
+  logger.info('[FREE CHECKOUT]');
 
   if (!userId) {
     throw new Error('Unauthorized');
@@ -45,7 +46,7 @@ export async function freeCheckout(formData: FormData): Promise<{ success: boole
     });
   });
 
-  console.log('[FREE CHECKOUT] PURCHASE');
+  logger.info('[FREE CHECKOUT] PURCHASE');
 
   const data = await SessionFlags();
 

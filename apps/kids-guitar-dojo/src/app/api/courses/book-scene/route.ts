@@ -2,6 +2,7 @@ import z from 'zod';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
 
 const bookSceneSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(scene);
   } catch (error) {
-    console.error('[BOOK_SCENE_POST]', error);
+    logger.error('[BOOK_SCENE_POST]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -58,7 +59,7 @@ export async function GET() {
 
     return NextResponse.json(scenes);
   } catch (error) {
-    console.error('[BOOK_SCENE_GET]', error);
+    logger.error('[BOOK_SCENE_GET]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

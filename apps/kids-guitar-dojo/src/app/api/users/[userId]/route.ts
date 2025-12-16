@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
 
 export async function GET(req: NextRequest, context: { params: Promise<{ userId: string }> }) {
   // get userid from route
@@ -47,11 +48,12 @@ export async function GET(req: NextRequest, context: { params: Promise<{ userId:
       },
     });
 
-    console.log('[USER GET]', response);
+    // Avoid logging full account object (may contain PII). Log only safe identifiers.
+    logger.info('[USER GET] accountId=', response?.id, 'purchases=', response?._count?.purchases ?? 0);
 
     return NextResponse.json(response);
   } catch (error) {
-    console.error('[USERS]', error);
+    logger.error('[USERS] error fetching account', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

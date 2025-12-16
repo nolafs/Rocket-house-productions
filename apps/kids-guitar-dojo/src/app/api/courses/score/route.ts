@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
 
 export async function POST(req: NextRequest) {
   try {
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
 
     return new NextResponse(JSON.stringify(response), { status: 200 });
   } catch (error) {
-    console.error('[COURSES PROGRESS]', error);
+    logger.error('[COURSES PROGRESS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
@@ -74,7 +75,7 @@ export async function GET(req: NextRequest) {
 
     return new NextResponse(JSON.stringify(score), { status: 200 });
   } catch (error) {
-    console.error('[COURSES PROGRESS]', error);
+    logger.error('[COURSES PROGRESS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

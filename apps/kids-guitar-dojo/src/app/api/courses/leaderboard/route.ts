@@ -3,6 +3,7 @@ import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { isDynamicServerError } from 'next/dist/client/components/hooks-server-context';
 import type { ChildWithScores } from '@rocket-house-productions/types';
+import { logger } from '@rocket-house-productions/util';
 
 export async function GET(req: NextRequest) {
   try {
@@ -56,7 +57,7 @@ export async function GET(req: NextRequest) {
     if (isDynamicServerError(error)) {
       throw error;
     }
-    console.error('[COURSES PROGRESS]', error);
+    logger.error('[COURSES PROGRESS]', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

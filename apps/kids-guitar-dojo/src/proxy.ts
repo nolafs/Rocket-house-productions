@@ -2,6 +2,7 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
+import { logger } from '@rocket-house-productions/util';
 
 const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
 const COOKIE_NAME = 'sf';
@@ -33,7 +34,7 @@ export default clerkMiddleware(
   async (auth, req) => {
     const urlPath = req.nextUrl.pathname;
 
-    console.info('[MIDDLEWARE]', 'Route', req.url, isProtectedRoute(req));
+    logger.info('[MIDDLEWARE] Route', req.url, isProtectedRoute(req));
 
     // Skip Clerk/middleware on slice-simulator
     if (urlPath.startsWith('/slice-simulator')) {
@@ -41,18 +42,18 @@ export default clerkMiddleware(
     }
 
     if (!isProtectedRoute(req)) {
-      console.info('[MIDDLEWARE]', 'Unprotected Route');
+      logger.info('[MIDDLEWARE] Unprotected Route');
       return NextResponse.next();
     }
 
-    console.info('[MIDDLEWARE COURSE]', 'Protected Route');
+    logger.info('[MIDDLEWARE COURSE] Protected Route');
 
     // Only special handling for /courses; /admin can be handled by Clerk RBAC/claims separately
     if (!urlPath.startsWith('/courses')) {
       return NextResponse.next();
     }
 
-    console.info('[MIDDLEWARE COURSE]', 'Courses Route');
+    logger.info('[MIDDLEWARE COURSE] Courses Route');
 
     // EARLY ALLOW — must be before any status/hasPurchases checks
     if (urlPath.startsWith('/courses/upgrade')) {
@@ -72,11 +73,11 @@ export default clerkMiddleware(
     // We need a valid session for /courses/*
     const { sessionClaims } = await auth();
     if (!sessionClaims) {
-      console.info('[MIDDLEWARE COURSE] No session claims found');
+      logger.info('[MIDDLEWARE COURSE] No session claims found');
       return NextResponse.redirect(`${req.nextUrl.origin}/`);
     }
 
-    console.info('[MIDDLEWARE COURSE] sessionClaim');
+    logger.debug('[MIDDLEWARE COURSE] sessionClaim');
 
     // ---- Load flags (cookie first; claims as fallback) ----
     let flags: Flags | null = null;
@@ -91,7 +92,7 @@ export default clerkMiddleware(
 
     try {
       if (!secret) {
-        console.warn('[MIDDLEWARE] SESSION_FLAGS_SECRET missing in Edge env; rebuilding flags');
+        logger.warn('[MIDDLEWARE] SESSION_FLAGS_SECRET missing in Edge env; rebuilding flags');
         throw new Error('missing secret');
       }
       const { payload } = await jwtVerify(token, secret);
@@ -109,7 +110,12 @@ export default clerkMiddleware(
       flags = (pm?.flags ?? pm ?? m?.flags ?? m ?? null) as Flags | null;
     }
 
-    console.info('[MIDDLEWARE COURSE] flags', flags);
+    logger.debug(
+      '[MIDDLEWARE COURSE] flags',
+      flags?.hasPurchases
+        ? { hasPurchases: flags.hasPurchases, hasMembership: flags.hasMembership }
+        : { hasPurchases: flags?.hasPurchases },
+    );
 
     // If still missing, rebuild once
     if (!flags) {
@@ -121,13 +127,13 @@ export default clerkMiddleware(
     let pinToken: string | null = null;
     try {
       pinToken = req.cookies.get('pin:parents')?.value ?? null;
-      console.info('[MIDDLEWARE COURSE] Parent Pin', !!pinToken);
+      logger.debug('[MIDDLEWARE COURSE] Parent Pin', !!pinToken);
     } catch (e) {
-      console.error('[MIDDLEWARE COURSE] Pin Error', e);
+      logger.error('[MIDDLEWARE COURSE] Pin Error', e);
     }
     // ---- Status / access logic (after early-allow + flags loaded) ----
     if (flags.status === 'pending') {
-      console.info('[MIDDLEWARE COURSE] PENDING');
+      logger.info('[MIDDLEWARE COURSE] PENDING');
       // success is already early-allowed; if user isn't on it, redirect
       if (!urlPath.startsWith(`/courses/success`)) {
         return NextResponse.redirect(`${req.nextUrl.origin}/courses/success`);
@@ -136,7 +142,7 @@ export default clerkMiddleware(
     }
 
     if (flags.status === 'inactive') {
-      console.info('[MIDDLEWARE COURSE] ACCOUNT INACTIVE');
+      logger.info('[MIDDLEWARE COURSE] ACCOUNT INACTIVE');
       if (urlPath.startsWith(`/courses/order`)) {
         return NextResponse.next();
       }
@@ -147,7 +153,7 @@ export default clerkMiddleware(
 
     // No purchases (but allow ordering)
     if (!flags?.hasPurchases) {
-      console.info('[MIDDLEWARE COURSE] NO PURCHASES');
+      logger.info('[MIDDLEWARE COURSE] NO PURCHASES');
       if (urlPath.startsWith(`/courses/order`)) {
         return NextResponse.next();
       }
@@ -157,17 +163,20 @@ export default clerkMiddleware(
     // Account area requires valid parent PIN
     // only check if user has purchases or membership
     if (flags.hasPurchases && flags.hasMembership) {
-      console.info('[MIDDLEWARE COURSE] CHECKING FOR ACCOUNT AREA', flags.hasPurchases || flags.hasMembership, flags);
+      logger.debug('[MIDDLEWARE COURSE] CHECKING FOR ACCOUNT AREA', {
+        hasPurchases: flags.hasPurchases,
+        hasMembership: flags.hasMembership,
+      });
 
       if (urlPath.startsWith(`/courses/account`) || urlPath.startsWith(`/courses/order`)) {
-        console.log('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', !!pinToken);
+        logger.debug('[MIDDLEWARE COURSE] CHECKING ACCOUNT ROUTE', !!pinToken);
         try {
           if (!pinToken) throw new Error('no pin');
           await jwtVerify(pinToken, pinSecret);
-          console.log('[MIDDLEWARE COURSE] HAS PIN TOKEN - ALLOW ACCOUNT');
+          logger.debug('[MIDDLEWARE COURSE] HAS PIN TOKEN - ALLOW ACCOUNT');
           return NextResponse.next();
         } catch (error) {
-          console.error('[MIDDLEWARE COURSE] PIN Error', error);
+          logger.error('[MIDDLEWARE COURSE] PIN Error', error);
           const to = `/courses/pin?returnTo=${encodeURIComponent(req.nextUrl.pathname)}`;
           return NextResponse.redirect(new URL(to, req.url));
         }
@@ -178,14 +187,16 @@ export default clerkMiddleware(
     const purchases = Array.isArray(flags.purchases) ? flags.purchases : [];
     const childEnrolled = purchases.filter(v => v.childId !== null);
 
-    console.info('[MIDDLEWARE COURSE] CHECK PURCHASES');
+    logger.debug('[MIDDLEWARE COURSE] CHECK PURCHASES');
 
     if (flags.hasPurchases && flags.hasMembership) {
       if (urlPath.endsWith(`/courses`)) {
         if (childEnrolled.length === 0) {
           // get first unenrolled book
           const unenrolled = purchases.filter(v => v.childId === null);
-          console.info('[MIDDLEWARE COURSE] NO CHILD ENROLLED - GO TO ENROLLMENT', unenrolled);
+          logger.info('[MIDDLEWARE COURSE] NO CHILD ENROLLED - GO TO ENROLLMENT', {
+            unenrolledCount: unenrolled.length,
+          });
           const firstUnenrolledCourseId = unenrolled[0]?.id ?? '';
           return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll/${firstUnenrolledCourseId}`);
         }
@@ -195,15 +206,15 @@ export default clerkMiddleware(
           return NextResponse.next();
         }
         if (childEnrolled.length === 0) {
-          console.info('[MIDDLEWARE COURSE] NO CHILD ENROLLED - GO TO ENROLLMENT');
+          logger.info('[MIDDLEWARE COURSE] NO CHILD ENROLLED - GO TO ENROLLMENT');
           return NextResponse.redirect(`${req.nextUrl.origin}/courses/enroll`);
         }
 
-        console.info('[MIDDLEWARE COURSE] GO TO COURSE LESSON');
+        logger.info('[MIDDLEWARE COURSE] GO TO COURSE LESSON');
         return NextResponse.next();
       }
     }
-    console.info('[MIDDLEWARE COURSE] ALL CHECKS PASSED');
+    logger.debug('[MIDDLEWARE COURSE] ALL CHECKS PASSED');
     return NextResponse.next();
   },
   { debug: false },

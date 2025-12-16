@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db, stripeCheckout } from '@rocket-house-productions/integration/server';
+import { logger } from '@rocket-house-productions/util';
 import { clerkClient } from '@clerk/nextjs/server';
 
 export async function POST(req: NextRequest) {
@@ -16,7 +17,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (!email) {
-    console.log('No email provided');
+    logger.debug('No email provided for stripe checkout');
   }
 
   //todo: need to possible update clerk status to set to pending and type to paid but perhaps his is too early

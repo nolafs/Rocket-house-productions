@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth, clerkClient } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration/server';
 import { MailerList } from '@rocket-house-productions/actions/server';
+import { logger } from '@rocket-house-productions/util';
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -47,7 +48,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    console.log('[CHECKOUT FREE] PURCHASE', purchase);
+    logger.info('[CHECKOUT FREE] PURCHASE created id=', purchase.id);
 
     // check if ok and redirect to success page
     if (purchase) {
@@ -61,10 +62,10 @@ export async function POST(req: NextRequest) {
 
       // update Mailer-lite
 
-      console.log('[CHECKOUT FREE] ACCOUNT EMAIL', account.email);
+      logger.debug('[CHECKOUT FREE] account email available=', !!account.email);
 
       if (account.email) {
-        console.log('[CHECKOUT FREE] CREATE EMAIL', account.email);
+        logger.info('[CHECKOUT FREE] enqueue mailer for account', account.id);
 
         await MailerList({
           email: account.email,
@@ -82,7 +83,7 @@ export async function POST(req: NextRequest) {
       return new NextResponse('Failed to create purchase', { status: 500 });
     }
   } catch (error) {
-    console.error('Failed to find (.)account', error);
+    logger.error('Failed to find account or create purchase', error);
     return new NextResponse('Internal Error', { status: 500 });
   }
 }

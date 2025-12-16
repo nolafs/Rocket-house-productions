@@ -20,6 +20,7 @@ import { useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import axios from 'axios';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
+import { logger } from '@rocket-house-productions/util';
 
 interface BuySheetProps {
   course: CourseModules;
@@ -48,14 +49,14 @@ export default function BuySheet({ course, options }: BuySheetProps) {
       setSubmitting(false);
       return;
     }
-    console.log('Initiating checkout for course:', course.slug);
+    logger.debug('Initiating checkout for course:', course.slug);
 
     const redirectUrl = await axios.post('/api/stripe/checkurl', {
       productId: isProduction ? product.stripeId : product.stripeIdDev,
       userId: user?.id,
     });
 
-    console.log('[REDIRECT]', redirectUrl);
+    logger.debug('[REDIRECT]', { url: redirectUrl.data?.url });
 
     if (redirectUrl.data?.url) {
       router.push(redirectUrl.data.url);
@@ -83,7 +84,7 @@ export default function BuySheet({ course, options }: BuySheetProps) {
     return null;
   }
 
-  console.log('Initiating checkout for course', options);
+  logger.debug('Initiating checkout for course', { optionsCount: options?.length ?? 0 });
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -108,12 +109,12 @@ export default function BuySheet({ course, options }: BuySheetProps) {
                     className="size-24 shrink-0 rounded object-cover ring-1 ring-black/10"
                   />
                 ) : (
-                  <div className="bg-muted size-24 shrink-0 rounded-xl ring-1 ring-black/10" />
+                  <div className="size-24 shrink-0 rounded-xl bg-muted ring-1 ring-black/10" />
                 )}
                 <div className="min-w-0">
                   <h3 className="text-lg font-semibold leading-tight">{course.title}</h3>
                   {course.modules?.length ? (
-                    <p className="text-muted-foreground text-sm">
+                    <p className="text-sm text-muted-foreground">
                       {course.modules.length} module{course.modules.length === 1 ? '' : 's'}
                     </p>
                   ) : null}
@@ -121,7 +122,7 @@ export default function BuySheet({ course, options }: BuySheetProps) {
               </div>
 
               {course.description ? (
-                <p className="text-muted-foreground whitespace-pre-line text-sm leading-relaxed">
+                <p className="whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
                   {course.description}
                 </p>
               ) : null}
@@ -132,7 +133,7 @@ export default function BuySheet({ course, options }: BuySheetProps) {
                 <Label className="text-sm">Choose version</Label>
 
                 {!options ? (
-                  <div className="text-muted-foreground text-sm">No purchase options available.</div>
+                  <div className="text-sm text-muted-foreground">No purchase options available.</div>
                 ) : (
                   <RadioGroup value={selected} onValueChange={setSelected} className="grid gap-3">
                     {options.map(
@@ -144,7 +145,7 @@ export default function BuySheet({ course, options }: BuySheetProps) {
                             className={[
                               'group relative w-full cursor-pointer rounded-2xl border p-4 transition',
                               selectedOption?.id === opt.id
-                                ? 'border-primary ring-primary/30 ring-2'
+                                ? 'border-primary ring-2 ring-primary/30'
                                 : 'border-border hover:border-foreground/30',
                             ].join(' ')}>
                             <div className="flex items-start justify-between gap-4">
@@ -153,7 +154,7 @@ export default function BuySheet({ course, options }: BuySheetProps) {
                                   <RadioGroupItem id={opt.id} value={opt.id} />
                                   <span className="font-medium">{opt.name}</span>
                                 </div>
-                                <p className="text-muted-foreground mt-1 text-sm">{opt.description}</p>
+                                <p className="mt-1 text-sm text-muted-foreground">{opt.description}</p>
                                 <ul className={'mt-2 list-inside list-disc px-5 text-sm'}>
                                   {opt.features?.map((feature, idx) => (
                                     <li key={idx}>{feature}</li>
@@ -177,7 +178,7 @@ export default function BuySheet({ course, options }: BuySheetProps) {
         <SheetFooter className="border-t p-4">
           <div className="flex w-full items-center gap-3">
             <div className="ml-1 mr-auto">
-              <p className="text-muted-foreground text-xs uppercase tracking-wide">You’re buying</p>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">You’re buying</p>
               <p className="text-sm font-medium">
                 {selectedOption
                   ? `${selectedOption.label} – ${formatMoney(selectedOption.amount, selectedOption.currency)}`

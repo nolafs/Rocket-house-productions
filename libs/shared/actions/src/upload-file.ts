@@ -1,6 +1,7 @@
 'use server';
 import 'server-only';
 import { uploadFile } from './storage';
+import { logger } from '@rocket-house-productions/util';
 import { UploadFileSchema } from './schema/upload-file.schema';
 import { nanoid } from 'nanoid';
 
@@ -46,7 +47,7 @@ export const uploadFileAction = async (formData: FormData) => {
       file: null,
     };
   } catch (error) {
-    console.error('[uploadFileAction] Error uploading image', error);
+    logger.error('[uploadFileAction] Error uploading image', error);
     return { status: 'error', file: null };
   }
 };

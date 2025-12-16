@@ -3,6 +3,7 @@
 import { createClient } from '@/prismicio';
 import { components } from '@/slices';
 import { SliceZone } from '@prismicio/react';
+import { logger } from '@rocket-house-productions/util';
 
 interface PreviewPrismicProps {
   value: string | null | undefined;
@@ -19,7 +20,7 @@ export const PreviewPrismic = async ({ value }: PreviewPrismicProps) => {
     const client = createClient();
     page = await client.getByUID('lesson', value);
   } catch (error) {
-    console.error('Error fetching lesson page', error);
+    logger.error('Error fetching lesson page', error);
     return (
       <div className={'prose prose-sm md:prose-md lg:prose-lg !text-red-500'}>
         <p>Something went wrong loading {value}</p>
