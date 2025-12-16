@@ -1,7 +1,6 @@
-import { LessonPageWrapper } from '@rocket-house-productions/lesson';
-
 import { PinInputWrapper } from './_components/PinInputWrapper';
 import { DialogReturnUrl } from '@rocket-house-productions/lesson';
+import { LessonPageWrapper } from '@rocket-house-productions/lesson/server';
 import { logger } from '@rocket-house-productions/util';
 
 type PageProps = {
