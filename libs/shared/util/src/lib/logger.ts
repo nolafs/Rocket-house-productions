@@ -27,12 +27,89 @@ function shouldLog(level: LogLevel) {
   return LEVEL_ORDER[level] <= LEVEL_ORDER[CURRENT_LEVEL];
 }
 
-function safeStringify(...args: unknown[]) {
+// Keys that should be redacted when logging
+const REDACT_KEYS = [
+  'email',
+  'password',
+  'token',
+  'secret',
+  'api_key',
+  'apikey',
+  'access_token',
+  'stripe',
+  'session',
+  'cookie',
+  'billingAddress',
+  'address',
+  'card',
+  'card_number',
+  'cvv',
+];
+
+function isPrimitive(v: unknown) {
+  return v === null || typeof v !== 'object';
+}
+
+function maskValue(v: string) {
+  if (!v) return v;
+  // show short prefix for debugging, mask the rest
+  if (v.length <= 6) return '***';
+  return v.slice(0, 3) + '***' + v.slice(-3);
+}
+
+function sanitizeObject(obj: any, depth = 0): any {
+  if (depth > 4) return '[MaxDepth]';
+  if (obj == null) return obj;
+  if (Array.isArray(obj)) return obj.map(i => sanitizeObject(i, depth + 1));
+  if (isPrimitive(obj)) return obj;
+
+  const out: Record<string, any> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    const lk = String(k).toLowerCase();
+    if (REDACT_KEYS.some(r => lk.includes(r))) {
+      // redact entire value
+      if (typeof v === 'string') out[k] = maskValue(v);
+      else out[k] = '[REDACTED]';
+    } else if (typeof v === 'object' && v !== null) {
+      out[k] = sanitizeObject(v, depth + 1);
+    } else if (typeof v === 'string' && v.startsWith('http')) {
+      // sanitize URL by removing querystring
+      try {
+        const u = new URL(v);
+        u.search = '';
+        out[k] = u.toString();
+      } catch {
+        out[k] = v;
+      }
+    } else {
+      out[k] = v;
+    }
+  }
+  return out;
+}
+
+function sanitizeArg(arg: unknown) {
+  if (typeof arg === 'string') {
+    // sanitize URLs (remove query string)
+    if (arg.startsWith('http')) {
+      try {
+        const u = new URL(arg);
+        u.search = '';
+        return u.toString();
+      } catch {
+        return arg;
+      }
+    }
+    // mask token-like strings
+    const low = arg.toLowerCase();
+    if (REDACT_KEYS.some(k => low.includes(k))) return maskValue(arg);
+    return arg;
+  }
+  if (isPrimitive(arg)) return arg;
   try {
-    return args.map(a => (typeof a === 'string' ? a : JSON.stringify(a))).join(' ');
+    return sanitizeObject(arg);
   } catch {
-    // fallback for circular structures
-    return args.map(a => (typeof a === 'string' ? a : String(a))).join(' ');
+    return '[Unserializable]';
   }
 }
 
@@ -42,22 +119,26 @@ export function createLogger(namespace?: string) {
   function debug(...args: unknown[]) {
     if (!shouldLog('debug')) return;
     /* eslint-disable no-console */
-    console.debug(prefix, ...args);
+    const safe = args.map(a => sanitizeArg(a));
+    console.debug(prefix, ...safe);
   }
   function info(...args: unknown[]) {
     if (!shouldLog('info')) return;
     /* eslint-disable no-console */
-    console.info(prefix, ...args);
+    const safe = args.map(a => sanitizeArg(a));
+    console.info(prefix, ...safe);
   }
   function warn(...args: unknown[]) {
     if (!shouldLog('warn')) return;
     /* eslint-disable no-console */
-    console.warn(prefix, ...args);
+    const safe = args.map(a => sanitizeArg(a));
+    console.warn(prefix, ...safe);
   }
   function error(...args: unknown[]) {
     if (!shouldLog('error')) return;
     /* eslint-disable no-console */
-    console.error(prefix, ...args);
+    const safe = args.map(a => sanitizeArg(a));
+    console.error(prefix, ...safe);
   }
   return { debug, info, warn, error };
 }
