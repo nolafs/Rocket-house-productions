@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 import { logger } from '@rocket-house-productions/util';
 
-const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)']);
+const isProtectedRoute = createRouteMatcher(['/admin(.*)', '/courses(.*)', '/courses/account(.*)']);
 const COOKIE_NAME = 'sf';
 
 const secretStr = process.env.SESSION_FLAGS_SECRET;
