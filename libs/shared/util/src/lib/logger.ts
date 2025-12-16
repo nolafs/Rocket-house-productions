@@ -12,7 +12,9 @@ const LEVEL_ORDER: Record<LogLevel, number> = {
 function getEnvLevel(): LogLevel {
   // Server: LOG_LEVEL, Client: NEXT_PUBLIC_LOG_LEVEL
   const raw =
-    typeof window === 'undefined' ? process.env.LOG_LEVEL : (process.env.NEXT_PUBLIC_LOG_LEVEL as string | undefined);
+    typeof window === 'undefined'
+      ? process.env.SERVER_LOG_LEVEL
+      : (process.env.NEXT_PUBLIC_LOG_LEVEL as string | undefined);
   if (!raw) return typeof window === 'undefined' ? 'info' : 'debug'; // default: server=info, client=debug (dev-friendly)
   const v = raw.toLowerCase();
   if (v === 'debug' || v === 'info' || v === 'warn' || v === 'error' || v === 'off') return v as LogLevel;
