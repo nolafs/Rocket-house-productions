@@ -246,7 +246,7 @@ export const Landscape = ({
   return (
     <group ref={ref} position={position} rotation={rotation} {...rest}>
       <Plane args={[22, 19]} position={[0, 3, -25.1]} scale={2} rotation={[0, 0, 0]} receiveShadow={true}>
-        <meshPhongMaterial map={guitar} transparent={true} />
+        <meshStandardMaterial map={guitar} transparent={true} />
       </Plane>
       <Plane args={[17, 10]} position={[0, 0, 0]} scale={4} rotation={[0, 0, 0]}>
         <meshStandardMaterial map={midGround} transparent={true} metalness={0.4} />
