@@ -17,8 +17,11 @@ export async function GET(req: Request) {
   const next = url.searchParams.get('next') || '/courses';
   const nextSafe = next.startsWith('/') ? next : '/courses';
 
+  // Use configured base URL to avoid deploy preview URLs
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || url.origin;
+
   if (!userId) {
-    return NextResponse.redirect(new URL('/sign-in', url));
+    return NextResponse.redirect(new URL('/sign-in', baseUrl));
   }
 
   // 1) Compute flags
@@ -46,7 +49,11 @@ export async function GET(req: Request) {
     .setExpirationTime('30m')
     .sign(secret);
 
-  const res = NextResponse.redirect(new URL(nextSafe, url));
+  const redirectUrl = new URL(nextSafe, baseUrl);
+
+  logger.debug('[REFRESH] Redirecting', { nextSafe, baseUrl, redirectUrl: redirectUrl.toString() });
+
+  const res = NextResponse.redirect(redirectUrl);
   res.cookies.set('sf', token, {
     httpOnly: true,
     sameSite: 'lax',
