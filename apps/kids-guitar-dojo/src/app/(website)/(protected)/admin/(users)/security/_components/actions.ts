@@ -1,11 +1,10 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
-import { PrismaClient } from '@prisma/client';
+
 import argon2 from 'argon2';
 import { encryptPin } from '@rocket-house-productions/actions/server';
-
-const db = new PrismaClient();
+import { db } from '@rocket-house-productions/integration/server';
 
 export type SavePinInput = {
   pin: string; // 4 digits
