@@ -5,6 +5,7 @@ import { useCallback, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Form, FormField, FormItem, FormMessage, Input } from '@rocket-house-productions/shadcn-ui';
+import { logger } from '@rocket-house-productions/util';
 
 const schema = z.object({
   d0: z.string().regex(/^\d$/, ' '),
@@ -24,6 +25,8 @@ interface PinInputProps {
 export function PinInput({ onSuccess, onFailure, onCancel }: PinInputProps) {
   const [submitting, setSubmitting] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+
+  logger.debug('PinInput called');
 
   const setInputRef = useCallback(
     (idx: number) => (el: HTMLInputElement | null) => {
