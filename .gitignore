@@ -52,4 +52,4 @@ Thumbs.db
 .next
 out
 # Local Netlify folder
-.netlify.env.local
+.netlify
