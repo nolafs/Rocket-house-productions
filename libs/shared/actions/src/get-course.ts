@@ -159,7 +159,7 @@ export const getCourse = async ({ courseSlug }: GetCourseProps): Promise<CourseW
     [`course-${courseSlug}`],
     {
       tags: [`course-${courseSlug}`],
-      revalidate: 3600, // Cache for 1 hour since courses don't change often
+      revalidate: 7200, // Cache for 2 hour since courses don't change often
     },
   );
 
