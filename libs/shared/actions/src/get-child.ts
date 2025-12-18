@@ -11,22 +11,12 @@ import { logger } from '@rocket-house-productions/util';
  * Creates a free purchase for a course if it doesn't exist
  * This allows users with membership to preview courses they haven't purchased
  */
-async function createFreePurchaseIfNeeded(accountId: string, courseSlug: string) {
-  // First, find the course by slug
-  const course = await db.course.findUnique({
-    where: { slug: courseSlug },
-    select: { id: true },
-  });
-
-  if (!course) {
-    throw new Error(`Course not found for slug: ${courseSlug}`);
-  }
-
+async function createFreePurchaseIfNeeded(accountId: string, courseId: string) {
   // Check if a purchase already exists
   const existingPurchase = await db.purchase.findFirst({
     where: {
       accountId,
-      courseId: course.id,
+      courseId: courseId,
     },
   });
 
@@ -38,7 +28,7 @@ async function createFreePurchaseIfNeeded(accountId: string, courseSlug: string)
   const freePurchase = await db.purchase.create({
     data: {
       accountId,
-      courseId: course.id,
+      courseId: courseId,
       type: 'free',
       category: 'free',
       amount: 0,
@@ -63,7 +53,17 @@ export const getChild = cache(async (slug: string, next = true) => {
     return redirect(`/courses/error?status=error&message=Account%20not%20found`);
   }
 
-  let purchase = account.purchases?.find(p => p.course?.slug === slug);
+  //Get id of course from slug
+  const courseBySlug = await db.course.findUnique({
+    where: { slug },
+    select: { id: true },
+  });
+
+  if (!courseBySlug) {
+    return redirect(`/courses/error?status=error&message=Course%20not%20found`);
+  }
+
+  let purchase = account.purchases?.find(p => p.course?.id === courseBySlug.id);
 
   logger.debug('[getChild] sessionClaims', { userId: userId, role: (sessionClaims?.metadata as any)?.role });
   logger.debug('[getChild] account', { accountId: account?.id, purchases: account?.purchases?.length ?? 0 });
@@ -75,7 +75,7 @@ export const getChild = cache(async (slug: string, next = true) => {
   if (!purchase) {
     logger.info('[getChild] No purchase found, creating free purchase for preview access');
     try {
-      const newPurchase = await createFreePurchaseIfNeeded(account.id, slug);
+      const newPurchase = await createFreePurchaseIfNeeded(account.id, courseBySlug.id);
       purchase = {
         id: newPurchase.id,
         childId: newPurchase.childId,

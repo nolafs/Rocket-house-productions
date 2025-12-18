@@ -30,13 +30,20 @@ const SlugFormControl = React.forwardRef<HTMLInputElement, SlugFormControlProps>
           onSlugChange(newSlug);
         }
       }
-    }, [initialTitle]);
+    }, [initialTitle, onSlugChange]);
 
     const handleSlugChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const newSlug = e.target.value;
-      setSlug(newSlug);
+      // Sanitize the input: convert to lowercase, replace spaces with dashes
+      const rawInput = e.target.value;
+      const sanitized = rawInput
+        .toLowerCase()
+        .replace(/ /g, '-') // Replace spaces with dashes
+        .replace(/[^a-z0-9-]/g, '') // Remove invalid characters
+        .replace(/-+/g, '-'); // Replace multiple consecutive dashes with a single dash
+
+      setSlug(sanitized);
       if (onSlugChange) {
-        onSlugChange(newSlug);
+        onSlugChange(sanitized);
       }
     };
 
