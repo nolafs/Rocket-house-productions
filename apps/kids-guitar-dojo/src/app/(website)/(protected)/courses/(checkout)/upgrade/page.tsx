@@ -4,67 +4,61 @@ import { Bounded } from '@components/Bounded';
 
 import Image from 'next/image';
 import LogoFull from '@assets/logo_full.png';
-import { getAccount, getAppSettings } from '@rocket-house-productions/actions/server';
+import { getAccountData } from '@rocket-house-productions/actions/server';
 
-import { db } from '@rocket-house-productions/integration/server';
 import { SectionPricingTable } from '@rocket-house-productions/features/server';
 import { logger } from '@rocket-house-productions/util';
 
-export default async function Page(props: { params: Promise<{ product: string[]; purchaseId: string }> }) {
-  const params = await props.params;
+export default async function Page(props: {
+  searchParams: Promise<{
+    product?: string[];
+    purchaseId?: string;
+    courseSlug?: string;
+    purchaseType?: string;
+    childId?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
 
   const { userId } = await auth();
+  let tierUpgrade = 'free';
+  let membershipUpgrade = false;
 
   if (!userId) {
     return redirect('/');
   }
 
-  let purchase = null;
-  const account = await getAccount(userId);
+  logger.debug('[UPGRADE] Starting upgrade process', searchParams);
 
-  if (!params.purchaseId) {
-    // get childId from (.)account
+  // If both purchaseId and courseSlug are provided, this is a specific course upgrade
+  if (searchParams.courseSlug) {
+    logger.debug('[UPGRADE] Course or product update', searchParams);
+    // Show upgrade options for specific course
+  } else {
+    // Otherwise, this is a general membership upgrade
+    logger.debug('[UPGRADE] Membership upgrade flow');
 
-    const appSettingsRes = await getAppSettings();
+    const account = await getAccountData(userId);
 
-    if (!appSettingsRes?.membershipSettings?.course) {
-      return redirect('/');
+    if (!account.hasMembership) {
+      return redirect('/refresh?next=courses/order');
     }
 
-    purchase = await db.purchase.findFirst({
-      where: {
-        accountId: account?.id,
-        courseId: appSettingsRes?.membershipSettings?.course.id,
-      },
-      include: {
-        course: {
-          include: {
-            category: true, // full category relation
-            tiers: {
-              orderBy: { position: 'asc' },
-            },
-          },
-        },
-      },
-    });
-
-    if (!purchase) {
+    if (!account.purchases?.length) {
       return redirect(`/courses/error?status=error&message=No%20purchase%20found%20Upgrade`);
     }
 
-    if (!purchase.childId) {
+    if (account.tier === 'premium') {
       return redirect('/courses');
     }
 
-    if (purchase.category === 'premium') {
-      return redirect('/courses');
+    if (account.tier) {
+      tierUpgrade = account.tier;
     }
 
-    params.purchaseId = purchase.id;
+    membershipUpgrade = true;
 
-    logger.debug('[UPGRADE] purchaseId=', purchase.id);
-  } else {
-    logger.debug('[UPGRADE] purchase param provided', { purchaseId: params.purchaseId });
+    logger.debug('[UPGRADE] Upgrade Membership', tierUpgrade);
   }
 
   return (
@@ -75,13 +69,14 @@ export default async function Page(props: { params: Promise<{ product: string[];
         </div>
         <div className={'px-5 text-center'}>
           <h1 className={'mb-5 text-2xl font-bold lg:text-3xl'}>Ready to Take the Next Step?</h1>
+          {membershipUpgrade && <p>Upgrade your membership now!</p>}
           <p>
-            {purchase?.category !== 'standard' && <>We hope you loved the sneak peek of our course!</>} Unlock the full
+            {tierUpgrade !== 'standard' && <>We hope you loved the sneak peek of our course!</>} Unlock the full
             experience and elevate your skills to the next level by upgrading now.
           </p>
         </div>
         <Bounded as={'section'} yPadding={'sm'}>
-          <SectionPricingTable />
+          <SectionPricingTable courseSlug={searchParams.courseSlug} />
         </Bounded>
       </div>
     </main>
