@@ -12,7 +12,7 @@ import { ImageFieldImage } from '@prismicio/types';
 import * as prismic from '@prismicio/client';
 import { Author } from 'next/dist/lib/metadata/types/metadata-types';
 import { WithContext, BlogPosting } from 'schema-dts';
-import { BlogCategoryDocumentData } from '../../../../../../prismicio-types';
+import { BlogCategoryDocumentData } from '@/prismic-types';
 
 type Props = {
   params: Promise<{ uid: string }>;
@@ -259,7 +259,7 @@ export default async function Page({ params }: Props) {
           </div>
         </div>
         {/* Content */}
-        <div className={'prose prose-sm md:prose-md lg:prose-xl prose-neutral mx-auto mb-20 px-5'}>
+        <div className={'md:prose-md prose prose-sm prose-neutral mx-auto mb-20 px-5 lg:prose-xl'}>
           <PrismicRichText field={page.data.main} />
         </div>
         <SliceZone slices={page.data.slices} components={components} />
