@@ -54,7 +54,7 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
               <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
                 Preview Course
               </Link>
-              <Link className={buttonVariants()} href={`/courses/order`}>
+              <Link className={buttonVariants()} href={`/courses/upgrade`}>
                 Buy Membership
               </Link>
             </>

@@ -40,10 +40,6 @@ export default async function Page(props: {
 
     const account = await getAccountData(userId);
 
-    if (!account.hasMembership) {
-      return redirect('/refresh?next=courses/order');
-    }
-
     if (!account.purchases?.length) {
       return redirect(`/courses/error?status=error&message=No%20purchase%20found%20Upgrade`);
     }
