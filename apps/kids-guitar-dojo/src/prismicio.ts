@@ -38,7 +38,7 @@ export const createClient = (config: ClientConfig = {}) => {
         ? { next: { tags: ['prismic'] }, cache: 'force-cache' }
         : { next: { revalidate: 5 } },
     ...config,
-  });
+  } as prismic.ClientConfig);
 
   prismicNext.enableAutoPreviews({ client });
 
