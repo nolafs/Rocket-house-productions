@@ -159,9 +159,20 @@ export function SafeSkyBox({ skyUrl }: { skyUrl?: string | undefined | null }) {
 }
 
 function SkyBoxWithTexture({ skyUrl, onError }: { skyUrl?: string | undefined | null; onError: () => void }) {
+  const hasErrorRef = React.useRef(false);
+
   const texture = useLoader(THREE.TextureLoader, skyUrl || '/images/course/sky.webp', loader => {
-    loader.manager.onError = onError;
+    loader.manager.onError = () => {
+      hasErrorRef.current = true;
+    };
   });
+
+  // Handle error in useEffect to avoid setState during render
+  useEffect(() => {
+    if (hasErrorRef.current) {
+      onError();
+    }
+  }, [onError]);
 
   return (
     <Box args={[1000, 1350, 1000]} position={[0, -100, 0]}>
@@ -172,11 +183,9 @@ function SkyBoxWithTexture({ skyUrl, onError }: { skyUrl?: string | undefined | 
 
 // Enhanced Loader with Error Handling
 export function SafeLoader() {
-  const { progress, loaded, total, errors, active, item } = useProgress();
+  const { progress, loaded, total, errors, active } = useProgress();
   const [isVisible, setIsVisible] = useState(true);
   const [debouncedActive, setDebouncedActive] = useState(false);
-
-  ///logger.debug('[SafeLoader] Progress:', { progress, loaded, total, errors, active, item });
 
   // Debounce the active state to prevent flickering
   useEffect(() => {
@@ -209,10 +218,12 @@ export function SafeLoader() {
     }
   }, [loaded, total, debouncedActive]);
 
-  const hasErrors = errors && errors.length > 0;
+  // Only show errors if loading is incomplete AND there are errors
+  // Ignore transient errors if all items eventually loaded
+  const hasBlockingErrors = errors && errors.length > 0 && loaded < total && !active;
 
   // Show loader if we have items to load and haven't finished
-  const shouldShowLoader = total > 0 && (loaded < total || debouncedActive || hasErrors) && isVisible;
+  const shouldShowLoader = total > 0 && (loaded < total || debouncedActive) && isVisible;
 
   if (!shouldShowLoader) {
     return null;
@@ -222,7 +233,7 @@ export function SafeLoader() {
     <Html fullscreen zIndexRange={[1000, 1000]}>
       <LessonPageWrapper className="flex h-screen w-full flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center text-pink-500">
-          {hasErrors ? (
+          {hasBlockingErrors ? (
             <div className="text-center">
               <div className="mb-4 text-4xl text-red-400">⚠️</div>
               <div className="mb-2 text-white">Some content failed to load</div>

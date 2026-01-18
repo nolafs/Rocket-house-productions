@@ -4,6 +4,7 @@ export * from './lib/parent/orders';
 export * from './lib/courses-timeline-list/courses-timeline-list';
 export { CookieConsent } from './lib/cookie-consent/cookie-consent';
 export * from './lib/section-pricing-table/stripe-pricing';
+export { ClientPricingTable } from './lib/section-pricing-table/client-pricing-table';
 export { BuyButton } from './lib/checkout/buy-button';
 export { SectionContentBlockList } from './lib/section-content-block-list/section-content-block-list';
 export * from './lib/section-blog/section-blog';

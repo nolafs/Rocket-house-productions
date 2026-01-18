@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useThree } from '@react-three/fiber';
-import { SoftShadows } from '@react-three/drei'; // TODO: Re-enable after updatin
+import { SoftShadows } from '@react-three/drei';
 import { type Course, type BookScene, type Module } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';

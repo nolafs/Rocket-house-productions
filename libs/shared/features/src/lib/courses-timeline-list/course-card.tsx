@@ -1,4 +1,3 @@
-'use server';
 import { CoursePayload } from './courses-timeline-list';
 import Link from 'next/link';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
@@ -7,6 +6,7 @@ import CourseBuyButton from './course-buy-button';
 import { userSession } from '@/types/userSesssion';
 import { MembershipSettings, Tier } from '@prisma/client';
 import { ArrowRight } from 'lucide-react';
+import cn from 'classnames';
 
 interface CourseCardProps {
   userData: Partial<userSession>;
@@ -45,44 +45,50 @@ export async function CourseCard({ membershipData, userData, course, idx = 0 }: 
           className={'w-full overflow-hidden rounded-lg p-2'}
         />
         <div className={'my-4 text-center text-sm'}>{course.description}</div>
-        <div
-          className={
-            'grid w-full grid-cols-2 items-center justify-center gap-2 rounded-xl border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5'
-          }>
-          {!userData.hasMembership ? (
-            <>
-              <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
-                Preview Course
-              </Link>
-              <Link className={buttonVariants()} href={`/courses/upgrade`}>
-                Buy Membership
-              </Link>
-            </>
-          ) : purchasesByCourse.length ? (
-            <>
-              {!hasPremiumPurchase && (
-                <CourseBuyButton
-                  label={'Upgrade'}
-                  userData={{
-                    hasPremiumPurchase,
-                    hasPurchasedCourse: true,
-                  }}
-                  course={course}
-                />
-              )}
-              <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
-                Enter Course <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
-                Preview Course
-              </Link>
-              <CourseBuyButton label={'Buy now'} course={course} />
-            </>
-          )}
-        </div>
+
+        {!userData.hasMembership ? (
+          <div
+            className={
+              'grid w-full grid-cols-2 items-center justify-center gap-2 rounded-xl border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5'
+            }>
+            <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
+              Preview Course
+            </Link>
+            <Link className={buttonVariants()} href={`/courses/upgrade`}>
+              Buy Membership
+            </Link>
+          </div>
+        ) : purchasesByCourse.length ? (
+          <div
+            className={cn(
+              'grid w-full items-center justify-center gap-2 rounded-md border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5',
+              !hasPremiumPurchase ? 'grid-cols-2' : 'grid-cols-1',
+            )}>
+            {!hasPremiumPurchase && (
+              <CourseBuyButton
+                label={'Upgrade'}
+                userData={{
+                  hasPremiumPurchase,
+                  hasPurchasedCourse: true,
+                }}
+                course={course}
+              />
+            )}
+            <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
+              Enter Course <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </div>
+        ) : (
+          <div
+            className={
+              'grid w-full grid-cols-1 items-center justify-center gap-2 rounded-xl border-2 border-[#e8c996] bg-[#e8c996] p-2 shadow-sm shadow-black/5'
+            }>
+            <Link className={buttonVariants()} href={`/courses/${course.slug}`}>
+              Preview Course
+            </Link>
+            <CourseBuyButton label={'Buy now'} course={course} />
+          </div>
+        )}
       </div>
     </div>
   );

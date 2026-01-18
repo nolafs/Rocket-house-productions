@@ -1,4 +1,3 @@
-'use server';
 import cn from 'classnames';
 import { CheckCircleIcon } from 'lucide-react';
 
