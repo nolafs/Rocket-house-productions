@@ -4,7 +4,7 @@ import { Question, Questionary } from '@prisma/client';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { Draggable } from 'gsap/Draggable';
+import { Draggable } from 'gsap/dist/Draggable';
 
 gsap.registerPlugin(Draggable);
 
@@ -26,6 +26,7 @@ interface DroppedItem {
 const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
   ({ questionary, onQuestionCompleted, onUpdateScore }, ref) => {
     const fretboardRef = useRef<HTMLDivElement | null>(null);
+    const draggablesRef = useRef<any[]>([]);
     const [droppedItems, setDroppedItems] = useState<DroppedItem[]>([]);
 
     const rows = 7;
@@ -67,8 +68,16 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         if (dragItems.length === 0 || !dropZones.length) return;
 
         const dragSetup = () => {
+          // Kill existing draggables before creating new ones
+          draggablesRef.current.forEach(d => {
+            if (d && typeof d.kill === 'function') {
+              d.kill();
+            }
+          });
+          draggablesRef.current = [];
+
           for (let i = 0; i < dragItems.length; i++) {
-            (globalThis as any).Draggable.create(dragItems[i], {
+            const draggableInstances = Draggable.create(dragItems[i], {
               autoScroll: 1,
               bounds: {
                 top: 0,
@@ -129,6 +138,8 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
                 current = null;
               },
             });
+            // Store the draggable instances for cleanup
+            draggablesRef.current.push(...draggableInstances);
           }
         };
 
@@ -141,7 +152,13 @@ const Fretboard = forwardRef<FretboardHandleProps, FretboardProps>(
         resizeObserver.observe(fretboardRef.current);
 
         return () => {
-          dragItems.forEach(item => (globalThis as any).Draggable.get(item)?.kill());
+          // Properly cleanup all draggable instances
+          draggablesRef.current.forEach(d => {
+            if (d && typeof d.kill === 'function') {
+              d.kill();
+            }
+          });
+          draggablesRef.current = [];
           resizeObserver.disconnect();
         };
       },

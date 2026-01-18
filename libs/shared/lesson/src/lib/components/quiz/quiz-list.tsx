@@ -21,55 +21,121 @@ interface GetQuizProps {
 let displayTimeout: ReturnType<typeof setTimeout>;
 
 export function QuizList({ questionaries, onQuizCompleted, onUpdateQuizScore, onSlideIndexChange }: GetQuizProps) {
-  const ref = useRef<any>(undefined);
+  const ref = useRef<HTMLDivElement>(null);
+  const slideIndexRef = useRef(0);
+  const imageListenersRef = useRef<Map<HTMLImageElement, () => void>>(new Map());
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const [slideIndex, setSlideIndex] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [isLastQuestion, setIsLastQuestion] = useState(questionaries.length === 1 ? true : false);
+  const [isLastQuestion, setIsLastQuestion] = useState(questionaries.length === 1);
   const [correctCount, setCorrectCount] = useState(0);
   const [currentCorrect, setCurrentCorrect] = useState(false);
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
   const { contextSafe } = useGSAP({ scope: ref });
 
+  // Keep slideIndexRef in sync
+  useEffect(() => {
+    slideIndexRef.current = slideIndex;
+  }, [slideIndex]);
+
   useGSAP(
     () => {
-      const slidesItem = gsap.utils.toArray('.slide');
-      const slides = gsap.utils.toArray('.slide');
+      if (!ref.current) return;
 
       const updateSizes = () => {
         if (!ref.current) return;
+        const slidesItem: HTMLElement[] = gsap.utils.toArray('.slide');
         const containerWidth = ref.current.offsetWidth;
-        slidesItem.forEach((item: any) => {
+
+        slidesItem.forEach(item => {
           gsap.set(item, { width: containerWidth });
         });
 
-        gsap.set('.inner', { width: containerWidth * slides.length });
+        gsap.set('.inner', { width: containerWidth * slidesItem.length });
 
         // Update height based on current slide
         const items: HTMLDivElement[] = gsap.utils.toArray('.slide > .item');
-        if (items.length && items[slideIndex]) {
-          gsap.set('.inner', { height: items[slideIndex].offsetHeight || 'auto' });
+        const currentIndex = slideIndexRef.current;
+        if (items.length && items[currentIndex]) {
+          gsap.set('.inner', { height: items[currentIndex].offsetHeight || 'auto' });
         }
       };
 
+      // Handle image loading
+      const setupImageListeners = () => {
+        const images: HTMLImageElement[] = gsap.utils.toArray('.slide img');
+
+        images.forEach(img => {
+          // Skip if we already have a listener for this image
+          if (imageListenersRef.current.has(img)) return;
+
+          const onLoad = () => {
+            updateSizes();
+          };
+
+          if (!img.complete) {
+            img.addEventListener('load', onLoad);
+            img.addEventListener('error', onLoad);
+            imageListenersRef.current.set(img, onLoad);
+          }
+        });
+
+        updateSizes();
+      };
+
+      // Use MutationObserver to detect content changes
+      const mutationObserver = new MutationObserver(() => {
+        setupImageListeners();
+      });
+
+      mutationObserver.observe(ref.current, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['src', 'style'],
+      });
+
       const resizeObserver = new ResizeObserver(() => {
-        if (ref.current) {
-          updateSizes();
-        }
+        updateSizes();
       });
 
       resizeObserver.observe(ref.current);
 
-      // Initial size update
-      setTimeout(() => {
-        updateSizes();
-      }, 100);
+      // Initial size update with fallbacks
+      updateSizes();
+      timeoutsRef.current.push(setTimeout(updateSizes, 100));
+      timeoutsRef.current.push(setTimeout(updateSizes, 300));
+      timeoutsRef.current.push(setTimeout(updateSizes, 500));
+
+      setupImageListeners();
 
       return () => {
         resizeObserver.disconnect();
+        mutationObserver.disconnect();
+
+        // Clear all timeouts
+        timeoutsRef.current.forEach(t => clearTimeout(t));
+        timeoutsRef.current = [];
+
+        // Clean up image event listeners
+        imageListenersRef.current.forEach((listener, img) => {
+          img.removeEventListener('load', listener);
+          img.removeEventListener('error', listener);
+        });
+        imageListenersRef.current.clear();
       };
     },
-    { scope: ref, dependencies: [slideIndex] },
+    { scope: ref, dependencies: [] },
   );
+
+  // Update height when slideIndex changes
+  useEffect(() => {
+    if (!ref.current) return;
+    const items: HTMLDivElement[] = gsap.utils.toArray('.slide > .item');
+    if (items.length && items[slideIndex]) {
+      gsap.set('.inner', { height: items[slideIndex].offsetHeight || 'auto' });
+    }
+  }, [slideIndex]);
 
   useEffect(() => {
     onSlideIndexChange(slideIndex + 1);

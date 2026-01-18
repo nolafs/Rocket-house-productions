@@ -15,6 +15,7 @@ import { ModuleButtonDisplay, ModuleButtonPosition } from './course-scene/module
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
 import { LessonButton, LessonType, ModulePosition } from './course-scene/course.types';
 import dynamic from 'next/dynamic';
+import { logger } from '@rocket-house-productions/util';
 
 const Landscape = dynamic(() => import('./course-scene/landscape').then(mod => mod.Landscape), {
   ssr: false,
@@ -76,6 +77,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
     let current: number | null = null;
     let next: number | null = null;
+
     const modulePosition: ModulePosition[] = [];
     const buttonList: ModuleButtonPosition[] = [];
     let lessonCount = 0;
@@ -86,6 +88,8 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
           const count = lessonCount + 1;
           const complete = lessonState.getLessonCompleted(lesson.id);
           let moduleSection: Module | null = null;
+
+          logger.info('[COURSE NAVIGATION] Processing lesson', count, complete);
 
           // Only assign the module to the first lesson of that module
           if (lessonIndex === 0) {
@@ -131,6 +135,15 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
     });
 
     const lastY = buttonList.length > 0 ? buttonList[buttonList.length - 1].position.y : 0;
+
+    logger.debug('[COURSE NAVIGATION] Module button display generated', {
+      buttons: buttonList,
+      total: buttonList.length,
+      modulePosition: modulePosition,
+      pathLength: lastY + 15,
+      current: current,
+      next: next,
+    });
 
     return {
       buttons: buttonList,
