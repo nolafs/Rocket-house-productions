@@ -1,7 +1,7 @@
 'use client';
 import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import { SectionModule, SectionLesson, SectionCourse } from '@rocket-house-productions/types';
-import { useLessonProgressionStore, useScrollTo } from '@rocket-house-productions/providers';
+import { useLessonProgressionStore, useModuleProgressStore, useScrollTo } from '@rocket-house-productions/providers';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import cn from 'classnames';
 import { useRouter } from 'next/navigation';
@@ -47,7 +47,8 @@ const LessonNextWrapper = ({ children, moduleColor, active, backUrl = '/' }: Les
 export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const router = useRouter();
   const { scrollTo } = useScrollTo();
-  const { getLessonCompleted, getLessonProgress } = useLessonProgressionStore(store => store);
+  const { getLessonCompleted, getLessonProgress, setLessonComplete } = useLessonProgressionStore(store => store);
+  const { calculateModuleProgress } = useModuleProgressStore(store => store);
   const [active, setActive] = useState(false);
   const hasQuiz = lesson?.questionaries?.length > 0;
   const position = module.lessons?.findIndex(l => l.id === lesson.id) || 0;
@@ -102,6 +103,11 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
 
   const handleNext = () => {
     setLoadingNext(true);
+    // Ensure lesson is marked complete before navigating (safety net if video 'ended' event didn't fire)
+    if (!getLessonCompleted(lesson.id) && getLessonProgress(lesson.id) >= 100) {
+      setLessonComplete(lesson.id);
+      calculateModuleProgress(module.id);
+    }
     if (!lastLessonInModule(lesson.id) && nextLesson) {
       if (nextLesson) {
         router.push(`/courses/${course.slug}/modules/${module.slug}/lessons/${nextLesson.slug}`);

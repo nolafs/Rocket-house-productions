@@ -5,6 +5,7 @@ import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-produ
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Loader2Icon } from 'lucide-react';
+import { useLessonProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
 
 interface QuizNextProps {
   module: SectionModule;
@@ -16,6 +17,8 @@ interface QuizNextProps {
 export function QuizNext({ lesson, module, course, quizCompleted = false }: QuizNextProps) {
   const router = useRouter();
   const [loadingNext, setLoadingNext] = useState(false);
+  const { setLessonComplete } = useLessonProgressionStore(store => store);
+  const { calculateModuleProgress } = useModuleProgressStore(store => store);
 
   const [active, setActive] = useState(false);
   const position = lesson.position;
@@ -23,8 +26,11 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
   useEffect(() => {
     if (quizCompleted) {
       setActive(true);
+      // Mark lesson as complete when quiz is completed
+      setLessonComplete(lesson.id);
+      calculateModuleProgress(module.id);
     }
-  }, [quizCompleted]);
+  }, [quizCompleted, lesson.id, module.id, setLessonComplete, calculateModuleProgress]);
 
   if (!lesson || !module || !course) {
     console.warn('[LessonNext]: Missing lesson, module or course');
