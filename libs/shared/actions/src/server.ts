@@ -30,4 +30,6 @@ export {
   getPriceOptionTiers,
   getPriceOptionTiersByCourseSlugByUserSubscriptions,
 } from './get-purchase-tiers';
+export { getPricingData } from './get-pricing-data';
+export type { PricingData } from './get-pricing-data';
 export { getOrders, getAllOrders, getTransactions, getAllTransactions } from './get-orders';

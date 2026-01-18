@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import cn from 'classnames';
 import { CheckCircleIcon } from 'lucide-react';
 import { PriceTier } from '@rocket-house-productions/types';
-import { getPricingData, PricingData } from './get-pricing-data';
+import { getPricingData, type PricingData } from '@rocket-house-productions/actions/server';
 import BuyButton from '../checkout/buy-button';
 import CheckoutButton from '../checkout/checkout-button';
 import StripePricing from './stripe-pricing';

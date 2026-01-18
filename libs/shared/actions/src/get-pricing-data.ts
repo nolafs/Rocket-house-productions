@@ -1,12 +1,9 @@
 'use server';
 
 import { auth } from '@clerk/nextjs/server';
-import {
-  getAccountData,
-  getAppSettings,
-  getPriceOptionTiers,
-  getPriceOptionTiersByCourseSlugByUserSubscriptions,
-} from '@rocket-house-productions/actions/server';
+import { getAccountData } from './get-account';
+import { getAppSettings } from './get-app-settings';
+import { getPriceOptionTiers, getPriceOptionTiersByCourseSlugByUserSubscriptions } from './get-purchase-tiers';
 import { PriceTier } from '@rocket-house-productions/types';
 import { logger } from '@rocket-house-productions/util';
 
