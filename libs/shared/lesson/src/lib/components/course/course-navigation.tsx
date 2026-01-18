@@ -61,6 +61,7 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
   const courseState = useCourseProgressionStore(store => store);
   const lessonState = useLessonProgressionStore(store => store);
+  const repairAttemptedRef = useRef(false);
 
   const [lesson, setLesson] = useState<LessonButton | null>(null);
 
@@ -154,6 +155,57 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
       next,
     };
   }, [lessonState, course.modules]);
+
+  // Auto-repair: Fix lessons that are incomplete but have subsequent completed lessons
+  useEffect(() => {
+    if (repairAttemptedRef.current) return;
+    if (!lessonState.getLessonCompleted || !lessonState.setLessonComplete) return;
+    if (!course.modules || course.modules.length === 0) return;
+
+    // Collect all lessons in order with their completion status
+    const allLessons: { id: string; completed: boolean }[] = [];
+    course.modules.forEach(item => {
+      if (item.lessons && item.lessons.length > 0) {
+        item.lessons.forEach((lesson: LessonType) => {
+          allLessons.push({
+            id: lesson.id,
+            completed: lessonState.getLessonCompleted(lesson.id),
+          });
+        });
+      }
+    });
+
+    // Find the last completed lesson index
+    let lastCompletedIndex = -1;
+    for (let i = allLessons.length - 1; i >= 0; i--) {
+      if (allLessons[i].completed) {
+        lastCompletedIndex = i;
+        break;
+      }
+    }
+
+    // If there's a completed lesson, ensure all lessons before it are also completed
+    if (lastCompletedIndex > 0) {
+      const lessonsToRepair: string[] = [];
+      for (let i = 0; i < lastCompletedIndex; i++) {
+        if (!allLessons[i].completed) {
+          lessonsToRepair.push(allLessons[i].id);
+        }
+      }
+
+      if (lessonsToRepair.length > 0) {
+        logger.info('[COURSE NAVIGATION] Auto-repairing incomplete lessons', {
+          lessonsToRepair,
+          lastCompletedIndex,
+        });
+        lessonsToRepair.forEach(lessonId => {
+          lessonState.setLessonComplete(lessonId);
+        });
+      }
+    }
+
+    repairAttemptedRef.current = true;
+  }, [course.modules, lessonState]);
 
   useGSAP(
     () => {

@@ -51,7 +51,7 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const { calculateModuleProgress } = useModuleProgressStore(store => store);
   const [active, setActive] = useState(false);
   const hasQuiz = lesson?.questionaries?.length > 0;
-  const position = module.lessons?.findIndex(l => l.id === lesson.id) || 0;
+  const position = lesson.position;
   const [firstRender, setFirstRender] = useState(true);
   const [loadingNext, setLoadingNext] = useState(false);
 
@@ -80,18 +80,18 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
 
   const nextLesson = useMemo(() => {
     logger.debug('Calculating next lesson for position', { position, lessons: module?.lessons?.length ?? 0 });
-    const currentLesson = module?.lessons?.findIndex(l => l.id === lesson.id);
-    if (currentLesson !== undefined) {
-      if (module.lessons?.length !== currentLesson + 1) {
-        return module?.lessons?.[currentLesson + 1] || null;
-      }
-    }
-    return;
-  }, [module?.lessons, lesson?.id]);
+    // Find next lesson by position (not array index) to handle unsorted arrays
+    const next = module?.lessons?.find(l => l.position === position + 1);
+    logger.debug('Next lesson calculated', { currentPosition: position, nextLesson: next?.title, nextPosition: next?.position });
+    return next || null;
+  }, [module?.lessons, position]);
 
   const lastLessonInModule = (id: string) => {
     if (module.lessons?.length) {
-      return module?.lessons[module.lessons.length - 1].id === id;
+      // Find the lesson with the highest position in this module
+      const maxPosition = Math.max(...module.lessons.map(l => l.position || 0));
+      const currentLesson = module.lessons.find(l => l.id === id);
+      return currentLesson?.position === maxPosition;
     }
     return null;
   };
@@ -104,9 +104,21 @@ export function LessonNext({ lesson, module, course }: LessonNextProps) {
   const handleNext = () => {
     setLoadingNext(true);
     // Ensure lesson is marked complete before navigating (safety net if video 'ended' event didn't fire)
-    if (!getLessonCompleted(lesson.id) && getLessonProgress(lesson.id) >= 100) {
+    const isCompleted = getLessonCompleted(lesson.id);
+    const progress = getLessonProgress(lesson.id);
+    logger.debug('[LessonNext] handleNext called', {
+      lessonId: lesson.id,
+      isCompleted,
+      progress,
+      willMarkComplete: !isCompleted && progress >= 100,
+    });
+
+    if (!isCompleted && progress >= 100) {
+      logger.info('[LessonNext] Marking lesson as complete', { lessonId: lesson.id });
       setLessonComplete(lesson.id);
-      calculateModuleProgress(module.id);
+      if (module.id) {
+        calculateModuleProgress(module.id);
+      }
     }
     if (!lastLessonInModule(lesson.id) && nextLesson) {
       if (nextLesson) {

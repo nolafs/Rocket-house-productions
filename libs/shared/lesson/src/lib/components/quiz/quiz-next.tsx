@@ -28,7 +28,9 @@ export function QuizNext({ lesson, module, course, quizCompleted = false }: Quiz
       setActive(true);
       // Mark lesson as complete when quiz is completed
       setLessonComplete(lesson.id);
-      calculateModuleProgress(module.id);
+      if (module.id) {
+        calculateModuleProgress(module.id);
+      }
     }
   }, [quizCompleted, lesson.id, module.id, setLessonComplete, calculateModuleProgress]);
 
