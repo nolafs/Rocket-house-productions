@@ -1,9 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "**/*",
-    "next-env.d.ts"
-  ],
+  "ignorePatterns": ["**/*", "next-env.d.ts"],
   "plugins": ["@nx"],
   "overrides": [
     {
@@ -14,9 +11,8 @@
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/no-circle": "off",
         "@typescript-eslint/no-cycle": "off",
-        "@typescript-eslint/no-empty-interface": [
-          "warn"
-        ],
+        "react-hooks/incompatible-library": "off",
+        "@typescript-eslint/no-empty-interface": ["warn"],
         "@nx/enforce-module-boundaries": "off"
         /*
         "@nx/enforce-module-boundaries": [
@@ -33,7 +29,6 @@
           }
         ]*/
       }
-
     },
     {
       "files": ["*.ts", "*.tsx"],
@@ -46,7 +41,7 @@
       "rules": {}
     },
     {
-      "files": [ "next-env.d.ts"],
+      "files": ["next-env.d.ts"],
       "rules": {
         "@typescript-eslint/triple-slash-reference": "off"
       }

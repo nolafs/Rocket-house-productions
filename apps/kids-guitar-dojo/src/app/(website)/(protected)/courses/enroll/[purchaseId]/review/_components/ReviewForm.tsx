@@ -34,7 +34,7 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
 
   useEffect(() => {
     setActive(true);
-  }, []);
+  }, [setActive]);
 
   const { firstName, lastName, name, email, parentConsent, confirmTerms, notify, newsletter, avatar } = onBoardingData;
 
@@ -89,9 +89,9 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
                 <dt className={'font-bold'}>Parent Consent</dt>
                 <dd>
                   {parentConsent ? (
-                    <CheckIcon className={'text-success h-6 w-6'} />
+                    <CheckIcon className={'h-6 w-6 text-success'} />
                   ) : (
-                    <XIcon className={'text-danger h-6 w-6'} />
+                    <XIcon className={'h-6 w-6 text-danger'} />
                   )}
                 </dd>
               </div>
@@ -99,9 +99,9 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
                 <dt className={'font-bold'}>Confirm Terms:</dt>
                 <dd>
                   {confirmTerms ? (
-                    <CheckIcon className={'text-success h-6 w-6'} />
+                    <CheckIcon className={'h-6 w-6 text-success'} />
                   ) : (
-                    <XIcon className={'text-danger h-6 w-6'} />
+                    <XIcon className={'h-6 w-6 text-danger'} />
                   )}
                 </dd>
               </div>
@@ -109,9 +109,9 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
                 <dt className={'font-bold'}>Newsletter:</dt>
                 <dd>
                   {newsletter ? (
-                    <CheckIcon className={'text-success h-6 w-6'} />
+                    <CheckIcon className={'h-6 w-6 text-success'} />
                   ) : (
-                    <XIcon className={'text-danger h-6 w-6'} />
+                    <XIcon className={'h-6 w-6 text-danger'} />
                   )}
                 </dd>
               </div>
@@ -119,9 +119,9 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
                 <dt className={'font-bold'}>Notification:</dt>
                 <dd>
                   {notify ? (
-                    <CheckIcon className={'text-success h-6 w-6'} />
+                    <CheckIcon className={'h-6 w-6 text-success'} />
                   ) : (
-                    <XIcon className={'text-danger h-6 w-6'} />
+                    <XIcon className={'h-6 w-6 text-danger'} />
                   )}
                 </dd>
               </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 import * as z from 'zod';
 import axios from 'axios';
@@ -170,12 +171,12 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
                           }
                         }}
                       />
-                      <div className="text-muted-foreground mt-4 text-xs">1:1 aspect ratio recommended</div>
+                      <div className="mt-4 text-xs text-muted-foreground">1:1 aspect ratio recommended</div>
                     </>
                   )}
                 />
               ) : (
-                imageUrl && <img src={imageUrl} className="h-24 w-24" alt={'upload'} />
+                imageUrl && <Image src={imageUrl} className="h-24 w-24" alt={'upload'} width={96} height={96} />
               ))}
 
             {initialData?.type === 'fretboard' ? (
@@ -227,7 +228,7 @@ const AnswersForm = ({ initialData, moduleId, courseId, lessonId, questionanaire
           />
         </div>
       )}
-      {!isCreating && <p className="text-muted-foreground mt-4 text-xs">Drag and drop to reorder the questionnaires</p>}
+      {!isCreating && <p className="mt-4 text-xs text-muted-foreground">Drag and drop to reorder the questionnaires</p>}
     </div>
   );
 };

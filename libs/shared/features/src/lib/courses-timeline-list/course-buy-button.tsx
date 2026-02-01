@@ -25,9 +25,7 @@ export function CourseBuyButton({ course, label, userData }: CourseBuyButtonProp
   }
 
   return (
-    <Link
-      href={`./courses/order/${course.slug}/buy`}
-      className={cn(buttonVariants({ variant: 'secondary' }), 'w-full')}>
+    <Link href={`/courses/order/${course.slug}/buy`} className={cn(buttonVariants({ variant: 'secondary' }), 'w-full')}>
       {label}
     </Link>
   );
