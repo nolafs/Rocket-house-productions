@@ -111,19 +111,15 @@ export const submitOnBoardingAction = async (
         },
       });
 
-      //Update MailerList
+      //Update MailerList - only update newsletter and notify preferences
       if (account.email) {
-        const memberType: 'free' | 'paid' | null | undefined =
-          purchase?.type === 'free' || purchase?.type === 'paid' ? purchase.type : null;
-
         await MailerList({
           email: account.email,
           firstName: onboarding.firstName || '',
           lastName: onboarding.lastName || '',
-          membershipGroup: true,
           newsletterGroup: onboarding.newsletter || false,
-          memberType: memberType,
           notify: onboarding.notify || false,
+          // Omit tier groups and memberType - preserves existing values
         });
       }
     } else {

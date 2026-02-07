@@ -232,7 +232,8 @@ export async function POST(req: Request) {
 
         const membershipCourseId = app?.membershipSettings?.courseId ?? null;
         const includedList = app?.membershipSettings?.included ?? [];
-        let membershipType: 'free' | 'paid' | 'standard' | 'premium' | null = 'free';
+
+        let membershipTier: 'standard' | 'premium' | 'free';
 
         logger.debug('[Webhook] Membership config', {
           membershipCourseId,
@@ -242,7 +243,9 @@ export async function POST(req: Request) {
         });
 
         // Transaction
-        await db.$transaction(async tx => {
+        membershipTier = await db.$transaction(async tx => {
+          let isMembershipPremiumPurchase: boolean | undefined = undefined;
+
           // 1) Mark order paid
           await tx.order.update({
             where: { id: order.id },
@@ -350,12 +353,10 @@ export async function POST(req: Request) {
             // ✅ Only grant included courses when:
             // 1) Purchased course IS the configured membership course
             // 2) Tier is PREMIUM (by DB or Stripe metadata)
-            const isMembershipPremiumPurchase =
+            isMembershipPremiumPurchase =
               Boolean(membershipCourseId) &&
               courseId === membershipCourseId &&
               (tierType === 'PREMIUM' || premiumMeta === true);
-
-            membershipType = isMembershipPremiumPurchase ? 'premium' : 'standard';
 
             const isMembershipPurchase = Boolean(membershipCourseId) && courseId === membershipCourseId;
 
@@ -480,6 +481,12 @@ export async function POST(req: Request) {
               });
             }
           }
+
+          return isMembershipPremiumPurchase !== undefined
+            ? isMembershipPremiumPurchase
+              ? 'premium'
+              : 'standard'
+            : 'free';
         });
 
         // 3) External side-effects (non-transactional)
@@ -488,18 +495,22 @@ export async function POST(req: Request) {
           if (userId) {
             const client = await clerkClient();
             await client.users.updateUserMetadata(userId, {
-              publicMetadata: { status: 'active', type: 'paid', tier: membershipType },
+              publicMetadata: { status: 'active', type: 'paid', tier: membershipTier },
             });
           }
 
           const acct = await db.account.findUnique({ where: { id: order.accountId } });
+
           if (acct?.email) {
             await MailerList({
               email: acct.email,
               firstName: acct.firstName || null,
               lastName: acct.lastName || null,
               membershipGroup: true,
-              memberType: membershipType,
+              premiumGroup: membershipTier === 'premium',
+              standardGroup: membershipTier === 'standard',
+              freeGroup: membershipTier === 'free',
+              memberType: membershipTier,
               newsletterGroup: acct.newsletter || false,
             });
           }

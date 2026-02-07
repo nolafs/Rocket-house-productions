@@ -16,7 +16,10 @@ function getCoursePurchaseCategory(
 ): PurchaseCategory | null {
   if (!courseId) return null;
 
-  const relevant = purchases.filter(p => p.courseId === courseId && p.type === 'charge');
+  // Check both courseId and course.id since different queries may provide either
+  const relevant = purchases.filter(
+    p => (p.courseId === courseId || p.course?.id === courseId) && p.type === 'charge',
+  );
 
   if (!relevant.length) return null;
 
@@ -198,11 +201,14 @@ export const getPriceOptionTiersByCourseSlugByUserSubscriptions = async (
       // ---- 2b) Course is any other course ----
       if (userData?.purchases) {
         const productTiers: Tier[] = course.tiers;
-        const options: PriceTier[] = await getPriceOptionTiers(productTiers);
-
         const coursePurchaseCategory = getCoursePurchaseCategory(userData.purchases, course.id);
 
         logger.debug('[coursePurchaseCategory]', coursePurchaseCategory);
+
+        // Determine if user has standard purchase BEFORE getting price options
+        // so we can include UPGRADE tiers when needed
+        const hasStandardPurchase = coursePurchaseCategory === 'standard';
+        const options: PriceTier[] = await getPriceOptionTiers(productTiers, hasStandardPurchase);
 
         if (!coursePurchaseCategory) {
           // no purchase for this course → show all non-free options (or all, your choice)

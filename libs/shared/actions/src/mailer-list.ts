@@ -5,6 +5,9 @@ import { logger } from '@rocket-house-productions/util';
 
 const MEMBER_GROUP_ID = '132777840291612505';
 const NEWSLETTER_GROUP_ID = '133521141153137963';
+const MEMBER_PREMIUM_GROUP_ID = '178253580649628681';
+const MEMBER_STANDARD_GROUP_ID = '178253567791990540';
+const MEMBER_FREE_GROUP_ID = '178253553753654287';
 
 // Minimal typing for MailerLite find response used in this function
 type MailerFindResponse = {
@@ -31,7 +34,7 @@ export async function MailerList(data: MailerListType) {
   const fields: MailerListSubscriberFields = {
     name: data.firstName || null,
     last_name: data.lastName || null,
-    member_type: data?.memberType || null,
+    member_type: null, // Will be set later based on data.memberType or preserved from existing
     notify: data.notify,
   };
 
@@ -69,6 +72,12 @@ export async function MailerList(data: MailerListType) {
         ) {
           fields.last_name = String(checkFields.last_name);
         }
+        // Preserve existing member_type if not being updated
+        if (data.memberType === null) {
+          if (checkFields?.member_type && typeof checkFields.member_type === 'string') {
+            fields.member_type = checkFields.member_type as 'free' | 'paid' | 'standard' | 'premium';
+          }
+        }
       }
 
       if (checkRsp.groups && checkRsp.groups.length) {
@@ -76,27 +85,56 @@ export async function MailerList(data: MailerListType) {
           groups.push(group.id);
         });
       }
+    }
 
+    // Set member_type if explicitly provided (overrides preserved value)
+    if (data.memberType !== null && data.memberType !== undefined) {
+      fields.member_type = data.memberType;
+    }
+
+    // Handle newsletter group (both new and existing subscribers)
+    if (data.newsletterGroup !== undefined) {
       if (data.newsletterGroup) {
         if (!groups.includes(NEWSLETTER_GROUP_ID)) {
           groups.push(NEWSLETTER_GROUP_ID);
         }
-      }
-
-      if (data.membershipGroup) {
-        if (!groups.includes(MEMBER_GROUP_ID)) {
-          groups.push(MEMBER_GROUP_ID);
-        }
-      }
-    } else {
-      //sign up with mailer-lite
-      if (data.newsletterGroup) {
-        groups.push('133521141153137963');
-      }
-      if (data.membershipGroup) {
-        groups.push('132777840291612505');
+      } else {
+        // Remove newsletter group if user unsubscribed
+        const index = groups.indexOf(NEWSLETTER_GROUP_ID);
+        if (index > -1) groups.splice(index, 1);
       }
     }
+
+    // Handle membership group (both new and existing subscribers)
+    if (data.membershipGroup === true) {
+      if (!groups.includes(MEMBER_GROUP_ID)) {
+        groups.push(MEMBER_GROUP_ID);
+      }
+    }
+
+    // Only update tier groups if at least one tier flag is explicitly defined
+    // This allows "newsletter-only" updates to preserve existing tier groups
+    const shouldUpdateTierGroups =
+      data.premiumGroup !== undefined || data.standardGroup !== undefined || data.freeGroup !== undefined;
+
+    if (shouldUpdateTierGroups) {
+      // Remove all tier groups before assigning new one (both new and existing subscribers)
+      const tierGroups = [MEMBER_PREMIUM_GROUP_ID, MEMBER_STANDARD_GROUP_ID, MEMBER_FREE_GROUP_ID];
+      tierGroups.forEach(id => {
+        const index = groups.indexOf(id);
+        if (index > -1) groups.splice(index, 1);
+      });
+
+      // Add the correct tier group (both new and existing subscribers)
+      if (data.premiumGroup === true) {
+        groups.push(MEMBER_PREMIUM_GROUP_ID);
+      } else if (data.standardGroup === true) {
+        groups.push(MEMBER_STANDARD_GROUP_ID);
+      } else if (data.freeGroup === true) {
+        groups.push(MEMBER_FREE_GROUP_ID);
+      }
+    }
+    // If shouldUpdateTierGroups is false, existing tier groups in the groups array are preserved
 
     logger.debug('[MAILER-LITE] SUBSCRIBER FIELDS', { fields, email: data.email });
 

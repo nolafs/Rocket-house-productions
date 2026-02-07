@@ -23,7 +23,13 @@ import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { logger } from '@rocket-house-productions/util';
 
 interface BuySheetProps {
+  // Course data
   course: CourseModules;
+  // Pre-filtered price options based on user's existing purchases
+  // Server-side filtering ensures users don't see options they already own:
+  // - If user has 'standard' → only shows 'premium' upgrade
+  // - If user has 'premium' → shows no options (already owns highest tier)
+  // - If user has no purchase → shows all non-free options
   options: PriceTier[] | null;
 }
 
@@ -34,6 +40,8 @@ export default function BuySheet({ course, options }: BuySheetProps) {
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
   const { isSignedIn, user } = useUser();
+
+  logger.debug('[BUY SHEET] RENDER', { user, courseSlug: course.slug, options: options, selected });
 
   useEffect(() => {
     if (!open) {
@@ -132,8 +140,13 @@ export default function BuySheet({ course, options }: BuySheetProps) {
               <div className="space-y-3">
                 <Label className="text-sm">Choose version</Label>
 
-                {!options ? (
-                  <div className="text-sm text-muted-foreground">No purchase options available.</div>
+                {!options || options.length === 0 ? (
+                  <div className="rounded-lg border border-muted bg-muted/50 p-4 text-center">
+                    <p className="text-sm font-medium text-foreground">No purchase options available</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      You already own the highest tier for this course.
+                    </p>
+                  </div>
                 ) : (
                   <RadioGroup value={selected} onValueChange={setSelected} className="grid gap-3">
                     {options.map(
