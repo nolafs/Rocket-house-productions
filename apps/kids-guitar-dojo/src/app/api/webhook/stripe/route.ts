@@ -301,7 +301,7 @@ export async function POST(req: Request) {
             // - UPGRADE/PREMIUM → 'premium'
             // - STANDARD → 'standard'
             // - BASIC → 'free'
-            // - Fallback to product metadata or existing category
+            // - Fallback to product metadata, then detect upgrade scenario
             const resolvedCategory = (() => {
               switch (tierType) {
                 case 'UPGRADE':
@@ -312,10 +312,35 @@ export async function POST(req: Request) {
                   return 'standard';
                 case 'BASIC':
                   return 'free';
-                default:
-                  return (product?.metadata as any)?.type ?? existing?.category ?? null;
+                default: {
+                  // Check product metadata for type
+                  const metaType = ((product?.metadata as any)?.type ?? '').toLowerCase();
+                  if (metaType === 'premium' || metaType === 'upgrade') {
+                    return 'premium';
+                  }
+                  if (metaType === 'standard') {
+                    return 'standard';
+                  }
+                  if (metaType === 'basic' || metaType === 'free') {
+                    return 'free';
+                  }
+                  // Upgrade detection: if existing purchase is 'standard' and we're making a new payment,
+                  // this is likely an upgrade to premium
+                  if (existing?.category === 'standard' && lineAmount > 0) {
+                    logger.debug('[Webhook] Detected upgrade scenario: existing standard + new payment → premium');
+                    return 'premium';
+                  }
+                  return existing?.category ?? null;
+                }
               }
             })();
+
+            logger.debug('[Webhook] Category resolution', {
+              tierType,
+              productMetaType: (product?.metadata as any)?.type,
+              existingCategory: existing?.category,
+              resolvedCategory,
+            });
 
             const purchaseId: string = existing
               ? (

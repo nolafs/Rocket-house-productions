@@ -191,23 +191,7 @@ export const stripeReconcile = async (sessionId: string) => {
 
     const lineAmount = (li as any).amount_total ?? 1;
 
-    // Determine the category based on tierType from cart
-    // Same logic as webhook: UPGRADE/PREMIUM → 'premium', STANDARD → 'standard', BASIC → 'free'
-    const tierType = plannedItem?.tierType as string | undefined;
-    const resolvedCategory = (() => {
-      switch (tierType) {
-        case 'UPGRADE':
-        case 'PREMIUM':
-          return 'premium';
-        case 'STANDARD':
-          return 'standard';
-        case 'BASIC':
-          return 'free';
-        default:
-          return (product?.metadata as any)?.type ?? null;
-      }
-    })();
-
+    // First check if there's an existing purchase (needed for upgrade detection)
     const existing = await db.purchase.findUnique({
       where: {
         accountId_courseId_childId: {
@@ -217,6 +201,43 @@ export const stripeReconcile = async (sessionId: string) => {
         },
       },
     });
+
+    // Determine the category based on tierType from cart
+    // Same logic as webhook: UPGRADE/PREMIUM → 'premium', STANDARD → 'standard', BASIC → 'free'
+    const tierType = plannedItem?.tierType as string | undefined;
+
+    logger.debug('[stripe-checkout]', tierType);
+
+    const resolvedCategory = (() => {
+      switch (tierType) {
+        case 'UPGRADE':
+        case 'PREMIUM':
+          return 'premium';
+        case 'STANDARD':
+          return 'standard';
+        case 'BASIC':
+          return 'free';
+        default: {
+          // Check product metadata for type
+          const metaType = ((product?.metadata as any)?.type ?? '').toLowerCase();
+          if (metaType === 'premium' || metaType === 'upgrade') {
+            return 'premium';
+          }
+          if (metaType === 'standard') {
+            return 'standard';
+          }
+          if (metaType === 'basic' || metaType === 'free') {
+            return 'free';
+          }
+          // Upgrade detection: if existing purchase is 'standard' and we're making a new payment
+          if (existing?.category === 'standard' && lineAmount > 0) {
+            logger.debug('[stripeReconcile] Detected upgrade scenario: existing standard + new payment → premium');
+            return 'premium';
+          }
+          return existing?.category ?? null;
+        }
+      }
+    })();
 
     if (!existing) {
       const created = await db.purchase.create({
