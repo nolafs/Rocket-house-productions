@@ -59,9 +59,11 @@ async function resolveLineItem(
   }
 
   // 1) Preferred: Tier.stripeId/stripeIdDev -> gives us courseId + tier type directly
-  if (price?.id) {
+  // Note: Tier stores Stripe PRODUCT IDs, not price IDs, so we use product.id
+  const prodId = typeof product?.id === 'string' ? product.id : undefined;
+  if (prodId) {
     const tier = await tx.tier.findFirst({
-      where: { OR: [{ stripeId: price.id }, { stripeIdDev: price.id }] },
+      where: { OR: [{ stripeId: prodId }, { stripeIdDev: prodId }] },
       select: { courseId: true, type: true },
     });
     if (tier?.courseId && tier?.type) {
@@ -70,7 +72,6 @@ async function resolveLineItem(
   }
 
   // 2) Fallback: Course.* product ids -> infer tier by which field matched
-  const prodId = typeof product?.id === 'string' ? product.id : undefined;
   if (prodId) {
     const course = await tx.course.findFirst({
       where: {
@@ -296,6 +297,26 @@ export async function POST(req: Request) {
               where: { accountId_courseId: { accountId: order.accountId, courseId } },
             });
 
+            // Determine the category for this purchase based on tierType:
+            // - UPGRADE/PREMIUM → 'premium'
+            // - STANDARD → 'standard'
+            // - BASIC → 'free'
+            // - Fallback to product metadata or existing category
+            const resolvedCategory = (() => {
+              switch (tierType) {
+                case 'UPGRADE':
+                  return 'premium';
+                case 'PREMIUM':
+                  return 'premium';
+                case 'STANDARD':
+                  return 'standard';
+                case 'BASIC':
+                  return 'free';
+                default:
+                  return (product?.metadata as any)?.type ?? existing?.category ?? null;
+              }
+            })();
+
             const purchaseId: string = existing
               ? (
                   await tx.purchase.update({
@@ -304,7 +325,7 @@ export async function POST(req: Request) {
                       amount: (existing.amount ?? 0) + lineAmount,
                       stripeChargeId: full.id,
                       type: 'charge',
-                      category: (product?.metadata as any)?.type ?? existing.category,
+                      category: resolvedCategory,
                       billingAddress: JSON.stringify(full.customer_details?.address ?? {}),
                     },
                   })
@@ -318,7 +339,7 @@ export async function POST(req: Request) {
                       stripeChargeId: full.id,
                       amount: lineAmount,
                       type: 'charge',
-                      category: (product?.metadata as any)?.type ?? null,
+                      category: resolvedCategory,
                       billingAddress: JSON.stringify(full.customer_details?.address ?? {}),
                     },
                   })

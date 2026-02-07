@@ -25,15 +25,23 @@ export const stripeCheckout = async (
 
     if (!price) throw new Error(`No active price for product ${productId}`);
 
-    // 2) Get the product metadata to recover your courseId/type for later
+    // 2) Look up the tier from the database using the Stripe product ID
+    // This is more reliable than Stripe metadata
+    const tier = await db.tier.findFirst({
+      where: { OR: [{ stripeId: productId }, { stripeIdDev: productId }] },
+      select: { courseId: true, type: true },
+    });
+
+    // Fallback to Stripe product metadata if tier not found in DB
     const product = await stripe.products.retrieve(productId);
-    const courseId = (product.metadata?.course_id as string | undefined) ?? undefined;
-    const tierType = (product.metadata?.type as string | undefined) ?? undefined;
+    const courseId = tier?.courseId ?? (product.metadata?.course_id as string | undefined) ?? undefined;
+    const tierType = tier?.type ?? (product.metadata?.type as string | undefined) ?? undefined;
+
+    logger.debug('[stripeCheckout] Resolved tier', { productId, courseId, tierType, fromDb: !!tier });
 
     const appSettingsRes = await getAppSettings();
 
     // Check if product is membership product
-
     const isMembershipMeta = appSettingsRes?.membershipSettings?.course.id === courseId;
 
     const account = await db.account.findFirst({ where: { userId } });
@@ -46,13 +54,14 @@ export const stripeCheckout = async (
         })
       : null;
 
-    // Build the planned cart snapshot
+    // Build the planned cart snapshot - include tierType for reliable webhook resolution
     const cart: PlannedCart = {
       items: [
         {
           priceId: price.id,
           productId,
           courseId,
+          tierType,
           childId: opts?.childId ?? firstChild?.id ?? null,
           isMembership: !!isMembershipMeta,
         },
@@ -182,6 +191,23 @@ export const stripeReconcile = async (sessionId: string) => {
 
     const lineAmount = (li as any).amount_total ?? 1;
 
+    // Determine the category based on tierType from cart
+    // Same logic as webhook: UPGRADE/PREMIUM → 'premium', STANDARD → 'standard', BASIC → 'free'
+    const tierType = plannedItem?.tierType as string | undefined;
+    const resolvedCategory = (() => {
+      switch (tierType) {
+        case 'UPGRADE':
+        case 'PREMIUM':
+          return 'premium';
+        case 'STANDARD':
+          return 'standard';
+        case 'BASIC':
+          return 'free';
+        default:
+          return (product?.metadata as any)?.type ?? null;
+      }
+    })();
+
     const existing = await db.purchase.findUnique({
       where: {
         accountId_courseId_childId: {
@@ -201,7 +227,7 @@ export const stripeReconcile = async (sessionId: string) => {
           stripeChargeId: full.id,
           amount: lineAmount,
           type: 'charge',
-          category: product?.metadata?.type ?? null,
+          category: resolvedCategory,
           billingAddress: JSON.stringify(full.customer_details?.address ?? {}),
         },
       });
@@ -230,7 +256,7 @@ export const stripeReconcile = async (sessionId: string) => {
         data: {
           amount: (existing.amount ?? 0) + lineAmount,
           stripeChargeId: full.id,
-          category: product?.metadata?.type ?? existing.category,
+          category: resolvedCategory ?? existing.category,
           billingAddress: JSON.stringify(full.customer_details?.address ?? {}),
         },
       });
