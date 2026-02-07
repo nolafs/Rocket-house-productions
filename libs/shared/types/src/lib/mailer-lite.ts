@@ -4,7 +4,7 @@ export type MailerListType = {
   email: string;
   newsletterGroup: boolean;
   membershipGroup: boolean;
-  memberType?: 'free' | 'paid' | null;
+  memberType?: 'free' | 'paid' | 'standard' | 'premium' | null;
   notify?: boolean | null;
 };
 

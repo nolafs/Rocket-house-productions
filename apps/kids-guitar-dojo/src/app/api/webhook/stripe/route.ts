@@ -232,6 +232,7 @@ export async function POST(req: Request) {
 
         const membershipCourseId = app?.membershipSettings?.courseId ?? null;
         const includedList = app?.membershipSettings?.included ?? [];
+        let membershipType: 'free' | 'paid' | 'standard' | 'premium' | null = 'free';
 
         logger.debug('[Webhook] Membership config', {
           membershipCourseId,
@@ -353,6 +354,8 @@ export async function POST(req: Request) {
               Boolean(membershipCourseId) &&
               courseId === membershipCourseId &&
               (tierType === 'PREMIUM' || premiumMeta === true);
+
+            membershipType = isMembershipPremiumPurchase ? 'premium' : 'standard';
 
             const isMembershipPurchase = Boolean(membershipCourseId) && courseId === membershipCourseId;
 
@@ -485,7 +488,7 @@ export async function POST(req: Request) {
           if (userId) {
             const client = await clerkClient();
             await client.users.updateUserMetadata(userId, {
-              publicMetadata: { status: 'active', type: 'paid' },
+              publicMetadata: { status: 'active', type: 'paid', tier: membershipType },
             });
           }
 
@@ -496,7 +499,7 @@ export async function POST(req: Request) {
               firstName: acct.firstName || null,
               lastName: acct.lastName || null,
               membershipGroup: true,
-              memberType: 'paid',
+              memberType: membershipType,
               newsletterGroup: acct.newsletter || false,
             });
           }
