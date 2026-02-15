@@ -7301,7 +7301,7 @@ __metadata:
     "@typescript-eslint/utils": "npm:^8.54.0"
     argon2: "npm:^0.44.0"
     autoprefixer: "npm:^10.4.24"
-    axios: "npm:1.13.4"
+    axios: "npm:1.13.5"
     babel-jest: "npm:^30.2.0"
     class-variance-authority: "npm:^0.7.1"
     classnames: "npm:^2.5.1"
@@ -7376,7 +7376,7 @@ __metadata:
     slice-machine-ui: "npm:^2.21.1"
     stripe: "npm:^20.3.0"
     svix: "npm:^1.84.1"
-    swiper: "npm:^12.1.0"
+    swiper: "npm:^12.1.1"
     tailwind-merge: "npm:^3.4.0"
     tailwindcss: "npm:^3.4.19"
     tailwindcss-animate: "npm:^1.0.7"
@@ -10958,14 +10958,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.13.4":
-  version: 1.13.4
-  resolution: "axios@npm:1.13.4"
+"axios@npm:1.13.5":
+  version: 1.13.5
+  resolution: "axios@npm:1.13.5"
   dependencies:
-    follow-redirects: "npm:^1.15.6"
-    form-data: "npm:^4.0.4"
+    follow-redirects: "npm:^1.15.11"
+    form-data: "npm:^4.0.5"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 10c0/474c00b7d71f4de4ad562589dae6b615149df7c2583bbc5ebba96229f3f85bfb0775d23705338df072f12e48d3e85685c065a3cf6855d58968a672d19214c728
+  checksum: 10c0/abf468c34f2d145f3dc7dbc0f1be67e520630624307bda69a41bbe8d386bd672d87b4405c4ee77f9ff54b235ab02f96a9968fb00e75b13ce64706e352a3068fd
   languageName: node
   linkType: hard
 
@@ -15261,7 +15261,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.15.6":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.15.11, follow-redirects@npm:^1.15.6":
   version: 1.15.11
   resolution: "follow-redirects@npm:1.15.11"
   peerDependenciesMeta:
@@ -15348,6 +15348,19 @@ __metadata:
     hasown: "npm:^2.0.2"
     mime-types: "npm:^2.1.12"
   checksum: 10c0/373525a9a034b9d57073e55eab79e501a714ffac02e7a9b01be1c820780652b16e4101819785e1e18f8d98f0aee866cc654d660a435c378e16a72f2e7cac9695
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^4.0.5":
+  version: 4.0.5
+  resolution: "form-data@npm:4.0.5"
+  dependencies:
+    asynckit: "npm:^0.4.0"
+    combined-stream: "npm:^1.0.8"
+    es-set-tostringtag: "npm:^2.1.0"
+    hasown: "npm:^2.0.2"
+    mime-types: "npm:^2.1.12"
+  checksum: 10c0/dd6b767ee0bbd6d84039db12a0fa5a2028160ffbfaba1800695713b46ae974a5f6e08b3356c3195137f8530dcd9dfcb5d5ae1eeff53d0db1e5aad863b619ce3b
   languageName: node
   linkType: hard
 
@@ -26236,10 +26249,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"swiper@npm:^12.1.0":
-  version: 12.1.0
-  resolution: "swiper@npm:12.1.0"
-  checksum: 10c0/a5a2320895ef39ad22e7e1c9ac1b0b1233062a99ac273cad026881985eac37210c7c039152fa2489fb3a3ad12c349c8ff9a2133edccb4e4db3726170c157a17f
+"swiper@npm:^12.1.1":
+  version: 12.1.1
+  resolution: "swiper@npm:12.1.1"
+  checksum: 10c0/43b3fd5b012d9c4e31a68e872ca760cc79c2e842ea995a5ddb0f78bd6cfe371b405c3f1fe801cf5fd89f5e0672fc1abfb8658b956a11f1e002df2442fae25107
   languageName: node
   linkType: hard
 
