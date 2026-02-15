@@ -67,7 +67,7 @@ export async function revalidateCourse(courseSlug: string) {
     // Force type to any to avoid version mismatch issues
     (revalidateTag as any)(`course-${courseSlug}`);
   } catch (error) {
-    console.error(`Failed to revalidate course cache for ${courseSlug}:`, error);
+    console.error('Failed to revalidate course cache for:', courseSlug, error);
   }
 }
 
