@@ -2,7 +2,7 @@
   "name": "kids-guitar-dojo",
   "version": "0.0.1",
   "dependencies": {
-    "@clerk/nextjs": "6.31.4",
+    "@clerk/nextjs": "6.36.10",
     "@clerk/types": "4.81.0",
     "@ducanh2912/next-pwa": "10.2.9",
     "@gsap/react": "2.1.2",
