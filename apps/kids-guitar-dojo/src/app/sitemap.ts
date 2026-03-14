@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const blogPosts = posts.map(post => {
     return {
-      url: `https://${process.env.NEXT_PUBLIC_BASE_URL}/blog/${post.uid}`,
+      url: `https://${process.env.NEXT_PUBLIC_DOMAIN}/blog/${post.uid}`,
       lastModified: post.data.publishing_date?.toString() ?? new Date().toISOString(),
       changeFrequency: 'monthly',
       priority: 0.8,
@@ -31,31 +31,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: `https://${process.env.NEXT_PUBLIC_BASE_URL}`,
+      url: `https://${process.env.NEXT_PUBLIC_DOMAIN}`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 1,
     },
     {
-      url: `https://${process.env.NEXT_PUBLIC_BASE_URL}/the-course`,
+      url: `https://${process.env.NEXT_PUBLIC_DOMAIN}/the-course`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.8,
     },
     {
-      url: `https://${process.env.NEXT_PUBLIC_BASE_URL}/our-story`,
+      url: `https://${process.env.NEXT_PUBLIC_DOMAIN}/our-story`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.8,
     },
     {
-      url: `https://${process.env.NEXT_PUBLIC_BASE_URL}/pricing`,
+      url: `https://${process.env.NEXT_PUBLIC_DOMAIN}/pricing`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.8,
     },
     {
-      url: `https://${process.env.NEXT_PUBLIC_BASE_URL}/blog`,
+      url: `https://${process.env.NEXT_PUBLIC_DOMAIN}/blog`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.5,
