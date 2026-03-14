@@ -43,6 +43,9 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
   return {
     title: 'Kids Guitar dojo - Blog',
     description: page.data.meta_description || parentMeta.description || 'Blog for Kids Guitar Dojo',
+    alternates: {
+      canonical: '/blog',
+    },
     openGraph: {
       title: page.data.meta_title ?? parentMeta.title ?? undefined,
       images: [
