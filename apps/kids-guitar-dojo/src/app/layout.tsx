@@ -45,20 +45,13 @@ export async function generateMetadata(_props: any, parent: ResolvingMetadata): 
   return {
     metadataBase: new URL(
       (isURL(settings.data?.canonical_url) && settings.data?.canonical_url) ||
-        `https://${process.env.NEXT_PUBLIC_BASE_URL}` ||
+        `https://${process.env.NEXT_PUBLIC_DOMAIN}` ||
         'https://www.kidsguitardojo.com',
     ),
     alternates: {
-      canonical:
-        settings.data?.canonical_url ||
-        `https://${process.env.NEXT_PUBLIC_BASE_URL}` ||
-        'https://www.kidsguitardojo.com',
+      canonical: '/',
       types: {
-        'application/rss+xml': `${
-          settings.data?.canonical_url ||
-          `https://${process.env.NEXT_PUBLIC_BASE_URL}` ||
-          'https://www.kidsguitardojo.com'
-        }/feed.xml`,
+        'application/rss+xml': '/feed.xml',
       },
     },
     title: settings?.data.meta_title || (await parent).title || '-= Kids Guitar Dojo =-',

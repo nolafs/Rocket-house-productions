@@ -16,6 +16,9 @@ export async function generateMetadata(props: { params: Promise<Params> }): Prom
   return {
     title: 'Kids Guitar dojo -' + page.data?.title,
     description: page.data.meta_description,
+    alternates: {
+      canonical: `/legal/${params.uid}`,
+    },
     openGraph: {
       title: page.data.meta_title ?? undefined,
       images: [{ url: page.data.meta_image.url ?? '' }],

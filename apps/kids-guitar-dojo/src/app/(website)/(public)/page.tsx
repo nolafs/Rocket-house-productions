@@ -26,6 +26,9 @@ export async function generateMetadata({ params, searchParams }: Props, parent: 
   return {
     title: parentMeta.title,
     description: page.data.meta_description || parentMeta.description,
+    alternates: {
+      canonical: '/',
+    },
     openGraph: {
       title: page.data.meta_title ?? parentMeta.title ?? undefined,
       images: [
