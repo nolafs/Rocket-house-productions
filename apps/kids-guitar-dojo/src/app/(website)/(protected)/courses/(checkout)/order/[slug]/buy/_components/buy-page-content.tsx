@@ -31,7 +31,7 @@ interface BuyPageContentProps {
 }
 
 export default function BuyPageContent({ course, options }: BuyPageContentProps) {
-  const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
+  const isProduction = true; //String(process.env.PRODUCTION).toLowerCase() === 'true';
   const [selected, setSelected] = useState<string | undefined>(options?.[0]?.id || undefined);
   const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function BuyPageContent({ course, options }: BuyPageContentProps)
       setSubmitting(false);
       return;
     }
-    logger.debug('Initiating checkout for course:', course.slug);
+    logger.debug('Initiating checkout for course:', course.slug, isProduction, product);
 
     const redirectUrl = await axios.post('/api/stripe/checkurl', {
       productId: isProduction ? product.stripeId : product.stripeIdDev,
