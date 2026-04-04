@@ -63,7 +63,7 @@ export const stripeCheckout = async (
           courseId,
           tierType,
           childId: opts?.childId ?? firstChild?.id ?? null,
-          isMembership: !!isMembershipMeta,
+          isMembership: isMembershipMeta,
         },
       ],
     };
