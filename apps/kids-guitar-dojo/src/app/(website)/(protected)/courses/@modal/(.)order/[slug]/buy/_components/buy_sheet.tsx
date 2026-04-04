@@ -41,7 +41,13 @@ export default function BuySheet({ course, options }: BuySheetProps) {
   const router = useRouter();
   const { isSignedIn, user } = useUser();
 
-  logger.debug('[BUY SHEET] RENDER', { user, courseSlug: course.slug, options: options, selected });
+  logger.debug('[BUY SHEET] RENDER', {
+    isProduction: isProduction,
+    user,
+    courseSlug: course.slug,
+    options: options,
+    selected,
+  });
 
   useEffect(() => {
     if (!open) {
