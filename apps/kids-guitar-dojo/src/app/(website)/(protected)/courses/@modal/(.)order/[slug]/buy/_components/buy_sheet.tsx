@@ -34,7 +34,7 @@ interface BuySheetProps {
 }
 
 export default function BuySheet({ course, options }: BuySheetProps) {
-  const isProduction = String(process.env.PRODUCTION).toLowerCase() === 'true';
+  const isProduction = String(process.env.NEXT_PUBLIC_PRODUCTION).toLowerCase() === 'true';
   const [open, setOpen] = useState(true);
   const [selected, setSelected] = useState<string | undefined>(options?.[0]?.id || undefined);
   const [submitting, setSubmitting] = useState(false);

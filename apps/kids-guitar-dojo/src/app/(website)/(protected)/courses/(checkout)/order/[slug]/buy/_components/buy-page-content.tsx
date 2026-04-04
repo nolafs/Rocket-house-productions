@@ -44,7 +44,14 @@ export default function BuyPageContent({ course, options }: BuyPageContentProps)
       setSubmitting(false);
       return;
     }
-    logger.debug('Initiating checkout for course:', course.slug, isProduction, product);
+    logger.debug(
+      'Initiating checkout for course:',
+      course.slug,
+      isProduction,
+      product,
+      String(process.env.PRODUCTION).toLowerCase(),
+      String(process.env.PRODUCTION).toLowerCase() === 'true',
+    );
 
     const redirectUrl = await axios.post('/api/stripe/checkurl', {
       productId: isProduction ? product.stripeId : product.stripeIdDev,
