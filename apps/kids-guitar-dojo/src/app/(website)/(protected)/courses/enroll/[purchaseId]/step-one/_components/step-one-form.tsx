@@ -25,6 +25,7 @@ import { KeyTextField, RichTextField } from '@prismicio/types';
 import { PrismicRichText } from '@prismicio/react';
 import { useMenuActive } from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/useMenuActive';
 import { isFilled } from '@prismicio/client';
+import Link from 'next/link';
 
 const initialState: FormErrors = {};
 
@@ -65,7 +66,7 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
       confirmTerms: onBoardingData.confirmTerms ?? true,
       parentConsent: onBoardingData.parentConsent ?? true,
       newsletter: onBoardingData.newsletter || false,
-      notify: onBoardingData.notify || false,
+      notify: false,
       productId: baseUrl,
     },
   });
@@ -179,7 +180,14 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
                         onCheckedChange={checked => field.onChange(checked)}
                       />
                     </FormControl>
-                    <FormLabel>Confirm Terms & Conditions</FormLabel>
+                    <FormLabel>
+                      I agree to the{' '}
+                      <Link
+                        href="/legal/agreement-to-our-legal-terms"
+                        className={'text-primary underline hover:text-secondary'}>
+                        Terms & Conditions
+                      </Link>{' '}
+                    </FormLabel>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -219,27 +227,7 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
                         onCheckedChange={checked => field.onChange(checked)}
                       />
                     </FormControl>
-                    <FormLabel>Sign up to your newsletter</FormLabel>
-                  </div>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control as any}
-              name="notify"
-              render={({ field }) => (
-                <FormItem>
-                  <div className={'flex items-center space-x-2'}>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        name={field.name}
-                        id={field.name}
-                        onCheckedChange={checked => field.onChange(checked)}
-                      />
-                    </FormControl>
-                    <FormLabel>Subscribe to notifications</FormLabel>
+                    <FormLabel>I&#39;d like helpful tips, updates and special offers</FormLabel>
                   </div>
                   <FormMessage />
                 </FormItem>
