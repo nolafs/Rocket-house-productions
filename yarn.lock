@@ -1925,52 +1925,52 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clerk/backend@npm:^2.31.0":
-  version: 2.31.0
-  resolution: "@clerk/backend@npm:2.31.0"
+"@clerk/backend@npm:^2.33.3":
+  version: 2.33.3
+  resolution: "@clerk/backend@npm:2.33.3"
   dependencies:
-    "@clerk/shared": "npm:^3.45.0"
-    "@clerk/types": "npm:^4.101.15"
+    "@clerk/shared": "npm:^3.47.5"
+    "@clerk/types": "npm:^4.101.23"
     standardwebhooks: "npm:^1.0.0"
     tslib: "npm:2.8.1"
-  checksum: 10c0/277eb18067f83b5fb7372d17e8833984b6fb111ca6fbeec5f3fa6c25cce0680fd3a48e0e94ffd44e8226f56b975ba35c2f9eb506ca9aa501c5f910b692815f0a
+  checksum: 10c0/b2a432e3a270562c149c625b50c6355270fd036393760b1497206763d82a2bb569bdd3fba2d57b44e3d981f03c526d75056bdd410fac82d26f1c87df3954fb15
   languageName: node
   linkType: hard
 
-"@clerk/clerk-react@npm:^5.60.1":
-  version: 5.60.1
-  resolution: "@clerk/clerk-react@npm:5.60.1"
+"@clerk/clerk-react@npm:^5.61.6":
+  version: 5.61.6
+  resolution: "@clerk/clerk-react@npm:5.61.6"
   dependencies:
-    "@clerk/shared": "npm:^3.45.0"
+    "@clerk/shared": "npm:^3.47.5"
     tslib: "npm:2.8.1"
   peerDependencies:
     react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
     react-dom: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
-  checksum: 10c0/840bde593e44e29db9ac0ae93e51a52f98b9ebea15100efa832716b6acfbe0d261df1cf938ada16b71a9861632897111031d3a0e028326102ce5e87d11b4ae33
+  checksum: 10c0/4e35eff7433c735f7bfa03d1b39b13c0b6ba92152074fcddcb3d1d872b1172d821cb97067fd136b83291fb00e4e04b8bdb8668c8c4d81e4a577b72aac7ec25a2
   languageName: node
   linkType: hard
 
-"@clerk/nextjs@npm:^6.37.4":
-  version: 6.37.4
-  resolution: "@clerk/nextjs@npm:6.37.4"
+"@clerk/nextjs@npm:^6.39.3":
+  version: 6.39.3
+  resolution: "@clerk/nextjs@npm:6.39.3"
   dependencies:
-    "@clerk/backend": "npm:^2.31.0"
-    "@clerk/clerk-react": "npm:^5.60.1"
-    "@clerk/shared": "npm:^3.45.0"
-    "@clerk/types": "npm:^4.101.15"
+    "@clerk/backend": "npm:^2.33.3"
+    "@clerk/clerk-react": "npm:^5.61.6"
+    "@clerk/shared": "npm:^3.47.5"
+    "@clerk/types": "npm:^4.101.23"
     server-only: "npm:0.0.1"
     tslib: "npm:2.8.1"
   peerDependencies:
     next: ^13.5.7 || ^14.2.25 || ^15.2.3 || ^16
     react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
     react-dom: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
-  checksum: 10c0/512263ded661d35f2e047af467380176e159ba1f1cb504be75025d5006cbb0541bfdfbd902292860e8c5b9c0ef21e1c0890868617653815c527e10686d1ee406
+  checksum: 10c0/8167559ca85d5482ccceb0b833481e47fe78ac40b5025a05c17d7f7463c49a7bdff2131e95bf9bce017ab2cdda5fc345de541ce3f7cc1795836c9eba94647657
   languageName: node
   linkType: hard
 
-"@clerk/shared@npm:^3.45.0":
-  version: 3.45.0
-  resolution: "@clerk/shared@npm:3.45.0"
+"@clerk/shared@npm:^3.47.5":
+  version: 3.47.5
+  resolution: "@clerk/shared@npm:3.47.5"
   dependencies:
     csstype: "npm:3.1.3"
     dequal: "npm:2.0.3"
@@ -1986,16 +1986,16 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/9cd46829752ed9cdf2252e21f1afe0cfc3486efa48147c31b475f1a201eff01ba0840db5414ebf2524e3cdc0128404b30524097215ecafc5890b1f1da6a09d3c
+  checksum: 10c0/7a4ac3c36270e2b7add191a00ed33a7446542de98bce700841fb36a132aad5e9a6be3413997652066871754dfc233c4105d260594517c93167e03b2711b40808
   languageName: node
   linkType: hard
 
-"@clerk/types@npm:^4.101.15":
-  version: 4.101.15
-  resolution: "@clerk/types@npm:4.101.15"
+"@clerk/types@npm:^4.101.23":
+  version: 4.101.23
+  resolution: "@clerk/types@npm:4.101.23"
   dependencies:
-    "@clerk/shared": "npm:^3.45.0"
-  checksum: 10c0/58432fc12ecb5aaa1f14e1a18094e06ccae1019b36b8bae452a8b97cbf38bc19f587ce020f0b6904152ce2d8e2a404e5d8b1da07966732f3ddf36468d157f8d3
+    "@clerk/shared": "npm:^3.47.5"
+  checksum: 10c0/b99178b11eb05b17dcb4ccb027184736cde0eadff6c5b3c0053dad03299e3dd3ccc52bfb31b25404dcb7631d76dfa07468b95fd89d53acf3ff6b60045ffb6b23
   languageName: node
   linkType: hard
 
@@ -7230,7 +7230,7 @@ __metadata:
   dependencies:
     "@babel/core": "npm:^7.29.0"
     "@babel/preset-react": "npm:^7.28.5"
-    "@clerk/nextjs": "npm:^6.37.4"
+    "@clerk/nextjs": "npm:^6.39.3"
     "@ducanh2912/next-pwa": "npm:^10.2.9"
     "@eslint/eslintrc": "npm:^3.3.3"
     "@eslint/js": "npm:^9.39.2"
