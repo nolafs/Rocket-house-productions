@@ -1969,8 +1969,8 @@ __metadata:
   linkType: hard
 
 "@clerk/shared@npm:^3.45.0":
-  version: 3.45.0
-  resolution: "@clerk/shared@npm:3.45.0"
+  version: 3.47.5
+  resolution: "@clerk/shared@npm:3.47.5"
   dependencies:
     csstype: "npm:3.1.3"
     dequal: "npm:2.0.3"
@@ -1986,7 +1986,7 @@ __metadata:
       optional: true
     react-dom:
       optional: true
-  checksum: 10c0/9cd46829752ed9cdf2252e21f1afe0cfc3486efa48147c31b475f1a201eff01ba0840db5414ebf2524e3cdc0128404b30524097215ecafc5890b1f1da6a09d3c
+  checksum: 10c0/7a4ac3c36270e2b7add191a00ed33a7446542de98bce700841fb36a132aad5e9a6be3413997652066871754dfc233c4105d260594517c93167e03b2711b40808
   languageName: node
   linkType: hard
 
