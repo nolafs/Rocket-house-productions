@@ -8263,7 +8263,7 @@ __metadata:
     date-fns: "npm:^4.1.0"
     dayjs: "npm:^1.11.19"
     eslint: "npm:^9.39.5"
-    eslint-config-next: "npm:^16.1.6"
+    eslint-config-next: "npm:^16.2.12"
     eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-cypress: "npm:^4.3.0"
     eslint-plugin-import: "npm:2.32.0"
@@ -15136,7 +15136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:^16.1.6":
+"eslint-config-next@npm:^16.2.12":
   version: 16.2.12
   resolution: "eslint-config-next@npm:16.2.12"
   dependencies:
