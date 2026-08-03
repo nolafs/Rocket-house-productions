@@ -29,6 +29,21 @@
           "placeholder": ""
         }
       },
+      "intro_video": {
+        "type": "Embed",
+        "config": {
+          "label": "Onboarding Intro Video",
+          "placeholder": ""
+        }
+      },
+      "onboarding_intro_video_poster": {
+        "type": "Image",
+        "config": {
+          "label": "Onboarding intro video poster",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
       "onboarding_intro_body": {
         "type": "StructuredText",
         "config": {

@@ -66,7 +66,7 @@ export default function StepOneForm({ baseUrl, purchase, header, body }: StepOne
       confirmTerms: onBoardingData.confirmTerms ?? true,
       parentConsent: onBoardingData.parentConsent ?? true,
       newsletter: onBoardingData.newsletter || false,
-      notify: false,
+      notify: true,
       productId: baseUrl,
     },
   });

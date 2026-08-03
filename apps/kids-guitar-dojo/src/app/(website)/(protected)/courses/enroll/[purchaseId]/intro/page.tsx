@@ -8,6 +8,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import ButtonAddChild from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/button-add-child';
 import { Child } from '@prisma/client';
+import VideoPlayer from '../../../../../../../../../../libs/shared/features/src/lib/video-player/video-player';
 
 export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {
   const params = await props.params;
@@ -54,12 +55,13 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
           <ButtonAddChild baseUrl={baseUrl} purchaseId={params.purchaseId} students={students} />
         </>
       ) : (
-        <>
+        <div className={'flex flex-col space-y-3'}>
+          <VideoPlayer image={data.onboarding_intro_video_poster} {...(data.intro_video as any)} loading={'eager'} />
           <PrismicRichText field={data.onboarding_intro_body} />
           <div className={'not-prose mt-5 w-full'}>
             <NextButton label={'Get Started'} baseUrl={baseUrl} />
           </div>
-        </>
+        </div>
       )}
     </DialogLayout>
   );

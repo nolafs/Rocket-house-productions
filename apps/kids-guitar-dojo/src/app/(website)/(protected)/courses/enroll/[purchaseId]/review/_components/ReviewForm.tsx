@@ -61,6 +61,9 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
         setSubmitError(true);
         setActive(true);
         toast.error(errorMsg);
+        if (redirect) {
+          router.push(`${baseUrl}${redirect}`);
+        }
       }
     }
   };
@@ -106,19 +109,9 @@ export default function ReviewForm({ baseUrl, header, body }: ReviewFormProps) {
                 </dd>
               </div>
               <div className="flex space-x-3 py-3">
-                <dt className={'font-bold'}>Newsletter:</dt>
+                <dt className={'font-bold'}>Update, Offers and tips:</dt>
                 <dd>
                   {newsletter ? (
-                    <CheckIcon className={'h-6 w-6 text-success'} />
-                  ) : (
-                    <XIcon className={'h-6 w-6 text-danger'} />
-                  )}
-                </dd>
-              </div>
-              <div className="flex space-x-3 py-3">
-                <dt className={'font-bold'}>Notification:</dt>
-                <dd>
-                  {notify ? (
                     <CheckIcon className={'h-6 w-6 text-success'} />
                   ) : (
                     <XIcon className={'h-6 w-6 text-danger'} />
