@@ -73,6 +73,7 @@ export async function POST(req: NextRequest) {
           lastName: account?.lastName || '',
           newsletterGroup: false,
           membershipGroup: true,
+          freeGroup: true,
           memberType: 'free',
           notify: false,
         });

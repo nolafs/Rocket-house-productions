@@ -60,9 +60,10 @@ const fontProps = {
   'material-toneMapped': false,
 };
 
-// Preload all GLTF models at module level
+// Preload all GLTF models and textures at module level
 useGLTF.preload('/images/course/button.gltf');
 useGLTF.preload('/images/course/bookmark.gltf');
+useTexture.preload('/images/course/doc.png');
 
 export const Button3d = ({
   rotation,
@@ -81,6 +82,8 @@ export const Button3d = ({
   const [showTooltip, setShowTooltip] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [visible, setVisible] = useState(false);
+  const showTooltipRef = useRef(false);
+  const _posVec = useRef(new THREE.Vector3());
   const buttonRef = useIntersect<THREE.Mesh>(visible => {
     setVisible(visible);
   });
@@ -144,35 +147,27 @@ export const Button3d = ({
   }
 
   useFrame(state => {
-    if (!visible) return;
-    if (!button.current) return;
-    if (mouseControl) return;
+    if (!visible || !button.current || mouseControl) return;
     if (isScrolling) {
-      setShowTooltip(false);
+      if (showTooltipRef.current) {
+        showTooltipRef.current = false;
+        setShowTooltip(false);
+      }
       return;
     }
 
     const threshold = 1.1;
     const thresholdSquared = threshold * threshold;
-    const positionScreenSpace = button.current.position.clone().project(state.camera);
-
-    const screenCenterY = 0;
     const thresholdSize = 0.5;
 
-    /*
-    const isCloseToCenter =
-      Math.abs(positionScreenSpace.y) > threshold - 0.2 && Math.abs(positionScreenSpace.y) < threshold + 0.2;
-     */
-    const distanceSquaredY = Math.pow(positionScreenSpace.y - screenCenterY, 2); // Using lengthSq() for squared length
-
-    // Check if the squared distance is less than or equal to the threshold squared
+    _posVec.current.copy(button.current.position).project(state.camera);
+    const distanceSquaredY = Math.pow(_posVec.current.y, 2);
     const isCloseToCenter =
       distanceSquaredY > thresholdSquared - thresholdSize && distanceSquaredY < thresholdSquared + thresholdSize;
 
-    if (isCloseToCenter) {
-      setShowTooltip(true);
-    } else {
-      setShowTooltip(false);
+    if (isCloseToCenter !== showTooltipRef.current) {
+      showTooltipRef.current = isCloseToCenter;
+      setShowTooltip(isCloseToCenter);
     }
   });
 

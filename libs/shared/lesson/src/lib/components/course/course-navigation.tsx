@@ -315,13 +315,13 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
         />
 
         <group position={[0, 300, -300]}>
-          <Clouds width={80} height={300} depth={300} numClouds={100} />
+          <React.Suspense fallback={null}>
+            <Clouds width={80} height={300} depth={300} numClouds={30} />
+          </React.Suspense>
         </group>
 
         <CloudCover position={[0, 5, -30]} />
         <ZoomControl ref={zoomControlRef} />
-
-        <SafeModuleAwards display={display} />
       </SafeCourseNavigation>
     </div>
   );

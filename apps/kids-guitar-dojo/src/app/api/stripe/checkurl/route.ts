@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { db, stripeCheckout } from '@rocket-house-productions/integration/server';
+import { stripeCheckout } from '@rocket-house-productions/integration/server';
 import { logger } from '@rocket-house-productions/util';
-import { clerkClient } from '@clerk/nextjs/server';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
