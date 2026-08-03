@@ -8223,7 +8223,7 @@ __metadata:
     "@react-three/drei": "npm:10.7.7"
     "@react-three/fiber": "npm:^9.5.0"
     "@slicemachine/adapter-next": "npm:^0.3.95"
-    "@stripe/stripe-js": "npm:^8.11.0"
+    "@stripe/stripe-js": "npm:^9.12.1"
     "@svgr/webpack": "npm:^8.1.0"
     "@swc-node/register": "npm:~1.12.1"
     "@swc/cli": "npm:~0.8.1"
@@ -8325,7 +8325,7 @@ __metadata:
     server-only: "npm:^0.0.1"
     sharp: "npm:^0.35.3"
     slice-machine-ui: "npm:^2.21.4"
-    stripe: "npm:^20.4.1"
+    stripe: "npm:^22.4.0"
     svix: "npm:^1.99.1"
     swiper: "npm:^12.2.0"
     tailwind-merge: "npm:^3.6.0"
@@ -9188,10 +9188,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:^8.11.0":
-  version: 8.11.0
-  resolution: "@stripe/stripe-js@npm:8.11.0"
-  checksum: 10c0/7bada2f8a1c71867b2a0cc31f02e1347ba50b30c6c564635ed5f63d480e093f83902c98311fabc6744bd14dc4cf0fc9122769a4f021a691b70d6fbaf4581c824
+"@stripe/stripe-js@npm:^9.12.1":
+  version: 9.12.1
+  resolution: "@stripe/stripe-js@npm:9.12.1"
+  checksum: 10c0/f8cf2d6f75b7c5252a49212b5a53b44dc0f1706866a45b8c68ce8e438aeefe346b0db3e5464239f7b7eab3683abb6683d00201d6b53ae79ed68d818b2a9faf13
   languageName: node
   linkType: hard
 
@@ -27641,15 +27641,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:^20.4.1":
-  version: 20.4.1
-  resolution: "stripe@npm:20.4.1"
+"stripe@npm:^22.4.0":
+  version: 22.4.0
+  resolution: "stripe@npm:22.4.0"
   peerDependencies:
-    "@types/node": ">=16"
+    "@types/node": ">=18"
   peerDependenciesMeta:
     "@types/node":
       optional: true
-  checksum: 10c0/c4ca1099d70afd175b27ec1fc83f72230c46a95868b85d615a141a806e63dd6d1896fa239f593aca7ad110bb8a14a5fb136b8091453c1c5db663b07529e0f94b
+  checksum: 10c0/0787d5e382c825a3f588529637d4d7630a85f051ab7c086ec4e94fb960a489d324b65ea81729e6da106985c3c32f61b1ecd5b5d6dfb0fb6c93c904dc9e1391df
   languageName: node
   linkType: hard
 
