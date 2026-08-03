@@ -9,6 +9,11 @@ interface CloudProps {
 
 const CloudImages = ['/images/course/cloud-1.png', '/images/course/cloud-2.png', '/images/course/cloud-3.png'];
 
+// Preload textures at module level so they are ready before render
+useTexture.preload('/images/course/cloud-1.png');
+useTexture.preload('/images/course/cloud-2.png');
+useTexture.preload('/images/course/cloud-3.png');
+
 const generateRandomPosition = (width: number, height: number, depth: number): [number, number, number] => [
   (Math.random() - 0.5) * width * 2,
   (Math.random() - 0.5) * height * 2,

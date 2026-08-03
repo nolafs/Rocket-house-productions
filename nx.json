@@ -55,5 +55,6 @@
       "inputs": ["production", "^production"]
     }
   },
-  "nxCloudId": "669e01a55bf5407ce1f501e8"
+  "nxCloudId": "669e01a55bf5407ce1f501e8",
+  "analytics": true
 }

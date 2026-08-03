@@ -71,7 +71,7 @@ export async function POST(req: Request) {
           },
         });
 
-        //check if account by email already exists
+        //check if account by email already exists (e.g. user was deleted then re-registered)
         const existingAccount = await db.account.findFirst({
           where: {
             email: email_addresses[0].email_address,
@@ -79,20 +79,30 @@ export async function POST(req: Request) {
         });
 
         if (existingAccount) {
-          logger.info('[CLERK WEBHOOK] Account with this email already exists, skipping', {
+          // Re-link the existing account to the new Clerk userId so purchases/progress are preserved
+          logger.info('[CLERK WEBHOOK] Account with this email already exists, re-linking to new userId', {
             email: email_addresses[0].email_address,
+            oldUserId: existingAccount.userId,
+            newUserId: id,
           });
-          return NextResponse.json({ message: 'Account already exists, skipping' }, { status: 200 });
+          await db.account.update({
+            where: { id: existingAccount.id },
+            data: {
+              userId: id,
+              firstName: first_name ?? existingAccount.firstName,
+              lastName: last_name ?? existingAccount.lastName,
+            },
+          });
+        } else {
+          await db.account.create({
+            data: {
+              userId: id,
+              firstName: first_name,
+              lastName: last_name,
+              email: email_addresses[0].email_address,
+            },
+          });
         }
-
-        await db.account.create({
-          data: {
-            userId: id,
-            firstName: first_name,
-            lastName: last_name,
-            email: email_addresses[0].email_address,
-          },
-        });
 
         if (pinCipher && pinIv && pinAuthTag) {
           try {
