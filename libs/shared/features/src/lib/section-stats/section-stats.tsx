@@ -3,6 +3,7 @@ import { scrollUpVariants } from '@rocket-house-productions/util';
 import { motion } from 'framer-motion';
 import StatsItem from './stats-item';
 import SectionTitle from '../section-title/section-title';
+import cn from 'classnames';
 
 const AnimatedSectionTitle = motion.create(SectionTitle);
 const AnimatedStatsFact = motion.create(StatsItem);
@@ -17,6 +18,10 @@ type SectionStatsProps = {
 };
 
 export function SectionStats({ data: { title, category, body, items } }: SectionStatsProps) {
+  if (!items?.length) {
+    return;
+  }
+
   return (
     <div>
       {title && (
@@ -32,7 +37,11 @@ export function SectionStats({ data: { title, category, body, items } }: Section
           variants={scrollUpVariants}
         />
       )}
-      <div className="mx-auto grid gap-[30px] md:grid-cols-4">
+      <div
+        className={cn(
+          'mx-auto grid gap-[30px]',
+          items?.length > 4 ? 'md:grid-cols-4' : 'md:grid-cols-' + items?.length,
+        )}>
         {items?.map(
           item =>
             (item.counter || item.title) && (
