@@ -8187,15 +8187,15 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.55.0"
     "@typescript-eslint/utils": "npm:^8.55.0"
     argon2: "npm:^0.44.0"
-    autoprefixer: "npm:^10.4.24"
+    autoprefixer: "npm:^10.5.4"
     axios: "npm:1.19.0"
-    babel-jest: "npm:^30.2.0"
+    babel-jest: "npm:^30.4.1"
     class-variance-authority: "npm:^0.7.1"
     classnames: "npm:^2.5.1"
     clsx: "npm:^2.1.1"
     cmdk: "npm:^1.1.1"
     cookies-next: "npm:^6.1.1"
-    cypress: "npm:^15.10.0"
+    cypress: "npm:^15.19.0"
     date-fns: "npm:^4.1.0"
     dayjs: "npm:^1.11.19"
     eslint: "npm:^9.39.5"
@@ -8267,7 +8267,7 @@ __metadata:
     tailwind-merge: "npm:^3.6.0"
     tailwindcss: "npm:^3.4.19"
     tailwindcss-animate: "npm:^1.0.7"
-    three: "npm:0.181.2"
+    three: "npm:0.185.1"
     three.meshline: "npm:^1.4.0"
     ts-jest: "npm:^29.4.12"
     ts-node: "npm:^10.9.2"
@@ -11802,23 +11802,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.24":
-  version: 10.5.4
-  resolution: "autoprefixer@npm:10.5.4"
-  dependencies:
-    browserslist: "npm:^4.28.6"
-    caniuse-lite: "npm:^1.0.30001806"
-    fraction.js: "npm:^5.3.4"
-    picocolors: "npm:^1.1.1"
-    postcss-value-parser: "npm:^4.2.0"
-  peerDependencies:
-    postcss: ^8.1.0
-  bin:
-    autoprefixer: bin/autoprefixer
-  checksum: 10c0/274ebc9fa50ac0d7a5aa9bc29baa502f2d2006f47a899dac2de4ba86c989defaa62b096e68692e15d53c9ed2b62c57dd047ceba61d344908d8b6e61f220a10e8
-  languageName: node
-  linkType: hard
-
 "autoprefixer@npm:^10.4.9":
   version: 10.4.21
   resolution: "autoprefixer@npm:10.4.21"
@@ -11834,6 +11817,23 @@ __metadata:
   bin:
     autoprefixer: bin/autoprefixer
   checksum: 10c0/de5b71d26d0baff4bbfb3d59f7cf7114a6030c9eeb66167acf49a32c5b61c68e308f1e0f869d92334436a221035d08b51cd1b2f2c4689b8d955149423c16d4d4
+  languageName: node
+  linkType: hard
+
+"autoprefixer@npm:^10.5.4":
+  version: 10.5.4
+  resolution: "autoprefixer@npm:10.5.4"
+  dependencies:
+    browserslist: "npm:^4.28.6"
+    caniuse-lite: "npm:^1.0.30001806"
+    fraction.js: "npm:^5.3.4"
+    picocolors: "npm:^1.1.1"
+    postcss-value-parser: "npm:^4.2.0"
+  peerDependencies:
+    postcss: ^8.1.0
+  bin:
+    autoprefixer: bin/autoprefixer
+  checksum: 10c0/274ebc9fa50ac0d7a5aa9bc29baa502f2d2006f47a899dac2de4ba86c989defaa62b096e68692e15d53c9ed2b62c57dd047ceba61d344908d8b6e61f220a10e8
   languageName: node
   linkType: hard
 
@@ -11940,7 +11940,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-jest@npm:30.4.1, babel-jest@npm:^30.2.0":
+"babel-jest@npm:30.4.1, babel-jest@npm:^30.4.1":
   version: 30.4.1
   resolution: "babel-jest@npm:30.4.1"
   dependencies:
@@ -13897,7 +13897,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress@npm:^15.10.0":
+"cypress@npm:^15.19.0":
   version: 15.19.0
   resolution: "cypress@npm:15.19.0"
   dependencies:
@@ -28142,10 +28142,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"three@npm:0.181.2":
-  version: 0.181.2
-  resolution: "three@npm:0.181.2"
-  checksum: 10c0/b34b6240fbedebc7f8a9317c062f7ee5339de0e56250ba2ae3de52edb9c517dc8e9aaf6fe242e1bfff56808081e095db28be5ef1a05947e0c82aefada95c628b
+"three@npm:0.185.1":
+  version: 0.185.1
+  resolution: "three@npm:0.185.1"
+  checksum: 10c0/d15d3fa934f53c9fd6706965ff9946f55653bc728cf582e68acb03421c0179d7662f7d270e14bcf72923e140c36779e7fba6b0f6e542e07deade7342f63c8bdf
   languageName: node
   linkType: hard
 
