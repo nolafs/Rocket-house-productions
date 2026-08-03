@@ -25,7 +25,10 @@ export function VideoControl({ poster, handlePlay, width, height, title, loading
   };
 
   return (
-    <button onClick={play} className={cn(showPlayer ? 'hidden' : 'block')} aria-label={`Play ${title}`}>
+    <button
+      onClick={play}
+      className={cn('h-full w-full', showPlayer ? 'hidden' : 'block')}
+      aria-label={`Play ${title}`}>
       <div className={'sr-only'}>Play ${title}</div>
       <div className={'fill-secondary absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center'}>
         <div className={'flex h-16 w-16 items-center justify-center rounded-full bg-white shadow'}>
@@ -37,20 +40,22 @@ export function VideoControl({ poster, handlePlay, width, height, title, loading
           </svg>
         </div>
       </div>
-      {poster ? (
-        <PrismicNextImage
-          field={poster}
-          width={width}
-          height={height}
-          fallbackAlt=""
-          loading={loading}
-          className={'z-10 h-auto w-full object-fill'}
-          imgixParams={{ fit: 'fill', fm: 'webp' }}
-          quality={80}
-        />
-      ) : (
-        <Image width={width} height={height} loading={'lazy'} src={placeholder} quality={80} alt={title} />
-      )}
+      <span className={'not-prose'}>
+        {poster ? (
+          <PrismicNextImage
+            field={poster}
+            width={width}
+            height={height}
+            fallbackAlt=""
+            loading={loading}
+            className={'h-full w-full object-cover'}
+            imgixParams={{ fit: 'crop', fm: 'webp', q: 90 }}
+            quality={90}
+          />
+        ) : (
+          <Image width={width} height={height} loading={'lazy'} src={placeholder} quality={80} alt={title} />
+        )}
+      </span>
     </button>
   );
 }

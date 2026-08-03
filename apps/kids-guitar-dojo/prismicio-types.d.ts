@@ -22,14 +22,16 @@ type PickContentRelationshipFieldData<
       TRelationship['fields'][number],
       prismic.CustomTypeModelFetchContentRelationshipLevel1
     > as TSubRelationship['id']]: ContentRelationshipFieldWithData<TSubRelationship['customtypes'], TLang>;
-  } & { // Group
+  } & // Group
+  {
     [TGroup in Extract<
       TRelationship['fields'][number],
       prismic.CustomTypeModelFetchGroupLevel1 | prismic.CustomTypeModelFetchGroupLevel2
     > as TGroup['id']]: TData[TGroup['id']] extends prismic.GroupField<infer TGroupData>
       ? prismic.GroupField<PickContentRelationshipFieldData<TGroup, TGroupData, TLang>>
       : never;
-  } & { // Other fields
+  } & // Other fields
+  {
     [TFieldKey in Extract<TRelationship['fields'][number], string>]: TFieldKey extends keyof TData
       ? TData[TFieldKey]
       : never;
@@ -949,6 +951,28 @@ interface OnboardingDocumentData {
   onboarding_intro_header: prismic.KeyTextField;
 
   /**
+   * Onboarding Intro Video field in *Onboarding*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.intro_video
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/embed
+   */
+  intro_video: prismic.EmbedField;
+
+  /**
+   * Onboarding intro video poster field in *Onboarding*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: onboarding.onboarding_intro_video_poster
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/image
+   */
+  onboarding_intro_video_poster: prismic.ImageField<never>;
+
+  /**
    * Onboarding Intro Body field in *Onboarding*
    *
    * - **Field Type**: Rich Text
@@ -1259,7 +1283,7 @@ interface PricingDocumentData {
   free: prismic.BooleanField;
 
   /**
-   * Course Id (Free (.)account only) field in *Pricing*
+   * Course Id (Free account only) field in *Pricing*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*

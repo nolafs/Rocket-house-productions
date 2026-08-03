@@ -88,7 +88,6 @@ export function Youtube({
               playing={showPlayer}
               muted={autoplay}
               ref={ref}
-              light={poster}
               id={id}
               src={src}
               loop={loop}

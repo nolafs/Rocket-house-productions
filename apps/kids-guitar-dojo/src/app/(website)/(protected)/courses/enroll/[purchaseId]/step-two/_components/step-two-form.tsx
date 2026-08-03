@@ -115,7 +115,10 @@ export default function StepTwoForm({ baseUrl, header, body }: StepTwoFormProps)
                       <DatePicker
                         {...field}
                         name="birthday"
-                        onChange={field.onChange}
+                        onChange={(value: string) => {
+                          field.onChange(value);
+                          updateOnBoardingDetails({ ...onBoardingData, birthday: value });
+                        }}
                         selected={field.value}
                         selectionType={'year'}
                         placeholder={'Select your birthday'}
