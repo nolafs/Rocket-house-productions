@@ -1,9 +1,7 @@
 {
-  "format": "custom",
   "id": "settings",
   "label": "Settings",
   "repeatable": false,
-  "status": true,
   "json": {
     "Main": {
       "contact_form_enquiries": {
@@ -47,8 +45,8 @@
               "config": {
                 "label": "Label",
                 "placeholder": "",
-                "allowTargetBlank": true,
-                "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+                "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+                "allowTargetBlank": true
               }
             },
             "link": {
@@ -73,7 +71,15 @@
               "config": {
                 "label": "Type",
                 "placeholder": "",
-                "options": ["facebook", "instagram", "twitter", "gitHub", "youtube", "tiktok", "linkedin"]
+                "options": [
+                  "facebook",
+                  "instagram",
+                  "twitter",
+                  "gitHub",
+                  "youtube",
+                  "tiktok",
+                  "linkedin"
+                ]
               }
             },
             "name": {
@@ -88,8 +94,8 @@
               "config": {
                 "label": "Page Url",
                 "placeholder": "",
-                "allowTargetBlank": false,
-                "select": null
+                "select": null,
+                "allowTargetBlank": false
               }
             }
           }
@@ -165,5 +171,7 @@
         }
       }
     }
-  }
+  },
+  "status": true,
+  "format": "custom"
 }
