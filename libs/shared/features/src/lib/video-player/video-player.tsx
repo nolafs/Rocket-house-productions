@@ -44,20 +44,26 @@ export function VideoPlayer({
 
   if (provider_name === 'YouTube') {
     return (
-      <Youtube
-        id={id}
-        title={title || id}
-        poster={image}
-        src={embed_url}
-        width={width}
-        loading={loading}
-        height={height}
-      />
+      <div className={'not-prose'}>
+        <Youtube
+          id={id}
+          title={title || id}
+          poster={image}
+          src={embed_url}
+          width={width}
+          loading={loading}
+          height={height}
+        />
+      </div>
     );
   }
 
   if (provider_name === 'Vimeo') {
-    return <Vimeo id={id} title={title || id} poster={image} loading={loading} src={embed_url} />;
+    return (
+      <div className={'not-prose'}>
+        <Vimeo id={id} title={title || id} poster={image} loading={loading} src={embed_url} />
+      </div>
+    );
   }
 
   return <div className={'block w-full p-5'}>Type is undefined</div>;
