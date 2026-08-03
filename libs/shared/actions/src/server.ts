@@ -11,7 +11,6 @@ export { getChild } from './get-child';
 export { getQuiz } from './get-quiz';
 export { getCourse } from './get-course';
 export { getCourses } from './get-courses';
-export { freeCheckout } from './free-checkout';
 export { stripeCheckoutAction } from './stripe-checkout-action';
 export { sendMail } from './send-mail';
 export { VerifyCaptcha } from './verifiy-captcha';

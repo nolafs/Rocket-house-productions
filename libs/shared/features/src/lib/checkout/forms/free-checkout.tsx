@@ -1,5 +1,5 @@
 'use client';
-import { freeCheckout } from '@rocket-house-productions/actions/server';
+import axios from 'axios';
 import React, { useTransition } from 'react';
 import CheckoutButton from './checkout-button';
 
@@ -13,17 +13,13 @@ export function FreeCheckout({ courseId, mostPopular, label = 'Start now' }: Fre
   const [pending, startTransition] = useTransition();
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
     startTransition(async () => {
       try {
-        const formData = new FormData();
-        formData.append('courseId', courseId);
+        const res = await axios.post('/api/stripe/checkfree', { courseId });
 
-        const result = await freeCheckout(formData);
-
-        if (result.success) {
-          // Use hard navigation for most reliable cookie handling
+        if (res.data) {
           setTimeout(() => {
             window.location.href = '/courses/success';
           }, 300);
