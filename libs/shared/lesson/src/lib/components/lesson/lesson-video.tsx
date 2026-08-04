@@ -1,5 +1,5 @@
 'use client';
-import { Child, Lesson } from '@prisma/client';
+import { Child, Lesson } from '@rocket-house-productions/prisma-client';
 import { useEffect, useRef } from 'react';
 import { SectionModule } from '@rocket-house-productions/types';
 import { useLessonProgressionStore, useModuleProgressStore, usePointsStore } from '@rocket-house-productions/providers';

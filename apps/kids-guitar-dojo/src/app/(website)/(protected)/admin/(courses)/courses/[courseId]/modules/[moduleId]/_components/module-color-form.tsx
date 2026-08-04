@@ -1,5 +1,5 @@
 'use client';
-import { Module } from '@prisma/client';
+import { Module } from '@rocket-house-productions/prisma-client';
 import * as z from 'zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

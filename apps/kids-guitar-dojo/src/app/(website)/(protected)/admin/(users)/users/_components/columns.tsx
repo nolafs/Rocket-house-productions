@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@rocket-house-productions/shadcn-ui';
 import { Badge, Button } from '@rocket-house-productions/shadcn-ui/server';
-import { Account, Purchase } from '@prisma/client';
+import { Account, Purchase } from '@rocket-house-productions/prisma-client';
 
 export const columns: ColumnDef<Account>[] = [
   {

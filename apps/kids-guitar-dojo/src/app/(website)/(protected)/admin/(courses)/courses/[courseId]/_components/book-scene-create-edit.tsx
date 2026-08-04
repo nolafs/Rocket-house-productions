@@ -1,6 +1,6 @@
 import z from 'zod';
 import { useMemo, useState } from 'react';
-import { BookScene } from '@prisma/client';
+import { BookScene } from '@rocket-house-productions/prisma-client';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {

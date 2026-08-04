@@ -4,7 +4,7 @@ import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
 import Image from 'next/image';
 import CourseBuyButton from './course-buy-button';
 import { userSession } from '@/types/userSesssion';
-import { MembershipSettings, Tier } from '@prisma/client';
+import { MembershipSettings, Tier } from '@rocket-house-productions/prisma-client';
 import { ArrowRight } from 'lucide-react';
 import cn from 'classnames';
 

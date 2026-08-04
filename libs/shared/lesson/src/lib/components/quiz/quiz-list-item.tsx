@@ -1,5 +1,5 @@
 'use client';
-import { Question, Questionary } from '@prisma/client';
+import { Question, Questionary } from '@rocket-house-productions/prisma-client';
 import { Form, FormField, FormItem } from '@rocket-house-productions/shadcn-ui';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';

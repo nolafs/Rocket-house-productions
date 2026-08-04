@@ -1,5 +1,5 @@
 import 'server-only';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@rocket-house-productions/prisma-client';
 import { withAccelerate } from '@prisma/extension-accelerate';
 
 const prismaClientSingleton = () => {

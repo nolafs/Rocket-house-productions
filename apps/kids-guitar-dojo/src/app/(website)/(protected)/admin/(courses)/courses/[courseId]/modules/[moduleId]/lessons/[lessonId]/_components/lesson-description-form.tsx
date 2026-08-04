@@ -15,7 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@rocket-hou
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
-import { Lesson } from '@prisma/client';
+import { Lesson } from '@rocket-house-productions/prisma-client';
 import { Editor } from '@rocket-house-productions/features';
 import { Preview } from '@rocket-house-productions/integration';
 

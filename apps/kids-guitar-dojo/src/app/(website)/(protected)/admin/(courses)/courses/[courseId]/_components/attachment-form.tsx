@@ -19,7 +19,7 @@ import {
   Input,
 } from '@rocket-house-productions/shadcn-ui';
 import { Badge, Button } from '@rocket-house-productions/shadcn-ui/server';
-import { Course } from '@prisma/client';
+import { Course } from '@rocket-house-productions/prisma-client';
 import { FileUpload } from '@rocket-house-productions/features';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

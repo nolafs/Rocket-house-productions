@@ -24,7 +24,7 @@ import {
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
-import { Lesson } from '@prisma/client';
+import { Lesson } from '@rocket-house-productions/prisma-client';
 
 interface ChapterAccessFormProps {
   initialData: Lesson;

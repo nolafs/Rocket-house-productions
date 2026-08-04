@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { getTransactions } from '@rocket-house-productions/actions/server';
-import type { PurchaseTransaction } from '@prisma/client';
+import type { PurchaseTransaction } from '@rocket-house-productions/prisma-client';
 import TransactionsTable from './components/transaction-table';
 import { TransactionRow } from './components/transactions-columns';
 

@@ -2,7 +2,7 @@
 import { forwardRef } from 'react';
 import { Checkbox, FormField } from '@rocket-house-productions/shadcn-ui';
 import cn from 'classnames';
-import { Question } from '@prisma/client';
+import { Question } from '@rocket-house-productions/prisma-client';
 
 interface QuestionCheckboxProps {
   item: Question;

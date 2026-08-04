@@ -1,7 +1,7 @@
 'use client';
 import { SectionCourse, SectionLesson, SectionModule } from '@rocket-house-productions/types';
 import QuizScoreDisplay from './quiz-score-display';
-import { Question, Questionary } from '@prisma/client';
+import { Question, Questionary } from '@rocket-house-productions/prisma-client';
 import QuizList from './quiz-list';
 import QuizNext from './quiz-next';
 import { useRef, useState } from 'react';

@@ -1,5 +1,5 @@
 import { KeyTextField, RichTextField } from '@prismicio/client';
-import { Tier as PrismaTier } from '@prisma/client';
+import { Tier as PrismaTier } from '@rocket-house-productions/prisma-client';
 export type Tier = {
   id: string;
   data: {

@@ -32,6 +32,7 @@ const nextConfig = {
   nx: {},
   serverExternalPackages: [
     '@prisma/client',
+    '@rocket-house-productions/prisma-client',
     'html2canvas',
     'video.js',
     'player.js',

@@ -1,6 +1,6 @@
 'use client';
 import { forwardRef, useEffect, useRef, useState } from 'react';
-import { Question, Questionary } from '@prisma/client';
+import { Question, Questionary } from '@rocket-house-productions/prisma-client';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';

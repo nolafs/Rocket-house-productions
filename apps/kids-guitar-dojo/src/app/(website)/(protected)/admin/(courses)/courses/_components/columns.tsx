@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { Course } from '@prisma/client';
+import { Course } from '@rocket-house-productions/prisma-client';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react';

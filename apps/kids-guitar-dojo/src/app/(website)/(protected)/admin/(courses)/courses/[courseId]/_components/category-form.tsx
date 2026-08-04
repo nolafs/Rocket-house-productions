@@ -15,7 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage, Combobox } from '@
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
-import { Course } from '@prisma/client';
+import { Course } from '@rocket-house-productions/prisma-client';
 
 interface CategoryFormProps {
   initialData: Course;

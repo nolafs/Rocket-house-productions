@@ -7,7 +7,7 @@ import Link from 'next/link';
 import cn from 'classnames';
 
 import NextButton from './button-next';
-import { Child } from '@prisma/client';
+import { Child } from '@rocket-house-productions/prisma-client';
 import { assignChildToPurchase } from './action';
 import { Label, RadioGroup, RadioGroupItem } from '@rocket-house-productions/shadcn-ui';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';

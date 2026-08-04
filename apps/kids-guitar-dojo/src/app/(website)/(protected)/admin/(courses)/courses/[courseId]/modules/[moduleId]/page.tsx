@@ -15,7 +15,7 @@ import ModuleAwardForm from './_components/module-award-form';
 
 import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { db } from '@rocket-house-productions/integration/server';
-import { Module, ModuleAttachment, Lesson } from '@prisma/client';
+import { Module, ModuleAttachment, Lesson } from '@rocket-house-productions/prisma-client';
 
 const ModuleIdPage = async (props: { params: Promise<{ courseId: string; moduleId: string }> }) => {
   const params = await props.params;

@@ -23,7 +23,7 @@ import {
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
-import { Course } from '@prisma/client';
+import { Course } from '@rocket-house-productions/prisma-client';
 
 interface OrderFormProps {
   initialData: Course;

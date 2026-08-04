@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@rocket-house-productions/shadcn-ui';
 import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
-import { Account, Child, Purchase } from '@prisma/client';
+import { Account, Child, Purchase } from '@rocket-house-productions/prisma-client';
 import dayjs from 'dayjs';
 
 export const columns: ColumnDef<Child>[] = [

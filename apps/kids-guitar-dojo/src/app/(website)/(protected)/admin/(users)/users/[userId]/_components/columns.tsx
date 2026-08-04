@@ -6,7 +6,7 @@ import { ArrowUpDown } from 'lucide-react';
 
 // Components
 import { Badge, Button } from '@rocket-house-productions/shadcn-ui/server';
-import { Purchase } from '@prisma/client';
+import { Purchase } from '@rocket-house-productions/prisma-client';
 import DialogAddress from './dialog-address';
 import { CurrencyToSymbol } from '@rocket-house-productions/util';
 

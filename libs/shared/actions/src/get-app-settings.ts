@@ -1,6 +1,6 @@
 'use server';
 import { db } from '@rocket-house-productions/integration/server';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@rocket-house-productions/prisma-client';
 
 export type AppSettingsPayload = Prisma.AppSettingsGetPayload<{
   include: {

@@ -19,7 +19,8 @@
       "options": {
         "root": "apps/kids-guitar-dojo",
         "outputPath": "apps/kids-guitar-dojo",
-        "buildLibsFromSource": true
+        "buildLibsFromSource": true,
+        "webpack": true
       },
       "configurations": {
         "development": {
@@ -38,8 +39,7 @@
         "root": "apps/kids-guitar-dojo",
         "port": 3000,
         "buildTarget": "kids-guitar-dojo:build:development",
-        "dev": true,
-        "turbo": true
+        "dev": true
       },
       "configurations": {
         "production": {

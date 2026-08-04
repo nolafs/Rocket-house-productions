@@ -1,4 +1,4 @@
-import { Prisma, Purchase } from '@prisma/client';
+import { Prisma, Purchase } from '@rocket-house-productions/prisma-client';
 
 export type CourseModules = Prisma.CourseGetPayload<{
   include: {
