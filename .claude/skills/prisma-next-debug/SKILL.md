@@ -1,4 +1,4 @@
----
+/---
 name: prisma-next-debug
 description: Read a Prisma Next structured error envelope and route to the right recovery — code, domain, severity, why, fix, meta. Use for error, exception, my emit failed, my query won't typecheck, my query crashed, my migration won't apply, MIGRATION.HASH_MISMATCH, BUDGET.ROWS_EXCEEDED, BUDGET.TIME_EXCEEDED, RUNTIME.ABORTED, PLAN.HASH_MISMATCH, CONTRACT.MARKER_MISSING, PN-RUN-3001, PN-RUN-3002, PN-RUN-3030, PN-MIG-2001, PN-CLI-4011, PN-SCHEMA-0001, drift, capability missing, planner conflict, prisma studio, EXPLAIN, query log, db.end, db.close, script won't exit, hangs, close connection, pool.end, client is closed.
 ---
