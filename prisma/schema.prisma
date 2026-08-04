@@ -5,8 +5,10 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider            = "prisma-client"
+  output              = "../generated/prisma"
+  moduleFormat        = "esm" // or "cjs" if your NX libs compile to CJS
+  importFileExtension = "ts" // makes imports say ./client.ts instead of ./client.js
 }
 
 datasource db {

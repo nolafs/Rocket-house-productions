@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripeCheckout } from '@rocket-house-productions/integration/server';
 import { logger } from '@rocket-house-productions/util';
+import { auth } from '@clerk/nextjs/server';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
+
+  const authData = await auth();
+
+  if (!authData.userId) {
+    return new NextResponse('Unauthorized', { status: 401 });
+  }
 
   const { productId, userId, email } = data;
 
@@ -12,6 +19,10 @@ export async function POST(req: NextRequest) {
   }
 
   if (!userId) {
+    throw new Error('Invalid user id');
+  }
+
+  if (userId !== authData.userId) {
     throw new Error('Invalid user id');
   }
 
