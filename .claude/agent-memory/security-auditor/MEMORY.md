@@ -1,0 +1,2 @@
+- [Security Architecture Overview](project_security_architecture.md) — Clerk auth, Prisma ORM, Svix webhook verification, MailerLite — established patterns
+- [Recurring Vulnerability Patterns](recurring_vulnerabilities.md) — Missing ownership checks on purchases, unauthenticated checkout, IDOR on orders
