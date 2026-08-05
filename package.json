@@ -118,6 +118,10 @@
     "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },
+  "optionalDependencies": {
+    "@img/sharp-linux-x64": "0.34.5",
+    "@img/sharp-libvips-linux-x64": "1.2.4"
+  },
   "devDependencies": {
     "@babel/core": "^7.29.7",
     "@babel/preset-react": "^7.29.7",
