@@ -1,29 +1,45 @@
 import 'server-only';
+
 import { PrismaClient } from '@rocket-house-productions/prisma-client';
 import { withAccelerate } from '@prisma/extension-accelerate';
-
 import { PrismaPg } from '@prisma/adapter-pg';
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const createPrismaClient = () => {
+  const url = process.env.DATABASE_URL;
 
-const prismaClientSingleton = () => {
-  const url = process.env.DATABASE_URL!;
-  const log = process.env.NODE_ENV === 'development' ? (['query', 'error', 'warn'] as const) : (['error'] as const);
-
-  if (url.startsWith('prisma://')) {
-    return new PrismaClient({ accelerateUrl: url, log: [...log] }).$extends(withAccelerate());
+  if (!url) {
+    throw new Error('DATABASE_URL is not defined');
   }
 
-  const adapter = new PrismaPg({ connectionString: url });
-  return new PrismaClient({ adapter, log: [...log] });
+  const log = process.env.NODE_ENV === 'development' ? (['query', 'error', 'warn'] as const) : (['error'] as const);
+
+  if (url.startsWith('prisma://') || url.startsWith('prisma+postgres://')) {
+    return new PrismaClient({
+      accelerateUrl: url,
+      log: [...log],
+    }).$extends(withAccelerate());
+  }
+
+  const adapter = new PrismaPg({
+    connectionString: url,
+  });
+
+  return new PrismaClient({
+    adapter,
+    log: [...log],
+  }).$extends(withAccelerate());
 };
 
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
-} & typeof global;
+type DatabaseClient = ReturnType<typeof createPrismaClient>;
 
-export const db = globalThis.prismaGlobal ?? prismaClientSingleton();
+const globalForPrisma = globalThis as unknown as {
+  prismaGlobal?: DatabaseClient;
+};
+
+export const db = globalForPrisma.prismaGlobal ?? createPrismaClient();
+
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prismaGlobal = db;
+}
 
 export default db;
-
-if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = db;
