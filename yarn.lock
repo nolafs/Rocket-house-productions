@@ -8171,6 +8171,8 @@ __metadata:
     "@gsap/react": "npm:^2.1.2"
     "@hello-pangea/dnd": "npm:^18.0.1"
     "@hookform/resolvers": "npm:^5.7.1"
+    "@img/sharp-libvips-linux-x64": "npm:1.2.4"
+    "@img/sharp-linux-x64": "npm:0.34.5"
     "@madzadev/audio-player": "npm:^2.1.14"
     "@mailerlite/mailerlite-nodejs": "npm:^1.6.0"
     "@netlify/plugin-nextjs": "npm:^5.15.13"
@@ -8333,6 +8335,11 @@ __metadata:
     webpack: "npm:^5.109.2"
     zod: "npm:^4.4.3"
     zustand: "npm:^5.0.14"
+  dependenciesMeta:
+    "@img/sharp-libvips-linux-x64":
+      optional: true
+    "@img/sharp-linux-x64":
+      optional: true
   languageName: unknown
   linkType: soft
 
