@@ -18,8 +18,12 @@
 
 [functions]
   included_files = [
-    "!node_modules/sharp/vendor/8.12.2/darwin-*/**/*",
-    "!node_modules/sharp/build/Release/sharp-darwin-*"
+    "node_modules/@img/sharp-linux-x64/**",
+    "node_modules/@img/sharp-libvips-linux-x64/**",
+    "!node_modules/@img/sharp-darwin-arm64/**",
+    "!node_modules/@img/sharp-darwin-x64/**",
+    "!node_modules/@img/sharp-libvips-darwin-arm64/**",
+    "!node_modules/@img/sharp-libvips-darwin-x64/**"
   ]
 
 [[redirects]]
