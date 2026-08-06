@@ -1965,6 +1965,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@clerk/shared@npm:^3.47.2":
+  version: 3.47.8
+  resolution: "@clerk/shared@npm:3.47.8"
+  dependencies:
+    csstype: "npm:3.1.3"
+    dequal: "npm:2.0.3"
+    glob-to-regexp: "npm:0.4.1"
+    js-cookie: "npm:3.0.7"
+    std-env: "npm:^3.9.0"
+    swr: "npm:2.3.4"
+  peerDependencies:
+    react: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
+    react-dom: ^18.0.0 || ~19.0.3 || ~19.1.4 || ~19.2.3 || ~19.3.0-0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/24867cc6eba45ac9c5d039f0aa1566cb3f83c072acc4948666db61e0078a42157ba4b20231fac8fd5d70f26113494880cba9f87c8f648b5bf0d4d44012830570
+  languageName: node
+  linkType: hard
+
 "@clerk/shared@npm:^4.26.0":
   version: 4.26.0
   resolution: "@clerk/shared@npm:4.26.0"
@@ -1982,6 +2004,15 @@ __metadata:
     react-dom:
       optional: true
   checksum: 10c0/18bd772d56f985605897ad619120107f3a6566f68bb755efd9d56f05f6ca00ba905070413493e1dbec9fa502df557628e39696b86ff1102c52922dbb8aaf0325
+  languageName: node
+  linkType: hard
+
+"@clerk/types@npm:4.101.20":
+  version: 4.101.20
+  resolution: "@clerk/types@npm:4.101.20"
+  dependencies:
+    "@clerk/shared": "npm:^3.47.2"
+  checksum: 10c0/1523f8efdbdd9c9c6a1519d888225d0ad816feb0c33d75903b6254797fb0d9cefebc8cba5f5caaa30c6d1d3d794e3b1950fdf87e55a4ce8c8be5c17a25173cdc
   languageName: node
   linkType: hard
 
@@ -8147,6 +8178,7 @@ __metadata:
     "@babel/core": "npm:^8.0.1"
     "@babel/preset-react": "npm:^8.0.1"
     "@clerk/nextjs": "npm:^7.6.5"
+    "@clerk/types": "npm:4.101.20"
     "@ducanh2912/next-pwa": "npm:^10.2.9"
     "@eslint/eslintrc": "npm:^3.3.6"
     "@eslint/js": "npm:^10.0.1"
@@ -14149,7 +14181,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csstype@npm:^3.0.2, csstype@npm:^3.1.3":
+"csstype@npm:3.1.3, csstype@npm:^3.0.2, csstype@npm:^3.1.3":
   version: 3.1.3
   resolution: "csstype@npm:3.1.3"
   checksum: 10c0/80c089d6f7e0c5b2bd83cf0539ab41474198579584fa10d86d0cafe0642202343cbc119e076a0b1aece191989477081415d66c9fefbf3c957fc2fc4b7009f248
@@ -27719,7 +27751,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"std-env@npm:3.10.0":
+"std-env@npm:3.10.0, std-env@npm:^3.9.0":
   version: 3.10.0
   resolution: "std-env@npm:3.10.0"
   checksum: 10c0/1814927a45004d36dde6707eaf17552a546769bc79a6421be2c16ce77d238158dfe5de30910b78ec30d95135cc1c59ea73ee22d2ca170f8b9753f84da34c427f
@@ -28214,6 +28246,18 @@ __metadata:
   version: 12.2.0
   resolution: "swiper@npm:12.2.0"
   checksum: 10c0/459c9621e170130c0a6874b05e24fefd0411529600a17b2d8afc4987dc2e803ab18d42983081b723423819d464568fdb541b6c3f517e558c60888c644dc4ead1
+  languageName: node
+  linkType: hard
+
+"swr@npm:2.3.4":
+  version: 2.3.4
+  resolution: "swr@npm:2.3.4"
+  dependencies:
+    dequal: "npm:^2.0.3"
+    use-sync-external-store: "npm:^1.4.0"
+  peerDependencies:
+    react: ^16.11.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/c5cf536c2652fc6b64d64d3ce232f8bbe25dcaffc688f852fb81cf06e28b59280ebebde752429d9801c3af8e7a956ee7242376a6386a599cedc0000b862a712d
   languageName: node
   linkType: hard
 

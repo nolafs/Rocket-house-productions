@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^7.6.5",
+    "@clerk/types": "4.101.20",
     "@ducanh2912/next-pwa": "^10.2.9",
     "@gsap/react": "^2.1.2",
     "@hello-pangea/dnd": "^18.0.1",
