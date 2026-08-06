@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { SettingsIcon } from 'lucide-react';
-import { SignedIn, SignedOut } from '@clerk/nextjs';
+import { Show } from '@clerk/nextjs';
 
 import cn from 'classnames';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
@@ -49,22 +49,22 @@ export function NavbarSimple({
           <div className="other-options block self-center pb-[10px] pt-[20px] xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
             <ul className={'flex flex-row items-center justify-center space-x-2'}>
               <li className="flex items-center justify-center">
-                <SignedOut>
+                <Show when="signed-out">
                   <Link href="/sign-in" className={cn(buttonVariants({ variant: 'link' }), '!text-[16px] font-medium')}>
                     Log in
                   </Link>
-                </SignedOut>
+                </Show>
                 <UserSignedInDropdown />
               </li>
               <li>
-                <SignedOut>
+                <Show when="signed-out">
                   <Link
                     href="/sign-up"
                     className={cn(buttonVariants({ variant: 'default', size: 'sm' }), '!text-[14px] uppercase')}>
                     Buy now
                   </Link>
-                </SignedOut>
-                <SignedIn>
+                </Show>
+                <Show when="signed-in">
                   <div className={'flex space-x-1'}>
                     {isAdmin && (
                       <Link href="/admin" className={buttonVariants({ variant: 'default' })}>
@@ -75,7 +75,7 @@ export function NavbarSimple({
                       </Link>
                     )}
                   </div>
-                </SignedIn>
+                </Show>
               </li>
             </ul>
           </div>

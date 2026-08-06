@@ -12,7 +12,7 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import { Badge } from '@rocket-house-productions/shadcn-ui/server';
 import Link from 'next/link';
-import { SignedIn, useClerk, useUser } from '@clerk/nextjs';
+import { Show, useClerk, useUser } from '@clerk/nextjs';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { UserResource } from '@clerk/types';
@@ -56,7 +56,7 @@ export function UserSignedInDropdown() {
   const tier: string = user?.publicMetadata?.tier as string;
 
   return (
-    <SignedIn>
+    <Show when="signed-in">
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
@@ -100,7 +100,7 @@ export function UserSignedInDropdown() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </SignedIn>
+    </Show>
   );
 }
 
