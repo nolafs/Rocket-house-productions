@@ -74,6 +74,8 @@ interface ChildRow {
 
 interface PurchaseRow {
   courseId: string;
+  category: string | null;
+  billingAddress: string | null;
   createdAt: Date;
 }
 
@@ -110,10 +112,12 @@ interface CourseSlot {
 
 interface SyncPayload {
   lifecycle_stage: LifecycleStage;
+  member_type: string;        // free | standard | premium
   lessons_done: number;
   child_name: string;
   child_age: number | null;
-  has_purchased: string; // 'true' | 'false'
+  has_purchased: string;      // 'true' | 'false'
+  location: string | null;    // country from billing address
   account_created_at: string; // ISO date
   [key: string]: string | number | null; // book1_* … bookN_*
 }
@@ -181,7 +185,7 @@ async function loadAccounts(): Promise<AccountRow[]> {
         },
       },
       purchases: {
-        select: { courseId: true, createdAt: true },
+        select: { courseId: true, category: true, billingAddress: true, createdAt: true },
       },
       marketingProfile: {
         select: { id: true, pushedHash: true, lifecycleStage: true },
@@ -245,12 +249,35 @@ export function mapAccountToPayload(account: AccountRow, courses: CourseSlot[]):
     ? child.childProgress.filter(p => p.isCompleted).length
     : 0;
 
+  // Derive member_type from highest purchase category
+  const TIER_RANK: Record<string, number> = { included: 3, premium: 3, standard: 2, free: 1 };
+  const memberType = account.purchases.reduce<string>((best, p) => {
+    const rank = TIER_RANK[p.category ?? ''] ?? 0;
+    return rank > (TIER_RANK[best] ?? 0) ? (p.category ?? best) : best;
+  }, 'free');
+
+  // Derive location from most recent purchase billing address (country field)
+  const location = account.purchases
+    .slice()
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .reduce<string | null>((found, p) => {
+      if (found) return found;
+      try {
+        const addr = JSON.parse(p.billingAddress ?? '{}') as Record<string, unknown>;
+        return (addr['country'] as string | null) ?? null;
+      } catch {
+        return null;
+      }
+    }, null);
+
   const payload: SyncPayload = {
     lifecycle_stage: lifecycle,
+    member_type: memberType,
     lessons_done: totalLessonsDone,
     child_name: child?.name ?? '',
     child_age: child ? childAge(child.birthday) : null,
     has_purchased: account.purchases.length > 0 ? 'true' : 'false',
+    location,
     account_created_at: account.createdAt.toISOString().slice(0, 10),
   };
 
@@ -290,6 +317,34 @@ function hashPayload(payload: SyncPayload): string {
 // MailerLite API
 // ---------------------------------------------------------------------------
 
+/**
+ * Retry an async operation on MailerLite 429 rate-limit responses.
+ * Respects the Retry-After header when present; falls back to exponential backoff.
+ */
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 4): Promise<T> {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (err: unknown) {
+      const status = (err as { response?: { status?: number; headers?: Record<string, string> } })
+        ?.response?.status;
+      if (status === 429 && attempt < maxRetries) {
+        const retryAfter = parseInt(
+          (err as { response?: { headers?: Record<string, string> } })
+            ?.response?.headers?.['retry-after'] ?? '0',
+          10,
+        );
+        const waitMs = retryAfter > 0 ? retryAfter * 1000 : Math.min(1000 * 2 ** attempt, 30_000);
+        await new Promise(resolve => setTimeout(resolve, waitMs));
+        continue;
+      }
+      throw err;
+    }
+  }
+  /* istanbul ignore next */
+  throw new Error('withRetry: unreachable');
+}
+
 function getMailerLite() {
   const apiKey = process.env['MAILERLITE_API_KEY'];
   if (!apiKey) throw new Error('MAILERLITE_API_KEY is not set');
@@ -313,7 +368,7 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
   let existingStatus: string | null = null;
 
   try {
-    const resp = await ml.subscribers.find(email);
+    const resp = await withRetry(() => ml.subscribers.find(email));
     const raw = (resp.data as unknown as Record<string, unknown>)?.['data'] as Record<string, unknown> | undefined;
 
     existingStatus = (raw?.['status'] as string | null) ?? null;
@@ -343,14 +398,16 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
     if (v !== null && v !== undefined) mergedFields[k] = v;
   }
 
-  await ml.subscribers.createOrUpdate({
-    email,
-    fields: mergedFields,
-    groups: existingGroups,
-    // Only set 'active' for new subscribers; keep the existing status for
-    // returning subscribers so we don't override manually managed states.
-    status: existingStatus ?? 'active',
-  });
+  await withRetry(() =>
+    ml.subscribers.createOrUpdate({
+      email,
+      fields: mergedFields,
+      groups: existingGroups,
+      // Only set 'active' for new subscribers; keep the existing status for
+      // returning subscribers so we don't override manually managed states.
+      status: existingStatus ?? 'active',
+    }),
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -430,7 +487,12 @@ export async function runPushSync(opts: PushSyncOptions = {}): Promise<SyncResul
       return { status: 200, pushed: 0, skipped: accounts.length, errors: 0, total: accounts.length };
     }
 
-    const CONCURRENCY = 5;
+    // 3 concurrent × 2 API calls each = 6 calls per batch.
+    // 250ms pause between batches keeps sustained rate ~24 req/s,
+    // well under MailerLite's 120 req/min (2 req/s sustained) limit.
+    // Each individual call is also wrapped with retry+backoff on 429.
+    const CONCURRENCY = 3;
+    const BATCH_PAUSE_MS = 250;
 
     for (let i = 0; i < accounts.length; i += CONCURRENCY) {
       if (Date.now() > deadline) break;
@@ -459,6 +521,10 @@ export async function runPushSync(opts: PushSyncOptions = {}): Promise<SyncResul
           }
         }),
       );
+
+      if (i + CONCURRENCY < accounts.length && Date.now() + BATCH_PAUSE_MS < deadline) {
+        await new Promise(resolve => setTimeout(resolve, BATCH_PAUSE_MS));
+      }
     }
 
     await releaseLock(runId, 'done', { pushed, skipped, errors });
