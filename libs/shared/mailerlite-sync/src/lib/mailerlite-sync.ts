@@ -296,19 +296,36 @@ function getMailerLite() {
   return new MailerLite({ api_key: apiKey });
 }
 
+/** Statuses that must never be overridden — the subscriber opted out. */
+const TERMINAL_STATUSES = new Set(['unsubscribed', 'bounced', 'junk', 'unconfirmed']);
+
 async function pushSubscriber(email: string, payload: SyncPayload): Promise<void> {
   const ml = getMailerLite();
 
-  // Fetch existing subscriber to preserve fields and groups we don't manage.
-  // The new MailerLite API (connect.mailerlite.com) clears any field not
-  // included in a createOrUpdate request, so we must merge first.
+  // Fetch existing subscriber to:
+  //   1. Bail out if they have a terminal status (unsubscribed/bounced/junk).
+  //      We must never force someone back to 'active' who opted out.
+  //   2. Preserve all fields we don't manage — MailerLite's new API
+  //      (connect.mailerlite.com) clears any field absent from the request.
+  //   3. Preserve existing group memberships.
   const existingFields: Record<string, string | number | null> = {};
   let existingGroups: string[] = [];
+  let existingStatus: string | null = null;
+
   try {
     const resp = await ml.subscribers.find(email);
     const raw = (resp.data as unknown as Record<string, unknown>)?.['data'] as Record<string, unknown> | undefined;
+
+    existingStatus = (raw?.['status'] as string | null) ?? null;
+
+    // Hard stop — never re-subscribe someone who opted out or bounced.
+    if (existingStatus && TERMINAL_STATUSES.has(existingStatus)) {
+      return;
+    }
+
     const groups = (raw?.['groups'] ?? []) as Array<{ id: string }>;
     existingGroups = groups.map(g => g.id);
+
     const fields = (raw?.['fields'] ?? []) as Array<{ key: string; value: string | number | null }>;
     for (const f of fields) {
       if (f.value !== null && f.value !== undefined && f.value !== '') {
@@ -316,11 +333,11 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
       }
     }
   } catch {
-    // New subscriber — nothing to preserve
+    // New subscriber — nothing to preserve, safe to create.
   }
 
   // Our computed fields override existing values; all other existing fields
-  // are carried through unchanged so nothing gets wiped.
+  // are carried through unchanged so nothing outside our set gets wiped.
   const mergedFields: Record<string, string | number | null> = { ...existingFields };
   for (const [k, v] of Object.entries(payload)) {
     if (v !== null && v !== undefined) mergedFields[k] = v;
@@ -330,7 +347,9 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
     email,
     fields: mergedFields,
     groups: existingGroups,
-    status: 'active',
+    // Only set 'active' for new subscribers; keep the existing status for
+    // returning subscribers so we don't override manually managed states.
+    status: existingStatus ?? 'active',
   });
 }
 
