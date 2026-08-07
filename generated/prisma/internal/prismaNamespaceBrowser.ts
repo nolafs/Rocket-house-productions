@@ -80,7 +80,9 @@ export const ModelName = {
   Child: 'Child',
   ChildProgress: 'ChildProgress',
   ChildScore: 'ChildScore',
-  WebhookEvent: 'WebhookEvent'
+  WebhookEvent: 'WebhookEvent',
+  MarketingProfile: 'MarketingProfile',
+  SyncRun: 'SyncRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -519,6 +521,39 @@ export const WebhookEventScalarFieldEnum = {
 } as const
 
 export type WebhookEventScalarFieldEnum = (typeof WebhookEventScalarFieldEnum)[keyof typeof WebhookEventScalarFieldEnum]
+
+
+export const MarketingProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  email: 'email',
+  lifecycleStage: 'lifecycleStage',
+  pushedHash: 'pushedHash',
+  pushedAt: 'pushedAt',
+  tags: 'tags',
+  tagsSyncedAt: 'tagsSyncedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MarketingProfileScalarFieldEnum = (typeof MarketingProfileScalarFieldEnum)[keyof typeof MarketingProfileScalarFieldEnum]
+
+
+export const SyncRunScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  status: 'status',
+  triggeredBy: 'triggeredBy',
+  pushed: 'pushed',
+  skipped: 'skipped',
+  pulled: 'pulled',
+  errors: 'errors',
+  notes: 'notes',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt'
+} as const
+
+export type SyncRunScalarFieldEnum = (typeof SyncRunScalarFieldEnum)[keyof typeof SyncRunScalarFieldEnum]
 
 
 export const SortOrder = {

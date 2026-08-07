@@ -6,6 +6,7 @@ import { db, stripe } from '@rocket-house-productions/integration/server';
 import { clerkClient } from '@clerk/nextjs/server';
 import { MailerList, SessionFlags } from '@rocket-house-productions/actions/server';
 import { logger } from '@rocket-house-productions/util';
+import { syncAccountNow } from '@rocket-house-productions/mailerlite-sync/server';
 import { Prisma } from '@prisma/client/extension';
 import TransactionClient = Prisma.TransactionClient;
 
@@ -562,6 +563,12 @@ export async function POST(req: Request) {
           }
 
           await SessionFlags();
+
+          // Fire-and-forget MailerLite sync — failure must never block the webhook response
+          syncAccountNow(order.accountId).catch(err =>
+            logger.error('[Webhook] syncAccountNow failed', { error: String(err) }),
+          );
+
           logger.info('[Webhook] External side-effects completed', { orderId });
         } catch (extErr) {
           logger.error('[Webhook] External side-effects failed', { error: String(extErr) });

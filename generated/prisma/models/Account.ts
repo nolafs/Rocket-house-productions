@@ -241,6 +241,7 @@ export type AccountWhereInput = {
   children?: Prisma.ChildListRelationFilter
   purchases?: Prisma.PurchaseListRelationFilter
   Order?: Prisma.OrderListRelationFilter
+  marketingProfile?: Prisma.XOR<Prisma.MarketingProfileNullableScalarRelationFilter, Prisma.MarketingProfileWhereInput> | null
 }
 
 export type AccountOrderByWithRelationInput = {
@@ -259,6 +260,7 @@ export type AccountOrderByWithRelationInput = {
   children?: Prisma.ChildOrderByRelationAggregateInput
   purchases?: Prisma.PurchaseOrderByRelationAggregateInput
   Order?: Prisma.OrderOrderByRelationAggregateInput
+  marketingProfile?: Prisma.MarketingProfileOrderByWithRelationInput
 }
 
 export type AccountWhereUniqueInput = Prisma.AtLeast<{
@@ -280,6 +282,7 @@ export type AccountWhereUniqueInput = Prisma.AtLeast<{
   children?: Prisma.ChildListRelationFilter
   purchases?: Prisma.PurchaseListRelationFilter
   Order?: Prisma.OrderListRelationFilter
+  marketingProfile?: Prisma.XOR<Prisma.MarketingProfileNullableScalarRelationFilter, Prisma.MarketingProfileWhereInput> | null
 }, "id" | "userId" | "stripeCustomerId" | "recentStripeCheckoutId" | "email">
 
 export type AccountOrderByWithAggregationInput = {
@@ -334,6 +337,7 @@ export type AccountCreateInput = {
   children?: Prisma.ChildCreateNestedManyWithoutAccountInput
   purchases?: Prisma.PurchaseCreateNestedManyWithoutAccountInput
   Order?: Prisma.OrderCreateNestedManyWithoutAccountInput
+  marketingProfile?: Prisma.MarketingProfileCreateNestedOneWithoutUserInput
 }
 
 export type AccountUncheckedCreateInput = {
@@ -352,6 +356,7 @@ export type AccountUncheckedCreateInput = {
   children?: Prisma.ChildUncheckedCreateNestedManyWithoutAccountInput
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutAccountInput
   Order?: Prisma.OrderUncheckedCreateNestedManyWithoutAccountInput
+  marketingProfile?: Prisma.MarketingProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type AccountUpdateInput = {
@@ -370,6 +375,7 @@ export type AccountUpdateInput = {
   children?: Prisma.ChildUpdateManyWithoutAccountNestedInput
   purchases?: Prisma.PurchaseUpdateManyWithoutAccountNestedInput
   Order?: Prisma.OrderUpdateManyWithoutAccountNestedInput
+  marketingProfile?: Prisma.MarketingProfileUpdateOneWithoutUserNestedInput
 }
 
 export type AccountUncheckedUpdateInput = {
@@ -388,6 +394,7 @@ export type AccountUncheckedUpdateInput = {
   children?: Prisma.ChildUncheckedUpdateManyWithoutAccountNestedInput
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutAccountNestedInput
   Order?: Prisma.OrderUncheckedUpdateManyWithoutAccountNestedInput
+  marketingProfile?: Prisma.MarketingProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type AccountCreateManyInput = {
@@ -527,6 +534,20 @@ export type AccountUpdateOneRequiredWithoutChildrenNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutChildrenInput, Prisma.AccountUpdateWithoutChildrenInput>, Prisma.AccountUncheckedUpdateWithoutChildrenInput>
 }
 
+export type AccountCreateNestedOneWithoutMarketingProfileInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutMarketingProfileInput, Prisma.AccountUncheckedCreateWithoutMarketingProfileInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutMarketingProfileInput
+  connect?: Prisma.AccountWhereUniqueInput
+}
+
+export type AccountUpdateOneRequiredWithoutMarketingProfileNestedInput = {
+  create?: Prisma.XOR<Prisma.AccountCreateWithoutMarketingProfileInput, Prisma.AccountUncheckedCreateWithoutMarketingProfileInput>
+  connectOrCreate?: Prisma.AccountCreateOrConnectWithoutMarketingProfileInput
+  upsert?: Prisma.AccountUpsertWithoutMarketingProfileInput
+  connect?: Prisma.AccountWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AccountUpdateToOneWithWhereWithoutMarketingProfileInput, Prisma.AccountUpdateWithoutMarketingProfileInput>, Prisma.AccountUncheckedUpdateWithoutMarketingProfileInput>
+}
+
 export type AccountCreateWithoutPurchasesInput = {
   id?: string
   userId: string
@@ -542,6 +563,7 @@ export type AccountCreateWithoutPurchasesInput = {
   updatedAt?: Date | string
   children?: Prisma.ChildCreateNestedManyWithoutAccountInput
   Order?: Prisma.OrderCreateNestedManyWithoutAccountInput
+  marketingProfile?: Prisma.MarketingProfileCreateNestedOneWithoutUserInput
 }
 
 export type AccountUncheckedCreateWithoutPurchasesInput = {
@@ -559,6 +581,7 @@ export type AccountUncheckedCreateWithoutPurchasesInput = {
   updatedAt?: Date | string
   children?: Prisma.ChildUncheckedCreateNestedManyWithoutAccountInput
   Order?: Prisma.OrderUncheckedCreateNestedManyWithoutAccountInput
+  marketingProfile?: Prisma.MarketingProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type AccountCreateOrConnectWithoutPurchasesInput = {
@@ -592,6 +615,7 @@ export type AccountUpdateWithoutPurchasesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.ChildUpdateManyWithoutAccountNestedInput
   Order?: Prisma.OrderUpdateManyWithoutAccountNestedInput
+  marketingProfile?: Prisma.MarketingProfileUpdateOneWithoutUserNestedInput
 }
 
 export type AccountUncheckedUpdateWithoutPurchasesInput = {
@@ -609,6 +633,7 @@ export type AccountUncheckedUpdateWithoutPurchasesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.ChildUncheckedUpdateManyWithoutAccountNestedInput
   Order?: Prisma.OrderUncheckedUpdateManyWithoutAccountNestedInput
+  marketingProfile?: Prisma.MarketingProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type AccountCreateWithoutOrderInput = {
@@ -626,6 +651,7 @@ export type AccountCreateWithoutOrderInput = {
   updatedAt?: Date | string
   children?: Prisma.ChildCreateNestedManyWithoutAccountInput
   purchases?: Prisma.PurchaseCreateNestedManyWithoutAccountInput
+  marketingProfile?: Prisma.MarketingProfileCreateNestedOneWithoutUserInput
 }
 
 export type AccountUncheckedCreateWithoutOrderInput = {
@@ -643,6 +669,7 @@ export type AccountUncheckedCreateWithoutOrderInput = {
   updatedAt?: Date | string
   children?: Prisma.ChildUncheckedCreateNestedManyWithoutAccountInput
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutAccountInput
+  marketingProfile?: Prisma.MarketingProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type AccountCreateOrConnectWithoutOrderInput = {
@@ -676,6 +703,7 @@ export type AccountUpdateWithoutOrderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.ChildUpdateManyWithoutAccountNestedInput
   purchases?: Prisma.PurchaseUpdateManyWithoutAccountNestedInput
+  marketingProfile?: Prisma.MarketingProfileUpdateOneWithoutUserNestedInput
 }
 
 export type AccountUncheckedUpdateWithoutOrderInput = {
@@ -693,6 +721,7 @@ export type AccountUncheckedUpdateWithoutOrderInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   children?: Prisma.ChildUncheckedUpdateManyWithoutAccountNestedInput
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutAccountNestedInput
+  marketingProfile?: Prisma.MarketingProfileUncheckedUpdateOneWithoutUserNestedInput
 }
 
 export type AccountCreateWithoutChildrenInput = {
@@ -710,6 +739,7 @@ export type AccountCreateWithoutChildrenInput = {
   updatedAt?: Date | string
   purchases?: Prisma.PurchaseCreateNestedManyWithoutAccountInput
   Order?: Prisma.OrderCreateNestedManyWithoutAccountInput
+  marketingProfile?: Prisma.MarketingProfileCreateNestedOneWithoutUserInput
 }
 
 export type AccountUncheckedCreateWithoutChildrenInput = {
@@ -727,6 +757,7 @@ export type AccountUncheckedCreateWithoutChildrenInput = {
   updatedAt?: Date | string
   purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutAccountInput
   Order?: Prisma.OrderUncheckedCreateNestedManyWithoutAccountInput
+  marketingProfile?: Prisma.MarketingProfileUncheckedCreateNestedOneWithoutUserInput
 }
 
 export type AccountCreateOrConnectWithoutChildrenInput = {
@@ -760,6 +791,7 @@ export type AccountUpdateWithoutChildrenInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   purchases?: Prisma.PurchaseUpdateManyWithoutAccountNestedInput
   Order?: Prisma.OrderUpdateManyWithoutAccountNestedInput
+  marketingProfile?: Prisma.MarketingProfileUpdateOneWithoutUserNestedInput
 }
 
 export type AccountUncheckedUpdateWithoutChildrenInput = {
@@ -775,6 +807,95 @@ export type AccountUncheckedUpdateWithoutChildrenInput = {
   role?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutAccountNestedInput
+  Order?: Prisma.OrderUncheckedUpdateManyWithoutAccountNestedInput
+  marketingProfile?: Prisma.MarketingProfileUncheckedUpdateOneWithoutUserNestedInput
+}
+
+export type AccountCreateWithoutMarketingProfileInput = {
+  id?: string
+  userId: string
+  stripeCustomerId?: string | null
+  recentStripeCheckoutId?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  email?: string | null
+  status?: string
+  newsletter?: boolean
+  role?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  children?: Prisma.ChildCreateNestedManyWithoutAccountInput
+  purchases?: Prisma.PurchaseCreateNestedManyWithoutAccountInput
+  Order?: Prisma.OrderCreateNestedManyWithoutAccountInput
+}
+
+export type AccountUncheckedCreateWithoutMarketingProfileInput = {
+  id?: string
+  userId: string
+  stripeCustomerId?: string | null
+  recentStripeCheckoutId?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  email?: string | null
+  status?: string
+  newsletter?: boolean
+  role?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  children?: Prisma.ChildUncheckedCreateNestedManyWithoutAccountInput
+  purchases?: Prisma.PurchaseUncheckedCreateNestedManyWithoutAccountInput
+  Order?: Prisma.OrderUncheckedCreateNestedManyWithoutAccountInput
+}
+
+export type AccountCreateOrConnectWithoutMarketingProfileInput = {
+  where: Prisma.AccountWhereUniqueInput
+  create: Prisma.XOR<Prisma.AccountCreateWithoutMarketingProfileInput, Prisma.AccountUncheckedCreateWithoutMarketingProfileInput>
+}
+
+export type AccountUpsertWithoutMarketingProfileInput = {
+  update: Prisma.XOR<Prisma.AccountUpdateWithoutMarketingProfileInput, Prisma.AccountUncheckedUpdateWithoutMarketingProfileInput>
+  create: Prisma.XOR<Prisma.AccountCreateWithoutMarketingProfileInput, Prisma.AccountUncheckedCreateWithoutMarketingProfileInput>
+  where?: Prisma.AccountWhereInput
+}
+
+export type AccountUpdateToOneWithWhereWithoutMarketingProfileInput = {
+  where?: Prisma.AccountWhereInput
+  data: Prisma.XOR<Prisma.AccountUpdateWithoutMarketingProfileInput, Prisma.AccountUncheckedUpdateWithoutMarketingProfileInput>
+}
+
+export type AccountUpdateWithoutMarketingProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recentStripeCheckoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  children?: Prisma.ChildUpdateManyWithoutAccountNestedInput
+  purchases?: Prisma.PurchaseUpdateManyWithoutAccountNestedInput
+  Order?: Prisma.OrderUpdateManyWithoutAccountNestedInput
+}
+
+export type AccountUncheckedUpdateWithoutMarketingProfileInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  stripeCustomerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  recentStripeCheckoutId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  newsletter?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  role?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  children?: Prisma.ChildUncheckedUpdateManyWithoutAccountNestedInput
   purchases?: Prisma.PurchaseUncheckedUpdateManyWithoutAccountNestedInput
   Order?: Prisma.OrderUncheckedUpdateManyWithoutAccountNestedInput
 }
@@ -844,6 +965,7 @@ export type AccountSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   children?: boolean | Prisma.Account$childrenArgs<ExtArgs>
   purchases?: boolean | Prisma.Account$purchasesArgs<ExtArgs>
   Order?: boolean | Prisma.Account$OrderArgs<ExtArgs>
+  marketingProfile?: boolean | Prisma.Account$marketingProfileArgs<ExtArgs>
   _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["account"]>
 
@@ -897,6 +1019,7 @@ export type AccountInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   children?: boolean | Prisma.Account$childrenArgs<ExtArgs>
   purchases?: boolean | Prisma.Account$purchasesArgs<ExtArgs>
   Order?: boolean | Prisma.Account$OrderArgs<ExtArgs>
+  marketingProfile?: boolean | Prisma.Account$marketingProfileArgs<ExtArgs>
   _count?: boolean | Prisma.AccountCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AccountIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -908,6 +1031,7 @@ export type $AccountPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     children: Prisma.$ChildPayload<ExtArgs>[]
     purchases: Prisma.$PurchasePayload<ExtArgs>[]
     Order: Prisma.$OrderPayload<ExtArgs>[]
+    marketingProfile: Prisma.$MarketingProfilePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1319,6 +1443,7 @@ export interface Prisma__AccountClient<T, Null = never, ExtArgs extends runtime.
   children<T extends Prisma.Account$childrenArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ChildPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchases<T extends Prisma.Account$purchasesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$purchasesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchasePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   Order<T extends Prisma.Account$OrderArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$OrderArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  marketingProfile<T extends Prisma.Account$marketingProfileArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Account$marketingProfileArgs<ExtArgs>>): Prisma.Prisma__MarketingProfileClient<runtime.Types.Result.GetResult<Prisma.$MarketingProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1822,6 +1947,25 @@ export type Account$OrderArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.OrderScalarFieldEnum | Prisma.OrderScalarFieldEnum[]
+}
+
+/**
+ * Account.marketingProfile
+ */
+export type Account$marketingProfileArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MarketingProfile
+   */
+  select?: Prisma.MarketingProfileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MarketingProfile
+   */
+  omit?: Prisma.MarketingProfileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MarketingProfileInclude<ExtArgs> | null
+  where?: Prisma.MarketingProfileWhereInput
 }
 
 /**

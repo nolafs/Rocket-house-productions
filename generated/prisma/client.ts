@@ -191,3 +191,13 @@ export type ChildScore = Prisma.ChildScoreModel
  * 
  */
 export type WebhookEvent = Prisma.WebhookEventModel
+/**
+ * Model MarketingProfile
+ * 
+ */
+export type MarketingProfile = Prisma.MarketingProfileModel
+/**
+ * Model SyncRun
+ * 
+ */
+export type SyncRun = Prisma.SyncRunModel

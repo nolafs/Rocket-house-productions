@@ -4855,10 +4855,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@netlify/functions@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "@netlify/functions@npm:5.3.0"
+  dependencies:
+    "@netlify/types": "npm:2.8.0"
+  checksum: 10c0/0e78098581b92f4b37ad5f0ab2b2f9a07d8f03275fec07039a103e256ed1b3e32b7b60fecba9bd657d8af57aca1c7ad77491929e93908e7048b4224e411f1212
+  languageName: node
+  linkType: hard
+
 "@netlify/plugin-nextjs@npm:^5.15.13":
   version: 5.15.13
   resolution: "@netlify/plugin-nextjs@npm:5.15.13"
   checksum: 10c0/38b8cc50dd36269574a53bf20f2a7eb6459c8fc789f16b63cccc67eeab9c924619804ed2154382a0dfe4aa34180e01f6d69e906445fc5bf9432510a0e7fdd482
+  languageName: node
+  linkType: hard
+
+"@netlify/types@npm:2.8.0":
+  version: 2.8.0
+  resolution: "@netlify/types@npm:2.8.0"
+  checksum: 10c0/f6d75de6786652890f811853cc34fa094af4fb1ac02e4e300d4aa432989d55824b7aeb4fb8bd57a92037948963080ad4bbc4c66eb32db38768c747fbeb8d9143
   languageName: node
   linkType: hard
 
@@ -8189,6 +8205,7 @@ __metadata:
     "@img/sharp-linux-x64": "npm:0.34.5"
     "@madzadev/audio-player": "npm:^2.1.14"
     "@mailerlite/mailerlite-nodejs": "npm:^1.7.0"
+    "@netlify/functions": "npm:^5.3.0"
     "@netlify/plugin-nextjs": "npm:^5.15.13"
     "@next/bundle-analyzer": "npm:^16.3.0"
     "@next/third-parties": "npm:^16.3.0"

@@ -52,7 +52,9 @@
       "@rocket-house-productions/ui": ["libs/shared/ui/src/index.ts"],
       "@rocket-house-productions/ui/server": ["libs/shared/ui/src/server.ts"],
       "@rocket-house-productions/util": ["libs/shared/util/src/index.ts"],
-      "@rocket-house-productions/util/server": ["libs/shared/util/src/server.ts"]
+      "@rocket-house-productions/util/server": ["libs/shared/util/src/server.ts"],
+      "@rocket-house-productions/mailerlite-sync": ["libs/shared/mailerlite-sync/src/index.ts"],
+      "@rocket-house-productions/mailerlite-sync/server": ["libs/shared/mailerlite-sync/src/server.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

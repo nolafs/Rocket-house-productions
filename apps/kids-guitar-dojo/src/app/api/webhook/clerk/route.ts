@@ -7,6 +7,7 @@ import { getGlobalPin } from '@rocket-house-productions/actions/server';
 import { decryptPin } from '@rocket-house-productions/actions/server';
 import { triggerMail } from '@rocket-house-productions/actions/server';
 import { logger } from '@rocket-house-productions/util';
+import { syncAccountNow } from '@rocket-house-productions/mailerlite-sync/server';
 
 const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || ``;
 
@@ -78,6 +79,8 @@ export async function POST(req: Request) {
           },
         });
 
+        let syncAccountId: string;
+
         if (existingAccount) {
           // Re-link the existing account to the new Clerk userId so purchases/progress are preserved
           logger.info('[CLERK WEBHOOK] Account with this email already exists, re-linking to new userId', {
@@ -93,8 +96,9 @@ export async function POST(req: Request) {
               lastName: last_name ?? existingAccount.lastName,
             },
           });
+          syncAccountId = existingAccount.id;
         } else {
-          await db.account.create({
+          const created = await db.account.create({
             data: {
               userId: id,
               firstName: first_name,
@@ -102,7 +106,13 @@ export async function POST(req: Request) {
               email: email_addresses[0].email_address,
             },
           });
+          syncAccountId = created.id;
         }
+
+        // Fire-and-forget — sync failure must never block signup
+        syncAccountNow(syncAccountId).catch(err =>
+          logger.error('[CLERK WEBHOOK] syncAccountNow failed', err),
+        );
 
         if (pinCipher && pinIv && pinAuthTag) {
           try {

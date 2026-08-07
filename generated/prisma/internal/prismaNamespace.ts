@@ -426,7 +426,9 @@ export const ModelName = {
   Child: 'Child',
   ChildProgress: 'ChildProgress',
   ChildScore: 'ChildScore',
-  WebhookEvent: 'WebhookEvent'
+  WebhookEvent: 'WebhookEvent',
+  MarketingProfile: 'MarketingProfile',
+  SyncRun: 'SyncRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -442,7 +444,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "appSettings" | "course" | "tier" | "membershipSettings" | "membershipInclude" | "bookScene" | "module" | "category" | "categoryLesson" | "attachmemtType" | "moduleAttachmemtType" | "moduleAttachment" | "awardType" | "moduleAwardType" | "attachment" | "lesson" | "questionary" | "question" | "bunnyData" | "award" | "purchase" | "purchaseTransaction" | "order" | "account" | "parentPin" | "kvTemp" | "child" | "childProgress" | "childScore" | "webhookEvent"
+    modelProps: "appSettings" | "course" | "tier" | "membershipSettings" | "membershipInclude" | "bookScene" | "module" | "category" | "categoryLesson" | "attachmemtType" | "moduleAttachmemtType" | "moduleAttachment" | "awardType" | "moduleAwardType" | "attachment" | "lesson" | "questionary" | "question" | "bunnyData" | "award" | "purchase" | "purchaseTransaction" | "order" | "account" | "parentPin" | "kvTemp" | "child" | "childProgress" | "childScore" | "webhookEvent" | "marketingProfile" | "syncRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2666,6 +2668,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    MarketingProfile: {
+      payload: Prisma.$MarketingProfilePayload<ExtArgs>
+      fields: Prisma.MarketingProfileFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MarketingProfileFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MarketingProfileFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload>
+        }
+        findFirst: {
+          args: Prisma.MarketingProfileFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MarketingProfileFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload>
+        }
+        findMany: {
+          args: Prisma.MarketingProfileFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload>[]
+        }
+        create: {
+          args: Prisma.MarketingProfileCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload>
+        }
+        createMany: {
+          args: Prisma.MarketingProfileCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.MarketingProfileCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload>[]
+        }
+        delete: {
+          args: Prisma.MarketingProfileDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload>
+        }
+        update: {
+          args: Prisma.MarketingProfileUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload>
+        }
+        deleteMany: {
+          args: Prisma.MarketingProfileDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MarketingProfileUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.MarketingProfileUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload>[]
+        }
+        upsert: {
+          args: Prisma.MarketingProfileUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MarketingProfilePayload>
+        }
+        aggregate: {
+          args: Prisma.MarketingProfileAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMarketingProfile>
+        }
+        groupBy: {
+          args: Prisma.MarketingProfileGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MarketingProfileGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MarketingProfileCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MarketingProfileCountAggregateOutputType> | number
+        }
+      }
+    }
+    SyncRun: {
+      payload: Prisma.$SyncRunPayload<ExtArgs>
+      fields: Prisma.SyncRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SyncRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SyncRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload>
+        }
+        findFirst: {
+          args: Prisma.SyncRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SyncRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload>
+        }
+        findMany: {
+          args: Prisma.SyncRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload>[]
+        }
+        create: {
+          args: Prisma.SyncRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload>
+        }
+        createMany: {
+          args: Prisma.SyncRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SyncRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload>[]
+        }
+        delete: {
+          args: Prisma.SyncRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload>
+        }
+        update: {
+          args: Prisma.SyncRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.SyncRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SyncRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SyncRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.SyncRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SyncRunPayload>
+        }
+        aggregate: {
+          args: Prisma.SyncRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSyncRun>
+        }
+        groupBy: {
+          args: Prisma.SyncRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SyncRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SyncRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SyncRunCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3127,6 +3277,39 @@ export const WebhookEventScalarFieldEnum = {
 export type WebhookEventScalarFieldEnum = (typeof WebhookEventScalarFieldEnum)[keyof typeof WebhookEventScalarFieldEnum]
 
 
+export const MarketingProfileScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  email: 'email',
+  lifecycleStage: 'lifecycleStage',
+  pushedHash: 'pushedHash',
+  pushedAt: 'pushedAt',
+  tags: 'tags',
+  tagsSyncedAt: 'tagsSyncedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MarketingProfileScalarFieldEnum = (typeof MarketingProfileScalarFieldEnum)[keyof typeof MarketingProfileScalarFieldEnum]
+
+
+export const SyncRunScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  status: 'status',
+  triggeredBy: 'triggeredBy',
+  pushed: 'pushed',
+  skipped: 'skipped',
+  pulled: 'pulled',
+  errors: 'errors',
+  notes: 'notes',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt'
+} as const
+
+export type SyncRunScalarFieldEnum = (typeof SyncRunScalarFieldEnum)[keyof typeof SyncRunScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3459,6 +3642,8 @@ export type GlobalOmitConfig = {
   childProgress?: Prisma.ChildProgressOmit
   childScore?: Prisma.ChildScoreOmit
   webhookEvent?: Prisma.WebhookEventOmit
+  marketingProfile?: Prisma.MarketingProfileOmit
+  syncRun?: Prisma.SyncRunOmit
 }
 
 /* Types for Logging */

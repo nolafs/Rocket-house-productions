@@ -2,7 +2,7 @@
 #  NEXT_USE_NETLIFY_EDGE = "false"
 [build]
   command = "nx reset && yarn prisma generate && nx build kids-guitar-dojo --prod --verbose --skip-nx-cache"
-  #functions = "apps/kids-guitar-dojo/netlify/function"
+  functions = "apps/kids-guitar-dojo/netlify/functions"
   #publish = "apps/kids-guitar-dojo/.next"
 
 [build.environment]
