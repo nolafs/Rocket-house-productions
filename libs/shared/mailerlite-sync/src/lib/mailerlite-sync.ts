@@ -299,25 +299,36 @@ function getMailerLite() {
 async function pushSubscriber(email: string, payload: SyncPayload): Promise<void> {
   const ml = getMailerLite();
 
-  // Preserve existing group memberships — don't overwrite them on push
+  // Fetch existing subscriber to preserve fields and groups we don't manage.
+  // The new MailerLite API (connect.mailerlite.com) clears any field not
+  // included in a createOrUpdate request, so we must merge first.
+  const existingFields: Record<string, string | number | null> = {};
   let existingGroups: string[] = [];
   try {
     const resp = await ml.subscribers.find(email);
     const raw = (resp.data as unknown as Record<string, unknown>)?.['data'] as Record<string, unknown> | undefined;
     const groups = (raw?.['groups'] ?? []) as Array<{ id: string }>;
     existingGroups = groups.map(g => g.id);
+    const fields = (raw?.['fields'] ?? []) as Array<{ key: string; value: string | number | null }>;
+    for (const f of fields) {
+      if (f.value !== null && f.value !== undefined && f.value !== '') {
+        existingFields[f.key] = f.value;
+      }
+    }
   } catch {
-    // Subscriber not found yet — that's fine
+    // New subscriber — nothing to preserve
   }
 
-  const fields: Record<string, string | number | null> = {};
+  // Our computed fields override existing values; all other existing fields
+  // are carried through unchanged so nothing gets wiped.
+  const mergedFields: Record<string, string | number | null> = { ...existingFields };
   for (const [k, v] of Object.entries(payload)) {
-    if (v !== null && v !== undefined) fields[k] = v;
+    if (v !== null && v !== undefined) mergedFields[k] = v;
   }
 
   await ml.subscribers.createOrUpdate({
     email,
-    fields,
+    fields: mergedFields,
     groups: existingGroups,
     status: 'active',
   });
@@ -400,26 +411,35 @@ export async function runPushSync(opts: PushSyncOptions = {}): Promise<SyncResul
       return { status: 200, pushed: 0, skipped: accounts.length, errors: 0, total: accounts.length };
     }
 
-    for (const account of accounts) {
+    const CONCURRENCY = 5;
+
+    for (let i = 0; i < accounts.length; i += CONCURRENCY) {
       if (Date.now() > deadline) break;
-      if (!account.email) { skipped++; continue; }
 
-      try {
-        const payload = mapAccountToPayload(account, courses);
-        const hash = hashPayload(payload);
+      const batch = accounts.slice(i, i + CONCURRENCY);
 
-        if (account.marketingProfile?.pushedHash === hash) {
-          skipped++;
-          continue;
-        }
+      await Promise.all(
+        batch.map(async account => {
+          if (!account.email) { skipped++; return; }
 
-        await pushSubscriber(account.email, payload);
-        await upsertMarketingProfile(account, payload, hash);
-        pushed++;
-      } catch (err) {
-        errors++;
-        console.error(`[sync/push] Error for ${account.email}:`, err);
-      }
+          try {
+            const payload = mapAccountToPayload(account, courses);
+            const hash = hashPayload(payload);
+
+            if (account.marketingProfile?.pushedHash === hash) {
+              skipped++;
+              return;
+            }
+
+            await pushSubscriber(account.email, payload);
+            await upsertMarketingProfile(account, payload, hash);
+            pushed++;
+          } catch (err) {
+            errors++;
+            console.error(`[sync/push] Error for ${account.email}:`, err);
+          }
+        }),
+      );
     }
 
     await releaseLock(runId, 'done', { pushed, skipped, errors });
