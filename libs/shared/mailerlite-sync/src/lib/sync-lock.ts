@@ -6,7 +6,7 @@
  * After that window the lock is considered stale and can be overridden.
  */
 
-import { db } from '@rocket-house-productions/integration/server';
+import { db } from '@rocket-house-productions/integration/db';
 
 const LOCK_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
