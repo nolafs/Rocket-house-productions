@@ -498,43 +498,34 @@ export async function runPushSync(opts: PushSyncOptions = {}): Promise<SyncResul
       return { status: 200, pushed: 0, skipped: accounts.length, errors: 0, total: accounts.length };
     }
 
-    // 3 concurrent × 2 API calls each = 6 calls per batch.
-    // 250ms pause between batches keeps sustained rate ~24 req/s,
-    // well under MailerLite's 120 req/min (2 req/s sustained) limit.
-    // Each individual call is also wrapped with retry+backoff on 429.
-    const CONCURRENCY = 3;
-    const BATCH_PAUSE_MS = 250;
+    // Sequential (1 at a time) + 500ms pause = ~2 API calls/second sustained,
+    // which stays at MailerLite's 120 req/min limit and avoids 429s entirely.
+    // Yields ~20-25 accounts per 25s deadline window.
+    const ACCOUNT_PAUSE_MS = 500;
 
-    for (let i = 0; i < accounts.length; i += CONCURRENCY) {
+    for (const account of accounts) {
       if (Date.now() > deadline) break;
+      if (!account.email) { skipped++; continue; }
 
-      const batch = accounts.slice(i, i + CONCURRENCY);
+      try {
+        const payload = mapAccountToPayload(account, courses);
+        const hash = hashPayload(payload);
 
-      await Promise.all(
-        batch.map(async account => {
-          if (!account.email) { skipped++; return; }
+        if (account.marketingProfile?.pushedHash === hash) {
+          skipped++;
+          continue;
+        }
 
-          try {
-            const payload = mapAccountToPayload(account, courses);
-            const hash = hashPayload(payload);
+        await pushSubscriber(account.email, payload);
+        await upsertMarketingProfile(account, payload, hash);
+        pushed++;
+      } catch (err) {
+        errors++;
+        console.error(`[sync/push] Error for ${account.email}:`, err);
+      }
 
-            if (account.marketingProfile?.pushedHash === hash) {
-              skipped++;
-              return;
-            }
-
-            await pushSubscriber(account.email, payload);
-            await upsertMarketingProfile(account, payload, hash);
-            pushed++;
-          } catch (err) {
-            errors++;
-            console.error(`[sync/push] Error for ${account.email}:`, err);
-          }
-        }),
-      );
-
-      if (i + CONCURRENCY < accounts.length && Date.now() + BATCH_PAUSE_MS < deadline) {
-        await new Promise(resolve => setTimeout(resolve, BATCH_PAUSE_MS));
+      if (Date.now() + ACCOUNT_PAUSE_MS < deadline) {
+        await new Promise(resolve => setTimeout(resolve, ACCOUNT_PAUSE_MS));
       }
     }
 
