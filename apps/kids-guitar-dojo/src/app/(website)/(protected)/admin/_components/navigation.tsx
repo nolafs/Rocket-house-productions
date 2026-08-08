@@ -2,7 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
-import { SignedIn, UserButton } from '@clerk/nextjs';
+import { Show, UserButton } from '@clerk/nextjs';
 import { usePathname } from 'next/navigation';
 import { NavigationData } from './navigation-data';
 
@@ -49,7 +49,7 @@ export const Navigation = ({ hasLogin = true }: NavigationProps) => {
         {hasLogin && (
           <li className="-mx-6 mt-auto">
             <div className="hover:bg-neutral group flex items-center gap-x-4 px-6 py-3 text-lg font-bold">
-              <SignedIn>
+              <Show when="signed-in">
                 <UserButton
                   showName={true}
                   appearance={{
@@ -58,7 +58,7 @@ export const Navigation = ({ hasLogin = true }: NavigationProps) => {
                     },
                   }}
                 />
-              </SignedIn>
+              </Show>
             </div>
           </li>
         )}

@@ -1,5 +1,5 @@
 'use client';
-import { Module } from '@prisma/client';
+import { Module } from '@rocket-house-productions/prisma-client';
 import * as THREE from 'three';
 import React, { useMemo } from 'react';
 import { ModuleLabel } from './module-label';

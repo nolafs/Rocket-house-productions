@@ -2,23 +2,22 @@
   "id": "call_to_action",
   "type": "SharedSlice",
   "name": "CallToAction",
-  "description": "CallToAction",
   "variations": [
     {
       "id": "default",
       "name": "Default",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/default/be6de6a0ea3fda3d56650bd7066d5a5dc8076c3d.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "heading": {
           "type": "StructuredText",
           "config": {
             "label": "Heading",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "allowTargetBlank": true
           }
         },
         "body": {
@@ -26,8 +25,8 @@
           "config": {
             "label": "Body",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "allowTargetBlank": true
           }
         },
         "buttons": {
@@ -82,18 +81,18 @@
     {
       "id": "image",
       "name": "Image",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/image/2630eb81af1d8efe8addc1764cf29bbf20c312cf.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "heading": {
           "type": "StructuredText",
           "config": {
             "label": "Heading",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "allowTargetBlank": true
           }
         },
         "body": {
@@ -101,8 +100,8 @@
           "config": {
             "label": "Body",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,list-item,strong,em,heading3,heading4,heading5,heading6"
+            "multi": "paragraph,list-item,strong,em,heading3,heading4,heading5,heading6",
+            "allowTargetBlank": true
           }
         },
         "buttons": {
@@ -165,18 +164,18 @@
     {
       "id": "center",
       "name": "Center",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/center/b5001bbab44a5b449656218adfb5022c56c3e0dd.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "heading": {
           "type": "StructuredText",
           "config": {
             "label": "Heading",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "allowTargetBlank": true
           }
         },
         "body": {
@@ -184,8 +183,8 @@
           "config": {
             "label": "Body",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "allowTargetBlank": true
           }
         },
         "buttons": {
@@ -248,18 +247,18 @@
     {
       "id": "textTwoColumn",
       "name": "Text Two Column",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/textTwoColumn/496d1662d8bb0f27f2d9fc32b01c0d6a2e8b310e.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "heading": {
           "type": "StructuredText",
           "config": {
             "label": "Heading",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "allowTargetBlank": true
           }
         },
         "subtitle": {
@@ -274,8 +273,8 @@
           "config": {
             "label": "Body",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "allowTargetBlank": true
           }
         },
         "buttons": {
@@ -327,5 +326,6 @@
       },
       "items": {}
     }
-  ]
+  ],
+  "description": "CallToAction"
 }

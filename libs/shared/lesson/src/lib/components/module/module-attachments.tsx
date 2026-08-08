@@ -14,7 +14,7 @@ import ButtonDownloadPdf from '../button-download-pdf';
 import Link from 'next/link';
 import cn from 'classnames';
 import { useClientMediaQuery } from '@rocket-house-productions/hooks';
-import type { Course } from '@prisma/client';
+import type { Course } from '@rocket-house-productions/prisma-client';
 
 type Attachment = {
   id: string;

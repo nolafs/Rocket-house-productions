@@ -15,7 +15,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage, Combobox } from '@
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
-import { Lesson } from '@prisma/client';
+import { Lesson } from '@rocket-house-productions/prisma-client';
 import LessonPicker from '@/app/(website)/(protected)/admin/(courses)/courses/[courseId]/modules/[moduleId]/lessons/[lessonId]/_components/lesson-picker';
 
 interface LessonDescriptionFormProps {

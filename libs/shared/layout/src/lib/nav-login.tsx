@@ -1,5 +1,5 @@
 'use client';
-import { SignedIn, SignedOut, useUser } from '@clerk/nextjs';
+import { Show, useUser } from '@clerk/nextjs';
 import Link from 'next/link';
 import cn from 'classnames';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@rocket-house-productions/shadcn-ui';
@@ -34,24 +34,24 @@ export function NavLogin({
       <div className="other-options hidden self-center pb-[10px] pt-[20px] md:block xl:ml-[20px] xl:pb-[0] xl:pt-[0] 2xl:ml-[15px]">
         <ul className={'flex flex-row items-center justify-center space-x-2'}>
           <li className="flex items-center justify-center">
-            <SignedOut>
+            <Show when="signed-out">
               <Link href="/sign-in" className={cn(buttonVariants({ variant: 'link' }), '!text-[16px] font-medium')}>
                 Log in
               </Link>
-            </SignedOut>
-            <SignedIn>
+            </Show>
+            <Show when="signed-in">
               <UserSignedInDropdown />
-            </SignedIn>
+            </Show>
           </li>
           <li>
-            <SignedOut>
+            <Show when="signed-out">
               <Link
                 href="/sign-up"
                 className={cn(buttonVariants({ variant: 'default', size: 'sm' }), '!text-[14px] uppercase')}>
                 Buy now
               </Link>
-            </SignedOut>
-            <SignedIn>
+            </Show>
+            <Show when="signed-in">
               <div className={'flex space-x-1'}>
                 <Link href="/refresh" className={buttonVariants({ variant: 'outline' })}>
                   Go to Course
@@ -65,7 +65,7 @@ export function NavLogin({
                   </Link>
                 )}
               </div>
-            </SignedIn>
+            </Show>
           </li>
         </ul>
       </div>
@@ -113,17 +113,17 @@ export function NavLogin({
                   className={
                     'flex flex-row items-center justify-center space-x-2.5 border-t border-gray-300 bg-gray-100/50 py-5'
                   }>
-                  <SignedOut>
+                  <Show when="signed-out">
                     <Link href="/sign-in" className={cn(buttonVariants({ variant: 'default' }))}>
                       Log in
                     </Link>
-                  </SignedOut>
-                  <SignedOut>
+                  </Show>
+                  <Show when="signed-out">
                     <Link href="/sign-up" className={buttonVariants({ variant: 'outline' })}>
                       Buy now
                     </Link>
-                  </SignedOut>
-                  <SignedIn>
+                  </Show>
+                  <Show when="signed-in">
                     <Link href="/refresh" className={buttonVariants({ variant: 'outline' })}>
                       Go to Course
                     </Link>
@@ -132,7 +132,7 @@ export function NavLogin({
                         Admin
                       </Link>
                     )}
-                  </SignedIn>
+                  </Show>
                 </div>
               </div>
             </div>

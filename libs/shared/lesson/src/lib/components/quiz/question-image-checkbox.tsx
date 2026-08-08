@@ -2,7 +2,7 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import { Checkbox, FormControl, FormField, FormItem, FormLabel } from '@rocket-house-productions/shadcn-ui';
 import Image from 'next/image';
-import { Question } from '@prisma/client';
+import { Question } from '@rocket-house-productions/prisma-client';
 import cn from 'classnames';
 
 interface QuestionImageCheckboxProps {

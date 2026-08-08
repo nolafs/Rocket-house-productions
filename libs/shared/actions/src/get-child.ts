@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '@clerk/nextjs/server';
 import { getAccountData } from './get-account';
 import { cache } from 'react';
-import { Child } from '@prisma/client';
+import { Child } from '@rocket-house-productions/prisma-client';
 import { logger } from '@rocket-house-productions/util';
 
 /**

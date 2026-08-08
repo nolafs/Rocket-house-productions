@@ -1,0 +1,32 @@
+{
+  "repositoryName": "kids-guitar-dojo",
+  "libraries": [
+    "./src/slices"
+  ],
+  "routes": [
+    {
+      "type": "blog",
+      "path": "/blog"
+    },
+    {
+      "type": "blog_post",
+      "path": "/blog-post/:uid"
+    },
+    {
+      "type": "contact",
+      "path": "/contact"
+    },
+    {
+      "type": "home",
+      "path": "/home"
+    },
+    {
+      "type": "legal",
+      "path": "/legal/:uid"
+    },
+    {
+      "type": "page",
+      "path": "/:uid"
+    }
+  ]
+}

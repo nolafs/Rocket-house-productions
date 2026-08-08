@@ -1,6 +1,6 @@
 'use server';
 import { db } from '@rocket-house-productions/integration/server';
-import type { Order, PurchaseTransaction } from '@prisma/client';
+import type { Order, PurchaseTransaction } from '@rocket-house-productions/prisma-client';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { getAccount } from '@rocket-house-productions/actions/server';

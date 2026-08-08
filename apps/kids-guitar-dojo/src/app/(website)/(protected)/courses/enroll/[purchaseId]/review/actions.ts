@@ -54,7 +54,6 @@ export const submitOnBoardingAction = async (
       where: {
         userId: userId,
       },
-      include: {},
     });
 
     if (!account) {
@@ -98,6 +97,7 @@ export const submitOnBoardingAction = async (
     const purchase = await db.purchase.findFirst({
       where: {
         id: purchaseId,
+        accountId: account.id,
       },
     });
 

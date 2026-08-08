@@ -53,3 +53,7 @@ Thumbs.db
 out
 # Local Netlify folder
 .netlify
+
+.nx/polygraph
+.claude/worktrees
+.claude/settings.local.json

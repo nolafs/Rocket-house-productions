@@ -1,7 +1,7 @@
 import { createStore } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
-import { ChildProgress } from '@prisma/client';
+import { ChildProgress } from '@rocket-house-productions/prisma-client';
 import { logger } from '@rocket-house-productions/util';
 
 interface QuestionProgress {

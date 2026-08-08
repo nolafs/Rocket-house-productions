@@ -1,5 +1,5 @@
 'use client';
-import { Lesson, Module } from '@prisma/client';
+import { Lesson, Module } from '@rocket-house-productions/prisma-client';
 import * as THREE from 'three';
 
 export type LessonType = Lesson & { category: { name: string } };

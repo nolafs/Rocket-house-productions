@@ -2,15 +2,14 @@
   "id": "pricing_table",
   "type": "SharedSlice",
   "name": "PricingTable",
-  "description": "PricingTable",
   "variations": [
     {
       "id": "default",
       "name": "Default",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/pricing_table/default/a955859365cceea7b1b02bc464cb14def825720f.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "tiers": {
           "type": "Group",
@@ -34,5 +33,6 @@
       },
       "items": {}
     }
-  ]
+  ],
+  "description": "PricingTable"
 }

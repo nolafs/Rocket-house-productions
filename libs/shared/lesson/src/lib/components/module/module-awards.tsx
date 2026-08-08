@@ -3,7 +3,7 @@ import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle } from '..
 import ButtonDownloadPdf from '../button-download-pdf';
 import { useEffect, useState } from 'react';
 import { useModuleProgressStore, usePointsStore } from '@rocket-house-productions/providers';
-import { AwardType, ModuleAwardType } from '@prisma/client';
+import { AwardType, ModuleAwardType } from '@rocket-house-productions/prisma-client';
 import Image from 'next/image';
 import { useConfettiStore } from '@rocket-house-productions/hooks';
 import { ModuleAttachment } from '@rocket-house-productions/store';

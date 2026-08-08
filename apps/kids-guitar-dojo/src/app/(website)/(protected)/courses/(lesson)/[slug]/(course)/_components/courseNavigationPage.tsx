@@ -1,6 +1,6 @@
 'use client';
 
-import { Course } from '@prisma/client';
+import { Course } from '@rocket-house-productions/prisma-client';
 import React, { useRef } from 'react';
 import dynamic from 'next/dynamic';
 import gsap from 'gsap';

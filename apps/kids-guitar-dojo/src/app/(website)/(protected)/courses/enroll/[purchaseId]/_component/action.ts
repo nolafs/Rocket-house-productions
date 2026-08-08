@@ -13,6 +13,7 @@ export async function assignChildToPurchase(
     // define a redirect variable outside
     let redirect: string | null = null;
 
+    // @ts-ignore
     await db.$transaction(async tx => {
       const purchase = await tx.purchase.findUnique({
         where: { id: purchaseId },

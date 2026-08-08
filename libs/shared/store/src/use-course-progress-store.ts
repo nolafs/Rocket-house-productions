@@ -1,7 +1,7 @@
 import { createStore, StoreApi } from 'zustand';
 import { ModuleProgressStore } from './use-module-progress-store';
 import { persist } from 'zustand/middleware';
-import { Module as ModuleDB } from '@prisma/client';
+import { Module as ModuleDB } from '@rocket-house-productions/prisma-client';
 import { LessonProgressStore } from './use-lesson-progress-store';
 import { logger } from '@rocket-house-productions/util';
 

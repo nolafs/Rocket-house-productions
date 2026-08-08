@@ -14,7 +14,7 @@ import toast from 'react-hot-toast';
 
 import cn from 'classnames';
 
-import { Questionary, Question } from '@prisma/client';
+import { Questionary, Question } from '@rocket-house-productions/prisma-client';
 import {
   Form,
   FormControl,

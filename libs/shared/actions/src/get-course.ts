@@ -2,7 +2,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { db } from '@rocket-house-productions/integration/server';
 import { redirect } from 'next/navigation';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@rocket-house-productions/prisma-client';
 import { unstable_cache, revalidateTag } from 'next/cache';
 
 interface GetCourseProps {

@@ -13,7 +13,7 @@ import {
   createCourseStore,
   CourseProgressStore,
 } from '@rocket-house-productions/store';
-import { Course } from '@prisma/client';
+import { Course } from '@rocket-house-productions/prisma-client';
 
 type CombinedStores = {
   lessonStore: ReturnType<typeof createLessonStore> | null;

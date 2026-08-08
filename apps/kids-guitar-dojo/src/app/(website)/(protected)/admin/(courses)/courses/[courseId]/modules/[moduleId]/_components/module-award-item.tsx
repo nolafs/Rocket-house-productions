@@ -1,4 +1,4 @@
-import { AwardType, ModuleAwardType } from '@prisma/client';
+import { AwardType, ModuleAwardType } from '@rocket-house-productions/prisma-client';
 import { ImageIcon, Pencil } from 'lucide-react';
 import { useState } from 'react';
 import * as z from 'zod';
