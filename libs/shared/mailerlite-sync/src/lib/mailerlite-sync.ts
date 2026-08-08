@@ -321,20 +321,25 @@ function hashPayload(payload: SyncPayload): string {
  * Retry an async operation on MailerLite 429 rate-limit responses.
  * Respects the Retry-After header when present; falls back to exponential backoff.
  */
+function axiosStatus(err: unknown): number | undefined {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (err as any)?.response?.status ?? (err as any)?.status;
+}
+
+function axiosRetryAfterMs(err: unknown): number {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const header = (err as any)?.response?.headers?.['retry-after'];
+  const seconds = header ? parseInt(header, 10) : 0;
+  return Number.isFinite(seconds) && seconds > 0 ? Math.min(seconds * 1000, 10_000) : 0;
+}
+
 async function withRetry<T>(fn: () => Promise<T>, maxRetries = 4): Promise<T> {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       return await fn();
     } catch (err: unknown) {
-      const status = (err as { response?: { status?: number; headers?: Record<string, string> } })
-        ?.response?.status;
-      if (status === 429 && attempt < maxRetries) {
-        const retryAfter = parseInt(
-          (err as { response?: { headers?: Record<string, string> } })
-            ?.response?.headers?.['retry-after'] ?? '0',
-          10,
-        );
-        const waitMs = retryAfter > 0 ? retryAfter * 1000 : Math.min(1000 * 2 ** attempt, 30_000);
+      if (axiosStatus(err) === 429 && attempt < maxRetries) {
+        const waitMs = axiosRetryAfterMs(err) || Math.min(1_000 * 2 ** attempt, 10_000);
         await new Promise(resolve => setTimeout(resolve, waitMs));
         continue;
       }
@@ -387,8 +392,11 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
         existingFields[f.key] = f.value;
       }
     }
-  } catch {
-    // New subscriber — nothing to preserve, safe to create.
+  } catch (err) {
+    // Only treat 404 (subscriber not found yet) as safe to ignore.
+    // Any other error — especially 429 — must propagate so the batch
+    // loop can count it as an error and withRetry can handle rate limits.
+    if (axiosStatus(err) !== 404) throw err;
   }
 
   // Our computed fields override existing values; all other existing fields
@@ -405,7 +413,7 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
       groups: existingGroups,
       // Only set 'active' for new subscribers; keep the existing status for
       // returning subscribers so we don't override manually managed states.
-      status: existingStatus ?? 'active',
+      status: (existingStatus ?? 'active') as 'active' | 'unsubscribed' | 'bounced' | 'junk' | 'unconfirmed',
     }),
   );
 }
