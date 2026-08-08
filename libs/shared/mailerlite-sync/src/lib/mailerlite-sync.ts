@@ -386,7 +386,10 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
     const groups = (raw?.['groups'] ?? []) as Array<{ id: string }>;
     existingGroups = groups.map(g => g.id);
 
-    const fields = (raw?.['fields'] ?? []) as Array<{ key: string; value: string | number | null }>;
+    const rawFields = raw?.['fields'];
+    const fields = Array.isArray(rawFields)
+      ? (rawFields as Array<{ key: string; value: string | number | null }>)
+      : [];
     for (const f of fields) {
       if (f.value !== null && f.value !== undefined && f.value !== '') {
         existingFields[f.key] = f.value;
