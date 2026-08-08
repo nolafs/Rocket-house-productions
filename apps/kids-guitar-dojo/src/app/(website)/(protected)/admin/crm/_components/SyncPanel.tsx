@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
 import { Button, Badge } from '@rocket-house-productions/shadcn-ui/server';
-import { RefreshCw, Play, Eye, Tag } from 'lucide-react';
+import { RefreshCw, Play, Eye, Tag, Zap } from 'lucide-react';
 
 interface SyncRun {
   id: string;
@@ -51,16 +51,20 @@ export function SyncPanel() {
     fetchRuns();
   }, [fetchRuns]);
 
+  async function post(action: string) {
+    const res = await fetch('/api/admin/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action }),
+    });
+    return { res, data: await res.json() };
+  }
+
   async function trigger(action: 'push' | 'pull' | 'push-dry-run') {
     setActionLoading(action);
     setLastResult(null);
     try {
-      const res = await fetch('/api/admin/sync', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action }),
-      });
-      const data = await res.json();
+      const { res, data } = await post(action);
       if (res.status === 409) {
         setLastResult('Sync already running — try again shortly.');
       } else {
@@ -71,6 +75,32 @@ export function SyncPanel() {
         setLastResult(summary);
         await fetchRuns();
       }
+    } catch {
+      setLastResult('Request failed — check the console.');
+    } finally {
+      setActionLoading(null);
+    }
+  }
+
+  async function triggerFullSync() {
+    setActionLoading('full-sync');
+    setLastResult('Pushing to MailerLite…');
+    try {
+      const { res: pushRes, data: pushData } = await post('push');
+      if (pushRes.status === 409) {
+        setLastResult('Sync already running — try again shortly.');
+        return;
+      }
+
+      setLastResult(`Push done (${pushData.pushed} pushed). Pulling tags…`);
+
+      const { data: pullData } = await post('pull');
+
+      setLastResult(
+        `Full sync done: ${pushData.pushed} pushed, ${pushData.skipped} skipped, ` +
+        `${pullData.pulled} tags pulled, ${pushData.errors + pullData.errors} errors`,
+      );
+      await fetchRuns();
     } catch {
       setLastResult('Request failed — check the console.');
     } finally {
@@ -108,6 +138,14 @@ export function SyncPanel() {
             onClick={() => trigger('pull')}>
             <Tag className="mr-2 h-4 w-4" />
             {actionLoading === 'pull' ? 'Pulling…' : 'Pull Tags'}
+          </Button>
+          <Button
+            size="sm"
+            variant="default"
+            disabled={!!actionLoading}
+            onClick={triggerFullSync}>
+            <Zap className="mr-2 h-4 w-4" />
+            {actionLoading === 'full-sync' ? 'Syncing…' : 'Full Sync'}
           </Button>
           <Button
             size="sm"
