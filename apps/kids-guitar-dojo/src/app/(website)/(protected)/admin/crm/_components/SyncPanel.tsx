@@ -84,23 +84,47 @@ export function SyncPanel() {
 
   async function triggerFullSync() {
     setActionLoading('full-sync');
-    setLastResult('Pushing to MailerLite…');
+    setLastResult(null);
+
+    let totalPushed = 0;
+    let totalSkipped = 0;
+    let totalErrors = 0;
+    let run = 0;
+    const MAX_RUNS = 50; // safety cap
+
     try {
-      const { res: pushRes, data: pushData } = await post('push');
-      if (pushRes.status === 409) {
-        setLastResult('Sync already running — try again shortly.');
-        return;
+      // Loop push runs until nothing new is pushed (all hashes match or all done).
+      while (run < MAX_RUNS) {
+        run++;
+        setLastResult(`Push run ${run} — ${totalPushed} pushed so far…`);
+
+        const { res: pushRes, data: pushData } = await post('push');
+
+        if (pushRes.status === 409) {
+          setLastResult('Sync already running — try again shortly.');
+          return;
+        }
+
+        totalPushed += pushData.pushed ?? 0;
+        totalSkipped += pushData.skipped ?? 0;
+        totalErrors += pushData.errors ?? 0;
+
+        await fetchRuns();
+
+        // Nothing new pushed this run → everyone is up to date.
+        if (!pushData.pushed) break;
       }
 
-      setLastResult(`Push done (${pushData.pushed} pushed). Pulling tags…`);
-
+      // Pull tags once after all accounts are pushed.
+      setLastResult(`All accounts pushed (${totalPushed} total). Pulling tags…`);
       const { data: pullData } = await post('pull');
+      await fetchRuns();
 
       setLastResult(
-        `Full sync done: ${pushData.pushed} pushed, ${pushData.skipped} skipped, ` +
-        `${pullData.pulled} tags pulled, ${pushData.errors + pullData.errors} errors`,
+        `Full sync done in ${run} run${run !== 1 ? 's' : ''}: ` +
+        `${totalPushed} pushed, ${totalSkipped} skipped, ` +
+        `${pullData.pulled} tags pulled, ${totalErrors + (pullData.errors ?? 0)} errors`,
       );
-      await fetchRuns();
     } catch {
       setLastResult('Request failed — check the console.');
     } finally {
