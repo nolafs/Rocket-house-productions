@@ -27,6 +27,11 @@ export default async function Page() {
         },
       },
       purchases: true,
+      marketingProfile: {
+        select: {
+          tags: true,
+        },
+      },
     },
   });
 
