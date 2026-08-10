@@ -140,6 +140,7 @@
     "@nx/react": "22.7.8",
     "@nx/workspace": "22.7.8",
     "@prisma/nextjs-monorepo-workaround-plugin": "7.9.1",
+    "@prismicio/cli": "^0.0.2",
     "@slicemachine/adapter-next": "^0.3.97",
     "@svgr/webpack": "^8.1.0",
     "@swc-node/register": "~1.12.1",

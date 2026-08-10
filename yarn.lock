@@ -6533,6 +6533,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prismicio/cli@npm:^0.0.2":
+  version: 0.0.2
+  resolution: "@prismicio/cli@npm:0.0.2"
+  bin:
+    prismic: ./bin/prismic.js
+  checksum: 10c0/943888c3be886c2eb8881f06b4ea72051c4ea79dfae4f658b8204103c6f6097136983391e126e5f33a931dc2d5c6347f9eefb2f5c1730a1a1ee6e80df3f76ae2
+  languageName: node
+  linkType: hard
+
 "@prismicio/client@npm:7.17.0":
   version: 7.17.0
   resolution: "@prismicio/client@npm:7.17.0"
@@ -8221,6 +8230,7 @@ __metadata:
     "@prisma/client": "npm:7.9.1"
     "@prisma/extension-accelerate": "npm:^3.0.1"
     "@prisma/nextjs-monorepo-workaround-plugin": "npm:7.9.1"
+    "@prismicio/cli": "npm:^0.0.2"
     "@prismicio/client": "npm:^7.21.8"
     "@prismicio/next": "npm:^2.3.0"
     "@prismicio/react": "npm:^3.4.1"

@@ -801,6 +801,66 @@ interface LessonDocumentData {
  */
 export type LessonDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<LessonDocumentData>, "lesson", Lang>;
 
+type MarketingDocumentDataSlicesSlice = BlogListSlice | CallToActionSlice | ContentImageSliceSlice | FaqsSlice | FeaturesSlice | HeroSlice | ImageGridSlice | PricingTableSlice | SectionHeadersSlice | StatsSlice | TestimonialsSlice | TimelineSlice
+
+/**
+ * Content for marketing documents
+ */
+interface MarketingDocumentData {
+	/**
+	 * Slice Zone field in *marketing*
+	 *
+	 * - **Field Type**: Slice Zone
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: marketing.slices[]
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/slices
+	 */
+	slices: prismic.SliceZone<MarketingDocumentDataSlicesSlice>;/**
+	 * Meta Title field in *marketing*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A title of the page used for social media and search engines
+	 * - **API ID Path**: marketing.meta_title
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_title: prismic.KeyTextField;
+	
+	/**
+	 * Meta Description field in *marketing*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: A brief summary of the page
+	 * - **API ID Path**: marketing.meta_description
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	meta_description: prismic.KeyTextField;
+	
+	/**
+	 * Meta Image field in *marketing*
+	 *
+	 * - **Field Type**: Image
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: marketing.meta_image
+	 * - **Tab**: SEO & Metadata
+	 * - **Documentation**: https://prismic.io/docs/fields/image
+	 */
+	meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * marketing document from Prismic
+ *
+ * - **API ID**: `marketing`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type MarketingDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<MarketingDocumentData>, "marketing", Lang>;
+
 /**
  * Item in *Navigation → Links*
  */
@@ -1504,7 +1564,7 @@ interface SettingsDocumentData {
  */
 export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SettingsDocumentData>, "settings", Lang>;
 
-export type AllDocumentTypes = AuthorDocument | BlogDocument | BlogCategoryDocument | BlogPostDocument | BlogTagsDocument | ContactDocument | FaqDocument | HomeDocument | LegalDocument | LessonDocument | NavigationDocument | OnboardingDocument | PageDocument | PricingDocument | SettingsDocument;
+export type AllDocumentTypes = AuthorDocument | BlogDocument | BlogCategoryDocument | BlogPostDocument | BlogTagsDocument | ContactDocument | FaqDocument | HomeDocument | LegalDocument | LessonDocument | MarketingDocument | NavigationDocument | OnboardingDocument | PageDocument | PricingDocument | SettingsDocument;
 
 /**
  * Primary content in *BlogList → Default → Primary*
@@ -4041,6 +4101,9 @@ declare module "@prismicio/client" {
 			LessonDocument,
 			LessonDocumentData,
 			LessonDocumentDataSlicesSlice,
+			MarketingDocument,
+			MarketingDocumentData,
+			MarketingDocumentDataSlicesSlice,
 			NavigationDocument,
 			NavigationDocumentData,
 			NavigationDocumentDataLinksItem,

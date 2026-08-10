@@ -25,6 +25,10 @@
       "path": "/legal/:uid"
     },
     {
+      "type": "marketing",
+      "path": "/marketing/:uid"
+    },
+    {
       "type": "page",
       "path": "/:uid"
     }
