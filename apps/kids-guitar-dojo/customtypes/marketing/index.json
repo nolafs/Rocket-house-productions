@@ -9,6 +9,13 @@
         },
         "type": "UID"
       },
+      "title": {
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
       "slices": {
         "config": {
           "choices": {
@@ -82,7 +89,7 @@
       }
     }
   },
-  "label": "marketing",
+  "label": "Marketing",
   "repeatable": true,
   "status": true
 }

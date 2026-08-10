@@ -804,11 +804,22 @@ export type LessonDocument<Lang extends string = string> = prismic.PrismicDocume
 type MarketingDocumentDataSlicesSlice = BlogListSlice | CallToActionSlice | ContentImageSliceSlice | FaqsSlice | FeaturesSlice | HeroSlice | ImageGridSlice | PricingTableSlice | SectionHeadersSlice | StatsSlice | TestimonialsSlice | TimelineSlice
 
 /**
- * Content for marketing documents
+ * Content for Marketing documents
  */
 interface MarketingDocumentData {
 	/**
-	 * Slice Zone field in *marketing*
+	 * Title field in *Marketing*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: marketing.title
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Slice Zone field in *Marketing*
 	 *
 	 * - **Field Type**: Slice Zone
 	 * - **Placeholder**: *None*
@@ -817,7 +828,7 @@ interface MarketingDocumentData {
 	 * - **Documentation**: https://prismic.io/docs/slices
 	 */
 	slices: prismic.SliceZone<MarketingDocumentDataSlicesSlice>;/**
-	 * Meta Title field in *marketing*
+	 * Meta Title field in *Marketing*
 	 *
 	 * - **Field Type**: Text
 	 * - **Placeholder**: A title of the page used for social media and search engines
@@ -828,7 +839,7 @@ interface MarketingDocumentData {
 	meta_title: prismic.KeyTextField;
 	
 	/**
-	 * Meta Description field in *marketing*
+	 * Meta Description field in *Marketing*
 	 *
 	 * - **Field Type**: Text
 	 * - **Placeholder**: A brief summary of the page
@@ -839,7 +850,7 @@ interface MarketingDocumentData {
 	meta_description: prismic.KeyTextField;
 	
 	/**
-	 * Meta Image field in *marketing*
+	 * Meta Image field in *Marketing*
 	 *
 	 * - **Field Type**: Image
 	 * - **Placeholder**: *None*
@@ -851,7 +862,7 @@ interface MarketingDocumentData {
 }
 
 /**
- * marketing document from Prismic
+ * Marketing document from Prismic
  *
  * - **API ID**: `marketing`
  * - **Repeatable**: `true`
