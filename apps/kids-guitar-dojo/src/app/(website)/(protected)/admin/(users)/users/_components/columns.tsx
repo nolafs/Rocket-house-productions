@@ -14,7 +14,7 @@ import {
 import { Badge, Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Account, Purchase } from '@rocket-house-productions/prisma-client';
 
-type AccountWithMarketing = Account & {
+export type AccountWithMarketing = Account & {
   marketingProfile: { tags: unknown } | null;
 };
 
