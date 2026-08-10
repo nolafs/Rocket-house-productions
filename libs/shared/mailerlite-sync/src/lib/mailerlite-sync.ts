@@ -209,7 +209,9 @@ export function classifyLifecycle(
   child: ChildRow | undefined,
   courses: CourseSlot[],
 ): LifecycleStage {
-  if (account.purchases.length > 0) return 'customer';
+  const PAID_CATEGORIES = new Set(['standard', 'premium', 'included']);
+  const hasPaidPurchase = account.purchases.some(p => PAID_CATEGORIES.has(p.category ?? ''));
+  if (hasPaidPurchase) return 'customer';
   if (!child) return 'never_started';
 
   const totalCompleted = child.childProgress.filter(p => p.isCompleted).length;
