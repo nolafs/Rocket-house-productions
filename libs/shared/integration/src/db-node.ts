@@ -1,14 +1,13 @@
 /**
  * Prisma client for plain Node.js environments (e.g. Netlify scheduled functions).
  *
- * Identical to db.ts but without the `server-only` guard, which throws in
- * non-Next.js runtimes. Import this alias from serverless/scheduled functions;
- * use @rocket-house-productions/integration/db everywhere else.
+ * No `server-only` guard (throws in non-Next.js runtimes) and no PrismaPg
+ * adapter import (uses import.meta.url which esbuild bundles as undefined in CJS).
+ * Always connects via Prisma Accelerate — DATABASE_URL must be a prisma:// URL.
  */
 
 import { PrismaClient } from '@rocket-house-productions/prisma-client';
 import { withAccelerate } from '@prisma/extension-accelerate';
-import { PrismaPg } from '@prisma/adapter-pg';
 
 const createPrismaClient = () => {
   const url = process.env.DATABASE_URL;
@@ -19,19 +18,8 @@ const createPrismaClient = () => {
 
   const log = process.env.NODE_ENV === 'development' ? (['query', 'error', 'warn'] as const) : (['error'] as const);
 
-  if (url.startsWith('prisma://') || url.startsWith('prisma+postgres://')) {
-    return new PrismaClient({
-      accelerateUrl: url,
-      log: [...log],
-    }).$extends(withAccelerate());
-  }
-
-  const adapter = new PrismaPg({
-    connectionString: url,
-  });
-
   return new PrismaClient({
-    adapter,
+    accelerateUrl: url,
     log: [...log],
   }).$extends(withAccelerate());
 };
