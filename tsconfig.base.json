@@ -34,6 +34,7 @@
       "@rocket-house-productions/integration": ["libs/shared/integration/src/index.ts"],
       "@rocket-house-productions/integration/server": ["libs/shared/integration/src/server.ts"],
       "@rocket-house-productions/integration/db": ["libs/shared/integration/src/db.ts"],
+      "@rocket-house-productions/integration/db-node": ["libs/shared/integration/src/db-node.ts"],
       "@rocket-house-productions/layout": ["libs/shared/layout/src/index.ts"],
       "@rocket-house-productions/layout/server": ["libs/shared/layout/src/server.ts"],
       "@rocket-house-productions/lesson": ["libs/shared/lesson/src/index.ts"],

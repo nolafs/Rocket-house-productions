@@ -23,7 +23,7 @@
 
 import { createHash } from 'node:crypto';
 import MailerLite from '@mailerlite/mailerlite-nodejs';
-import { db } from '@rocket-house-productions/integration/db';
+import { db } from '@rocket-house-productions/integration/db-node';
 import { acquireLock, releaseLock } from './sync-lock';
 import type { TriggeredBy } from './sync-lock';
 
