@@ -560,6 +560,77 @@ interface ContactDocumentData {
 export type ContactDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<ContactDocumentData>, "contact", Lang>;
 
 /**
+ * Content for Discount Codes documents
+ */
+interface DiscountCodesDocumentData {
+	/**
+	 * Name field in *Discount Codes*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discount_codes.name
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	name: prismic.KeyTextField;
+	
+	/**
+	 * Description field in *Discount Codes*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discount_codes.description
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	description: prismic.RichTextField;
+	
+	/**
+	 * Code field in *Discount Codes*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discount_codes.code
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	code: prismic.KeyTextField;
+	
+	/**
+	 * Start Date field in *Discount Codes*
+	 *
+	 * - **Field Type**: Date
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discount_codes.start_date
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/date
+	 */
+	start_date: prismic.DateField;
+	
+	/**
+	 * Expiring Date field in *Discount Codes*
+	 *
+	 * - **Field Type**: Date
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discount_codes.expiring_date
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/date
+	 */
+	expiring_date: prismic.DateField;
+}
+
+/**
+ * Discount Codes document from Prismic
+ *
+ * - **API ID**: `discount_codes`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type DiscountCodesDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<DiscountCodesDocumentData>, "discount_codes", Lang>;
+
+/**
  * Content for Faq documents
  */
 interface FaqDocumentData {
@@ -1575,7 +1646,7 @@ interface SettingsDocumentData {
  */
 export type SettingsDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<SettingsDocumentData>, "settings", Lang>;
 
-export type AllDocumentTypes = AuthorDocument | BlogDocument | BlogCategoryDocument | BlogPostDocument | BlogTagsDocument | ContactDocument | FaqDocument | HomeDocument | LegalDocument | LessonDocument | MarketingDocument | NavigationDocument | OnboardingDocument | PageDocument | PricingDocument | SettingsDocument;
+export type AllDocumentTypes = AuthorDocument | BlogDocument | BlogCategoryDocument | BlogPostDocument | BlogTagsDocument | ContactDocument | DiscountCodesDocument | FaqDocument | HomeDocument | LegalDocument | LessonDocument | MarketingDocument | NavigationDocument | OnboardingDocument | PageDocument | PricingDocument | SettingsDocument;
 
 /**
  * Primary content in *BlogList → Default → Primary*
@@ -4101,6 +4172,8 @@ declare module "@prismicio/client" {
 			ContactDocument,
 			ContactDocumentData,
 			ContactDocumentDataSlicesSlice,
+			DiscountCodesDocument,
+			DiscountCodesDocumentData,
 			FaqDocument,
 			FaqDocumentData,
 			HomeDocument,
