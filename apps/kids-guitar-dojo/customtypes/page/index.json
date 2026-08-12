@@ -1,36 +1,33 @@
 {
+  "format": "page",
   "id": "page",
-  "label": "Page",
-  "repeatable": true,
   "json": {
     "Main": {
       "uid": {
-        "type": "UID",
         "config": {
           "label": "UID"
-        }
+        },
+        "type": "UID"
       },
       "title": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Title",
-          "placeholder": "",
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-          "allowTargetBlank": true
-        }
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       },
       "parent": {
-        "type": "Link",
         "config": {
+          "allowTargetBlank": false,
           "label": "Parent",
           "placeholder": "",
-          "select": null,
-          "allowTargetBlank": false
-        }
+          "select": null
+        },
+        "type": "Link"
       },
       "slices": {
-        "type": "Slices",
-        "fieldset": "Slice Zone",
         "config": {
           "choices": {
             "faqs": {
@@ -65,39 +62,45 @@
             },
             "content_image_slice": {
               "type": "SharedSlice"
+            },
+            "discounts": {
+              "type": "SharedSlice"
             }
           }
-        }
+        },
+        "fieldset": "Slice Zone",
+        "type": "Slices"
       }
     },
     "SEO & Metadata": {
       "meta_title": {
-        "type": "Text",
         "config": {
           "label": "Meta Title",
           "placeholder": "A title of the page used for social media and search engines"
-        }
+        },
+        "type": "Text"
       },
       "meta_description": {
-        "type": "Text",
         "config": {
           "label": "Meta Description",
           "placeholder": "A brief summary of the page"
-        }
+        },
+        "type": "Text"
       },
       "meta_image": {
-        "type": "Image",
         "config": {
-          "label": "Meta Image",
           "constraint": {
             "width": 2400,
             "height": 1260
           },
+          "label": "Meta Image",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       }
     }
   },
-  "status": true,
-  "format": "page"
+  "label": "Page",
+  "repeatable": true,
+  "status": true
 }

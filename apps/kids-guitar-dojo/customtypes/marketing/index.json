@@ -54,6 +54,9 @@
             },
             "timeline": {
               "type": "SharedSlice"
+            },
+            "discounts": {
+              "type": "SharedSlice"
             }
           }
         },

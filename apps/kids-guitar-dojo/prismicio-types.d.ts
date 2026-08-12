@@ -872,7 +872,7 @@ interface LessonDocumentData {
  */
 export type LessonDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<LessonDocumentData>, "lesson", Lang>;
 
-type MarketingDocumentDataSlicesSlice = BlogListSlice | CallToActionSlice | ContentImageSliceSlice | FaqsSlice | FeaturesSlice | HeroSlice | ImageGridSlice | PricingTableSlice | SectionHeadersSlice | StatsSlice | TestimonialsSlice | TimelineSlice
+type MarketingDocumentDataSlicesSlice = BlogListSlice | CallToActionSlice | ContentImageSliceSlice | FaqsSlice | FeaturesSlice | HeroSlice | ImageGridSlice | PricingTableSlice | SectionHeadersSlice | StatsSlice | TestimonialsSlice | TimelineSlice | DiscountsSlice
 
 /**
  * Content for Marketing documents
@@ -1165,7 +1165,7 @@ interface OnboardingDocumentData {
  */
 export type OnboardingDocument<Lang extends string = string> = prismic.PrismicDocumentWithoutUID<Simplify<OnboardingDocumentData>, "onboarding", Lang>;
 
-type PageDocumentDataSlicesSlice = FaqsSlice | PricingTableSlice | TestimonialsSlice | StatsSlice | TimelineSlice | FeaturesSlice | CallToActionSlice | HeroSlice | SectionHeadersSlice | RichTextSliceSlice | ContentImageSliceSlice
+type PageDocumentDataSlicesSlice = FaqsSlice | PricingTableSlice | TestimonialsSlice | StatsSlice | TimelineSlice | FeaturesSlice | CallToActionSlice | HeroSlice | SectionHeadersSlice | RichTextSliceSlice | ContentImageSliceSlice | DiscountsSlice
 
 /**
  * Content for Page documents
@@ -2389,6 +2389,16 @@ export interface DiscountsSliceDefaultPrimary {
 	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
 	 */
 	discount_code: ContentRelationshipFieldWithData<[{"id":"discount_codes","fields":["name","description","start_date","expiring_date","code"]}]>;
+	
+	/**
+	 * Terms & Conditions field in *Discounts → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discounts.default.primary.terms_conditions
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	terms_conditions: prismic.RichTextField;
 }
 
 /**

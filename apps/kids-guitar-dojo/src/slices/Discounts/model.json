@@ -32,7 +32,7 @@
             "allowTargetBlank": false,
             "label": "Body",
             "placeholder": "",
-            "single": "strong,em,list-item,o-list-item"
+            "single": "strong,em,paragraph"
           },
           "type": "StructuredText"
         },
@@ -55,6 +55,15 @@
             "select": "document"
           },
           "type": "Link"
+        },
+        "terms_conditions": {
+          "config": {
+            "allowTargetBlank": true,
+            "label": "Terms & Conditions",
+            "multi": "paragraph,strong,em,hyperlink,image,embed,list-item,o-list-item",
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         }
       },
       "version": "initial"
