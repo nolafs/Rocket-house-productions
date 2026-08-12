@@ -3,6 +3,7 @@
 import BlogList from "./BlogList";
 import CallToAction from "./CallToAction";
 import ContentImageSlice from "./ContentImageSlice";
+import Discounts from "./Discounts";
 import Faqs from "./Faqs";
 import Features from "./Features";
 import Hero from "./Hero";
@@ -19,6 +20,7 @@ export const components = {
 	blog_list: BlogList,
 	call_to_action: CallToAction,
 	content_image_slice: ContentImageSlice,
+	discounts: Discounts,
 	faqs: Faqs,
 	features: Features,
 	hero: Hero,

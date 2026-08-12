@@ -1,0 +1,54 @@
+{
+  "description": "Discounts",
+  "id": "discounts",
+  "name": "Discounts",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "...",
+      "id": "default",
+      "imageUrl": "",
+      "name": "Default",
+      "primary": {
+        "title": {
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "body": {
+          "config": {
+            "allowTargetBlank": false,
+            "label": "Body",
+            "placeholder": "",
+            "single": "strong,em,list-item,o-list-item"
+          },
+          "type": "StructuredText"
+        },
+        "discount_code": {
+          "config": {
+            "customtypes": [
+              {
+                "id": "discount_codes",
+                "fields": [
+                  "name",
+                  "description",
+                  "start_date",
+                  "expiring_date",
+                  "code"
+                ]
+              }
+            ],
+            "label": "Discount Code",
+            "repeat": false,
+            "select": "document"
+          },
+          "type": "Link"
+        }
+      },
+      "version": "initial"
+    }
+  ]
+}

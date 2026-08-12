@@ -2347,6 +2347,64 @@ type ContentImageSliceSliceVariation = ContentImageSliceSliceDefault | ContentIm
 export type ContentImageSliceSlice = prismic.SharedSlice<"content_image_slice", ContentImageSliceSliceVariation>;
 
 /**
+ * Primary content in *Discounts → Default → Primary*
+ */
+export interface DiscountsSliceDefaultPrimary {
+	/**
+	 * Title field in *Discounts → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discounts.default.primary.title
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	title: prismic.KeyTextField;
+	
+	/**
+	 * Body field in *Discounts → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discounts.default.primary.body
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	body: prismic.RichTextField;
+	
+	/**
+	 * Discount Code field in *Discounts → Default → Primary*
+	 *
+	 * - **Field Type**: Content Relationship
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discounts.default.primary.discount_code
+	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+	 */
+	discount_code: ContentRelationshipFieldWithData<[{"id":"discount_codes","fields":["name","description","start_date","expiring_date","code"]}]>;
+}
+
+/**
+ * Default variation for Discounts Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type DiscountsSliceDefault = prismic.SharedSliceVariation<"default", Simplify<DiscountsSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *Discounts*
+ */
+type DiscountsSliceVariation = DiscountsSliceDefault
+
+/**
+ * Discounts Shared Slice
+ *
+ * - **API ID**: `discounts`
+ * - **Description**: Discounts
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type DiscountsSlice = prismic.SharedSlice<"discounts", DiscountsSliceVariation>;
+
+/**
  * Item in *Faqs → Default → Primary → FAQs*
  */
 export interface FaqsSliceDefaultPrimaryFaqsItem {
@@ -4230,6 +4288,10 @@ declare module "@prismicio/client" {
 			ContentImageSliceSliceVariation,
 			ContentImageSliceSliceDefault,
 			ContentImageSliceSliceSectionContentImage,
+			DiscountsSlice,
+			DiscountsSliceDefaultPrimary,
+			DiscountsSliceVariation,
+			DiscountsSliceDefault,
 			FaqsSlice,
 			FaqsSliceDefaultPrimaryFaqsItem,
 			FaqsSliceDefaultPrimary,
