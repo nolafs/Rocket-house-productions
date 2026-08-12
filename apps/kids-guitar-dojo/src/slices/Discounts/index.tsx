@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import { Content, isFilled } from '@prismicio/client';
-import { SliceComponentProps } from '@prismicio/react';
+import { PrismicRichText, SliceComponentProps } from '@prismicio/react';
 import { Bounded } from '@components/Bounded';
 import { SectionTitle } from '@rocket-house-productions/features';
+import DiscountBtn from '../../../../../libs/shared/features/src/lib/discount/discount-btn';
 
 /**
  * Props for `Discounts`.
@@ -33,11 +34,20 @@ const Discounts: FC<DiscountsProps> = ({ slice }) => {
 
     return (
       <section data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
-        <Bounded as={'div'} yPadding={'md'} className="max-w-8xl mx-auto text-center">
-          {section_title && (
-            <SectionTitle {...section_title} description={slice.primary.body} align="center" titleSize="large" />
-          )}
-          {/* eslint-disable-next-line react/jsx-no-undef */}
+        <Bounded as={'div'} yPadding={'md'} className="mx-auto max-w-4xl text-center">
+          <div className={'flex flex-col space-y-10'}>
+            {section_title && (
+              <SectionTitle {...section_title} description={slice.primary.body} align="center" titleSize="large" />
+            )}
+            <div className={'mx-auto'}>
+              <DiscountBtn discountCode={discountCode?.code} />
+            </div>
+            {isFilled.richText(slice.primary.terms_conditions) && (
+              <div className={'text-sm opacity-50'}>
+                <PrismicRichText field={slice.primary.terms_conditions} />
+              </div>
+            )}
+          </div>
         </Bounded>
       </section>
     );
