@@ -11,9 +11,18 @@
       "imageUrl": "",
       "name": "Default",
       "primary": {
-        "title": {
+        "heading": {
           "config": {
-            "label": "Title",
+            "allowTargetBlank": false,
+            "label": "Heading",
+            "placeholder": "",
+            "single": "strong,em"
+          },
+          "type": "StructuredText"
+        },
+        "subheading": {
+          "config": {
+            "label": "Subheading",
             "placeholder": ""
           },
           "type": "Text"

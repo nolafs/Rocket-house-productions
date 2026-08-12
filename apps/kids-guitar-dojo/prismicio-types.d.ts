@@ -2351,14 +2351,24 @@ export type ContentImageSliceSlice = prismic.SharedSlice<"content_image_slice", 
  */
 export interface DiscountsSliceDefaultPrimary {
 	/**
-	 * Title field in *Discounts → Default → Primary*
+	 * Heading field in *Discounts → Default → Primary*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: discounts.default.primary.heading
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	heading: prismic.RichTextField;
+	
+	/**
+	 * Subheading field in *Discounts → Default → Primary*
 	 *
 	 * - **Field Type**: Text
 	 * - **Placeholder**: *None*
-	 * - **API ID Path**: discounts.default.primary.title
+	 * - **API ID Path**: discounts.default.primary.subheading
 	 * - **Documentation**: https://prismic.io/docs/fields/text
 	 */
-	title: prismic.KeyTextField;
+	subheading: prismic.KeyTextField;
 	
 	/**
 	 * Body field in *Discounts → Default → Primary*
