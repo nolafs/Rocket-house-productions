@@ -31,7 +31,7 @@ import {
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import cn from 'classnames';
 
-import { Module, ModuleAwardType } from '@prisma/client';
+import { Module, ModuleAwardType } from '@rocket-house-productions/prisma-client';
 import { Editor, FileImageUpload } from '@rocket-house-productions/features';
 import ModuleAwardItem from './module-award-item';
 import Image from 'next/image';

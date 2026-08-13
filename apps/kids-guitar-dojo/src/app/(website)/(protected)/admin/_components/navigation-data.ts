@@ -1,4 +1,12 @@
-import { FolderIcon, GraduationCapIcon, HomeIcon, UsersIcon, ShieldIcon, WalletIcon } from 'lucide-react';
+import {
+  FolderIcon,
+  GraduationCapIcon,
+  HomeIcon,
+  UsersIcon,
+  ShieldIcon,
+  WalletIcon,
+  MegaphoneIcon,
+} from 'lucide-react';
 
 export const NavigationData = [
   { name: 'Dashboard', href: '/admin', icon: HomeIcon, current: true },
@@ -7,4 +15,5 @@ export const NavigationData = [
   { name: 'Enrolment', href: '/admin/enrolment', icon: GraduationCapIcon, current: false },
   { name: 'Security', href: '/admin/security', icon: ShieldIcon, current: false },
   { name: 'Transactions', href: '/admin/transactions', icon: WalletIcon, current: false },
+  { name: 'CRM', href: '/admin/crm', icon: MegaphoneIcon, current: false },
 ];

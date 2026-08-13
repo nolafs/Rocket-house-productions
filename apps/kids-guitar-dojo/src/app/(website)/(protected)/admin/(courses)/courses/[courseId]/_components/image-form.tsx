@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 
-import { Course } from '@prisma/client';
+import { Course } from '@rocket-house-productions/prisma-client';
 import { FileImageUpload } from '@rocket-house-productions/features';
 import axios from 'axios';
 

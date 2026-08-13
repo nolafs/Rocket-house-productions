@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { getOrders } from '@rocket-house-productions/actions/server';
-import type { Order } from '@prisma/client';
+import type { Order } from '@rocket-house-productions/prisma-client';
 import OrdersTable from './components/order-table';
 import { OrderRow } from './components/order-columns';
 

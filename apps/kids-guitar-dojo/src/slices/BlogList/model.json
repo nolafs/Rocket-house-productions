@@ -2,23 +2,22 @@
   "id": "blog_list",
   "type": "SharedSlice",
   "name": "BlogList",
-  "description": "BlogList",
   "variations": [
     {
       "id": "default",
       "name": "Default",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/blog_list/default/ed0a94a8a8d9ccd975bc381dfcee09feaf8b0939.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "title": {
           "type": "StructuredText",
           "config": {
             "label": "Heading",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "allowTargetBlank": true
           }
         },
         "subtitle": {
@@ -53,5 +52,6 @@
       },
       "items": {}
     }
-  ]
+  ],
+  "description": "BlogList"
 }

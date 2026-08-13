@@ -7,7 +7,7 @@ import { db } from '@rocket-house-productions/integration/server';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import ButtonAddChild from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/button-add-child';
-import { Child } from '@prisma/client';
+import { Child } from '@rocket-house-productions/prisma-client';
 import VideoPlayer from '../../../../../../../../../../libs/shared/features/src/lib/video-player/video-player';
 
 export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {

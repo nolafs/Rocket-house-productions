@@ -1,5 +1,5 @@
 'use server';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@rocket-house-productions/prisma-client';
 import { db } from '@rocket-house-productions/integration/server';
 
 type AccountWithChildren = Prisma.AccountGetPayload<{

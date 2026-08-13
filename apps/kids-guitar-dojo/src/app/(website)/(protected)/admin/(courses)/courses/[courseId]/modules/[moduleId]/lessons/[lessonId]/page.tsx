@@ -24,7 +24,7 @@ import LessonBookCtaForm from './_components/lesson-book-cta-form';
 import { Banner, IconBadge } from '@rocket-house-productions/features/ui';
 import { PreviewPrismic } from '@rocket-house-productions/integration/server';
 import { db } from '@rocket-house-productions/integration/server';
-import { Lesson } from '@prisma/client';
+import { Lesson } from '@rocket-house-productions/prisma-client';
 
 type Params = { courseId: string; moduleId: string; lessonId: string };
 

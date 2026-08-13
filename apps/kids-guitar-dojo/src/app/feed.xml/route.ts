@@ -1,6 +1,6 @@
 import RSS from 'rss';
 import * as prismic from '@prismicio/client';
-import config from '../../../slicemachine.config.json';
+import config from '../../../prismic.config.json';
 
 const repositoryName = process.env.NEXT_PUBLIC_PRISMIC_ENVIRONMENT ?? config.repositoryName;
 

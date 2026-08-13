@@ -2,8 +2,7 @@
 import * as THREE from 'three';
 import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { useThree } from '@react-three/fiber';
-import { SoftShadows } from '@react-three/drei';
-import { type Course, type BookScene, type Module } from '@prisma/client';
+import { type Course, type BookScene, type Module } from '@rocket-house-productions/prisma-client';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { gsap } from 'gsap';
@@ -278,25 +277,25 @@ export function CourseNavigation({ course, onLoaded, purchaseType = null }: Cour
 
       <SafeCourseNavigation
         className={'fixed h-screen w-full'}
-        shadows={true}
+        shadows="soft"
         moduleAwardsDisplay={display}
         camera={{ position: [0, 0, 130], fov: 15 }}>
         <ambientLight intensity={0.6} />
 
         <SafeSkyBox skyUrl={course?.bookScene?.skyUrl} />
 
-        <SoftShadows size={5} samples={20} focus={40} />
-
         {/* rest of your 3D content */}
         <directionalLight
           shadow-mapSize-width={1024 * (isMobile ? 2 : 4)}
           shadow-mapSize-height={1024 * (isMobile ? 2 : 4)}
-          shadow-camera-far={500}
-          shadow-camera-left={-100}
-          shadow-camera-right={100}
-          shadow-camera-top={500}
-          shadow-camera-bottom={-100}
-          position={[-40, 100, 250]}
+          shadow-radius={8}
+          shadow-blurSamples={25}
+          shadow-camera-far={(display.pathLength ?? 15) + 400}
+          shadow-camera-left={-60}
+          shadow-camera-right={60}
+          shadow-camera-top={(display.pathLength ?? 15) + 60}
+          shadow-camera-bottom={-60}
+          position={[-40, 100, 350]}
           rotation={[0, Math.PI, 0]}
           intensity={2}
           castShadow

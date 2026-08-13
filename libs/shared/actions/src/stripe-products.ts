@@ -14,7 +14,21 @@ export const stripePrices = async (productId: string, sales?: boolean) => {
     active: true,
     limit: 100,
   });
-  return data;
+  // Stripe v22 returns class instances with toJSON methods which React cannot
+  // serialize across the Server→Client boundary. Map to plain objects.
+  return data.map(p => ({
+    id: p.id,
+    object: p.object,
+    active: p.active,
+    currency: p.currency,
+    nickname: p.nickname,
+    type: p.type,
+    unit_amount: p.unit_amount,
+    unit_amount_decimal: p.unit_amount_decimal ? String(p.unit_amount_decimal) : null,
+    metadata: p.metadata,
+    recurring: p.recurring ?? null,
+    product: typeof p.product === 'string' ? p.product : p.product?.id ?? null,
+  }));
 };
 
 function pickPrice(

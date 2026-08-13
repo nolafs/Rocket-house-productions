@@ -2,15 +2,14 @@
   "id": "testimonials",
   "type": "SharedSlice",
   "name": "Testimonials",
-  "description": "Testimonials",
   "variations": [
     {
       "id": "default",
       "name": "Default",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/testimonials/default/b174ab68ebe841319f2fdc637d4168fdaef35315.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "items": {
           "type": "Group",
@@ -37,8 +36,8 @@
                 "config": {
                   "label": "review",
                   "placeholder": "",
-                  "allowTargetBlank": true,
-                  "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+                  "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+                  "allowTargetBlank": true
                 }
               },
               "image": {
@@ -62,5 +61,6 @@
       },
       "items": {}
     }
-  ]
+  ],
+  "description": "Testimonials"
 }

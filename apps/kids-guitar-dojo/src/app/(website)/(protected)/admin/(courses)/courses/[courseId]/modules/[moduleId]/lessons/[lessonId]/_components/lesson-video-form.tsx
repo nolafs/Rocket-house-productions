@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 
 // Components
 
-import { Lesson, BunnyData } from '@prisma/client';
+import { Lesson, BunnyData } from '@rocket-house-productions/prisma-client';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 import { Banner } from '@rocket-house-productions/features/ui';
 import LessonVideoListDialog from './lesson-video-list-dialog';

@@ -1,4 +1,4 @@
-import type { Course, Tier } from '@prisma/client';
+import type { Course, Tier } from '@rocket-house-productions/prisma-client';
 import { CourseModules, PriceTier, PurchaseCourse } from '@rocket-house-productions/types';
 import {
   getAccountData,

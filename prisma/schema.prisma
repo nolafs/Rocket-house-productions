@@ -5,8 +5,10 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["strictUndefinedChecks"]
+  provider            = "prisma-client"
+  output              = "../generated/prisma"
+  moduleFormat        = "esm" // or "cjs" if your NX libs compile to CJS
+  importFileExtension = "ts" // makes imports say ./client.ts instead of ./client.js
 }
 
 datasource db {
@@ -489,9 +491,10 @@ model Account {
 
   role String @default("member")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  Order     Order[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt()
+  Order            Order[]
+  marketingProfile MarketingProfile?
 
   @@index([userId])
 }
@@ -584,4 +587,42 @@ model WebhookEvent {
   stripeEventId String   @unique
   type          String?
   processedAt   DateTime @default(now())
+}
+
+model MarketingProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  email  String @unique
+
+  // ---- push direction (DB → MailerLite) ----
+  lifecycleStage String? // never_started | active | dropped_off | completed_free | customer
+  pushedHash     String? // hash of last payload sent — skip unchanged users
+  pushedAt       DateTime?
+
+  // ---- pull direction (MailerLite → DB, read-only mirror) ----
+  tags         Json? // e.g. ["cf_timing", "replied_tech"]
+  tagsSyncedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user Account @relation(fields: [userId], references: [id])
+
+  @@index([lifecycleStage])
+}
+
+model SyncRun {
+  id          String    @id @default(cuid())
+  type        String    // 'push' | 'pull'
+  status      String    // 'running' | 'done' | 'failed'
+  triggeredBy String?   // 'cron' | 'admin' | 'manual'
+  pushed      Int       @default(0)
+  skipped     Int       @default(0)
+  pulled      Int       @default(0)
+  errors      Int       @default(0)
+  notes       String?
+  startedAt   DateTime  @default(now())
+  finishedAt  DateTime?
+
+  @@index([status, startedAt])
 }

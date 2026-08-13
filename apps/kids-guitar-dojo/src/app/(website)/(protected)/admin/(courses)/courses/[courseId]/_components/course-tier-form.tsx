@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { Input, Textarea, Switch, Separator } from '@rocket-house-productions/shadcn-ui';
 import { Badge, Button } from '@rocket-house-productions/shadcn-ui/server';
 
-import type { Course, Tier as PrismaTier } from '@prisma/client';
+import type { Course, Tier as PrismaTier } from '@rocket-house-productions/prisma-client';
 import { updateProductMetadata } from '@rocket-house-productions/actions/server';
 
 interface Props {

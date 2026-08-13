@@ -1,4 +1,4 @@
-import { MembershipSettings, Prisma, Tier } from '@prisma/client';
+import { MembershipSettings, Prisma, Tier } from '@rocket-house-productions/prisma-client';
 import Image from 'next/image';
 import Ribben from '../assets/header.png';
 import CourseCard from './course-card';

@@ -12,9 +12,13 @@ import {
   DropdownMenuTrigger,
 } from '@rocket-house-productions/shadcn-ui';
 import { Badge, Button } from '@rocket-house-productions/shadcn-ui/server';
-import { Account, Purchase } from '@prisma/client';
+import { Account, Purchase } from '@rocket-house-productions/prisma-client';
 
-export const columns: ColumnDef<Account>[] = [
+export type AccountWithMarketing = Account & {
+  marketingProfile: { tags: unknown } | null;
+};
+
+export const columns: ColumnDef<AccountWithMarketing>[] = [
   {
     accessorKey: 'userId',
     header: ({ column }) => {
@@ -130,6 +134,24 @@ export const columns: ColumnDef<Account>[] = [
         <i>
           <XIcon className={'fill-destructive h-6 w-6'}></XIcon>
         </i>
+      );
+    },
+  },
+  {
+    id: 'tags',
+    header: 'ML Tags',
+    cell: ({ row }) => {
+      const tags = row.original.marketingProfile?.tags;
+      const list = Array.isArray(tags) ? (tags as string[]) : [];
+      if (list.length === 0) return <span className="text-muted-foreground text-xs">—</span>;
+      return (
+        <div className="flex flex-wrap gap-1">
+          {list.map(tag => (
+            <Badge key={tag} variant="outline" className="text-xs">
+              {tag}
+            </Badge>
+          ))}
+        </div>
       );
     },
   },

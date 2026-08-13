@@ -1,9 +1,6 @@
 {
   "format": "page",
   "id": "page",
-  "label": "Page",
-  "repeatable": true,
-  "status": true,
   "json": {
     "Main": {
       "uid": {
@@ -13,26 +10,24 @@
         "type": "UID"
       },
       "title": {
-        "type": "StructuredText",
         "config": {
-          "label": "Title",
-          "placeholder": "",
           "allowTargetBlank": true,
-          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
-        }
+          "label": "Title",
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       },
       "parent": {
-        "type": "Link",
         "config": {
+          "allowTargetBlank": false,
           "label": "Parent",
           "placeholder": "",
-          "allowTargetBlank": false,
           "select": null
-        }
+        },
+        "type": "Link"
       },
       "slices": {
-        "type": "Slices",
-        "fieldset": "Slice Zone",
         "config": {
           "choices": {
             "faqs": {
@@ -67,9 +62,14 @@
             },
             "content_image_slice": {
               "type": "SharedSlice"
+            },
+            "discounts": {
+              "type": "SharedSlice"
             }
           }
-        }
+        },
+        "fieldset": "Slice Zone",
+        "type": "Slices"
       }
     },
     "SEO & Metadata": {
@@ -90,8 +90,8 @@
       "meta_image": {
         "config": {
           "constraint": {
-            "height": 1260,
-            "width": 2400
+            "width": 2400,
+            "height": 1260
           },
           "label": "Meta Image",
           "thumbnails": []
@@ -99,5 +99,8 @@
         "type": "Image"
       }
     }
-  }
+  },
+  "label": "Page",
+  "repeatable": true,
+  "status": true
 }

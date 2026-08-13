@@ -1,16 +1,18 @@
 #[build.environment]
 #  NEXT_USE_NETLIFY_EDGE = "false"
 [build]
-  command = "nx reset && yarn prisma generate && nx build kids-guitar-dojo --prod --verbose --skip-nx-cache"
-  #functions = "apps/kids-guitar-dojo/netlify/function"
+  command = "nx reset && yarn prisma generate && node scripts/patch-prisma-client.cjs && nx build kids-guitar-dojo --prod --verbose --skip-nx-cache"
+  functions = "apps/kids-guitar-dojo/netlify/functions"
   #publish = "apps/kids-guitar-dojo/.next"
 
 [build.environment]
-    NODE_VERSION = "20"  # Use major version only
+    NODE_VERSION = "22"  # Use major version only
     YARN_VERSION = "4.4.0"
     NPM_FLAGS = "--legacy-peer-deps"
     NEXT_TELEMETRY_DISABLED = "1"
     NODE_OPTIONS = "--max_old_space_size=4096"
+    npm_config_platform = "linux"
+    npm_config_arch = "x64"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -18,8 +20,12 @@
 
 [functions]
   included_files = [
-    "!node_modules/sharp/vendor/8.12.2/darwin-*/**/*",
-    "!node_modules/sharp/build/Release/sharp-darwin-*"
+    "node_modules/@img/sharp-linux-x64/**",
+    "node_modules/@img/sharp-libvips-linux-x64/**",
+    "!node_modules/@img/sharp-darwin-arm64/**",
+    "!node_modules/@img/sharp-darwin-x64/**",
+    "!node_modules/@img/sharp-libvips-darwin-arm64/**",
+    "!node_modules/@img/sharp-libvips-darwin-x64/**"
   ]
 
 [[redirects]]

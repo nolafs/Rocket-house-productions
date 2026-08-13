@@ -32,3 +32,5 @@ export {
 export { getPricingData } from './get-pricing-data';
 export type { PricingData } from './get-pricing-data';
 export { getOrders, getAllOrders, getTransactions, getAllTransactions } from './get-orders';
+export { checkPromo } from './check-promo';
+export type { PromoState } from './check-promo';

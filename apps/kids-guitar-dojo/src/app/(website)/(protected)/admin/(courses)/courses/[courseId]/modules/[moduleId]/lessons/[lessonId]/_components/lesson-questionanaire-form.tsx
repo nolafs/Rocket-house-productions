@@ -15,7 +15,7 @@ import { LessonQuestionanaireList } from './lesson-questionanaire-list';
 
 import cn from 'classnames';
 
-import { Module, Lesson, Questionary } from '@prisma/client';
+import { Module, Lesson, Questionary } from '@rocket-house-productions/prisma-client';
 import {
   Form,
   FormControl,

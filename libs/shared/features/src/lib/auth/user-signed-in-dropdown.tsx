@@ -12,12 +12,18 @@ import {
 } from '@rocket-house-productions/shadcn-ui';
 import { Badge } from '@rocket-house-productions/shadcn-ui/server';
 import Link from 'next/link';
-import { SignedIn, useClerk, useUser } from '@clerk/nextjs';
+import { Show, useClerk, useUser } from '@clerk/nextjs';
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import type { UserResource } from '@clerk/types';
+type UserLike = {
+  firstName?: string | null;
+  lastName?: string | null;
+  fullName?: string | null;
+  username?: string | null;
+  primaryEmailAddress?: { emailAddress: string } | null;
+};
 
-function getInitials(user?: UserResource | null) {
+function getInitials(user?: UserLike | null) {
   // Prefer explicit first/last; fall back to fullName, username, or email local-part
   const name =
     [user?.firstName, user?.lastName].filter(Boolean).join(' ').trim() ||
@@ -56,7 +62,7 @@ export function UserSignedInDropdown() {
   const tier: string = user?.publicMetadata?.tier as string;
 
   return (
-    <SignedIn>
+    <Show when="signed-in">
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
@@ -100,7 +106,7 @@ export function UserSignedInDropdown() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </SignedIn>
+    </Show>
   );
 }
 

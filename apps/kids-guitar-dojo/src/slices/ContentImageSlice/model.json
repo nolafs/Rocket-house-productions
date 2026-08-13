@@ -2,15 +2,14 @@
   "id": "content_image_slice",
   "type": "SharedSlice",
   "name": "ContentImageSlice",
-  "description": "ContentImageSlice",
   "variations": [
     {
       "id": "default",
       "name": "Default",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/content_image_slice/default/2120f2360619caf1ffe1d8497b9a3a79d316bfa1.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "subheading": {
           "type": "Text",
@@ -24,8 +23,8 @@
           "config": {
             "label": "Heading",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "strong,em,embed"
+            "multi": "strong,em,embed",
+            "allowTargetBlank": true
           }
         },
         "body": {
@@ -33,8 +32,8 @@
           "config": {
             "label": "Body",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "allowTargetBlank": true
           }
         },
         "image": {
@@ -58,11 +57,11 @@
           "config": {
             "label": "Alignment",
             "placeholder": "",
+            "default_value": "Right",
             "options": [
               "Right",
               "Left"
-            ],
-            "default_value": "Right"
+            ]
           }
         },
         "type": {
@@ -81,9 +80,9 @@
           "type": "Boolean",
           "config": {
             "label": "Has Decoration",
-            "placeholder_false": "false",
+            "default_value": true,
             "placeholder_true": "true",
-            "default_value": true
+            "placeholder_false": "false"
           }
         }
       },
@@ -92,10 +91,10 @@
     {
       "id": "sectionContentImage",
       "name": "Section Content Image",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/content_image_slice/sectionContentImage/88ffca5c321dbbd6a547a977c9bfc5e42eb5a3ae.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "subtitle": {
           "type": "Text",
@@ -109,8 +108,8 @@
           "config": {
             "label": "Heading",
             "placeholder": "",
-            "allowTargetBlank": true,
-            "multi": "strong,em,embed"
+            "multi": "strong,em,embed",
+            "allowTargetBlank": true
           }
         },
         "items": {
@@ -124,8 +123,8 @@
                 "config": {
                   "label": "Title",
                   "placeholder": "",
-                  "allowTargetBlank": true,
-                  "multi": "strong,em,list-item,o-list-item,paragraph"
+                  "multi": "strong,em,list-item,o-list-item,paragraph",
+                  "allowTargetBlank": true
                 }
               },
               "subtitle": {
@@ -140,8 +139,8 @@
                 "config": {
                   "label": "Body",
                   "placeholder": "",
-                  "allowTargetBlank": true,
-                  "multi": "strong,em,list-item,o-list-item,paragraph"
+                  "multi": "strong,em,list-item,o-list-item,paragraph",
+                  "allowTargetBlank": true
                 }
               },
               "image": {
@@ -175,5 +174,6 @@
       },
       "items": {}
     }
-  ]
+  ],
+  "description": "ContentImageSlice"
 }

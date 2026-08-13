@@ -2,15 +2,14 @@
   "id": "image_grid",
   "type": "SharedSlice",
   "name": "ImageGrid",
-  "description": "ImageGrid",
   "variations": [
     {
       "id": "default",
       "name": "Default",
+      "description": "Default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/image_grid/default/933aafdb3ed5c5a224f4837abe2ca877707c555e.png?auto=compress%2Cformat",
       "docURL": "...",
       "version": "initial",
-      "description": "Default",
-      "imageUrl": "",
       "primary": {
         "no_columns_small": {
           "type": "Number",
@@ -60,5 +59,6 @@
       },
       "items": {}
     }
-  ]
+  ],
+  "description": "ImageGrid"
 }

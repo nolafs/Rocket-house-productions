@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@rocket-house-productions/prisma-client';
 import { PurchaseCourse } from './course.type';
 
 export type AccountWithPurchases = Prisma.AccountGetPayload<{

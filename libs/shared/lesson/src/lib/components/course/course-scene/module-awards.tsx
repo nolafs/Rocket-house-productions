@@ -5,7 +5,7 @@ import { useLoader } from '@react-three/fiber';
 import { useCourseProgressionStore, useModuleProgressStore } from '@rocket-house-productions/providers';
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { AvailableAward } from '@rocket-house-productions/store';
-import { ModuleAttachmemtType } from '@prisma/client';
+import { ModuleAttachmemtType } from '@rocket-house-productions/prisma-client';
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 

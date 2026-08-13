@@ -11,7 +11,7 @@ import toast from 'react-hot-toast';
 import { LessonList } from './lesson-list';
 import cn from 'classnames';
 
-import { Module, Lesson } from '@prisma/client';
+import { Module, Lesson } from '@rocket-house-productions/prisma-client';
 import {
   Form,
   FormControl,

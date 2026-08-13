@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@rocket-house-productions/prisma-client';
 
 // Child with scores for leaderboard
 export type ChildWithScores = Prisma.ChildGetPayload<{

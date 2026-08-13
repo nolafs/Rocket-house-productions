@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@rocket-house-productions/prisma-client';
 import Link from 'next/link';
 import cn from 'classnames';
 import { buttonVariants } from '@rocket-house-productions/shadcn-ui/server';

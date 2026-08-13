@@ -15,7 +15,7 @@ import { ModulesList } from './modules-list';
 
 import cn from 'classnames';
 
-import { Module, Course } from '@prisma/client';
+import { Module, Course } from '@rocket-house-productions/prisma-client';
 import {
   Form,
   FormControl,

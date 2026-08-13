@@ -12,7 +12,7 @@ import { useGSAP } from '@gsap/react';
 import { LessonButton, ModulePosition } from './course.types';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { type BookScene } from '@prisma/client';
+import { type BookScene } from '@rocket-house-productions/prisma-client';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP);
