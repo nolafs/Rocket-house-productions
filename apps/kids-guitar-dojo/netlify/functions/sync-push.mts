@@ -14,6 +14,12 @@ import { runPushSync } from '@rocket-house-productions/mailerlite-sync/server';
 const DEADLINE_MS = 25_000;
 
 export const handler = schedule('0 2 * * *', async () => {
+  if (process.env.PRODUCTION !== 'true') {
+    // eslint-disable-next-line no-console
+    console.log('[sync-push] skipped — PRODUCTION env is not set to true');
+    return { statusCode: 200 };
+  }
+
   const result = await runPushSync({
     deadline: Date.now() + DEADLINE_MS,
     triggeredBy: 'cron',
