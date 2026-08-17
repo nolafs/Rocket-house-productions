@@ -1,7 +1,7 @@
 // components/orders/columns.tsx
 'use client';
 
-import { ColumnDef, StockFeatures } from '@tanstack/react-table';
+import { ColumnDef, StockFeatures, sortFns, filterFns } from '@tanstack/react-table';
 import Link from 'next/link';
 import { Badge } from '@rocket-house-productions/shadcn-ui/server';
 export type OrderRow = {
@@ -55,14 +55,14 @@ export const ordersColumns: ColumnDef<StockFeatures, OrderRow>[] = [
     accessorKey: 'createdAt',
     header: 'Created',
     cell: ({ getValue }) => fmtDate(getValue() as any),
-    sortFn: 'datetime',
+    sortFn: sortFns.datetime,
   },
   {
     accessorKey: 'status',
     header: 'Status',
     cell: ({ getValue }) => <StatusBadge value={getValue() as string} />,
     enableSorting: true,
-    filterFn: 'includesString',
+    filterFn: filterFns.includesString,
   },
   {
     accessorKey: 'amountTotal',
@@ -78,12 +78,12 @@ export const ordersColumns: ColumnDef<StockFeatures, OrderRow>[] = [
     accessorKey: 'completedAt',
     header: 'Completed',
     cell: ({ getValue }) => fmtDate(getValue() as any),
-    sortFn: 'datetime',
+    sortFn: sortFns.datetime,
   },
   {
     accessorKey: 'expiresAt',
     header: 'Expires',
     cell: ({ getValue }) => fmtDate(getValue() as any),
-    sortFn: 'datetime',
+    sortFn: sortFns.datetime,
   },
 ];
