@@ -17,15 +17,14 @@ const LogRocketComponent = dynamic(() => import('@rocket-house-productions/util'
 
 type ClientProvidersProps = {
   children: React.ReactNode;
-  domain: string;
 };
 
 // Defer LogRocket (or any module touching document/window at import time) to client only
 
-export function ClientProviders({ children, domain }: ClientProvidersProps) {
+export function ClientProviders({ children }: ClientProvidersProps) {
   return (
     <ClerkProvider>
-      <PlausibleProvider domain={domain} src="https://plausible.biffify.com/js/script.js">
+      <PlausibleProvider src="https://plausible.biffify.com/js/script.js">
         <UIProvider>
           <ConfettiProvider />
           <NextTopLoader zIndex={999999} color="hsl(var(--accent)" height={5} showSpinner={false} shadow={false} />
