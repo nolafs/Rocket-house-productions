@@ -31,8 +31,13 @@ interface CourseProgressionProviderProps {
 const CourseProgressionContext = createContext<CombinedStores | undefined>(undefined);
 
 export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ userId, course, children }) => {
-  const [isClient, setIsClient] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [stores, setStores] = useState<CombinedStores>({
+    lessonStore: null,
+    pointsStore: null,
+    moduleStore: null,
+    courseStore: null,
+  });
 
   const lessonStoreRef = useRef<CombinedStores['lessonStore'] | null>(null);
   const pointsStoreRef = useRef<CombinedStores['pointsStore'] | null>(null);
@@ -40,52 +45,33 @@ export const CourseProgressionProvider: FC<CourseProgressionProviderProps> = ({ 
   const courseStoreRef = useRef<CombinedStores['courseStore'] | null>(null);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (isClient) {
-      if (!lessonStoreRef.current) {
-        lessonStoreRef.current = createLessonStore(userId, course.id);
-      }
-
-      if (!pointsStoreRef.current) {
-        pointsStoreRef.current = createPointsStore(userId, course.id);
-      }
-
-      if (!moduleStoreRef.current) {
-        moduleStoreRef.current = createModuleStore(userId, course.id, lessonStoreRef.current);
-      }
-
-      if (!courseStoreRef.current) {
-        courseStoreRef.current = createCourseStore(userId, course, moduleStoreRef.current, lessonStoreRef.current);
-      }
-
-      setIsInitialized(true);
+    if (!lessonStoreRef.current) {
+      lessonStoreRef.current = createLessonStore(userId, course.id);
     }
-  }, [isClient, userId, course]);
+    if (!pointsStoreRef.current) {
+      pointsStoreRef.current = createPointsStore(userId, course.id);
+    }
+    if (!moduleStoreRef.current) {
+      moduleStoreRef.current = createModuleStore(userId, course.id, lessonStoreRef.current);
+    }
+    if (!courseStoreRef.current) {
+      courseStoreRef.current = createCourseStore(userId, course, moduleStoreRef.current, lessonStoreRef.current);
+    }
 
-  //courseStoreRef.current.addCourse(course);
-
-  const contextValue = isClient
-    ? {
-        lessonStore: lessonStoreRef.current,
-        pointsStore: pointsStoreRef.current,
-        moduleStore: moduleStoreRef.current,
-        courseStore: courseStoreRef.current,
-      }
-    : {
-        lessonStore: null,
-        pointsStore: null,
-        moduleStore: null,
-        courseStore: null,
-      };
+    setStores({
+      lessonStore: lessonStoreRef.current,
+      pointsStore: pointsStoreRef.current,
+      moduleStore: moduleStoreRef.current,
+      courseStore: courseStoreRef.current,
+    });
+    setIsInitialized(true);
+  }, [userId, course]);
 
   if (!isInitialized) {
-    return null; // Or a loading spinner
+    return null;
   }
 
-  return <CourseProgressionContext.Provider value={contextValue}>{children}</CourseProgressionContext.Provider>;
+  return <CourseProgressionContext.Provider value={stores}>{children}</CourseProgressionContext.Provider>;
 };
 
 export const useLessonProgressionStore = <T,>(selector: (store: LessonProgressStore) => T): T => {

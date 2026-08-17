@@ -1,11 +1,11 @@
 'use client';
 import type React from 'react';
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 export function useForwardedRef<T>(ref: React.ForwardedRef<T>) {
   const innerRef = useRef<T>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!ref) return;
     if (typeof ref === 'function') {
       ref(innerRef.current);

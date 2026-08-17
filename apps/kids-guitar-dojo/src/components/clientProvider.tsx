@@ -25,7 +25,7 @@ type ClientProvidersProps = {
 export function ClientProviders({ children, domain }: ClientProvidersProps) {
   return (
     <ClerkProvider>
-      <PlausibleProvider domain={domain}>
+      <PlausibleProvider domain={domain} src="https://plausible.biffify.com/js/script.js">
         <UIProvider>
           <ConfettiProvider />
           <NextTopLoader zIndex={999999} color="hsl(var(--accent)" height={5} showSpinner={false} shadow={false} />
