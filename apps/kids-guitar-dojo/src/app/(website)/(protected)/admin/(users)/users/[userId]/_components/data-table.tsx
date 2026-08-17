@@ -27,12 +27,12 @@ const _features = tableFeatures({
 // Components
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@rocket-house-productions/shadcn-ui';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
-interface DataTableProps<TData extends RowData, TValue> {
-  columns: ColumnDef<StockFeatures, TData, TValue>[];
+interface DataTableProps<TData extends RowData> {
+  columns: ColumnDef<StockFeatures, TData>[];
   data: TData[];
 }
 
-export function DataTable<TData extends RowData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData extends RowData>({ columns, data }: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 

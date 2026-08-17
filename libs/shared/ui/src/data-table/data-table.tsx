@@ -33,21 +33,21 @@ const _features = tableFeatures({
 });
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 
-type DataTableProps<TData extends RowData, TValue> = {
-  columns: ColumnDef<StockFeatures, TData, TValue>[];
+type DataTableProps<TData extends RowData> = {
+  columns: ColumnDef<StockFeatures, TData>[];
   data: TData[];
   searchColumnId?: string; // optional column id to bind to the search box
   searchPlaceholder?: string;
   pageSize?: number;
 };
 
-export function DataTable<TData extends RowData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   searchColumnId,
   searchPlaceholder = 'Search…',
   pageSize = 10,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
   const table = useTable({
