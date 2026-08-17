@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
 import { NavbarSimple } from '@rocket-house-productions/layout';
-import logo from '@assets/logo.png';
+
+export const metadata = {
+  title: 'Upgrade Kids Guitar Dojo courses',
+  description: 'Course pages for you to learn guitar with your kids.',
+};
 
 interface LayoutProps {
   children: ReactNode;
