@@ -22,6 +22,7 @@ import {
   createPaginatedRowModel,
   SortingState,
   useTable,
+  RowData,
 } from '@tanstack/react-table';
 
 const _features = tableFeatures({
@@ -32,7 +33,7 @@ const _features = tableFeatures({
 });
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 
-type DataTableProps<TData, TValue> = {
+type DataTableProps<TData extends RowData, TValue> = {
   columns: ColumnDef<StockFeatures, TData, TValue>[];
   data: TData[];
   searchColumnId?: string; // optional column id to bind to the search box
@@ -40,7 +41,7 @@ type DataTableProps<TData, TValue> = {
   pageSize?: number;
 };
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData, TValue>({
   columns,
   data,
   searchColumnId,
@@ -56,7 +57,7 @@ export function DataTable<TData, TValue>({
     state: { sorting, columnFilters },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters as any,
-    initialState: { pagination: { pageSize } },
+    initialState: { pagination: { pageSize: pageSize, pageIndex: 0 } },
   });
 
   const searchCol = searchColumnId ? table.getColumn(searchColumnId) : null;

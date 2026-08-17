@@ -15,6 +15,7 @@ import {
   createPaginatedRowModel,
   createSortedRowModel,
   useTable,
+  RowData,
 } from '@tanstack/react-table';
 
 const _features = tableFeatures({
@@ -37,12 +38,12 @@ import {
   Input,
 } from '@rocket-house-productions/shadcn-ui';
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends RowData, TValue> {
   columns: ColumnDef<StockFeatures, TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData extends RowData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 
