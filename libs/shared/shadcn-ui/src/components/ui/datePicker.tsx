@@ -109,8 +109,8 @@ export const DatePicker: FC<DatePickerProps> = ({
             </Select>
           </ul>
           <Calendar
-            fromDate={fromDate}
-            toDate={toDate}
+            startMonth={fromDate}
+            endMonth={toDate}
             mode="single"
             month={defaultMonth}
             onMonthChange={e => {
