@@ -49,7 +49,7 @@ interface CourseRow {
   title: string;
   order: number | null;
   modules: Array<{
-    lessons: Array<{ id: string }>;
+    lessons: Array<{ id: string; isFree: boolean }>;
   }>;
 }
 
@@ -107,17 +107,18 @@ interface CourseSlot {
   title: string;
   order: number | null;
   totalLessons: number;
+  freeLessons: number;
   bookNumber: number;
 }
 
 interface SyncPayload {
   lifecycle_stage: LifecycleStage;
-  member_type: string;        // free | standard | premium
+  member_type: string; // free | standard | premium
   lessons_done: number;
   child_name: string;
   child_age: number | null;
-  has_purchased: string;      // 'true' | 'false'
-  location: string | null;    // country from billing address
+  has_purchased: string; // 'true' | 'false'
+  location: string | null; // country from billing address
   account_created_at: string; // ISO date
   [key: string]: string | number | null; // book1_* … bookN_*
 }
@@ -154,20 +155,24 @@ async function loadCourses(): Promise<CourseSlot[]> {
         include: {
           lessons: {
             where: { isPublished: true },
-            select: { id: true },
+            select: { id: true, isFree: true },
           },
         },
       },
     },
   })) as unknown as CourseRow[];
 
-  return courses.map((c, i) => ({
-    id: c.id,
-    title: c.title,
-    order: c.order,
-    totalLessons: c.modules.flatMap(m => m.lessons).length,
-    bookNumber: i + 1,
-  }));
+  return courses.map((c, i) => {
+    const allLessons = c.modules.flatMap(m => m.lessons);
+    return {
+      id: c.id,
+      title: c.title,
+      order: c.order,
+      totalLessons: allLessons.length,
+      freeLessons: allLessons.filter(l => l.isFree).length,
+      bookNumber: i + 1,
+    };
+  });
 }
 
 async function loadAccounts(): Promise<AccountRow[]> {
@@ -217,19 +222,18 @@ export function classifyLifecycle(
   const totalCompleted = child.childProgress.filter(p => p.isCompleted).length;
   if (totalCompleted === 0) return 'never_started';
 
-  // Completed all lessons in the first (free) course → completed_free
-  const freeCourse = courses[0];
-  if (freeCourse && freeCourse.totalLessons > 0) {
-    const doneInFree = child.childProgress.filter(
-      p => p.isCompleted && p.courseId === freeCourse.id,
-    ).length;
-    if (doneInFree >= freeCourse.totalLessons) return 'completed_free';
-  }
+  // Completed all free lessons in any course → completed_free
+  // freeLessons = lessons with isFree=true; user has shown commitment by finishing
+  // all free content in at least one course.
+  const completedFree = courses.some(course => {
+    if (course.freeLessons === 0) return false;
+    const doneInCourse = child.childProgress.filter(p => p.isCompleted && p.courseId === course.id).length;
+    return doneInCourse >= course.freeLessons;
+  });
+  if (completedFree) return 'completed_free';
 
   // No progress in DROPPED_OFF_DAYS → dropped_off
-  const latestProgressAt = child.childProgress
-    .map(p => p.updatedAt)
-    .sort((a, b) => b.getTime() - a.getTime())[0];
+  const latestProgressAt = child.childProgress.map(p => p.updatedAt).sort((a, b) => b.getTime() - a.getTime())[0];
 
   if (latestProgressAt) {
     const daysSince = (Date.now() - latestProgressAt.getTime()) / (1000 * 60 * 60 * 24);
@@ -247,9 +251,7 @@ export function mapAccountToPayload(account: AccountRow, courses: CourseSlot[]):
   // Child: at most one per account (@@unique([accountId]))
   const child = account.children[0];
   const lifecycle = classifyLifecycle(account, child, courses);
-  const totalLessonsDone = child
-    ? child.childProgress.filter(p => p.isCompleted).length
-    : 0;
+  const totalLessonsDone = child ? child.childProgress.filter(p => p.isCompleted).length : 0;
 
   // Derive member_type from highest purchase category
   const TIER_RANK: Record<string, number> = { included: 3, premium: 3, standard: 2, free: 1 };
@@ -286,12 +288,9 @@ export function mapAccountToPayload(account: AccountRow, courses: CourseSlot[]):
   for (const course of courses) {
     const n = course.bookNumber;
     if (child) {
-      const done = child.childProgress.filter(
-        p => p.isCompleted && p.courseId === course.id,
-      ).length;
+      const done = child.childProgress.filter(p => p.isCompleted && p.courseId === course.id).length;
       const score = child.childScores.find(s => s.courseId === course.id)?.score ?? 0;
-      const pct =
-        course.totalLessons > 0 ? Math.round((done / course.totalLessons) * 100) : 0;
+      const pct = course.totalLessons > 0 ? Math.round((done / course.totalLessons) * 100) : 0;
       payload[`book${n}_lessons_done`] = done;
       payload[`book${n}_lessons_total`] = course.totalLessons;
       payload[`book${n}_pct`] = pct;
@@ -389,9 +388,7 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
     existingGroups = groups.map(g => g.id);
 
     const rawFields = raw?.['fields'];
-    const fields = Array.isArray(rawFields)
-      ? (rawFields as Array<{ key: string; value: string | number | null }>)
-      : [];
+    const fields = Array.isArray(rawFields) ? (rawFields as Array<{ key: string; value: string | number | null }>) : [];
     for (const f of fields) {
       if (f.value !== null && f.value !== undefined && f.value !== '') {
         existingFields[f.key] = f.value;
@@ -427,11 +424,7 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
 // Upsert MarketingProfile after a successful push
 // ---------------------------------------------------------------------------
 
-async function upsertMarketingProfile(
-  account: AccountRow,
-  payload: SyncPayload,
-  hash: string,
-): Promise<void> {
+async function upsertMarketingProfile(account: AccountRow, payload: SyncPayload, hash: string): Promise<void> {
   if (!account.email) return;
   await db.marketingProfile.upsert({
     where: { userId: account.id },
@@ -507,7 +500,10 @@ export async function runPushSync(opts: PushSyncOptions = {}): Promise<SyncResul
 
     for (const account of accounts) {
       if (Date.now() > deadline) break;
-      if (!account.email) { skipped++; continue; }
+      if (!account.email) {
+        skipped++;
+        continue;
+      }
 
       try {
         const payload = mapAccountToPayload(account, courses);
@@ -580,9 +576,7 @@ export async function runPullTags(opts: PullTagsOptions = {}): Promise<PullResul
         const raw = (resp.data as unknown as Record<string, unknown>)?.['data'] as Record<string, unknown> | undefined;
         const groups = (raw?.['groups'] ?? []) as Array<{ name: string }>;
 
-        const tags = groups
-          .map(g => g.name)
-          .filter(name => MIRROR_PREFIXES.some(prefix => name.startsWith(prefix)));
+        const tags = groups.map(g => g.name).filter(name => MIRROR_PREFIXES.some(prefix => name.startsWith(prefix)));
 
         await db.marketingProfile.update({
           where: { id: profile.id },
@@ -616,7 +610,7 @@ export async function runPullTags(opts: PullTagsOptions = {}): Promise<PullResul
  * Skips if hash is unchanged.
  */
 export async function syncAccountNow(accountId: string): Promise<void> {
-  const accounts = await db.account.findMany({
+  const accounts = (await db.account.findMany({
     where: { id: accountId, email: { not: null } },
     include: {
       children: {
@@ -628,7 +622,7 @@ export async function syncAccountNow(accountId: string): Promise<void> {
       purchases: { select: { courseId: true, createdAt: true } },
       marketingProfile: { select: { id: true, pushedHash: true, lifecycleStage: true } },
     },
-  }) as unknown as AccountRow[];
+  })) as unknown as AccountRow[];
 
   const account = accounts[0];
   if (!account?.email) return;
