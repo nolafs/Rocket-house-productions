@@ -133,7 +133,6 @@ export const DatePicker: FC<DatePickerProps> = ({
                  */
               }
             }}
-            initialFocus
           />
         </menu>
       </PopoverContent>
