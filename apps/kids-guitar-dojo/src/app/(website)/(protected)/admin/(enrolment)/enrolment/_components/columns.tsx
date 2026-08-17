@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, StockFeatures } from '@tanstack/react-table';
 import { ArrowUpDown, CheckIcon, MoreHorizontal, Pencil, X, XIcon } from 'lucide-react';
 import {
   DropdownMenu,
@@ -13,7 +13,7 @@ import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/serv
 import { Account, Child, Purchase } from '@rocket-house-productions/prisma-client';
 import dayjs from 'dayjs';
 
-export const columns: ColumnDef<Child>[] = [
+export const columns: ColumnDef<StockFeatures, Child>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => {

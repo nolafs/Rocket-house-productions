@@ -1,7 +1,7 @@
 // components/transactions/columns.tsx
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, StockFeatures } from '@tanstack/react-table';
 import { Badge } from '@rocket-house-productions/shadcn-ui/server';
 import Link from 'next/link';
 
@@ -42,7 +42,7 @@ const TypeBadge = ({ value }: { value?: string | null }) => {
   return <Badge variant={variant}>{value ?? 'other'}</Badge>;
 };
 
-export const txColumns: ColumnDef<TransactionRow>[] = [
+export const txColumns: ColumnDef<StockFeatures, TransactionRow>[] = [
   {
     accessorKey: 'id',
     header: 'Txn',
@@ -54,7 +54,7 @@ export const txColumns: ColumnDef<TransactionRow>[] = [
     accessorKey: 'createdAt',
     header: 'Date',
     cell: ({ getValue }) => fmtDate(getValue() as any),
-    sortingFn: 'datetime',
+    sortFn: 'datetime',
   },
   {
     accessorKey: 'type',

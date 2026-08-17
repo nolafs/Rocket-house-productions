@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import { Course } from '@rocket-house-productions/prisma-client';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, StockFeatures } from '@tanstack/react-table';
 
 import { ArrowUpDown, MoreHorizontal, Pencil } from 'lucide-react';
 
@@ -18,7 +18,7 @@ import { Button, Badge } from '@rocket-house-productions/shadcn-ui/server';
 // Utils
 import cn from 'classnames';
 
-export const columns: ColumnDef<Course>[] = [
+export const columns: ColumnDef<StockFeatures, Course>[] = [
   {
     accessorKey: 'order',
     header: ({ column }) => {
