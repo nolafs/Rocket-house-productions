@@ -29,7 +29,7 @@ export default async function Page() {
           <TabsTrigger value="transactions">Transactions</TabsTrigger>
         </TabsList>
         <TabsContent value="orders">
-          <DataTable<OrderRow, unknown>
+          <DataTable<OrderRow>
             columns={ordersColumns}
             data={orderList as OrderRow[]}
             searchColumnId="id" // search by order id (you can switch to 'status')
@@ -38,7 +38,7 @@ export default async function Page() {
           />
         </TabsContent>
         <TabsContent value="transactions">
-          <DataTable<TransactionRow, unknown>
+          <DataTable<TransactionRow>
             columns={txColumns}
             data={transactionList}
             searchColumnId="id" // or 'purchaseId' if you prefer
