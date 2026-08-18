@@ -1,11 +1,9 @@
 import type { Course, Tier } from '@rocket-house-productions/prisma-client';
 import { CourseModules, PriceTier, PurchaseCourse } from '@rocket-house-productions/types';
-import {
-  getAccountData,
-  getAppSettings,
-  getCourse,
-  getPriceOptionsForProducts,
-} from '@rocket-house-productions/actions/server';
+import { getAccountData } from './get-account';
+import { getAppSettings } from './get-app-settings';
+import { getCourse } from './get-course';
+import { getPriceOptionsForProducts } from './stripe-products';
 import { logger } from '@rocket-house-productions/util';
 
 type PurchaseCategory = 'standard' | 'premium';
