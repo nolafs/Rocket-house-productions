@@ -15,9 +15,7 @@ function getCoursePurchaseCategory(
   if (!courseId) return null;
 
   // Check both courseId and course.id since different queries may provide either
-  const relevant = purchases.filter(
-    p => (p.courseId === courseId || p.course?.id === courseId) && p.type === 'charge',
-  );
+  const relevant = purchases.filter(p => (p.courseId === courseId || p.course?.id === courseId) && p.type === 'charge');
 
   if (!relevant.length) return null;
 
