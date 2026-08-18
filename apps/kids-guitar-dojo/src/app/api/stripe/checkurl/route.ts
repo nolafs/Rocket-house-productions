@@ -15,15 +15,15 @@ export async function POST(req: NextRequest) {
   const { productId, userId, email } = data;
 
   if (!productId) {
-    throw new Error('Invalid product id');
+    return new NextResponse('Invalid product id', { status: 400 });
   }
 
   if (!userId) {
-    throw new Error('Invalid user id');
+    return new NextResponse('Invalid user id', { status: 400 });
   }
 
   if (userId !== authData.userId) {
-    throw new Error('Invalid user id');
+    return new NextResponse('Forbidden', { status: 403 });
   }
 
   if (!email) {
