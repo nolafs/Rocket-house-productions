@@ -12,6 +12,9 @@ const nextConfig = {
     'html2canvas',
     'video.js',
     'player.js',
+    '@mailerlite/mailerlite-nodejs',
+    'axios',
+    'https-proxy-agent',
   ],
   transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   experimental: {
