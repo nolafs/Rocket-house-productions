@@ -4,6 +4,10 @@ export {};
 export type Roles = 'admin' | 'member';
 
 declare global {
+  interface UserPublicMetadata {
+    freshStartUsed?: boolean;
+  }
+
   interface CustomJwtSessionClaims {
     metadata: {
       status: string;

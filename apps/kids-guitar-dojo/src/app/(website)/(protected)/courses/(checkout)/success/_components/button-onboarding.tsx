@@ -14,11 +14,20 @@ interface ButtonOnboardingProps {
   checkOutSessionId?: string;
 }
 
-type StatusState = 'pending' | 'inactive' | 'unverified' | 'active' | 'returning' | 'error' | null;
+type StatusState =
+  | 'pending'
+  | 'inactive'
+  | 'unverified'
+  | 'active'
+  | 'returning'
+  | 'returning-upgradeable'
+  | 'error'
+  | null;
 
 export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboardingProps) {
   const { user, isLoading, isError, isValidating } = useUser(userId);
   const [polling, setPolling] = useState(false);
+  const [freshStartLoading, setFreshStartLoading] = useState(false);
   const triedReconcile = useRef(false);
   const router = useRouter();
   const purchaseId = useRef<string | null>(null);
@@ -41,8 +50,14 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
 
     // If the user already has purchases
     if (user.purchases?.length) {
-      // ensure purchaseId is set if available
-      return user.purchases[0]?.childId ? 'returning' : 'active';
+      const isPaid = user.purchases.some(
+        (p: { category: string | null }) => p.category === 'standard' || p.category === 'premium',
+      );
+      const hasChild = (user.children?.length ?? 0) > 0;
+      const freshStartUsed = Boolean(user.freshStartUsed);
+
+      if (isPaid && hasChild && !freshStartUsed) return 'returning-upgradeable';
+      return hasChild ? 'returning' : 'active';
     }
 
     // No purchases yet
@@ -175,6 +190,28 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
     };
   }, [shouldPoll, sessionId, router, seededPurchaseId]);
 
+  async function handleFreshStart() {
+    setFreshStartLoading(true);
+    try {
+      const res = await fetch(`/api/users/${userId}/fresh-start`, {
+        method: 'POST',
+        cache: 'no-store',
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        logger.error('[ButtonOnboarding] fresh-start failed', await res.json().catch(() => ({})));
+        setFreshStartLoading(false);
+        return;
+      }
+      const { purchaseId: freshPurchaseId } = await res.json();
+      await fetch('/refresh', { method: 'POST', cache: 'no-store', credentials: 'include' }).catch(() => {});
+      router.replace(`/courses/enroll/${freshPurchaseId}`);
+    } catch (e) {
+      logger.error('[ButtonOnboarding] fresh-start threw', e);
+      setFreshStartLoading(false);
+    }
+  }
+
   // Renders
   if (
     isLoading ||
@@ -200,6 +237,28 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
         className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'mt-5')}>
         Start Onboarding
       </Link>
+    );
+  }
+
+  if (state === 'returning-upgradeable') {
+    return (
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+        <Link
+          href="/refresh?next=/courses"
+          className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }))}>
+          Return to Course
+        </Link>
+        <Button variant="outline" size="lg" onClick={handleFreshStart} disabled={freshStartLoading}>
+          {freshStartLoading ? (
+            <>
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              Starting Fresh…
+            </>
+          ) : (
+            'Start Fresh'
+          )}
+        </Button>
+      </div>
     );
   }
 
