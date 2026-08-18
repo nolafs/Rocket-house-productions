@@ -337,14 +337,22 @@ function hashPayload(payload: SyncPayload): string {
  * Retry an async operation on MailerLite 429 rate-limit responses.
  * Respects the Retry-After header when present; falls back to exponential backoff.
  */
+type AxiosLike = {
+  response?: { status?: number; headers?: Record<string, string> };
+  status?: number;
+};
+
+function isAxiosLike(err: unknown): err is AxiosLike {
+  return typeof err === 'object' && err !== null;
+}
+
 function axiosStatus(err: unknown): number | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (err as any)?.response?.status ?? (err as any)?.status;
+  if (!isAxiosLike(err)) return undefined;
+  return err.response?.status ?? err.status;
 }
 
 function axiosRetryAfterMs(err: unknown): number {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const header = (err as any)?.response?.headers?.['retry-after'];
+  const header = isAxiosLike(err) ? err.response?.headers?.['retry-after'] : undefined;
   const seconds = header ? parseInt(header, 10) : 0;
   return Number.isFinite(seconds) && seconds > 0 ? Math.min(seconds * 1000, 10_000) : 0;
 }
