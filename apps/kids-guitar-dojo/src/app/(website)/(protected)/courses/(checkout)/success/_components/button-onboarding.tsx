@@ -211,7 +211,6 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
   }
 
   if (state === 'error') {
-    // You were doing a redirect(); returning null is fine here, or render a link:
     return (
       <Link
         href="/courses/error?status=error&message=Could%20not%20verify%20user"
