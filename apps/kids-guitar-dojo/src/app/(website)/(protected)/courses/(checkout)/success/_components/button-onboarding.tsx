@@ -271,7 +271,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
   }
 
   if (state === 'error') {
-    router.replace('/courses/error?status=error&message=Could%20not%20verify%20user');
+    // Redirect handled by the useEffect above (router.replace('/'))
     return (
       <Button variant="default" size="lg" className="mt-5" disabled>
         <Loader2 className="mr-2 h-6 w-6 animate-spin text-white" />
