@@ -168,6 +168,7 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
     }
 
     loop();
+
     return () => {
       cancelled = true;
       setPolling(false);
@@ -211,12 +212,12 @@ export function ButtonOnboarding({ userId, checkOutSessionId }: ButtonOnboarding
   }
 
   if (state === 'error') {
+    router.replace('/courses/error?status=error&message=Could%20not%20verify%20user');
     return (
-      <Link
-        href="/courses/error?status=error&message=Could%20not%20verify%20user"
-        className={cn(buttonVariants({ variant: 'destructive', size: 'lg' }), 'mt-5')}>
-        Error: Try again
-      </Link>
+      <Button variant="default" size="lg" className="mt-5" disabled>
+        <Loader2 className="mr-2 h-6 w-6 animate-spin text-white" />
+        Loading…
+      </Button>
     );
   }
 
