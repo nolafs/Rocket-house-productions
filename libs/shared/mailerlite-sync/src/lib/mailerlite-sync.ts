@@ -625,7 +625,7 @@ export async function runPullTags(opts: PullTagsOptions = {}): Promise<PullResul
  * Skips if hash is unchanged.
  */
 export async function syncAccountNow(accountId: string): Promise<void> {
-  const accounts = (await db.account.findMany({
+  const raw = await db.account.findMany({
     where: { id: accountId, email: { not: null } },
     include: {
       children: {
@@ -634,10 +634,11 @@ export async function syncAccountNow(accountId: string): Promise<void> {
           childScores: { select: { courseId: true, score: true } },
         },
       },
-      purchases: { select: { courseId: true, createdAt: true } },
+      purchases: { select: { courseId: true, category: true, billingAddress: true, createdAt: true } },
       marketingProfile: { select: { id: true, pushedHash: true, lifecycleStage: true } },
     },
-  })) as unknown as AccountRow[];
+  });
+  const accounts = accountRowSchema.array().parse(raw);
 
   const account = accounts[0];
   if (!account?.email) return;
