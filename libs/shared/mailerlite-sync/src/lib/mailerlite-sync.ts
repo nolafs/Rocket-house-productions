@@ -23,6 +23,7 @@
 
 import { createHash } from 'node:crypto';
 import MailerLite from '@mailerlite/mailerlite-nodejs';
+import { z } from 'zod';
 import { db } from '@rocket-house-productions/integration/db-node';
 import { acquireLock, releaseLock } from './sync-lock';
 import type { TriggeredBy } from './sync-lock';
@@ -41,60 +42,72 @@ const MIRROR_PREFIXES = ['ns_', 'do_', 'cf_', 'replied_'];
 const DROPPED_OFF_DAYS = 30;
 
 // ---------------------------------------------------------------------------
-// Explicit result types (needed because $extends breaks generic inference)
+// Zod schemas — validate the shape Prisma actually returns at runtime.
+//
+// The $extends(withAccelerate()) wrapper breaks Prisma's generic inference so
+// we cannot rely on compile-time types from the query. These schemas replace
+// the old `as unknown as XRow[]` casts: a mismatch now throws immediately with
+// a clear field-level error instead of silently producing wrong data.
 // ---------------------------------------------------------------------------
 
-interface CourseRow {
-  id: string;
-  title: string;
-  order: number | null;
-  modules: Array<{
-    lessons: Array<{ id: string; isFree: boolean }>;
-  }>;
-}
+const courseRowSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  order: z.number().nullable(),
+  modules: z.array(
+    z.object({
+      lessons: z.array(z.object({ id: z.string(), isFree: z.boolean() })),
+    }),
+  ),
+});
 
-interface ChildProgressRow {
-  courseId: string;
-  isCompleted: boolean;
-  updatedAt: Date;
-}
+const accountRowSchema = z.object({
+  id: z.string(),
+  email: z.string().nullable(),
+  firstName: z.string().nullable(),
+  lastName: z.string().nullable(),
+  createdAt: z.coerce.date(),
+  children: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      birthday: z.coerce.date(),
+      childProgress: z.array(
+        z.object({
+          courseId: z.string(),
+          isCompleted: z.boolean(),
+          updatedAt: z.coerce.date(),
+        }),
+      ),
+      childScores: z.array(
+        z.object({
+          courseId: z.string(),
+          score: z.number(),
+        }),
+      ),
+    }),
+  ),
+  purchases: z.array(
+    z.object({
+      courseId: z.string(),
+      category: z.string().nullable(),
+      billingAddress: z.string().nullable(),
+      createdAt: z.coerce.date(),
+    }),
+  ),
+  marketingProfile: z
+    .object({
+      id: z.string(),
+      pushedHash: z.string().nullable(),
+      lifecycleStage: z.string().nullable(),
+    })
+    .nullable(),
+});
 
-interface ChildScoreRow {
-  courseId: string;
-  score: number;
-}
-
-interface ChildRow {
-  id: string;
-  name: string;
-  birthday: Date;
-  childProgress: ChildProgressRow[];
-  childScores: ChildScoreRow[];
-}
-
-interface PurchaseRow {
-  courseId: string;
-  category: string | null;
-  billingAddress: string | null;
-  createdAt: Date;
-}
-
-interface MarketingProfileRow {
-  id: string;
-  pushedHash: string | null;
-  lifecycleStage: string | null;
-}
-
-interface AccountRow {
-  id: string;
-  email: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  createdAt: Date;
-  children: ChildRow[];
-  purchases: PurchaseRow[];
-  marketingProfile: MarketingProfileRow | null;
-}
+// Infer TypeScript types from the schemas — single source of truth.
+// CourseRow is not referenced explicitly; its shape flows through courseRowSchema.array().parse().
+type AccountRow = z.infer<typeof accountRowSchema>;
+type ChildRow = AccountRow['children'][number];
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -145,7 +158,7 @@ export interface PullResult {
 // ---------------------------------------------------------------------------
 
 async function loadCourses(): Promise<CourseSlot[]> {
-  const courses = (await db.course.findMany({
+  const raw = await db.course.findMany({
     where: { isPublished: true },
     orderBy: { order: 'asc' },
     take: MAX_BOOKS,
@@ -160,7 +173,8 @@ async function loadCourses(): Promise<CourseSlot[]> {
         },
       },
     },
-  })) as unknown as CourseRow[];
+  });
+  const courses = courseRowSchema.array().parse(raw);
 
   return courses.map((c, i) => {
     const allLessons = c.modules.flatMap(m => m.lessons);
@@ -176,7 +190,7 @@ async function loadCourses(): Promise<CourseSlot[]> {
 }
 
 async function loadAccounts(): Promise<AccountRow[]> {
-  return db.account.findMany({
+  const raw = await db.account.findMany({
     where: { email: { not: null } },
     include: {
       children: {
@@ -196,7 +210,8 @@ async function loadAccounts(): Promise<AccountRow[]> {
         select: { id: true, pushedHash: true, lifecycleStage: true },
       },
     },
-  }) as unknown as Promise<AccountRow[]>;
+  });
+  return accountRowSchema.array().parse(raw);
 }
 
 // ---------------------------------------------------------------------------
