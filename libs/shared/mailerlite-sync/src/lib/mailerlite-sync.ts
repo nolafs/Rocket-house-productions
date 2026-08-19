@@ -130,6 +130,7 @@ interface SyncPayload {
   lessons_done: number;
   child_name: string;
   child_age: number | null;
+  child_age_at_signup: number | null;
   has_purchased: string; // 'true' | 'false'
   location: string | null; // country from billing address
   account_created_at: string; // ISO date
@@ -218,8 +219,8 @@ async function loadAccounts(): Promise<AccountRow[]> {
 // Mapping helpers
 // ---------------------------------------------------------------------------
 
-function childAge(birthday: Date): number | null {
-  const ms = Date.now() - birthday.getTime();
+function childAge(birthday: Date, at: Date = new Date()): number | null {
+  const ms = at.getTime() - birthday.getTime();
   if (ms < 0) return null;
   return Math.floor(ms / (365.25 * 24 * 60 * 60 * 1000));
 }
@@ -295,6 +296,7 @@ export function mapAccountToPayload(account: AccountRow, courses: CourseSlot[]):
     lessons_done: totalLessonsDone,
     child_name: child?.name ?? '',
     child_age: child ? childAge(child.birthday) : null,
+    child_age_at_signup: child ? childAge(child.birthday, account.createdAt) : null,
     has_purchased: account.purchases.length > 0 ? 'true' : 'false',
     location,
     account_created_at: account.createdAt.toISOString().slice(0, 10),
