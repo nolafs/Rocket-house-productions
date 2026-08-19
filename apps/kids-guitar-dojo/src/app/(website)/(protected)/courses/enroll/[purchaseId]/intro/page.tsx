@@ -59,7 +59,7 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
             <div className={'video aspect-h-9 aspect-w-16 relative bg-slate-300'}>
               <iframe
                 title={'onboarding-video'}
-                src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNYCDN_STREAM_LIB_ID}/${data.onboarding_intro_video_bunny_id}?autoplay=false&loop=false&muted=false&preload=true&responsive=true`}
+                src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNYCDN_STREAM_LIB_ID}/${data.onboarding_intro_video_bunny_id}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`}
                 loading="lazy"
                 allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
                 allowFullScreen={true}
