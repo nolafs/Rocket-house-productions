@@ -1,64 +1,64 @@
 {
+  "description": "ImageGrid",
   "id": "image_grid",
-  "type": "SharedSlice",
   "name": "ImageGrid",
+  "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/image_grid/default/933aafdb3ed5c5a224f4837abe2ca877707c555e.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/image_grid/default/933aafdb3ed5c5a224f4837abe2ca877707c555e.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Default",
       "primary": {
         "no_columns_small": {
-          "type": "Number",
           "config": {
             "label": "No columns small",
             "placeholder": ""
-          }
+          },
+          "type": "Number"
         },
         "no_columns_medium": {
-          "type": "Number",
           "config": {
             "label": "No columns medium",
             "placeholder": ""
-          }
+          },
+          "type": "Number"
         },
         "no_columns_large": {
-          "type": "Number",
           "config": {
             "label": "No columns large",
             "placeholder": ""
-          }
+          },
+          "type": "Number"
         },
         "items": {
-          "type": "Group",
           "config": {
-            "label": "Items",
-            "repeat": true,
             "fields": {
               "image": {
-                "type": "Image",
                 "config": {
-                  "label": "Image",
                   "constraint": {},
+                  "label": "Image",
                   "thumbnails": []
-                }
+                },
+                "type": "Image"
               },
               "caption": {
-                "type": "Text",
                 "config": {
                   "label": "Caption",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               }
-            }
-          }
+            },
+            "label": "Items",
+            "repeat": true
+          },
+          "type": "Group"
         }
       },
-      "items": {}
+      "version": "initial"
     }
-  ],
-  "description": "ImageGrid"
+  ]
 }

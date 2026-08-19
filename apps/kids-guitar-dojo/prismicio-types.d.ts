@@ -1044,6 +1044,17 @@ interface OnboardingDocumentData {
 	intro_video: prismic.EmbedField
 	
 	/**
+	 * Onboarding Intro Video Bunny Id field in *Onboarding*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: onboarding.onboarding_intro_video_bunny_id
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	onboarding_intro_video_bunny_id: prismic.KeyTextField;
+	
+	/**
 	 * Onboarding intro video poster field in *Onboarding*
 	 *
 	 * - **Field Type**: Image
@@ -2388,7 +2399,7 @@ export interface DiscountsSliceDefaultPrimary {
 	 * - **API ID Path**: discounts.default.primary.discount_code
 	 * - **Documentation**: https://prismic.io/docs/fields/content-relationship
 	 */
-	discount_code: ContentRelationshipFieldWithData<[{"id":"discount_codes","fields":["name","description","start_date","expiring_date","code"]}]>;
+	discount_code: ContentRelationshipFieldWithData<[{"fields":["name","description","start_date","expiring_date","code"],"id":"discount_codes"}]>;
 	
 	/**
 	 * Terms & Conditions field in *Discounts → Default → Primary*

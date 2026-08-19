@@ -1,242 +1,242 @@
 {
+  "description": "Features",
   "id": "features",
-  "type": "SharedSlice",
   "name": "Features",
+  "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/features/default/5864ca2d73bff6c3a577cba516a8d30f2361f2c6.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/features/default/5864ca2d73bff6c3a577cba516a8d30f2361f2c6.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "strong,em",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "category": {
-          "type": "Text",
           "config": {
             "label": "Category",
             "placeholder": ""
-          }
+          },
+          "type": "Text"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Body",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "buttons": {
-          "type": "Group",
           "config": {
-            "label": "Buttons",
-            "repeat": true,
             "fields": {
               "label": {
-                "type": "Text",
                 "config": {
                   "label": "Label",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "link": {
-                "type": "Link",
                 "config": {
                   "label": "Link",
                   "placeholder": "",
                   "select": null
-                }
+                },
+                "type": "Link"
               },
               "type": {
-                "type": "Select",
                 "config": {
                   "label": "Type",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Outlined"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               },
               "typeCase": {
-                "type": "Select",
                 "config": {
                   "label": "Type Case",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Uppercase"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               }
-            }
-          }
+            },
+            "label": "Buttons",
+            "repeat": true
+          },
+          "type": "Group"
         },
         "features": {
-          "type": "Group",
           "config": {
-            "label": "Features",
-            "repeat": true,
             "fields": {
               "image": {
-                "type": "Image",
                 "config": {
-                  "label": "Image",
                   "constraint": {},
+                  "label": "Image",
                   "thumbnails": []
-                }
+                },
+                "type": "Image"
               },
               "heading": {
-                "type": "StructuredText",
                 "config": {
+                  "allowTargetBlank": true,
                   "label": "Heading",
-                  "placeholder": "",
                   "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-                  "allowTargetBlank": true
-                }
+                  "placeholder": ""
+                },
+                "type": "StructuredText"
               },
               "body": {
-                "type": "StructuredText",
                 "config": {
+                  "allowTargetBlank": true,
                   "label": "Body",
-                  "placeholder": "",
                   "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-                  "allowTargetBlank": true
-                }
+                  "placeholder": ""
+                },
+                "type": "StructuredText"
               }
-            }
-          }
+            },
+            "label": "Features",
+            "repeat": true
+          },
+          "type": "Group"
         }
       },
-      "items": {}
+      "version": "initial"
     },
     {
-      "id": "white",
-      "name": "white",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/features/white/7c2383a3d6886502f0f7f65099479cdb9291626c.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "white",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/features/white/7c2383a3d6886502f0f7f65099479cdb9291626c.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "white",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "strong,em",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "category": {
-          "type": "Text",
           "config": {
             "label": "Category",
             "placeholder": ""
-          }
+          },
+          "type": "Text"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Body",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "buttons": {
-          "type": "Group",
           "config": {
-            "label": "Buttons",
-            "repeat": true,
             "fields": {
               "label": {
-                "type": "Text",
                 "config": {
                   "label": "Label",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "link": {
-                "type": "Link",
                 "config": {
                   "label": "Link",
                   "placeholder": "",
                   "select": null
-                }
+                },
+                "type": "Link"
               },
               "type": {
-                "type": "Select",
                 "config": {
                   "label": "Type",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Outlined"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               },
               "typeCase": {
-                "type": "Select",
                 "config": {
                   "label": "Type Case",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Uppercase"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               }
-            }
-          }
+            },
+            "label": "Buttons",
+            "repeat": true
+          },
+          "type": "Group"
         },
         "features": {
-          "type": "Group",
           "config": {
-            "label": "Features",
-            "repeat": true,
             "fields": {
               "image": {
-                "type": "Image",
                 "config": {
-                  "label": "Image",
                   "constraint": {},
+                  "label": "Image",
                   "thumbnails": []
-                }
+                },
+                "type": "Image"
               },
               "heading": {
-                "type": "StructuredText",
                 "config": {
+                  "allowTargetBlank": true,
                   "label": "Heading",
-                  "placeholder": "",
                   "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-                  "allowTargetBlank": true
-                }
+                  "placeholder": ""
+                },
+                "type": "StructuredText"
               },
               "body": {
-                "type": "StructuredText",
                 "config": {
+                  "allowTargetBlank": true,
                   "label": "Body",
-                  "placeholder": "",
                   "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-                  "allowTargetBlank": true
-                }
+                  "placeholder": ""
+                },
+                "type": "StructuredText"
               }
-            }
-          }
+            },
+            "label": "Features",
+            "repeat": true
+          },
+          "type": "Group"
         }
       },
-      "items": {}
+      "version": "initial"
     }
-  ],
-  "description": "Features"
+  ]
 }

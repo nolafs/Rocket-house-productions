@@ -1,81 +1,81 @@
 {
+  "description": "Stats",
   "id": "stats",
-  "type": "SharedSlice",
   "name": "Stats",
+  "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/stats/default/8b14841a72f96e19fbd97d151da643936c50f6da.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/stats/default/8b14841a72f96e19fbd97d151da643936c50f6da.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "subtitle": {
-          "type": "Text",
           "config": {
             "label": "Subtitle",
             "placeholder": ""
-          }
+          },
+          "type": "Text"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Body",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "items": {
-          "type": "Group",
           "config": {
-            "label": "Items",
-            "repeat": true,
             "fields": {
               "counter": {
-                "type": "Text",
                 "config": {
                   "label": "counter",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "title": {
-                "type": "Text",
                 "config": {
                   "label": "title",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "suffix": {
-                "type": "Text",
                 "config": {
                   "label": "suffix",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "prefix": {
-                "type": "Text",
                 "config": {
                   "label": "prefix",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               }
-            }
-          }
+            },
+            "label": "Items",
+            "repeat": true
+          },
+          "type": "Group"
         }
       },
-      "items": {}
+      "version": "initial"
     }
-  ],
-  "description": "Stats"
+  ]
 }

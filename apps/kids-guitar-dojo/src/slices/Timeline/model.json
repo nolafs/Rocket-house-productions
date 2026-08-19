@@ -1,77 +1,77 @@
 {
+  "description": "Timeline",
   "id": "timeline",
-  "type": "SharedSlice",
   "name": "Timeline",
+  "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/timeline/default/1a8fb4250a7ad5be623fe98279d6fe2319b47cc9.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/timeline/default/1a8fb4250a7ad5be623fe98279d6fe2319b47cc9.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "subtitle": {
-          "type": "Text",
           "config": {
             "label": "subtitle",
             "placeholder": ""
-          }
+          },
+          "type": "Text"
         },
         "items": {
-          "type": "Group",
           "config": {
-            "label": "Items",
-            "repeat": true,
             "fields": {
               "title": {
-                "type": "Text",
                 "config": {
                   "label": "Title",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "heading": {
-                "type": "StructuredText",
                 "config": {
+                  "allowTargetBlank": true,
                   "label": "Heading",
-                  "placeholder": "",
                   "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-                  "allowTargetBlank": true
-                }
+                  "placeholder": ""
+                },
+                "type": "StructuredText"
               },
               "body": {
-                "type": "StructuredText",
                 "config": {
+                  "allowTargetBlank": true,
                   "label": "body",
-                  "placeholder": "",
                   "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-                  "allowTargetBlank": true
-                }
+                  "placeholder": ""
+                },
+                "type": "StructuredText"
               },
               "image": {
-                "type": "Image",
                 "config": {
-                  "label": "Image",
                   "constraint": {},
+                  "label": "Image",
                   "thumbnails": []
-                }
+                },
+                "type": "Image"
               }
-            }
-          }
+            },
+            "label": "Items",
+            "repeat": true
+          },
+          "type": "Group"
         }
       },
-      "items": {}
+      "version": "initial"
     }
-  ],
-  "description": "Timeline"
+  ]
 }

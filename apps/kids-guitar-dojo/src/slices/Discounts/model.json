@@ -8,7 +8,7 @@
       "description": "Default",
       "docURL": "...",
       "id": "default",
-      "imageUrl": "",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/discounts/default/8f14018ded30a225895a3c2425e93b9a6eacf0b8.png?auto=compress%2Cformat",
       "name": "Default",
       "primary": {
         "heading": {
@@ -40,14 +40,14 @@
           "config": {
             "customtypes": [
               {
-                "id": "discount_codes",
                 "fields": [
                   "name",
                   "description",
                   "start_date",
                   "expiring_date",
                   "code"
-                ]
+                ],
+                "id": "discount_codes"
               }
             ],
             "label": "Discount Code",

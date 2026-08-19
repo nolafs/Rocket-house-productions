@@ -1,101 +1,101 @@
 {
+  "format": "page",
   "id": "contact",
-  "label": "Contact",
-  "repeatable": false,
   "json": {
     "Main": {
       "heading": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Heading",
-          "placeholder": "",
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-          "allowTargetBlank": true
-        }
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       },
       "subtitle": {
-        "type": "Text",
         "config": {
           "label": "Subtitle",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "email_address": {
-        "type": "Text",
         "config": {
           "label": "Email Address",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "phone_number": {
-        "type": "Text",
         "config": {
           "label": "Phone Number",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "form_image": {
-        "type": "Image",
         "config": {
-          "label": "Form Image",
           "constraint": {},
+          "label": "Form Image",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "form_heading": {
-        "type": "Text",
         "config": {
           "label": "Form Heading",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "form_body": {
-        "type": "Text",
         "config": {
           "label": "Form Body",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "slices": {
-        "type": "Slices",
-        "fieldset": "Slice Zone",
         "config": {
           "choices": {
             "call_to_action": {
               "type": "SharedSlice"
             }
           }
-        }
+        },
+        "fieldset": "Slice Zone",
+        "type": "Slices"
       }
     },
     "SEO & Metadata": {
       "meta_title": {
-        "type": "Text",
         "config": {
           "label": "Meta Title",
           "placeholder": "A title of the page used for social media and search engines"
-        }
+        },
+        "type": "Text"
       },
       "meta_description": {
-        "type": "Text",
         "config": {
           "label": "Meta Description",
           "placeholder": "A brief summary of the page"
-        }
+        },
+        "type": "Text"
       },
       "meta_image": {
-        "type": "Image",
         "config": {
-          "label": "Meta Image",
           "constraint": {
-            "width": 2400,
-            "height": 1260
+            "height": 1260,
+            "width": 2400
           },
+          "label": "Meta Image",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       }
     }
   },
-  "status": true,
-  "format": "page"
+  "label": "Contact",
+  "repeatable": false,
+  "status": true
 }

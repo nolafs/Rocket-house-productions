@@ -1,76 +1,70 @@
 {
+  "format": "custom",
   "id": "settings",
-  "label": "Settings",
-  "repeatable": false,
   "json": {
     "Main": {
       "contact_form_enquiries": {
-        "type": "Group",
         "config": {
-          "label": "Contact Form Enquiries",
-          "repeat": true,
           "fields": {
             "label": {
-              "type": "Text",
               "config": {
                 "label": "Label",
                 "placeholder": ""
-              }
+              },
+              "type": "Text"
             },
             "value": {
-              "type": "Text",
               "config": {
                 "label": "Value",
                 "placeholder": ""
-              }
+              },
+              "type": "Text"
             }
-          }
-        }
+          },
+          "label": "Contact Form Enquiries",
+          "repeat": true
+        },
+        "type": "Group"
       },
       "copyright_line": {
-        "type": "Text",
         "config": {
           "label": "Copyright Line",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "secondary_navigation": {
-        "type": "Group",
         "config": {
-          "label": "Secondary Navigation",
-          "repeat": true,
           "fields": {
             "label": {
-              "type": "StructuredText",
               "config": {
+                "allowTargetBlank": true,
                 "label": "Label",
-                "placeholder": "",
                 "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-                "allowTargetBlank": true
-              }
+                "placeholder": ""
+              },
+              "type": "StructuredText"
             },
             "link": {
-              "type": "Link",
               "config": {
                 "label": "Link",
                 "placeholder": "",
                 "select": null
-              }
+              },
+              "type": "Link"
             }
-          }
-        }
+          },
+          "label": "Secondary Navigation",
+          "repeat": true
+        },
+        "type": "Group"
       },
       "social_media": {
-        "type": "Group",
         "config": {
-          "label": "Social Media",
-          "repeat": true,
           "fields": {
             "type": {
-              "type": "Select",
               "config": {
                 "label": "Type",
-                "placeholder": "",
                 "options": [
                   "facebook",
                   "instagram",
@@ -79,99 +73,105 @@
                   "youtube",
                   "tiktok",
                   "linkedin"
-                ]
-              }
+                ],
+                "placeholder": ""
+              },
+              "type": "Select"
             },
             "name": {
-              "type": "Text",
               "config": {
                 "label": "Name",
                 "placeholder": ""
-              }
+              },
+              "type": "Text"
             },
             "url": {
-              "type": "Link",
               "config": {
+                "allowTargetBlank": false,
                 "label": "Page Url",
                 "placeholder": "",
-                "select": null,
-                "allowTargetBlank": false
-              }
+                "select": null
+              },
+              "type": "Link"
             }
-          }
-        }
+          },
+          "label": "Social Media",
+          "repeat": true
+        },
+        "type": "Group"
       },
       "sign_in_image": {
-        "type": "Image",
         "config": {
-          "label": "Sign-in Image",
           "constraint": {},
+          "label": "Sign-in Image",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "sign_up_image": {
-        "type": "Image",
         "config": {
-          "label": "Sign-up Image",
           "constraint": {},
+          "label": "Sign-up Image",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "share_image": {
-        "type": "Image",
         "config": {
-          "label": "OG Image",
           "constraint": {
-            "width": 1200,
-            "height": 630
+            "height": 630,
+            "width": 1200
           },
+          "label": "OG Image",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "meta_title": {
-        "type": "Text",
         "config": {
           "label": "Meta Title",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "meta_description": {
-        "type": "Text",
         "config": {
           "label": "Meta Description",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "meta_keywords": {
-        "type": "Text",
         "config": {
           "label": "Meta Keywords",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "canonical_url": {
-        "type": "Text",
         "config": {
           "label": "Canonical Url",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "twitter_handler": {
-        "type": "Text",
         "config": {
           "label": "Twitter Handler",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "twitter_card_type": {
-        "type": "Text",
         "config": {
           "label": "Twitter Card Type",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       }
     }
   },
-  "status": true,
-  "format": "custom"
+  "label": "Settings",
+  "repeatable": false,
+  "status": true
 }

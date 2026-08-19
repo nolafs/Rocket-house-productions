@@ -1,66 +1,66 @@
 {
+  "description": "Testimonials",
   "id": "testimonials",
-  "type": "SharedSlice",
   "name": "Testimonials",
+  "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/testimonials/default/b174ab68ebe841319f2fdc637d4168fdaef35315.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/testimonials/default/b174ab68ebe841319f2fdc637d4168fdaef35315.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Default",
       "primary": {
         "items": {
-          "type": "Group",
           "config": {
-            "label": "Items",
-            "repeat": true,
             "fields": {
               "name": {
-                "type": "Text",
                 "config": {
                   "label": "Name",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "designation": {
-                "type": "Text",
                 "config": {
                   "label": "designation",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "review": {
-                "type": "StructuredText",
                 "config": {
+                  "allowTargetBlank": true,
                   "label": "review",
-                  "placeholder": "",
                   "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-                  "allowTargetBlank": true
-                }
+                  "placeholder": ""
+                },
+                "type": "StructuredText"
               },
               "image": {
-                "type": "Image",
                 "config": {
-                  "label": "Image",
                   "constraint": {},
+                  "label": "Image",
                   "thumbnails": []
-                }
+                },
+                "type": "Image"
               },
               "rating": {
-                "type": "Number",
                 "config": {
                   "label": "Rating",
                   "placeholder": ""
-                }
+                },
+                "type": "Number"
               }
-            }
-          }
+            },
+            "label": "Items",
+            "repeat": true
+          },
+          "type": "Group"
         }
       },
-      "items": {}
+      "version": "initial"
     }
-  ],
-  "description": "Testimonials"
+  ]
 }
