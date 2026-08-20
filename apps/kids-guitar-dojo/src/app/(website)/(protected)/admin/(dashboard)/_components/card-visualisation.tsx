@@ -1,35 +1,33 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
-import { DollarSign } from 'lucide-react';
-import { db } from '@rocket-house-productions/integration/server';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@rocket-house-productions/shadcn-ui';
+import RevenuVisualisation from '@/app/(website)/(protected)/admin/(dashboard)/_components/visualisations/revenu-visualisation';
+import ChildAgeVisualisation from '@/app/(website)/(protected)/admin/(dashboard)/_components/visualisations/child-age-visualisation';
+import MembershipTypeVisualisation from '@/app/(website)/(protected)/admin/(dashboard)/_components/visualisations/membership-type-visualisation';
+import LifecycleVisualisation from '@/app/(website)/(protected)/admin/(dashboard)/_components/visualisations/lifecycle-visualisation';
 
-export async function CardRevenue() {
-  const purchases = await db.purchase.aggregate({
-    _sum: {
-      amount: true,
-    },
-  });
-
-  let spend = '0';
-
-  if (purchases) {
-    spend = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format((purchases._sum.amount || 0) / 100);
-  }
-
+export async function CardVisualisation() {
   return (
-    <Card>
-      <CardHeader className="flex !flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-        <DollarSign className="h-4 w-4 text-muted-foreground" />
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{spend}</div>
-        <p className="text-xs text-muted-foreground">All time income</p>
-      </CardContent>
-    </Card>
+    <Tabs defaultValue="revenue" className="w-full flex-col justify-start gap-6">
+      <TabsList>
+        <TabsTrigger value="revenue">Last 12 month Revenu</TabsTrigger>
+        <TabsTrigger value="age">Children Age</TabsTrigger>
+        <TabsTrigger value="membership">Membership type</TabsTrigger>
+        <TabsTrigger value="lifecycle">Lifecycle</TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="revenue">
+        <RevenuVisualisation />
+      </TabsContent>
+      <TabsContent value="age">
+        <ChildAgeVisualisation />
+      </TabsContent>
+      <TabsContent value="membership">
+        <MembershipTypeVisualisation />
+      </TabsContent>
+      <TabsContent value="lifecycle">
+        <LifecycleVisualisation />
+      </TabsContent>
+    </Tabs>
   );
 }
 
-export default CardRevenue;
+export default CardVisualisation;
