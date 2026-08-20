@@ -28,3 +28,4 @@ export * from './components/ui/pagination';
 export * from './components/ui/scroll-area';
 export * from './components/ui/tooltip';
 export * from './components/ui/tabs';
+export * from './components/ui/chart';
