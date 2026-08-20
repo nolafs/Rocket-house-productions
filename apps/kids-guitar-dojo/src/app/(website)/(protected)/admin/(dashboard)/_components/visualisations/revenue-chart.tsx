@@ -19,10 +19,10 @@ interface MonthlyRevenue {
 }
 
 const chartConfig = {
-  total: { label: 'Total', color: 'hsl(var(--chart-1))' },
-  premium: { label: 'Premium', color: 'hsl(var(--chart-2))' },
-  standard: { label: 'Standard', color: 'hsl(var(--chart-3))' },
-  free: { label: 'Free', color: 'hsl(var(--chart-4))' },
+  total: { label: 'Total', color: 'hsl(220 60% 50%)' },       // slate blue
+  premium: { label: 'Premium', color: 'hsl(43 90% 52%)' },    // gold
+  standard: { label: 'Standard', color: 'hsl(142 60% 55%)' }, // light green
+  free: { label: 'Free', color: 'hsl(210 25% 60%)' },         // gray blue
 } satisfies ChartConfig;
 
 export function RevenueChart({ data }: { data: MonthlyRevenue[] }) {
