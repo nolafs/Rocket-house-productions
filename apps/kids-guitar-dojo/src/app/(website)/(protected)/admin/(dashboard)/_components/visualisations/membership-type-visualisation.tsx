@@ -128,7 +128,7 @@ export async function MembershipTypeVisualisation() {
             <span className="font-semibold">{summary.premium}</span>
           </div>
         </div>
-        <MembershipChart data={chart} />
+        <MembershipChart data={chart} summary={summary} />
       </CardContent>
     </Card>
   );
