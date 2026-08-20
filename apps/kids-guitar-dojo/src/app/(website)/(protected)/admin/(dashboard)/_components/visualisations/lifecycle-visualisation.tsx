@@ -20,13 +20,17 @@ const STAGE_META: Record<string, { label: string; color: string; order: number }
 
 async function getLifecycleData(): Promise<{ slots: LifecycleSlot[]; total: number; synced: number }> {
   // Total accounts and how many have been synced to MailerLite (have a MarketingProfile)
-  const [totalAccounts, groups] = await Promise.all([
+  type GroupRow = { lifecycleStage: string | null; _count: { lifecycleStage: number } };
+
+  const [totalAccounts, rawGroups] = await Promise.all([
     db.account.count({ where: { email: { not: null } } }),
     db.marketingProfile.groupBy({
       by: ['lifecycleStage'],
       _count: { lifecycleStage: true },
     }),
   ]);
+
+  const groups = rawGroups as unknown as GroupRow[];
 
   const synced = groups.reduce((sum, g) => sum + g._count.lifecycleStage, 0);
 
@@ -42,7 +46,7 @@ async function getLifecycleData(): Promise<{ slots: LifecycleSlot[]; total: numb
       };
     });
 
-  // Accounts not yet synced show as unknown
+  // Accounts not yet synced shown separately
   const unsynced = totalAccounts - synced;
   if (unsynced > 0) {
     slots.push({ stage: 'Not Synced', key: 'unsynced', count: unsynced, color: 'hsl(220 10% 80%)' });

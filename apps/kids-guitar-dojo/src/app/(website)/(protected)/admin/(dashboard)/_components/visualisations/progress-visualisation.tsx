@@ -11,13 +11,25 @@ export interface ModuleProgressSlot {
   lessons: number;  // total published lessons in this module
 }
 
+type CourseWithModules = {
+  id: string;
+  title: string;
+  order: number | null;
+  modules: {
+    id: string;
+    title: string;
+    position: number;
+    lessons: { id: string }[];
+  }[];
+};
+
 async function getProgressData(): Promise<{
   slots: ModuleProgressSlot[];
   totalStudents: number;
   totalLessons: number;
 }> {
   // Load all published courses in order, with their modules and lesson IDs
-  const courses = await db.course.findMany({
+  const rawCourses = await db.course.findMany({
     where: { isPublished: true },
     orderBy: { order: 'asc' },
     select: {
@@ -39,6 +51,8 @@ async function getProgressData(): Promise<{
       },
     },
   });
+
+  const courses = rawCourses as unknown as CourseWithModules[];
 
   // All completed progress records — just childId + lessonId
   const progress = await db.childProgress.findMany({
