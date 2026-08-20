@@ -1,14 +1,14 @@
 import db from '@rocket-house-productions/integration/db';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
+import { Card, CardContent, CardHeader, CardTitle } from '@rocket-house-productions/shadcn-ui';
 import { TrendingDown } from 'lucide-react';
 import { ProgressChart } from './progress-chart';
 
 export interface ModuleProgressSlot {
-  label: string;   // "B1 · M1", "B1 · M2", …
-  module: string;  // full module title (for tooltip)
+  label: string;
+  module: string;
   book: number;
-  students: number; // distinct children who completed ≥1 lesson here
-  lessons: number;  // total published lessons in this module
+  students: number;
+  lessons: number;
 }
 
 type CourseWithModules = {
@@ -23,45 +23,12 @@ type CourseWithModules = {
   }[];
 };
 
-async function getProgressData(): Promise<{
-  slots: ModuleProgressSlot[];
-  totalStudents: number;
-  totalLessons: number;
-}> {
-  // Load all published courses in order, with their modules and lesson IDs
-  const rawCourses = await db.course.findMany({
-    where: { isPublished: true },
-    orderBy: { order: 'asc' },
-    select: {
-      id: true,
-      title: true,
-      order: true,
-      modules: {
-        where: { isPublished: true },
-        orderBy: { position: 'asc' },
-        select: {
-          id: true,
-          title: true,
-          position: true,
-          lessons: {
-            where: { isPublished: true },
-            select: { id: true },
-          },
-        },
-      },
-    },
-  });
-
-  const courses = rawCourses as unknown as CourseWithModules[];
-
-  // All completed progress records — just childId + lessonId
-  const progress = await db.childProgress.findMany({
-    where: { isCompleted: true },
-    select: { childId: true, lessonId: true },
-  });
-
-  // Build a lessonId → moduleIndex lookup
-  const lessonToModule = new Map<string, number>(); // lessonId → slot index
+function buildSlots(
+  courses: CourseWithModules[],
+  progress: { childId: string; lessonId: string }[],
+  filterChildIds?: Set<string>,
+): ModuleProgressSlot[] {
+  const lessonToModule = new Map<string, number>();
   const slots: ModuleProgressSlot[] = [];
 
   courses.forEach((course, bookIdx) => {
@@ -78,11 +45,9 @@ async function getProgressData(): Promise<{
     });
   });
 
-  // Count distinct children per module slot
-  // Use a Map<slotIdx, Set<childId>> to deduplicate children per module
   const childrenPerSlot = new Map<number, Set<string>>();
-
   for (const p of progress) {
+    if (filterChildIds && !filterChildIds.has(p.childId)) continue;
     const slotIdx = lessonToModule.get(p.lessonId);
     if (slotIdx === undefined) continue;
     if (!childrenPerSlot.has(slotIdx)) childrenPerSlot.set(slotIdx, new Set());
@@ -93,37 +58,78 @@ async function getProgressData(): Promise<{
     slots[idx].students = children.size;
   }
 
-  const totalStudents = await db.child.count();
-  const totalLessons = slots.reduce((s, m) => s + m.lessons, 0);
+  return slots;
+}
 
-  return { slots, totalStudents, totalLessons };
+async function getProgressData() {
+  const [rawCourses, progress, paidChildren] = await Promise.all([
+    db.course.findMany({
+      where: { isPublished: true },
+      orderBy: { order: 'asc' },
+      select: {
+        id: true,
+        title: true,
+        order: true,
+        modules: {
+          where: { isPublished: true },
+          orderBy: { position: 'asc' },
+          select: {
+            id: true,
+            title: true,
+            position: true,
+            lessons: { where: { isPublished: true }, select: { id: true } },
+          },
+        },
+      },
+    }),
+    db.childProgress.findMany({
+      where: { isCompleted: true },
+      select: { childId: true, lessonId: true },
+    }),
+    // Children whose account has at least one paid (standard/premium) purchase
+    db.child.findMany({
+      where: {
+        account: {
+          purchases: {
+            some: { type: 'charge', category: { in: ['standard', 'premium'] } },
+          },
+        },
+      },
+      select: { id: true },
+    }),
+  ]);
+
+  const courses = rawCourses as unknown as CourseWithModules[];
+  const paidChildIds = new Set(paidChildren.map(c => c.id));
+
+  const allSlots = buildSlots(courses, progress);
+  const customerSlots = buildSlots(courses, progress, paidChildIds);
+
+  const totalLessons = allSlots.reduce((s, m) => s + m.lessons, 0);
+  const totalStudents = await db.child.count();
+
+  return { allSlots, customerSlots, totalStudents, customerCount: paidChildIds.size, totalLessons };
 }
 
 export async function ProgressVisualisation() {
-  const { slots, totalStudents, totalLessons } = await getProgressData();
-
-  // Drop-off: first module students minus last module with any students
-  const withStudents = slots.filter(s => s.students > 0);
-  const firstCount = withStudents[0]?.students ?? 0;
-  const lastCount = withStudents[withStudents.length - 1]?.students ?? 0;
-  const dropOffPct = firstCount > 0 ? (((firstCount - lastCount) / firstCount) * 100).toFixed(0) : '0';
+  const { allSlots, customerSlots, totalStudents, customerCount, totalLessons } = await getProgressData();
 
   return (
     <Card>
       <CardHeader className="flex !flex-row items-center justify-between space-y-0 pb-2">
         <div>
           <CardTitle className="text-sm font-medium">Student Progress — Drop-off by Module</CardTitle>
-          <CardDescription className="text-2xl font-bold">{dropOffPct}% drop-off</CardDescription>
         </div>
         <TrendingDown className="h-4 w-4 text-muted-foreground" />
       </CardHeader>
       <CardContent>
         <div className="mb-4 flex gap-6 text-sm text-muted-foreground">
-          <span><strong className="text-foreground">{totalStudents}</strong> enrolled students</span>
+          <span><strong className="text-foreground">{totalStudents}</strong> all students</span>
+          <span><strong className="text-foreground">{customerCount}</strong> customers</span>
           <span><strong className="text-foreground">{totalLessons}</strong> total lessons</span>
-          <span><strong className="text-foreground">{slots.length}</strong> modules</span>
+          <span><strong className="text-foreground">{allSlots.length}</strong> modules</span>
         </div>
-        <ProgressChart slots={slots} />
+        <ProgressChart allSlots={allSlots} customerSlots={customerSlots} />
       </CardContent>
     </Card>
   );
