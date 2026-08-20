@@ -3,6 +3,7 @@ import RevenuVisualisation from '@/app/(website)/(protected)/admin/(dashboard)/_
 import ChildAgeVisualisation from '@/app/(website)/(protected)/admin/(dashboard)/_components/visualisations/child-age-visualisation';
 import MembershipTypeVisualisation from '@/app/(website)/(protected)/admin/(dashboard)/_components/visualisations/membership-type-visualisation';
 import LifecycleVisualisation from '@/app/(website)/(protected)/admin/(dashboard)/_components/visualisations/lifecycle-visualisation';
+import ProgressVisualisation from '@/app/(website)/(protected)/admin/(dashboard)/_components/visualisations/progress-visualisation';
 
 export async function CardVisualisation() {
   return (
@@ -12,6 +13,7 @@ export async function CardVisualisation() {
         <TabsTrigger value="age">Children Age</TabsTrigger>
         <TabsTrigger value="membership">Membership type</TabsTrigger>
         <TabsTrigger value="lifecycle">Lifecycle</TabsTrigger>
+        <TabsTrigger value="progress">Progress</TabsTrigger>
       </TabsList>
 
       <TabsContent value="revenue">
@@ -25,6 +27,9 @@ export async function CardVisualisation() {
       </TabsContent>
       <TabsContent value="lifecycle">
         <LifecycleVisualisation />
+      </TabsContent>
+      <TabsContent value="progress">
+        <ProgressVisualisation />
       </TabsContent>
     </Tabs>
   );
