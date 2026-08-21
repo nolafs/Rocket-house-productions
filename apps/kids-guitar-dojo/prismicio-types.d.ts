@@ -1110,6 +1110,17 @@ interface OnboardingDocumentData {
 	onboarding_intro_body: prismic.RichTextField;
 	
 	/**
+	 * Onboarding Intro Free Body field in *Onboarding*
+	 *
+	 * - **Field Type**: Rich Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: onboarding.onboarding_intro_free_body
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/rich-text
+	 */
+	onboarding_intro_free_body: prismic.RichTextField;
+	
+	/**
 	 * Onboarding Step One Header field in *Onboarding*
 	 *
 	 * - **Field Type**: Text
