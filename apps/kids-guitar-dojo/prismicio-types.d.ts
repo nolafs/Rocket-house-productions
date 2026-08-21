@@ -1033,6 +1033,17 @@ interface OnboardingDocumentData {
 	onboarding_intro_header: prismic.KeyTextField;
 	
 	/**
+	 * Onboarding Intro Header Free field in *Onboarding*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: onboarding.onboarding_intro_header_free
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	onboarding_intro_header_free: prismic.KeyTextField;
+	
+	/**
 	 * Onboarding Intro Video field in *Onboarding*
 	 *
 	 * - **Field Type**: Embed
@@ -1042,6 +1053,28 @@ interface OnboardingDocumentData {
 	 * - **Documentation**: https://prismic.io/docs/fields/embed
 	 */
 	intro_video: prismic.EmbedField
+	
+	/**
+	 * Onboarding Intro Video Free field in *Onboarding*
+	 *
+	 * - **Field Type**: Embed
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: onboarding.intro_video_free
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/embed
+	 */
+	intro_video_free: prismic.EmbedField
+	
+	/**
+	 * Onboarding Intro Video Free Bunny Id field in *Onboarding*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: onboarding.onboarding_intro_video_free_bunny_id
+	 * - **Tab**: Main
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	onboarding_intro_video_free_bunny_id: prismic.KeyTextField;
 	
 	/**
 	 * Onboarding Intro Video Bunny Id field in *Onboarding*

@@ -27,6 +27,12 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
     where: {
       userId: userId,
     },
+    include: {
+      purchases: {
+        where: { type: 'charge' },
+        select: { category: true },
+      },
+    },
   });
 
   if (!account) {
@@ -42,8 +48,17 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
 
   //purchase Detail
 
+  const isPaid = account?.purchases.some(p => p.category === 'standard' || p.category === 'premium');
+  const isFree = !isPaid;
+
   return (
-    <DialogLayout title={data.onboarding_intro_header || 'Welcome to Kids Guitar Dojo'} classNames={'p-5'}>
+    <DialogLayout
+      title={
+        isFree
+          ? data.onboarding_intro_header_free || 'Welcome to Kids Guitar Dojo'
+          : data.onboarding_intro_header || 'Welcome to Kids Guitar Dojo'
+      }
+      classNames={'p-5'}>
       {students.length > 0 ? (
         <div className={'prose prose-sm max-w-none md:prose-base lg:prose-lg'}>
           <p>
@@ -75,7 +90,7 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
             )
           )}
           <div className={'prose prose-sm my-5 max-w-none md:prose-base lg:prose-lg'}>
-            <PrismicRichText field={data.onboarding_intro_body} />
+            <PrismicRichText field={isFree ? data.onboarding_intro_free_body : data.onboarding_intro_body} />
           </div>
           <div className={'not-prose my-5 w-full'}>
             <NextButton label={'Get Started'} baseUrl={baseUrl} />

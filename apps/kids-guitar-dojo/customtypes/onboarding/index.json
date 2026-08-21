@@ -26,12 +26,33 @@
         },
         "type": "Text"
       },
+      "onboarding_intro_header_free": {
+        "config": {
+          "label": "Onboarding Intro Header Free",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
       "intro_video": {
         "config": {
           "label": "Onboarding Intro Video",
           "placeholder": ""
         },
         "type": "Embed"
+      },
+      "intro_video_free": {
+        "config": {
+          "label": "Onboarding Intro Video Free",
+          "placeholder": ""
+        },
+        "type": "Embed"
+      },
+      "onboarding_intro_video_free_bunny_id": {
+        "config": {
+          "label": "Onboarding Intro Video Free Bunny Id",
+          "placeholder": ""
+        },
+        "type": "Text"
       },
       "onboarding_intro_video_bunny_id": {
         "config": {

@@ -80,6 +80,7 @@
     "react-player": "3.3.1",
     "react-quill-new": "3.6.0",
     "react-timer-hook": "4.0.5",
+    "recharts": "2.15.4",
     "rss": "1.2.2",
     "semver": "7.7.2",
     "server-only": "0.0.1",
