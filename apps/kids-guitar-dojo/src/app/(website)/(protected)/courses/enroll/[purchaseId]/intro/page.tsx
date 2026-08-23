@@ -10,6 +10,7 @@ import ButtonAddChild from '@/app/(website)/(protected)/courses/enroll/[purchase
 import { Child } from '@rocket-house-productions/prisma-client';
 import { VideoPlayer } from '@rocket-house-productions/features';
 import { isFilled } from '@prismicio/client';
+import { logger } from '@rocket-house-productions/util';
 
 export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {
   const params = await props.params;
@@ -50,6 +51,8 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
 
   const isPaid = account?.purchases.some(p => p.category === 'standard' || p.category === 'premium');
   const isFree = !isPaid;
+
+  logger.info('Cutomser state free', isFree);
 
   return (
     <DialogLayout
