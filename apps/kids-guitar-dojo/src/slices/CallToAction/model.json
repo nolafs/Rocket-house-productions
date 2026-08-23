@@ -1,331 +1,331 @@
 {
+  "description": "CallToAction",
   "id": "call_to_action",
-  "type": "SharedSlice",
   "name": "CallToAction",
+  "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/default/be6de6a0ea3fda3d56650bd7066d5a5dc8076c3d.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/default/be6de6a0ea3fda3d56650bd7066d5a5dc8076c3d.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Default",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Body",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "buttons": {
-          "type": "Group",
           "config": {
-            "label": "Buttons",
-            "repeat": true,
             "fields": {
               "label": {
-                "type": "Text",
                 "config": {
                   "label": "Label",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "link": {
-                "type": "Link",
                 "config": {
                   "label": "Link",
                   "placeholder": "",
                   "select": null
-                }
+                },
+                "type": "Link"
               },
               "type": {
-                "type": "Select",
                 "config": {
                   "label": "Type",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Outlined"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               },
               "typeCase": {
-                "type": "Select",
                 "config": {
                   "label": "Type Case",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Uppercase"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               }
-            }
-          }
+            },
+            "label": "Buttons",
+            "repeat": true
+          },
+          "type": "Group"
         }
       },
-      "items": {}
+      "version": "initial"
     },
     {
-      "id": "image",
-      "name": "Image",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/image/2630eb81af1d8efe8addc1764cf29bbf20c312cf.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "image",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/image/2630eb81af1d8efe8addc1764cf29bbf20c312cf.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Image",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Body",
-            "placeholder": "",
             "multi": "paragraph,list-item,strong,em,heading3,heading4,heading5,heading6",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "buttons": {
-          "type": "Group",
           "config": {
-            "label": "Buttons",
-            "repeat": true,
             "fields": {
               "label": {
-                "type": "Text",
                 "config": {
                   "label": "Label",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "link": {
-                "type": "Link",
                 "config": {
                   "label": "Link",
                   "placeholder": "",
                   "select": null
-                }
+                },
+                "type": "Link"
               },
               "type": {
-                "type": "Select",
                 "config": {
                   "label": "Type",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Outlined"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               },
               "typeCase": {
-                "type": "Select",
                 "config": {
                   "label": "TypeCase",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Uppercase"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               }
-            }
-          }
+            },
+            "label": "Buttons",
+            "repeat": true
+          },
+          "type": "Group"
         },
         "image": {
-          "type": "Image",
           "config": {
-            "label": "Image",
             "constraint": {},
+            "label": "Image",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         }
       },
-      "items": {}
+      "version": "initial"
     },
     {
-      "id": "center",
-      "name": "Center",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/center/b5001bbab44a5b449656218adfb5022c56c3e0dd.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "center",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/center/b5001bbab44a5b449656218adfb5022c56c3e0dd.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Center",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Body",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "buttons": {
-          "type": "Group",
           "config": {
-            "label": "Buttons",
-            "repeat": true,
             "fields": {
               "label": {
-                "type": "Text",
                 "config": {
                   "label": "Label",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "link": {
-                "type": "Link",
                 "config": {
                   "label": "Link",
                   "placeholder": "",
                   "select": null
-                }
+                },
+                "type": "Link"
               },
               "type": {
-                "type": "Select",
                 "config": {
                   "label": "Type",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Outlined"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               },
               "typeCase": {
-                "type": "Select",
                 "config": {
                   "label": "Type Case",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Uppercase"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               }
-            }
-          }
+            },
+            "label": "Buttons",
+            "repeat": true
+          },
+          "type": "Group"
         },
         "background_image": {
-          "type": "Image",
           "config": {
-            "label": "Background Image",
             "constraint": {},
+            "label": "Background Image",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         }
       },
-      "items": {}
+      "version": "initial"
     },
     {
-      "id": "textTwoColumn",
-      "name": "Text Two Column",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/textTwoColumn/496d1662d8bb0f27f2d9fc32b01c0d6a2e8b310e.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "textTwoColumn",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/call_to_action/textTwoColumn/496d1662d8bb0f27f2d9fc32b01c0d6a2e8b310e.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Text Two Column",
       "primary": {
         "heading": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "subtitle": {
-          "type": "Text",
           "config": {
             "label": "Subtitle",
             "placeholder": ""
-          }
+          },
+          "type": "Text"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Body",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "buttons": {
-          "type": "Group",
           "config": {
-            "label": "Buttons",
-            "repeat": true,
             "fields": {
               "label": {
-                "type": "Text",
                 "config": {
                   "label": "Label",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "link": {
-                "type": "Link",
                 "config": {
                   "label": "Link",
                   "placeholder": "",
                   "select": null
-                }
+                },
+                "type": "Link"
               },
               "type": {
-                "type": "Select",
                 "config": {
                   "label": "Type",
-                  "placeholder": "",
                   "options": [
                     "Default",
                     "Outlined"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               },
               "typeCase": {
-                "type": "Select",
                 "config": {
                   "label": "Type Case",
-                  "placeholder": "",
                   "options": [
                     "1",
                     "2"
-                  ]
-                }
+                  ],
+                  "placeholder": ""
+                },
+                "type": "Select"
               }
-            }
-          }
+            },
+            "label": "Buttons",
+            "repeat": true
+          },
+          "type": "Group"
         }
       },
-      "items": {}
+      "version": "initial"
     }
-  ],
-  "description": "CallToAction"
+  ]
 }

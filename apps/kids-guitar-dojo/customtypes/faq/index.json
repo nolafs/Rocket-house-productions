@@ -1,33 +1,33 @@
 {
+  "format": "custom",
   "id": "faq",
-  "label": "Faq",
-  "repeatable": true,
   "json": {
     "Main": {
       "uid": {
-        "type": "UID",
         "config": {
           "label": "UID"
-        }
+        },
+        "type": "UID"
       },
       "heading": {
-        "type": "Text",
         "config": {
           "label": "Heading",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "body": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Body",
-          "placeholder": "",
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-          "allowTargetBlank": true
-        }
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       }
     }
   },
-  "status": true,
-  "format": "custom"
+  "label": "Faq",
+  "repeatable": true,
+  "status": true
 }

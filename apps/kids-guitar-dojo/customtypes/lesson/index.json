@@ -1,32 +1,29 @@
 {
+  "format": "custom",
   "id": "lesson",
-  "label": "Lesson",
-  "repeatable": true,
   "json": {
     "Main": {
       "uid": {
-        "type": "UID",
         "config": {
           "label": "UID"
-        }
+        },
+        "type": "UID"
       },
       "title": {
-        "type": "Text",
         "config": {
           "label": "Title",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "subtitle": {
-        "type": "Text",
         "config": {
           "label": "Subtitle",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "slices": {
-        "type": "Slices",
-        "fieldset": "Slice Zone",
         "config": {
           "choices": {
             "image_grid": {
@@ -36,10 +33,13 @@
               "type": "SharedSlice"
             }
           }
-        }
+        },
+        "fieldset": "Slice Zone",
+        "type": "Slices"
       }
     }
   },
-  "status": true,
-  "format": "custom"
+  "label": "Lesson",
+  "repeatable": true,
+  "status": true
 }

@@ -1,88 +1,88 @@
 {
+  "description": "RichTextSlice",
   "id": "rich_text_slice",
-  "type": "SharedSlice",
   "name": "RichTextSlice",
+  "type": "SharedSlice",
   "variations": [
     {
+      "description": "Default",
+      "docURL": "...",
       "id": "default",
-      "name": "Default",
-      "description": "Default",
       "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/rich_text_slice/default/0259702dc6adb284d7c7028ffc29347d22951360.png?auto=compress%2Cformat",
-      "docURL": "...",
-      "version": "initial",
+      "items": {},
+      "name": "Default",
       "primary": {
         "text": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Text",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         }
       },
-      "items": {}
+      "version": "initial"
     },
     {
-      "id": "twoColumns",
-      "name": "Two columns",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/rich_text_slice/twoColumns/5e8e523c614de38ecd2708fc3704b4f3faf3a888.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "twoColumns",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/rich_text_slice/twoColumns/5e8e523c614de38ecd2708fc3704b4f3faf3a888.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Two columns",
       "primary": {
         "text": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "text",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         }
       },
-      "items": {}
+      "version": "initial"
     },
     {
-      "id": "twoColumnsWithHeader",
-      "name": "Two columns with header",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/rich_text_slice/twoColumnsWithHeader/f9ec833378699d69d9d28bbd19e4377003fd00a2.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "twoColumnsWithHeader",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/rich_text_slice/twoColumnsWithHeader/f9ec833378699d69d9d28bbd19e4377003fd00a2.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Two columns with header",
       "primary": {
         "heading": {
-          "type": "Text",
           "config": {
             "label": "Heading",
             "placeholder": ""
-          }
+          },
+          "type": "Text"
         },
         "text": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "text",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "header_alignment": {
-          "type": "Select",
           "config": {
-            "label": "Header Alignment",
-            "placeholder": "",
             "default_value": "Left",
+            "label": "Header Alignment",
             "options": [
               "Left",
               "Center",
               "Right"
-            ]
-          }
+            ],
+            "placeholder": ""
+          },
+          "type": "Select"
         }
       },
-      "items": {}
+      "version": "initial"
     }
-  ],
-  "description": "RichTextSlice"
+  ]
 }

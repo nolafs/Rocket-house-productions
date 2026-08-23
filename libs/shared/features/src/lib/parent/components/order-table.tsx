@@ -6,7 +6,7 @@ import { DataTable } from '@rocket-house-productions/ui';
 
 export default function OrdersTable({ rows }: { rows: OrderRow[] }) {
   return (
-    <DataTable<OrderRow, unknown>
+    <DataTable<OrderRow>
       columns={ordersColumns}
       data={rows}
       searchColumnId="id" // search by order id (you can switch to 'status')

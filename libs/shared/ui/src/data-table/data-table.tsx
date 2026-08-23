@@ -14,43 +14,50 @@ import {
 import {
   ColumnDef,
   flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
+  tableFeatures,
+  stockFeatures,
+  StockFeatures,
+  createFilteredRowModel,
+  createSortedRowModel,
+  createPaginatedRowModel,
   SortingState,
-  useReactTable,
+  useTable,
+  RowData,
 } from '@tanstack/react-table';
+
+const _features = tableFeatures({
+  ...stockFeatures,
+  filteredRowModel: createFilteredRowModel(),
+  sortedRowModel: createSortedRowModel(),
+  paginatedRowModel: createPaginatedRowModel(),
+});
 import { Button } from '@rocket-house-productions/shadcn-ui/server';
 
-type DataTableProps<TData, TValue> = {
-  columns: ColumnDef<TData, TValue>[];
+type DataTableProps<TData extends RowData> = {
+  columns: ColumnDef<StockFeatures, TData>[];
   data: TData[];
   searchColumnId?: string; // optional column id to bind to the search box
   searchPlaceholder?: string;
   pageSize?: number;
 };
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends RowData>({
   columns,
   data,
   searchColumnId,
   searchPlaceholder = 'Search…',
   pageSize = 10,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState([]);
-  const table = useReactTable({
+  const table = useTable({
+    features: _features,
     data,
     columns,
     state: { sorting, columnFilters },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters as any,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageSize } },
+    initialState: { pagination: { pageSize: pageSize, pageIndex: 0 } },
   });
 
   const searchCol = searchColumnId ? table.getColumn(searchColumnId) : null;
@@ -116,7 +123,7 @@ export function DataTable<TData, TValue>({
 
       <div className="flex items-center justify-between">
         <div className="text-muted-foreground text-sm">
-          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount() || 1}
+          Page {table.state.pagination.pageIndex + 1} of {table.getPageCount() || 1}
         </div>
         <div className="flex items-center gap-2">
           <Button

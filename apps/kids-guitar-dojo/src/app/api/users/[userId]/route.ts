@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@rocket-house-productions/integration/server';
 import { logger } from '@rocket-house-productions/util';
@@ -51,7 +51,11 @@ export async function GET(req: NextRequest, context: { params: Promise<{ userId:
     // Avoid logging full account object (may contain PII). Log only safe identifiers.
     logger.info('[USER GET] accountId=', response?.id, 'purchases=', response?._count?.purchases ?? 0);
 
-    return NextResponse.json(response);
+    const clerk = await clerkClient();
+    const clerkUser = await clerk.users.getUser(params.userId);
+    const freshStartUsed = Boolean(clerkUser.publicMetadata?.freshStartUsed);
+
+    return NextResponse.json({ ...response, freshStartUsed });
   } catch (error) {
     logger.error('[USERS] error fetching account', error);
     return new NextResponse('Internal Error', { status: 500 });

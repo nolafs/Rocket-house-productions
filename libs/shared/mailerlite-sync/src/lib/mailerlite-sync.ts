@@ -23,6 +23,7 @@
 
 import { createHash } from 'node:crypto';
 import MailerLite from '@mailerlite/mailerlite-nodejs';
+import { z } from 'zod';
 import { db } from '@rocket-house-productions/integration/db-node';
 import { acquireLock, releaseLock } from './sync-lock';
 import type { TriggeredBy } from './sync-lock';
@@ -41,60 +42,72 @@ const MIRROR_PREFIXES = ['ns_', 'do_', 'cf_', 'replied_'];
 const DROPPED_OFF_DAYS = 30;
 
 // ---------------------------------------------------------------------------
-// Explicit result types (needed because $extends breaks generic inference)
+// Zod schemas — validate the shape Prisma actually returns at runtime.
+//
+// The $extends(withAccelerate()) wrapper breaks Prisma's generic inference so
+// we cannot rely on compile-time types from the query. These schemas replace
+// the old `as unknown as XRow[]` casts: a mismatch now throws immediately with
+// a clear field-level error instead of silently producing wrong data.
 // ---------------------------------------------------------------------------
 
-interface CourseRow {
-  id: string;
-  title: string;
-  order: number | null;
-  modules: Array<{
-    lessons: Array<{ id: string }>;
-  }>;
-}
+const courseRowSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  order: z.number().nullable(),
+  modules: z.array(
+    z.object({
+      lessons: z.array(z.object({ id: z.string(), isFree: z.boolean() })),
+    }),
+  ),
+});
 
-interface ChildProgressRow {
-  courseId: string;
-  isCompleted: boolean;
-  updatedAt: Date;
-}
+const accountRowSchema = z.object({
+  id: z.string(),
+  email: z.string().nullable(),
+  firstName: z.string().nullable(),
+  lastName: z.string().nullable(),
+  createdAt: z.coerce.date(),
+  children: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      birthday: z.coerce.date(),
+      childProgress: z.array(
+        z.object({
+          courseId: z.string(),
+          isCompleted: z.boolean(),
+          updatedAt: z.coerce.date(),
+        }),
+      ),
+      childScores: z.array(
+        z.object({
+          courseId: z.string(),
+          score: z.number(),
+        }),
+      ),
+    }),
+  ),
+  purchases: z.array(
+    z.object({
+      courseId: z.string(),
+      category: z.string().nullable(),
+      billingAddress: z.string().nullable(),
+      createdAt: z.coerce.date(),
+    }),
+  ),
+  marketingProfile: z
+    .object({
+      id: z.string(),
+      pushedHash: z.string().nullable(),
+      lifecycleStage: z.string().nullable(),
+    })
+    .nullable(),
+});
 
-interface ChildScoreRow {
-  courseId: string;
-  score: number;
-}
-
-interface ChildRow {
-  id: string;
-  name: string;
-  birthday: Date;
-  childProgress: ChildProgressRow[];
-  childScores: ChildScoreRow[];
-}
-
-interface PurchaseRow {
-  courseId: string;
-  category: string | null;
-  billingAddress: string | null;
-  createdAt: Date;
-}
-
-interface MarketingProfileRow {
-  id: string;
-  pushedHash: string | null;
-  lifecycleStage: string | null;
-}
-
-interface AccountRow {
-  id: string;
-  email: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  createdAt: Date;
-  children: ChildRow[];
-  purchases: PurchaseRow[];
-  marketingProfile: MarketingProfileRow | null;
-}
+// Infer TypeScript types from the schemas — single source of truth.
+// CourseRow is not referenced explicitly; its shape flows through courseRowSchema.array().parse().
+type AccountRow = z.infer<typeof accountRowSchema>;
+type ChildRow = AccountRow['children'][number];
 
 // ---------------------------------------------------------------------------
 // Public types
@@ -107,17 +120,19 @@ interface CourseSlot {
   title: string;
   order: number | null;
   totalLessons: number;
+  freeLessons: number;
   bookNumber: number;
 }
 
 interface SyncPayload {
   lifecycle_stage: LifecycleStage;
-  member_type: string;        // free | standard | premium
+  member_type: string; // free | standard | premium
   lessons_done: number;
   child_name: string;
   child_age: number | null;
-  has_purchased: string;      // 'true' | 'false'
-  location: string | null;    // country from billing address
+  child_age_at_signup: number | null;
+  has_purchased: string; // 'true' | 'false'
+  location: string | null; // country from billing address
   account_created_at: string; // ISO date
   [key: string]: string | number | null; // book1_* … bookN_*
 }
@@ -144,7 +159,7 @@ export interface PullResult {
 // ---------------------------------------------------------------------------
 
 async function loadCourses(): Promise<CourseSlot[]> {
-  const courses = (await db.course.findMany({
+  const raw = await db.course.findMany({
     where: { isPublished: true },
     orderBy: { order: 'asc' },
     take: MAX_BOOKS,
@@ -154,24 +169,29 @@ async function loadCourses(): Promise<CourseSlot[]> {
         include: {
           lessons: {
             where: { isPublished: true },
-            select: { id: true },
+            select: { id: true, isFree: true },
           },
         },
       },
     },
-  })) as unknown as CourseRow[];
+  });
+  const courses = courseRowSchema.array().parse(raw);
 
-  return courses.map((c, i) => ({
-    id: c.id,
-    title: c.title,
-    order: c.order,
-    totalLessons: c.modules.flatMap(m => m.lessons).length,
-    bookNumber: i + 1,
-  }));
+  return courses.map((c, i) => {
+    const allLessons = c.modules.flatMap(m => m.lessons);
+    return {
+      id: c.id,
+      title: c.title,
+      order: c.order,
+      totalLessons: allLessons.length,
+      freeLessons: allLessons.filter(l => l.isFree).length,
+      bookNumber: i + 1,
+    };
+  });
 }
 
 async function loadAccounts(): Promise<AccountRow[]> {
-  return db.account.findMany({
+  const raw = await db.account.findMany({
     where: { email: { not: null } },
     include: {
       children: {
@@ -191,15 +211,16 @@ async function loadAccounts(): Promise<AccountRow[]> {
         select: { id: true, pushedHash: true, lifecycleStage: true },
       },
     },
-  }) as unknown as Promise<AccountRow[]>;
+  });
+  return accountRowSchema.array().parse(raw);
 }
 
 // ---------------------------------------------------------------------------
 // Mapping helpers
 // ---------------------------------------------------------------------------
 
-function childAge(birthday: Date): number | null {
-  const ms = Date.now() - birthday.getTime();
+function childAge(birthday: Date, at: Date = new Date()): number | null {
+  const ms = at.getTime() - birthday.getTime();
   if (ms < 0) return null;
   return Math.floor(ms / (365.25 * 24 * 60 * 60 * 1000));
 }
@@ -217,19 +238,18 @@ export function classifyLifecycle(
   const totalCompleted = child.childProgress.filter(p => p.isCompleted).length;
   if (totalCompleted === 0) return 'never_started';
 
-  // Completed all lessons in the first (free) course → completed_free
-  const freeCourse = courses[0];
-  if (freeCourse && freeCourse.totalLessons > 0) {
-    const doneInFree = child.childProgress.filter(
-      p => p.isCompleted && p.courseId === freeCourse.id,
-    ).length;
-    if (doneInFree >= freeCourse.totalLessons) return 'completed_free';
-  }
+  // Completed all free lessons in any course → completed_free
+  // freeLessons = lessons with isFree=true; user has shown commitment by finishing
+  // all free content in at least one course.
+  const completedFree = courses.some(course => {
+    if (course.freeLessons === 0) return false;
+    const doneInCourse = child.childProgress.filter(p => p.isCompleted && p.courseId === course.id).length;
+    return doneInCourse >= course.freeLessons;
+  });
+  if (completedFree) return 'completed_free';
 
   // No progress in DROPPED_OFF_DAYS → dropped_off
-  const latestProgressAt = child.childProgress
-    .map(p => p.updatedAt)
-    .sort((a, b) => b.getTime() - a.getTime())[0];
+  const latestProgressAt = child.childProgress.map(p => p.updatedAt).sort((a, b) => b.getTime() - a.getTime())[0];
 
   if (latestProgressAt) {
     const daysSince = (Date.now() - latestProgressAt.getTime()) / (1000 * 60 * 60 * 24);
@@ -247,9 +267,7 @@ export function mapAccountToPayload(account: AccountRow, courses: CourseSlot[]):
   // Child: at most one per account (@@unique([accountId]))
   const child = account.children[0];
   const lifecycle = classifyLifecycle(account, child, courses);
-  const totalLessonsDone = child
-    ? child.childProgress.filter(p => p.isCompleted).length
-    : 0;
+  const totalLessonsDone = child ? child.childProgress.filter(p => p.isCompleted).length : 0;
 
   // Derive member_type from highest purchase category
   const TIER_RANK: Record<string, number> = { included: 3, premium: 3, standard: 2, free: 1 };
@@ -278,6 +296,7 @@ export function mapAccountToPayload(account: AccountRow, courses: CourseSlot[]):
     lessons_done: totalLessonsDone,
     child_name: child?.name ?? '',
     child_age: child ? childAge(child.birthday) : null,
+    child_age_at_signup: child ? childAge(child.birthday, account.createdAt) : null,
     has_purchased: account.purchases.length > 0 ? 'true' : 'false',
     location,
     account_created_at: account.createdAt.toISOString().slice(0, 10),
@@ -286,12 +305,9 @@ export function mapAccountToPayload(account: AccountRow, courses: CourseSlot[]):
   for (const course of courses) {
     const n = course.bookNumber;
     if (child) {
-      const done = child.childProgress.filter(
-        p => p.isCompleted && p.courseId === course.id,
-      ).length;
+      const done = child.childProgress.filter(p => p.isCompleted && p.courseId === course.id).length;
       const score = child.childScores.find(s => s.courseId === course.id)?.score ?? 0;
-      const pct =
-        course.totalLessons > 0 ? Math.round((done / course.totalLessons) * 100) : 0;
+      const pct = course.totalLessons > 0 ? Math.round((done / course.totalLessons) * 100) : 0;
       payload[`book${n}_lessons_done`] = done;
       payload[`book${n}_lessons_total`] = course.totalLessons;
       payload[`book${n}_pct`] = pct;
@@ -323,14 +339,22 @@ function hashPayload(payload: SyncPayload): string {
  * Retry an async operation on MailerLite 429 rate-limit responses.
  * Respects the Retry-After header when present; falls back to exponential backoff.
  */
+type AxiosLike = {
+  response?: { status?: number; headers?: Record<string, string> };
+  status?: number;
+};
+
+function isAxiosLike(err: unknown): err is AxiosLike {
+  return typeof err === 'object' && err !== null;
+}
+
 function axiosStatus(err: unknown): number | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (err as any)?.response?.status ?? (err as any)?.status;
+  if (!isAxiosLike(err)) return undefined;
+  return err.response?.status ?? err.status;
 }
 
 function axiosRetryAfterMs(err: unknown): number {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const header = (err as any)?.response?.headers?.['retry-after'];
+  const header = isAxiosLike(err) ? err.response?.headers?.['retry-after'] : undefined;
   const seconds = header ? parseInt(header, 10) : 0;
   return Number.isFinite(seconds) && seconds > 0 ? Math.min(seconds * 1000, 10_000) : 0;
 }
@@ -389,9 +413,7 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
     existingGroups = groups.map(g => g.id);
 
     const rawFields = raw?.['fields'];
-    const fields = Array.isArray(rawFields)
-      ? (rawFields as Array<{ key: string; value: string | number | null }>)
-      : [];
+    const fields = Array.isArray(rawFields) ? (rawFields as Array<{ key: string; value: string | number | null }>) : [];
     for (const f of fields) {
       if (f.value !== null && f.value !== undefined && f.value !== '') {
         existingFields[f.key] = f.value;
@@ -427,11 +449,7 @@ async function pushSubscriber(email: string, payload: SyncPayload): Promise<void
 // Upsert MarketingProfile after a successful push
 // ---------------------------------------------------------------------------
 
-async function upsertMarketingProfile(
-  account: AccountRow,
-  payload: SyncPayload,
-  hash: string,
-): Promise<void> {
+async function upsertMarketingProfile(account: AccountRow, payload: SyncPayload, hash: string): Promise<void> {
   if (!account.email) return;
   await db.marketingProfile.upsert({
     where: { userId: account.id },
@@ -507,7 +525,10 @@ export async function runPushSync(opts: PushSyncOptions = {}): Promise<SyncResul
 
     for (const account of accounts) {
       if (Date.now() > deadline) break;
-      if (!account.email) { skipped++; continue; }
+      if (!account.email) {
+        skipped++;
+        continue;
+      }
 
       try {
         const payload = mapAccountToPayload(account, courses);
@@ -580,9 +601,7 @@ export async function runPullTags(opts: PullTagsOptions = {}): Promise<PullResul
         const raw = (resp.data as unknown as Record<string, unknown>)?.['data'] as Record<string, unknown> | undefined;
         const groups = (raw?.['groups'] ?? []) as Array<{ name: string }>;
 
-        const tags = groups
-          .map(g => g.name)
-          .filter(name => MIRROR_PREFIXES.some(prefix => name.startsWith(prefix)));
+        const tags = groups.map(g => g.name).filter(name => MIRROR_PREFIXES.some(prefix => name.startsWith(prefix)));
 
         await db.marketingProfile.update({
           where: { id: profile.id },
@@ -616,7 +635,7 @@ export async function runPullTags(opts: PullTagsOptions = {}): Promise<PullResul
  * Skips if hash is unchanged.
  */
 export async function syncAccountNow(accountId: string): Promise<void> {
-  const accounts = await db.account.findMany({
+  const raw = await db.account.findMany({
     where: { id: accountId, email: { not: null } },
     include: {
       children: {
@@ -625,10 +644,11 @@ export async function syncAccountNow(accountId: string): Promise<void> {
           childScores: { select: { courseId: true, score: true } },
         },
       },
-      purchases: { select: { courseId: true, createdAt: true } },
+      purchases: { select: { courseId: true, category: true, billingAddress: true, createdAt: true } },
       marketingProfile: { select: { id: true, pushedHash: true, lifecycleStage: true } },
     },
-  }) as unknown as AccountRow[];
+  });
+  const accounts = accountRowSchema.array().parse(raw);
 
   const account = accounts[0];
   if (!account?.email) return;

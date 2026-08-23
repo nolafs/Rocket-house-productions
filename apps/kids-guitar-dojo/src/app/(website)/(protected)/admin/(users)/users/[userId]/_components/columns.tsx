@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, StockFeatures } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 
 // Components
@@ -10,7 +10,7 @@ import { Purchase } from '@rocket-house-productions/prisma-client';
 import DialogAddress from './dialog-address';
 import { CurrencyToSymbol } from '@rocket-house-productions/util';
 
-export const columns: ColumnDef<Purchase>[] = [
+export const columns: ColumnDef<StockFeatures, Purchase>[] = [
   {
     accessorKey: 'id',
     header: ({ column }) => {

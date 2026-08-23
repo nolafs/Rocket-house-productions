@@ -18,6 +18,13 @@
     {
       "files": ["*.js", "*.jsx"],
       "rules": {}
+    },
+    {
+      "files": ["src/lib/use-forward-ref.tsx"],
+      "rules": {
+        "react-hooks/refs": "off",
+        "react-hooks/immutability": "off"
+      }
     }
   ]
 }

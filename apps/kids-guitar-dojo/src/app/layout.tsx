@@ -157,7 +157,7 @@ export default async function RootLayout(props: { children: React.ReactNode; mod
       className={`${raleway.variable} font-sans ${mochiyPopOne.variable} ${nunito.variable} `}
       suppressHydrationWarning={true}>
       <body className={'bg-background min-h-screen font-sans antialiased'}>
-        <ClientProviders domain={'https://plausible.biffify.com'}>{props.children}</ClientProviders>
+        <ClientProviders>{props.children}</ClientProviders>
         {/* Preview */}
         <PrismicPreview repositoryName={repositoryName} />
         {/* Cookie consent */}

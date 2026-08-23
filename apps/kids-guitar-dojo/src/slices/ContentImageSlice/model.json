@@ -1,179 +1,179 @@
 {
+  "description": "ContentImageSlice",
   "id": "content_image_slice",
-  "type": "SharedSlice",
   "name": "ContentImageSlice",
+  "type": "SharedSlice",
   "variations": [
     {
-      "id": "default",
-      "name": "Default",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/content_image_slice/default/2120f2360619caf1ffe1d8497b9a3a79d316bfa1.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "default",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/content_image_slice/default/2120f2360619caf1ffe1d8497b9a3a79d316bfa1.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Default",
       "primary": {
         "subheading": {
-          "type": "Text",
           "config": {
             "label": "Subheading",
             "placeholder": ""
-          }
+          },
+          "type": "Text"
         },
         "heading": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "strong,em,embed",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "body": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Body",
-            "placeholder": "",
             "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "image": {
-          "type": "Image",
           "config": {
-            "label": "Image",
             "constraint": {},
+            "label": "Image",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "optional_image": {
-          "type": "Image",
           "config": {
-            "label": "Optional Image",
             "constraint": {},
+            "label": "Optional Image",
             "thumbnails": []
-          }
+          },
+          "type": "Image"
         },
         "alignment": {
-          "type": "Select",
           "config": {
-            "label": "Alignment",
-            "placeholder": "",
             "default_value": "Right",
+            "label": "Alignment",
             "options": [
               "Right",
               "Left"
-            ]
-          }
+            ],
+            "placeholder": ""
+          },
+          "type": "Select"
         },
         "type": {
-          "type": "Select",
           "config": {
             "label": "Type",
-            "placeholder": "",
             "options": [
               "Default",
               "Section",
               "Article"
-            ]
-          }
+            ],
+            "placeholder": ""
+          },
+          "type": "Select"
         },
         "has_decoration": {
-          "type": "Boolean",
           "config": {
-            "label": "Has Decoration",
             "default_value": true,
-            "placeholder_true": "true",
-            "placeholder_false": "false"
-          }
+            "label": "Has Decoration",
+            "placeholder_false": "false",
+            "placeholder_true": "true"
+          },
+          "type": "Boolean"
         }
       },
-      "items": {}
+      "version": "initial"
     },
     {
-      "id": "sectionContentImage",
-      "name": "Section Content Image",
       "description": "Default",
-      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/content_image_slice/sectionContentImage/88ffca5c321dbbd6a547a977c9bfc5e42eb5a3ae.png?auto=compress%2Cformat",
       "docURL": "...",
-      "version": "initial",
+      "id": "sectionContentImage",
+      "imageUrl": "https://images.prismic.io/kids-guitar-dojo/shared-slices/content_image_slice/sectionContentImage/88ffca5c321dbbd6a547a977c9bfc5e42eb5a3ae.png?auto=compress%2Cformat",
+      "items": {},
+      "name": "Section Content Image",
       "primary": {
         "subtitle": {
-          "type": "Text",
           "config": {
             "label": "Subheading",
             "placeholder": ""
-          }
+          },
+          "type": "Text"
         },
         "title": {
-          "type": "StructuredText",
           "config": {
+            "allowTargetBlank": true,
             "label": "Heading",
-            "placeholder": "",
             "multi": "strong,em,embed",
-            "allowTargetBlank": true
-          }
+            "placeholder": ""
+          },
+          "type": "StructuredText"
         },
         "items": {
-          "type": "Group",
           "config": {
-            "label": "items",
-            "repeat": true,
             "fields": {
               "title": {
-                "type": "StructuredText",
                 "config": {
+                  "allowTargetBlank": true,
                   "label": "Title",
-                  "placeholder": "",
                   "multi": "strong,em,list-item,o-list-item,paragraph",
-                  "allowTargetBlank": true
-                }
+                  "placeholder": ""
+                },
+                "type": "StructuredText"
               },
               "subtitle": {
-                "type": "Text",
                 "config": {
                   "label": "Subtitle",
                   "placeholder": ""
-                }
+                },
+                "type": "Text"
               },
               "text": {
-                "type": "StructuredText",
                 "config": {
+                  "allowTargetBlank": true,
                   "label": "Body",
-                  "placeholder": "",
                   "multi": "strong,em,list-item,o-list-item,paragraph",
-                  "allowTargetBlank": true
-                }
+                  "placeholder": ""
+                },
+                "type": "StructuredText"
               },
               "image": {
-                "type": "Image",
                 "config": {
-                  "label": "Image",
                   "constraint": {},
+                  "label": "Image",
                   "thumbnails": []
-                }
+                },
+                "type": "Image"
               },
               "optional_image": {
-                "type": "Image",
                 "config": {
-                  "label": "Optional Image",
                   "constraint": {},
+                  "label": "Optional Image",
                   "thumbnails": []
-                }
+                },
+                "type": "Image"
               },
               "has_decoration": {
-                "type": "Boolean",
                 "config": {
-                  "label": "Has decoration",
                   "default_value": false,
-                  "placeholder_true": "true",
-                  "placeholder_false": "false"
-                }
+                  "label": "Has decoration",
+                  "placeholder_false": "false",
+                  "placeholder_true": "true"
+                },
+                "type": "Boolean"
               }
-            }
-          }
+            },
+            "label": "items",
+            "repeat": true
+          },
+          "type": "Group"
         }
       },
-      "items": {}
+      "version": "initial"
     }
-  ],
-  "description": "ContentImageSlice"
+  ]
 }

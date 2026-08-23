@@ -8,7 +8,8 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import ButtonAddChild from '@/app/(website)/(protected)/courses/enroll/[purchaseId]/_component/button-add-child';
 import { Child } from '@rocket-house-productions/prisma-client';
-import VideoPlayer from '../../../../../../../../../../libs/shared/features/src/lib/video-player/video-player';
+import { VideoPlayer } from '@rocket-house-productions/features';
+import { isFilled } from '@prismicio/client';
 
 export default async function Page(props: { params: Promise<{ purchaseId: string }> }) {
   const params = await props.params;
@@ -26,6 +27,12 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
     where: {
       userId: userId,
     },
+    include: {
+      purchases: {
+        where: { type: 'charge' },
+        select: { category: true },
+      },
+    },
   });
 
   if (!account) {
@@ -41,24 +48,71 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
 
   //purchase Detail
 
+  const isPaid = account?.purchases.some(p => p.category === 'standard' || p.category === 'premium');
+  const isFree = !isPaid;
+
   return (
     <DialogLayout
-      title={data.onboarding_intro_header || 'Welcome to Kids Guitar Dojo'}
-      classNames={'prose prose-sm md:prose-base lg:prose-lg max-w-none p-5'}>
+      title={
+        isFree
+          ? data.onboarding_intro_header_free || 'Welcome to Kids Guitar Dojo'
+          : data.onboarding_intro_header || 'Welcome to Kids Guitar Dojo'
+      }
+      classNames={'p-5'}>
       {students.length > 0 ? (
-        <>
+        <div className={'prose prose-sm max-w-none md:prose-base lg:prose-lg'}>
           <p>
             We’ve found your little rockstar from your previous course — great to see you again! You can continue with
             the same child’s profile so all progress and rewards stay connected, or create a new child profile if
             someone else in the family is ready to join the fun.
           </p>
           <ButtonAddChild baseUrl={baseUrl} purchaseId={params.purchaseId} students={students} />
-        </>
+        </div>
       ) : (
-        <div className={'flex flex-col space-y-3'}>
-          <VideoPlayer image={data.onboarding_intro_video_poster} {...(data.intro_video as any)} loading={'eager'} />
-          <PrismicRichText field={data.onboarding_intro_body} />
-          <div className={'not-prose mt-5 w-full'}>
+        <div className={'flex flex-col'}>
+          {isFree ? (
+            isFilled.keyText(data.onboarding_intro_video_free_bunny_id) ? (
+              <div className={'video aspect-h-9 aspect-w-16 relative bg-slate-300'}>
+                <iframe
+                  title={'onboarding-video'}
+                  src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNYCDN_STREAM_LIB_ID}/${data.onboarding_intro_video_free_bunny_id}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`}
+                  loading="lazy"
+                  allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+                  allowFullScreen={true}
+                />
+              </div>
+            ) : (
+              isFilled.embed(data.intro_video_free) && (
+                <VideoPlayer
+                  image={data.onboarding_intro_video_poster}
+                  {...(data.intro_video_free as any)}
+                  loading={'eager'}
+                />
+              )
+            )
+          ) : isFilled.keyText(data.onboarding_intro_video_bunny_id) ? (
+            <div className={'video aspect-h-9 aspect-w-16 relative bg-slate-300'}>
+              <iframe
+                title={'onboarding-video'}
+                src={`https://iframe.mediadelivery.net/embed/${process.env.BUNNYCDN_STREAM_LIB_ID}/${data.onboarding_intro_video_bunny_id}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`}
+                loading="lazy"
+                allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;"
+                allowFullScreen={true}
+              />
+            </div>
+          ) : (
+            isFilled.embed(data.intro_video) && (
+              <VideoPlayer
+                image={data.onboarding_intro_video_poster}
+                {...(data.intro_video as any)}
+                loading={'eager'}
+              />
+            )
+          )}
+          <div className={'prose prose-sm my-5 max-w-none md:prose-base lg:prose-lg'}>
+            <PrismicRichText field={isFree ? data.onboarding_intro_free_body : data.onboarding_intro_body} />
+          </div>
+          <div className={'not-prose my-5 w-full'}>
             <NextButton label={'Get Started'} baseUrl={baseUrl} />
           </div>
         </div>

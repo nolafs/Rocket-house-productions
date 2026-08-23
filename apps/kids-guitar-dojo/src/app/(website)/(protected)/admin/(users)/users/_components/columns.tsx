@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, StockFeatures } from '@tanstack/react-table';
 import { ArrowUpDown, CheckIcon, MoreHorizontal, Pencil, X, XIcon } from 'lucide-react';
 
 // Components
@@ -18,7 +18,7 @@ export type AccountWithMarketing = Account & {
   marketingProfile: { tags: unknown } | null;
 };
 
-export const columns: ColumnDef<AccountWithMarketing>[] = [
+export const columns: ColumnDef<StockFeatures, AccountWithMarketing>[] = [
   {
     accessorKey: 'userId',
     header: ({ column }) => {

@@ -8,6 +8,9 @@
       ],
       "@rocket-house-productions/shadcn-ui/*": [
         "libs/shared/shadcn-ui/src/*"
+      ],
+      "@rocket-house-productions/util": [
+        "libs/shared/util/src/index.ts"
       ]
     }
   }

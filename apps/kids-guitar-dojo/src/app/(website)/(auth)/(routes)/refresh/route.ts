@@ -43,10 +43,13 @@ export async function GET(req: Request) {
   logger.debug('[REFRESH]', { publicMetadata: user.publicMetadata, flags });
 
   // 3) Sign the flags into a short-lived cookie for middleware
+  // sub: userId binds this cookie to the specific Clerk user so stale cookies
+  // from deleted/switched accounts are rejected in middleware.
   const token = await new SignJWT(flags as any)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('30m')
+    .setSubject(userId)
     .sign(secret);
 
   const redirectUrl = new URL(nextSafe, baseUrl);

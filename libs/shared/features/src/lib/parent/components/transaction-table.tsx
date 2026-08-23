@@ -3,7 +3,7 @@ import { DataTable } from '@rocket-house-productions/ui';
 
 export default function TransactionsTable({ rows }: { rows: TransactionRow[] }) {
   return (
-    <DataTable<TransactionRow, unknown>
+    <DataTable<TransactionRow>
       columns={txColumns}
       data={rows}
       searchColumnId="id" // or 'purchaseId' if you prefer

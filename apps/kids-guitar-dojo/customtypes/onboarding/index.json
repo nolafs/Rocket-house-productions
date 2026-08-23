@@ -1,122 +1,159 @@
 {
+  "format": "custom",
   "id": "onboarding",
-  "label": "Onboarding",
-  "repeatable": false,
   "json": {
     "Main": {
       "success_page_header": {
-        "type": "Text",
         "config": {
           "label": "Success Page Header",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "success_page_body": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Success Page Body",
-          "placeholder": "",
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-          "allowTargetBlank": true
-        }
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       },
       "onboarding_intro_header": {
-        "type": "Text",
         "config": {
           "label": "Onboarding Intro Header",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
+      },
+      "onboarding_intro_header_free": {
+        "config": {
+          "label": "Onboarding Intro Header Free",
+          "placeholder": ""
+        },
+        "type": "Text"
       },
       "intro_video": {
-        "type": "Embed",
         "config": {
           "label": "Onboarding Intro Video",
           "placeholder": ""
-        }
+        },
+        "type": "Embed"
+      },
+      "intro_video_free": {
+        "config": {
+          "label": "Onboarding Intro Video Free",
+          "placeholder": ""
+        },
+        "type": "Embed"
+      },
+      "onboarding_intro_video_free_bunny_id": {
+        "config": {
+          "label": "Onboarding Intro Video Free Bunny Id",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "onboarding_intro_video_bunny_id": {
+        "config": {
+          "label": "Onboarding Intro Video Bunny Id",
+          "placeholder": ""
+        },
+        "type": "Text"
       },
       "onboarding_intro_video_poster": {
-        "type": "Image",
         "config": {
-          "label": "Onboarding intro video poster",
           "constraint": {},
+          "label": "Onboarding intro video poster",
           "thumbnails": []
-        }
+        },
+        "type": "Image"
       },
       "onboarding_intro_body": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Onboarding Intro Body",
-          "placeholder": "",
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-          "allowTargetBlank": true
-        }
+          "placeholder": ""
+        },
+        "type": "StructuredText"
+      },
+      "onboarding_intro_free_body": {
+        "config": {
+          "allowTargetBlank": true,
+          "label": "Onboarding Intro Free Body",
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       },
       "onboarding_step_one_header": {
-        "type": "Text",
         "config": {
           "label": "Onboarding Step One Header",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "onboarding_step_one_body": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Onboarding Step One body",
-          "placeholder": "",
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-          "allowTargetBlank": true
-        }
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       },
       "onboarding_step_two_header": {
-        "type": "Text",
         "config": {
           "label": "Onboarding Step Two Header",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "onboarding_step_two_body": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Onboarding Step Two Body",
-          "placeholder": "",
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-          "allowTargetBlank": true
-        }
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       },
       "onboarding_step_three_header": {
-        "type": "Text",
         "config": {
           "label": "Onboarding Step Three Header",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "onboarding_step_three_body": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Onboarding Step Three Body",
-          "placeholder": "",
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-          "allowTargetBlank": true
-        }
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       },
       "onboarding_step_review_header": {
-        "type": "Text",
         "config": {
           "label": "Onboarding Step Review Header",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "onboarding_step_review_body": {
-        "type": "StructuredText",
         "config": {
+          "allowTargetBlank": true,
           "label": "Onboarding Step Review Body",
-          "placeholder": "",
           "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
-          "allowTargetBlank": true
-        }
+          "placeholder": ""
+        },
+        "type": "StructuredText"
       }
     }
   },
-  "status": true,
-  "format": "custom"
+  "label": "Onboarding",
+  "repeatable": false,
+  "status": true
 }

@@ -1,11 +1,9 @@
 import type { Course, Tier } from '@rocket-house-productions/prisma-client';
 import { CourseModules, PriceTier, PurchaseCourse } from '@rocket-house-productions/types';
-import {
-  getAccountData,
-  getAppSettings,
-  getCourse,
-  getPriceOptionsForProducts,
-} from '@rocket-house-productions/actions/server';
+import { getAccountData } from './get-account';
+import { getAppSettings } from './get-app-settings';
+import { getCourse } from './get-course';
+import { getPriceOptionsForProducts } from './stripe-products';
 import { logger } from '@rocket-house-productions/util';
 
 type PurchaseCategory = 'standard' | 'premium';
@@ -17,9 +15,7 @@ function getCoursePurchaseCategory(
   if (!courseId) return null;
 
   // Check both courseId and course.id since different queries may provide either
-  const relevant = purchases.filter(
-    p => (p.courseId === courseId || p.course?.id === courseId) && p.type === 'charge',
-  );
+  const relevant = purchases.filter(p => (p.courseId === courseId || p.course?.id === courseId) && p.type === 'charge');
 
   if (!relevant.length) return null;
 

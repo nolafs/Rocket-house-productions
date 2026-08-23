@@ -26,11 +26,13 @@ export default async function Page(props: PageProps) {
     <div className={'lesson'}>
       <ParallaxScene className={'!pt-5'}>
         <DialogLayout title={content.data?.success_page_header || 'Welcome'}>
-          <div className={'p-5'}>
-            <div className={'prose prose-sm md:prose-base max-w-full'}>
+          <div className={'flex h-full flex-col items-stretch p-5'}>
+            <div className={'prose prose-sm max-w-full flex-1 md:prose-base'}>
               <PrismicRichText field={content.data.success_page_body} />
             </div>
-            <ButtonOnboarding userId={userId} checkOutSessionId={CHECKOUT_SESSION_ID} />
+            <div className={'flex shrink items-center justify-center'}>
+              <ButtonOnboarding userId={userId} checkOutSessionId={CHECKOUT_SESSION_ID} />
+            </div>
           </div>
         </DialogLayout>
       </ParallaxScene>

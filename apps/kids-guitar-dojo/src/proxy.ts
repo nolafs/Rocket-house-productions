@@ -71,7 +71,7 @@ export default clerkMiddleware(
     }
 
     // We need a valid session for /courses/*
-    const { sessionClaims } = await auth();
+    const { sessionClaims, userId: authUserId } = await auth();
     if (!sessionClaims) {
       logger.info('[MIDDLEWARE COURSE] No session claims found');
       return NextResponse.redirect(`${req.nextUrl.origin}/`);
@@ -96,6 +96,13 @@ export default clerkMiddleware(
         throw new Error('missing secret');
       }
       const { payload } = await jwtVerify(token, secret);
+      // Reject cookies not bound to this user (stale cookie from deleted/switched account)
+      // Cookies without sub are also rebuilt so every live cookie gets user-bound on next visit.
+      if (!payload.sub || payload.sub !== authUserId) {
+        logger.info('[MIDDLEWARE] sf cookie user mismatch — rebuilding', { sub: payload.sub, authUserId });
+        const next = req.nextUrl.pathname + req.nextUrl.search;
+        return NextResponse.redirect(new URL(`/refresh?next=${encodeURIComponent(next)}`, req.url));
+      }
       flags = payload as Flags;
     } catch {
       // Bad/expired token or missing secret — rebuild once
