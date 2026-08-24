@@ -33,7 +33,10 @@ const Discounts: FC<DiscountsProps> = ({ slice }) => {
     }
 
     return (
-      <section data-slice-type={slice.slice_type} data-slice-variation={slice.variation}>
+      <section
+        id={'discount-' + discountCode?.code}
+        data-slice-type={slice.slice_type}
+        data-slice-variation={slice.variation}>
         <Bounded as={'div'} yPadding={'md'} className="mx-auto max-w-4xl text-center">
           <div className={'flex flex-col space-y-10'}>
             {section_title && (
