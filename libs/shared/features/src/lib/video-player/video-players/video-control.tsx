@@ -44,8 +44,8 @@ export function VideoControl({ poster, handlePlay, width, height, title, loading
         {poster ? (
           <PrismicNextImage
             field={poster}
-            width={width}
-            height={height}
+            width={(width || 600) * 3}
+            height={(height || 339) * 3}
             fallbackAlt=""
             loading={loading}
             className={'h-full w-full object-cover'}
