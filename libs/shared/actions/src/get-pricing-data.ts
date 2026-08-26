@@ -12,6 +12,7 @@ export interface PricingData {
   isLoggedIn: boolean;
   checkout: boolean;
   isProduction: boolean;
+  isPremium?: boolean;
 }
 
 export async function getPricingData(courseSlug?: string): Promise<PricingData> {
@@ -45,7 +46,7 @@ export async function getPricingData(courseSlug?: string): Promise<PricingData> 
     logger.debug('[GET PRICING DATA] tiers length', { length: tiers.length });
 
     if (tiers.length === 0) {
-      throw new Error('No pricing tiers found for course: ' + slug);
+      return { tiers: [], isLoggedIn: true, checkout: false, isProduction, isPremium: true };
     }
   } else {
     const appSetting = await getAppSettings();
