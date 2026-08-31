@@ -66,10 +66,13 @@ export function HeroCenter({
         />
         {motto && <MottoText {...motto} size="md" className={cn('mt-[25px]', color === 'A' && 'text-white')} />}
 
-        {isFilled.group(buttons) && (
+        {isFilled.group(buttons) &&
+        buttons?.some(btn => isFilled.link((btn as { link: Parameters<typeof isFilled.link>[0] }).link)) ? (
           <div className={'mb-16 mt-10 flex justify-center gap-2.5'}>
             <ButtonGroup buttons={buttons} />
           </div>
+        ) : (
+          <div className={'mt-16'}></div>
         )}
       </div>
       {video && (

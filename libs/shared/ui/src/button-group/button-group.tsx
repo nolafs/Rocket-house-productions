@@ -22,7 +22,7 @@ export function ButtonGroup({ buttons, className }: ButtonGroupProps) {
     <>
       {bts?.map(({ link, type, label, typeCase }, index) => (
         <PrismicLink
-          key={(label + index).replace(/\s/g, '-').toLowerCase()}
+          key={`button-${index}`}
           field={link}
           className={cn(
             buttonVariants({ variant: type === 'Outlined' ? 'outline' : 'default', size: 'lg' }),
