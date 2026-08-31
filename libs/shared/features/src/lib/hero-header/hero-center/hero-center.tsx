@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { scrollUpFadeVariants } from '@rocket-house-productions/util';
 import { BottomShape, ButtonGroup } from '@rocket-house-productions/ui';
 import SectionTitle from '../../section-title/section-title';
-import { GroupField, RichTextField } from '@prismicio/client';
+import { GroupField, isFilled, isFilled, RichTextField } from '@prismicio/client';
 import MottoText from '../../motto-text/motto-text';
 import cn from 'classnames';
 import Image from 'next/image';
@@ -66,7 +66,7 @@ export function HeroCenter({
         />
         {motto && <MottoText {...motto} size="md" className={cn('mt-[25px]', color === 'A' && 'text-white')} />}
 
-        {buttons && (
+        {isFilled.group(buttons) && (
           <div className={'mb-16 mt-10 flex justify-center gap-2.5'}>
             <ButtonGroup buttons={buttons} />
           </div>

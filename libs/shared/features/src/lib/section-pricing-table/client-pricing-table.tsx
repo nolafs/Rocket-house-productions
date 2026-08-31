@@ -7,7 +7,7 @@ import { PriceTier } from '@rocket-house-productions/types';
 import { getPricingData, type PricingData } from '@rocket-house-productions/actions/server';
 import BuyButton from '../checkout/buy-button';
 import CheckoutButton from '../checkout/checkout-button';
-import StripePricing from './stripe-pricing';
+import { CurrencyToSymbol } from '@rocket-house-productions/util';
 
 interface ClientPricingTableProps {
   courseSlug?: string;
@@ -41,8 +41,21 @@ export function ClientPricingTable({ courseSlug }: ClientPricingTableProps) {
     );
   }
 
-  if (!data || data.tiers.length === 0) {
-    return null;
+  if (!data) return null;
+
+  if (data.tiers.length === 0) {
+    return (
+      <div className="rounded-lg border border-green-200 bg-green-50 p-8 text-center">
+        <CheckCircleIcon className="mx-auto mb-4 h-12 w-12 text-green-500" />
+        <h3 className="text-2xl font-semibold text-green-800">You&apos;re a Premium Member!</h3>
+        <p className="mt-2 text-green-700">You already have full access to all course content.</p>
+        <a
+          href="/courses"
+          className="mt-6 inline-block rounded bg-green-600 px-6 py-2 font-medium text-white hover:bg-green-700">
+          Go to My Courses
+        </a>
+      </div>
+    );
   }
 
   const { tiers, checkout, isProduction } = data;
@@ -81,9 +94,13 @@ export function ClientPricingTable({ courseSlug }: ClientPricingTableProps) {
                 <p className="mt-6 flex items-baseline gap-x-1">
                   <span className="text-4xl font-bold tracking-tight text-gray-900">Free</span>
                 </p>
-              ) : (
-                <StripePricing productId={isProduction ? tier?.stripeId : tier?.stripeIdDev} sales={tier?.sales} />
-              )}
+              ) : tier.amount && tier.currency ? (
+                <p className="mt-6 flex items-baseline gap-x-1">
+                  <span className="text-4xl font-bold tracking-tight text-gray-900">
+                    {CurrencyToSymbol(tier.currency.toUpperCase())} {(tier.amount / 100).toFixed(2)}
+                  </span>
+                </p>
+              ) : null}
               {checkout ? (
                 tier.free ? (
                   <CheckoutButton
