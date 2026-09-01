@@ -4,6 +4,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper/modules';
 
 import TestimonialItemRatings from './testimonial-item-ratings';
 import { TestimonialsType } from '@rocket-house-productions/types';
@@ -16,15 +17,16 @@ interface SectionTestimonialsProps {
 
 export function SectionTestimonials({ data, className }: SectionTestimonialsProps) {
   return (
-    <div className={'container'}>
+    <div
+      className={
+        '[&_.swiper-pagination-bullet-active]:bg-primary container pb-10 [&_.swiper-pagination-bullet]:h-3 [&_.swiper-pagination-bullet]:w-3 [&_.swiper-pagination]:relative [&_.swiper-pagination]:bottom-0 [&_.swiper-pagination]:block'
+      }>
       <Swiper
+        modules={[Autoplay, Pagination]}
         slidesPerView={1}
-        autoplay={{ delay: 5000 }}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         autoHeight={true}
-        navigation={{
-          nextEl: '.swiper-button-next-custom',
-          prevEl: '.swiper-button-prev-custom',
-        }}
+        pagination={{ clickable: true }}
         loop={true}
         breakpoints={{
           320: {
