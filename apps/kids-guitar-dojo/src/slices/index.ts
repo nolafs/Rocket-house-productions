@@ -4,6 +4,7 @@ import BlogList from "./BlogList";
 import CallToAction from "./CallToAction";
 import ContentImageSlice from "./ContentImageSlice";
 import Discounts from "./Discounts";
+import ElfSight from "./ElfSight";
 import Faqs from "./Faqs";
 import Features from "./Features";
 import Hero from "./Hero";
@@ -21,6 +22,7 @@ export const components = {
 	call_to_action: CallToAction,
 	content_image_slice: ContentImageSlice,
 	discounts: Discounts,
+	elf_sight: ElfSight,
 	faqs: Faqs,
 	features: Features,
 	hero: Hero,

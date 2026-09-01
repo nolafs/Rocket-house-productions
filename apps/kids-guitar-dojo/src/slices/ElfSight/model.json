@@ -1,0 +1,25 @@
+{
+  "description": "ElfSight",
+  "id": "elf_sight",
+  "name": "ElfSight",
+  "type": "SharedSlice",
+  "variations": [
+    {
+      "description": "Default",
+      "docURL": "...",
+      "id": "default",
+      "imageUrl": "",
+      "name": "Default",
+      "primary": {
+        "elf_sight_widget": {
+          "config": {
+            "label": "Elf Sight Widget",
+            "placeholder": ""
+          },
+          "type": "Text"
+        }
+      },
+      "version": "initial"
+    }
+  ]
+}
