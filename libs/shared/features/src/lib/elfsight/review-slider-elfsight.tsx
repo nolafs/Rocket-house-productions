@@ -41,7 +41,7 @@ export const ReviewSliderElfsight = ({ share_link, width = 'auto' }: ReviewSlide
         title={'Google Review'}
         src={share_link as string}
         scrolling="no"
-        style={{ border: 'none', background: 'transparent', width: width ?? '100%', minHeight: '200px' }}
+        style={{ border: 'none', background: 'transparent', width: width ?? '100%', minHeight: '132px' }}
       />
     </>
   );
