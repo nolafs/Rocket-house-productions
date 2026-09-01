@@ -872,7 +872,7 @@ interface LessonDocumentData {
  */
 export type LessonDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<LessonDocumentData>, "lesson", Lang>;
 
-type MarketingDocumentDataSlicesSlice = BlogListSlice | CallToActionSlice | ContentImageSliceSlice | FaqsSlice | FeaturesSlice | HeroSlice | ImageGridSlice | PricingTableSlice | SectionHeadersSlice | StatsSlice | TestimonialsSlice | TimelineSlice | DiscountsSlice
+type MarketingDocumentDataSlicesSlice = BlogListSlice | CallToActionSlice | ContentImageSliceSlice | FaqsSlice | FeaturesSlice | HeroSlice | ImageGridSlice | PricingTableSlice | SectionHeadersSlice | StatsSlice | TestimonialsSlice | TimelineSlice | DiscountsSlice | ElfSightSlice
 
 /**
  * Content for Marketing documents

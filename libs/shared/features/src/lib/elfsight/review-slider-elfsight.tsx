@@ -8,7 +8,7 @@ interface ReviewSliderElfsightProps {
   width?: string;
 }
 
-export const ReviewSliderElfsight = ({ share_link, width = '100%' }: ReviewSliderElfsightProps) => {
+export const ReviewSliderElfsight = ({ share_link, width = 'auto' }: ReviewSliderElfsightProps) => {
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
 
   useEffect(() => {

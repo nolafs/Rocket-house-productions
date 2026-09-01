@@ -57,6 +57,9 @@
             },
             "discounts": {
               "type": "SharedSlice"
+            },
+            "elf_sight": {
+              "type": "SharedSlice"
             }
           }
         },
