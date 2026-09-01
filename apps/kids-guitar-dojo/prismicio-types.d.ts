@@ -872,7 +872,7 @@ interface LessonDocumentData {
  */
 export type LessonDocument<Lang extends string = string> = prismic.PrismicDocumentWithUID<Simplify<LessonDocumentData>, "lesson", Lang>;
 
-type MarketingDocumentDataSlicesSlice = BlogListSlice | CallToActionSlice | ContentImageSliceSlice | FaqsSlice | FeaturesSlice | HeroSlice | ImageGridSlice | PricingTableSlice | SectionHeadersSlice | StatsSlice | TestimonialsSlice | TimelineSlice | DiscountsSlice
+type MarketingDocumentDataSlicesSlice = BlogListSlice | CallToActionSlice | ContentImageSliceSlice | FaqsSlice | FeaturesSlice | HeroSlice | ImageGridSlice | PricingTableSlice | SectionHeadersSlice | StatsSlice | TestimonialsSlice | TimelineSlice | DiscountsSlice | ElfSightSlice
 
 /**
  * Content for Marketing documents
@@ -2478,6 +2478,44 @@ type DiscountsSliceVariation = DiscountsSliceDefault
  * - **Documentation**: https://prismic.io/docs/slices
  */
 export type DiscountsSlice = prismic.SharedSlice<"discounts", DiscountsSliceVariation>;
+
+/**
+ * Primary content in *ElfSight → Default → Primary*
+ */
+export interface ElfSightSliceDefaultPrimary {
+	/**
+	 * Elf Sight Widget field in *ElfSight → Default → Primary*
+	 *
+	 * - **Field Type**: Text
+	 * - **Placeholder**: *None*
+	 * - **API ID Path**: elf_sight.default.primary.elf_sight_widget
+	 * - **Documentation**: https://prismic.io/docs/fields/text
+	 */
+	elf_sight_widget: prismic.KeyTextField;
+}
+
+/**
+ * Default variation for ElfSight Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ElfSightSliceDefault = prismic.SharedSliceVariation<"default", Simplify<ElfSightSliceDefaultPrimary>, never>;
+
+/**
+ * Slice variation for *ElfSight*
+ */
+type ElfSightSliceVariation = ElfSightSliceDefault
+
+/**
+ * ElfSight Shared Slice
+ *
+ * - **API ID**: `elf_sight`
+ * - **Description**: ElfSight
+ * - **Documentation**: https://prismic.io/docs/slices
+ */
+export type ElfSightSlice = prismic.SharedSlice<"elf_sight", ElfSightSliceVariation>;
 
 /**
  * Item in *Faqs → Default → Primary → FAQs*
@@ -4367,6 +4405,10 @@ declare module "@prismicio/client" {
 			DiscountsSliceDefaultPrimary,
 			DiscountsSliceVariation,
 			DiscountsSliceDefault,
+			ElfSightSlice,
+			ElfSightSliceDefaultPrimary,
+			ElfSightSliceVariation,
+			ElfSightSliceDefault,
 			FaqsSlice,
 			FaqsSliceDefaultPrimaryFaqsItem,
 			FaqsSliceDefaultPrimary,

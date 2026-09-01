@@ -39,3 +39,4 @@ export { FileImageUpload } from './lib/file-upload/file-image-upload';
 export * from './lib/modals/confirm-modal';
 export { Editor } from './lib/editor/editor';
 export { UserSignedInDropdown } from './lib/auth/user-signed-in-dropdown';
+export { ReviewSliderElfsight } from './lib/elfsight/review-slider-elfsight';
