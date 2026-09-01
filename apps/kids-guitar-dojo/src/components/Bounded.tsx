@@ -3,7 +3,7 @@ import cn from 'classnames';
 
 type BoundedProps = {
   as?: 'div' | 'section' | 'header' | 'article';
-  yPadding?: 'sm' | 'md' | 'base' | 'lg';
+  yPadding?: 'sm' | 'md' | 'base' | 'lg' | 'none';
   collapsible?: boolean;
   fullWidth?: boolean;
   className?: string;
@@ -27,6 +27,7 @@ export function Bounded({
         yPadding === 'md' && 'py-16 md:py-20',
         yPadding === 'base' && 'py-20 md:py-28',
         yPadding === 'lg' && 'py-32 md:py-48',
+        yPadding === 'none' && '',
         className,
       )}>
       <div className={fullWidth ? '' : 'container mx-auto w-full'}>{children}</div>

@@ -1,6 +1,6 @@
 'use client';
 import { isFilled, type KeyTextField } from '@prismicio/client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Script from 'next/script';
 
 interface ReviewSliderElfsightProps {
@@ -10,6 +10,7 @@ interface ReviewSliderElfsightProps {
 
 export const ReviewSliderElfsight = ({ share_link, width = 'auto' }: ReviewSliderElfsightProps) => {
   const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     if (!isFilled.keyText(share_link)) return;
@@ -28,17 +29,19 @@ export const ReviewSliderElfsight = ({ share_link, width = 'auto' }: ReviewSlide
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/4.2.10/iframeResizer.min.js"
         strategy="lazyOnload"
-      />
-      <iframe
-        title={'Google Review'}
-        src={share_link as string}
-        style={{ border: 'none', background: 'transparent', width: width ?? '100%' }}
-        ref={el => {
-          if (el && typeof window !== 'undefined' && 'iFrameResize' in window) {
+        onReady={() => {
+          if (iframeRef.current && 'iFrameResize' in window) {
             //@ts-expect-error: iframeResizer is a global function provided by the script
-            iFrameResize({}, el);
+            iFrameResize({ checkOrigin: false, scrolling: false }, iframeRef.current);
           }
         }}
+      />
+      <iframe
+        ref={iframeRef}
+        title={'Google Review'}
+        src={share_link as string}
+        scrolling="no"
+        style={{ border: 'none', background: 'transparent', width: width ?? '100%', minHeight: '132px' }}
       />
     </>
   );

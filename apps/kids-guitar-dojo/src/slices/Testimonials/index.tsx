@@ -4,7 +4,7 @@ import { Bounded } from '@components/Bounded';
 import { SectionTestimonials } from '@rocket-house-productions/features';
 import { TestimonialsType } from '@rocket-house-productions/types';
 
-import type { JSX } from "react";
+import type { JSX } from 'react';
 
 /**
  * Props for `Testimonials`.
@@ -27,7 +27,7 @@ const Testimonials = ({ slice }: TestimonialsProps): JSX.Element => {
   });
 
   return (
-    <Bounded as={'section'} yPadding={'sm'}>
+    <Bounded as={'section'} yPadding={'none'}>
       <SectionTestimonials data={testimonials} />
     </Bounded>
   );
