@@ -19,7 +19,7 @@ export function SectionTestimonials({ data, className }: SectionTestimonialsProp
   return (
     <div
       className={
-        '[&_.swiper-pagination-bullet-active]:bg-primary container [&_.swiper-pagination-bullet]:h-3 [&_.swiper-pagination-bullet]:w-3 [&_.swiper-pagination]:relative [&_.swiper-pagination]:bottom-0 [&_.swiper-pagination]:block'
+        '[&_.swiper-pagination-bullet-active]:bg-primary container pb-10 [&_.swiper-pagination-bullet]:h-3 [&_.swiper-pagination-bullet]:w-3 [&_.swiper-pagination]:relative [&_.swiper-pagination]:bottom-0 [&_.swiper-pagination]:block'
       }>
       <Swiper
         modules={[Autoplay, Pagination]}
