@@ -23,12 +23,19 @@ export async function PUT(req: Request, props: { params: Promise<{ courseId: str
       return new NextResponse('Unauthorized', { status: 401 });
     }
 
-    for (const item of list) {
-      await db.module.update({
-        where: { id: item.id },
-        data: { position: item.position },
-      });
-    }
+    // Re-normalize positions server-side (0-based, sequential) based on
+    // the order received from the client. This prevents collisions from
+    // mixed index origins (drag-and-drop vs creation offsets).
+    // Run all updates in a single transaction so a partial failure
+    // cannot leave the DB in a corrupt half-updated state.
+    await db.$transaction(
+      (list as { id: string; position: number }[]).map((item, index) =>
+        db.module.update({
+          where: { id: item.id },
+          data: { position: index },
+        }),
+      ),
+    );
 
     return new NextResponse('Success', { status: 200 });
   } catch (error) {

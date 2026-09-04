@@ -31,21 +31,20 @@ export const ModulesList = ({ items, onReorder, onEdit }: ModulesListProps) => {
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
+    if (result.destination.index === result.source.index) return;
 
-    const items = Array.from(modules);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    const reorderedItems = Array.from(modules);
+    const [movedItem] = reorderedItems.splice(result.source.index, 1);
+    reorderedItems.splice(result.destination.index, 0, movedItem);
 
-    const startIndex = Math.min(result.source.index, result.destination.index);
-    const endIndex = Math.max(result.source.index, result.destination.index);
+    setModules(reorderedItems);
 
-    const updatedModule = items.slice(startIndex, endIndex + 1);
-
-    setModules(items);
-
-    const bulkUpdateData = updatedModule.map(chapter => ({
-      id: chapter.id,
-      position: items.findIndex(item => item.id === chapter.id),
+    // Always send the full ordered list so the server can assign clean
+    // sequential positions. Sending only the affected range leaves items
+    // outside it with their old DB positions, which can collide.
+    const bulkUpdateData = reorderedItems.map((item, index) => ({
+      id: item.id,
+      position: index,
     }));
 
     onReorder(bulkUpdateData);
@@ -80,6 +79,11 @@ export const ModulesList = ({ items, onReorder, onEdit }: ModulesListProps) => {
                     </div>
                     {module.title}
                     <div className="ml-auto flex items-center gap-x-2 pr-2">
+                      <span
+                        className="rounded bg-slate-300 px-1.5 py-0.5 font-mono text-xs text-slate-600"
+                        title="Position">
+                        #{index + 1}
+                      </span>
                       <Badge className={cn('bg-slate-500', module.isPublished && 'bg-sky-700')}>
                         {module.isPublished ? 'Published' : 'Draft'}
                       </Badge>
