@@ -32,7 +32,7 @@ export async function POST(req: Request, props: { params: Promise<{ courseId: st
       },
     });
 
-    const newPosition = lastModule ? lastModule.position + 1 : 1;
+    const newPosition = lastModule ? lastModule.position + 1 : 0;
 
     const moduleSection = await db.module.create({
       data: {

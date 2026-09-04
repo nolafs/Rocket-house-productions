@@ -41,7 +41,7 @@ export async function POST(req: Request, props: { params: Promise<{ courseId: st
       },
     });
 
-    const newPosition = lastLesson ? lastLesson.position + 1 : 1;
+    const newPosition = lastLesson ? lastLesson.position + 1 : 0;
 
     const lesson = await db.lesson.create({
       data: {
