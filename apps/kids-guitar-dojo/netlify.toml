@@ -1,5 +1,3 @@
-#[build.environment]
-#  NEXT_USE_NETLIFY_EDGE = "false"
 [build]
   command = "nx reset && yarn prisma generate && node scripts/patch-prisma-client.cjs && nx build kids-guitar-dojo --prod --verbose --skip-nx-cache"
   functions = "apps/kids-guitar-dojo/netlify/functions"
@@ -13,6 +11,10 @@
     NODE_OPTIONS = "--max_old_space_size=4096"
     npm_config_platform = "linux"
     npm_config_arch = "x64"
+    # Run Next.js middleware as a serverless function instead of a Netlify edge function.
+    # Edge functions fail to stream large multipart request bodies (file upload server
+    # actions) to the downstream serverless handler, causing 403s with no logs.
+    NEXT_USE_NETLIFY_EDGE = "false"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
