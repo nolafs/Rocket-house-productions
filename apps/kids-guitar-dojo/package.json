@@ -57,7 +57,7 @@
     "jose": "5.10.0",
     "leva": "0.10.0",
     "lodash": "4.17.21",
-    "logrocket": "10.1.0",
+    "logrocket": "^12.1.1",
     "lucide-react": "0.541.0",
     "mailersend": "2.6.0",
     "meshline": "3.3.1",
