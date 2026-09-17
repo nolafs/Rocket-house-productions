@@ -1,8 +1,7 @@
 import './global.scss';
 import { Raleway, Mochiy_Pop_One, Nunito } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { PrismicPreview } from '@prismicio/next';
-import { createClient, repositoryName } from '@/prismicio';
+import { createClient } from '@/prismicio';
 import { Metadata, ResolvingMetadata } from 'next';
 import { CookieConsent } from '@rocket-house-productions/features';
 import ClientProviders from '@components/clientProvider';
@@ -158,8 +157,6 @@ export default async function RootLayout(props: { children: React.ReactNode; mod
       suppressHydrationWarning={true}>
       <body className={'bg-background min-h-screen font-sans antialiased'}>
         <ClientProviders>{props.children}</ClientProviders>
-        {/* Preview */}
-        <PrismicPreview repositoryName={repositoryName} />
         {/* Cookie consent */}
         <CookieConsent />
       </body>
