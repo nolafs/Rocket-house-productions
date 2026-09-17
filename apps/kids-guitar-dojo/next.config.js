@@ -21,6 +21,7 @@ const nextConfig = {
     serverSourceMaps: true,
     serverActions: {
       bodySizeLimit: 10 * 1024 * 1024, // 10 MB
+      allowedOrigins: ['kidsguitardojo.com', 'www.kidsguitardojo.com'],
     },
   },
   ...(process.env.NEXT_PUBLIC_PRODUCTION && headers),
