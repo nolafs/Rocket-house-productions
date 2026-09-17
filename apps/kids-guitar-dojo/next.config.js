@@ -4,7 +4,6 @@ const pluginsExtends = require('./config/plugins');
 
 /** @type {import('next').NextConfig} **/
 const nextConfig = {
-  output: 'standalone',
   turbopack: {},
   productionBrowserSourceMaps: true,
   serverExternalPackages: [
