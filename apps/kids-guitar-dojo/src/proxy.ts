@@ -229,8 +229,11 @@ export default clerkMiddleware(
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    '/((?!_next|slice-simulator|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    // Skip Next.js internals, static files, and admin routes.
+    // Admin is protected server-side via auth() in the admin layout.
+    // Excluding admin prevents the Netlify edge function from intercepting
+    // large multipart POST bodies (server actions), which causes 403s.
+    '/((?!_next|admin|slice-simulator|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
