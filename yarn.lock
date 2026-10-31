@@ -2012,6 +2012,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.10.2":
+  version: 7.29.10
+  resolution: "@babel/runtime@npm:7.29.10"
+  checksum: 10c0/32f975da8e9c2cae6b33e1a477f8fe8bbff6722c982b5ce35f99affaf3a7a1b612c8272b43afa0e51d3000928d6f3ba38f9296301115db5640264907c027b0cd
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.26.7":
   version: 7.28.3
   resolution: "@babel/runtime@npm:7.28.3"
@@ -2808,6 +2815,24 @@ __metadata:
   version: 2.2.5
   resolution: "@iarna/toml@npm:2.2.5"
   checksum: 10c0/d095381ad4554aca233b7cf5a91f243ef619e5e15efd3157bc640feac320545450d14b394aebbf6f02a2047437ced778ae598d5879a995441ab7b6c0b2c2f201
+  languageName: node
+  linkType: hard
+
+"@iconify/react@npm:^5":
+  version: 5.2.1
+  resolution: "@iconify/react@npm:5.2.1"
+  dependencies:
+    "@iconify/types": "npm:^2.0.0"
+  peerDependencies:
+    react: ">=16"
+  checksum: 10c0/aafd1b170de7d83a4d36d5ae3d5fa38384020858a2147d7e9d9f88a066ea57eed754fa48d393967052a38414df175013007555a4cf5840c98ca1b23cf955cf65
+  languageName: node
+  linkType: hard
+
+"@iconify/types@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@iconify/types@npm:2.0.0"
+  checksum: 10c0/65a3be43500c7ccacf360e136d00e1717f050b7b91da644e94370256ac66f582d59212bdb30d00788aab4fc078262e91c95b805d1808d654b72f6d2072a7e4b2
   languageName: node
   linkType: hard
 
@@ -7866,6 +7891,7 @@ __metadata:
     react-dom: "npm:19.2.8"
     react-dropzone: "npm:^20.1.0"
     react-google-recaptcha: "npm:^3.1.0"
+    react-h5-audio-player: "npm:^3.10.2"
     react-hook-form: "npm:^7.85.0"
     react-hot-toast: "npm:^2.6.0"
     react-player: "npm:^3.4.0"
@@ -23496,6 +23522,19 @@ __metadata:
   bin:
     react-grab: bin/cli.js
   checksum: 10c0/8acabbaf34575cc6fd1f3244c8ad4a4a9d55c2fe761c21a60e8d6c5928d2d74a5657742a28cb50c56ac28a2c9cb76c159d6b5dfac11a297bb83fcf4708b9d4e3
+  languageName: node
+  linkType: hard
+
+"react-h5-audio-player@npm:^3.10.2":
+  version: 3.10.2
+  resolution: "react-h5-audio-player@npm:3.10.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.10.2"
+    "@iconify/react": "npm:^5"
+  peerDependencies:
+    react: ^16.3.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.3.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/1e096c486cdc7fd468e17ffa9ad45ffaeeb833885e2fb8550ad5266e915bfc56cdebbc3ad379fac8945ee2b7982ea1f056ba44aeac2ce6fb3acd1ad4f2ef58a0
   languageName: node
   linkType: hard
 
