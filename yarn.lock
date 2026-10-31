@@ -2012,6 +2012,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.10.2":
+  version: 7.29.10
+  resolution: "@babel/runtime@npm:7.29.10"
+  checksum: 10c0/32f975da8e9c2cae6b33e1a477f8fe8bbff6722c982b5ce35f99affaf3a7a1b612c8272b43afa0e51d3000928d6f3ba38f9296301115db5640264907c027b0cd
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.11.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.26.7":
   version: 7.28.3
   resolution: "@babel/runtime@npm:7.28.3"
@@ -2808,6 +2815,24 @@ __metadata:
   version: 2.2.5
   resolution: "@iarna/toml@npm:2.2.5"
   checksum: 10c0/d095381ad4554aca233b7cf5a91f243ef619e5e15efd3157bc640feac320545450d14b394aebbf6f02a2047437ced778ae598d5879a995441ab7b6c0b2c2f201
+  languageName: node
+  linkType: hard
+
+"@iconify/react@npm:^5":
+  version: 5.2.1
+  resolution: "@iconify/react@npm:5.2.1"
+  dependencies:
+    "@iconify/types": "npm:^2.0.0"
+  peerDependencies:
+    react: ">=16"
+  checksum: 10c0/aafd1b170de7d83a4d36d5ae3d5fa38384020858a2147d7e9d9f88a066ea57eed754fa48d393967052a38414df175013007555a4cf5840c98ca1b23cf955cf65
+  languageName: node
+  linkType: hard
+
+"@iconify/types@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@iconify/types@npm:2.0.0"
+  checksum: 10c0/65a3be43500c7ccacf360e136d00e1717f050b7b91da644e94370256ac66f582d59212bdb30d00788aab4fc078262e91c95b805d1808d654b72f6d2072a7e4b2
   languageName: node
   linkType: hard
 
@@ -3793,16 +3818,6 @@ __metadata:
   dependencies:
     "@lukeed/csprng": "npm:^1.1.0"
   checksum: 10c0/f9cc0385021f352f444d96dd101afd2a0efd3b2e85a61ac67deb8220409f75a6a426ed6525d297d97746f7931e3079ac6218777551a7c82686de7d292220cb1f
-  languageName: node
-  linkType: hard
-
-"@madzadev/audio-player@npm:^2.1.14":
-  version: 2.1.14
-  resolution: "@madzadev/audio-player@npm:2.1.14"
-  dependencies:
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-  checksum: 10c0/bc1a468b0d64ceda26b07695b912d4545acd569b188cb6030bb17d2913e4b2d1ef2a6d29d0eae471e669a2304cddfc284ff4606ece6851155eaec0506bbe52cf
   languageName: node
   linkType: hard
 
@@ -7731,7 +7746,6 @@ __metadata:
     "@img/sharp-libvips-darwin-arm64": "npm:^1.3.2"
     "@img/sharp-libvips-linux-x64": "npm:1.3.2"
     "@img/sharp-linux-x64": "npm:0.35.3"
-    "@madzadev/audio-player": "npm:^2.1.14"
     "@mailerlite/mailerlite-nodejs": "npm:^1.7.0"
     "@netlify/functions": "npm:^5.3.0"
     "@netlify/plugin-nextjs": "npm:^5.15.13"
@@ -7866,6 +7880,7 @@ __metadata:
     react-dom: "npm:19.2.8"
     react-dropzone: "npm:^20.1.0"
     react-google-recaptcha: "npm:^3.1.0"
+    react-h5-audio-player: "npm:^3.10.2"
     react-hook-form: "npm:^7.85.0"
     react-hot-toast: "npm:^2.6.0"
     react-player: "npm:^3.4.0"
@@ -19611,7 +19626,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
+"loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -23429,18 +23444,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^18.2.0":
-  version: 18.3.1
-  resolution: "react-dom@npm:18.3.1"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-    scheduler: "npm:^0.23.2"
-  peerDependencies:
-    react: ^18.3.1
-  checksum: 10c0/a752496c1941f958f2e8ac56239172296fcddce1365ce45222d04a1947e0cc5547df3e8447f855a81d6d39f008d7c32eab43db3712077f09e3f67c4874973e85
-  languageName: node
-  linkType: hard
-
 "react-dropzone@npm:^12.0.0":
   version: 12.1.0
   resolution: "react-dropzone@npm:12.1.0"
@@ -23496,6 +23499,19 @@ __metadata:
   bin:
     react-grab: bin/cli.js
   checksum: 10c0/8acabbaf34575cc6fd1f3244c8ad4a4a9d55c2fe761c21a60e8d6c5928d2d74a5657742a28cb50c56ac28a2c9cb76c159d6b5dfac11a297bb83fcf4708b9d4e3
+  languageName: node
+  linkType: hard
+
+"react-h5-audio-player@npm:^3.10.2":
+  version: 3.10.2
+  resolution: "react-h5-audio-player@npm:3.10.2"
+  dependencies:
+    "@babel/runtime": "npm:^7.10.2"
+    "@iconify/react": "npm:^5"
+  peerDependencies:
+    react: ^16.3.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.3.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/1e096c486cdc7fd468e17ffa9ad45ffaeeb833885e2fb8550ad5266e915bfc56cdebbc3ad379fac8945ee2b7982ea1f056ba44aeac2ce6fb3acd1ad4f2ef58a0
   languageName: node
   linkType: hard
 
@@ -23775,15 +23791,6 @@ __metadata:
   version: 19.2.8
   resolution: "react@npm:19.2.8"
   checksum: 10c0/5f86bdb56426652fd6d989d30a6f2e603c057272c47c9ca3a3fbe190a3a39ee9ccce937d63cfc039717abed1b8891d6a499134bc35311acc07eafdacd86537cd
-  languageName: node
-  linkType: hard
-
-"react@npm:^18.2.0":
-  version: 18.3.1
-  resolution: "react@npm:18.3.1"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10c0/283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
   languageName: node
   linkType: hard
 
@@ -24623,15 +24630,6 @@ __metadata:
   dependencies:
     xmlchars: "npm:^2.2.0"
   checksum: 10c0/3847b839f060ef3476eb8623d099aa502ad658f5c40fd60c105ebce86d244389b0d76fcae30f4d0c728d7705ceb2f7e9b34bb54717b6a7dbedaf5dad2d9a4b74
-  languageName: node
-  linkType: hard
-
-"scheduler@npm:^0.23.2":
-  version: 0.23.2
-  resolution: "scheduler@npm:0.23.2"
-  dependencies:
-    loose-envify: "npm:^1.1.0"
-  checksum: 10c0/26383305e249651d4c58e6705d5f8425f153211aef95f15161c151f7b8de885f24751b377e4a0b3dd42cce09aad3f87a61dab7636859c0d89b7daf1a1e2a5c78
   languageName: node
   linkType: hard
 

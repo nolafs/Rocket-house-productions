@@ -1,9 +1,12 @@
 'use client';
+import { useRef, useState } from 'react';
+import AudioPlayer from 'react-h5-audio-player';
+import type H5AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
 import { Dialog, DialogBody, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../dialog-layout/dialog';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@rocket-house-productions/shadcn-ui';
 import { Button, buttonVariants } from '@rocket-house-productions/shadcn-ui/server';
-import { Disc3 } from 'lucide-react';
-import Player from '@madzadev/audio-player';
+import { Disc3, RotateCcw } from 'lucide-react';
 import './jukebox.css';
 import Link from 'next/link';
 import cn from 'classnames';
@@ -50,7 +53,6 @@ export function Jukebox({ course, purchaseType }: JukeboxProps) {
           <DialogHeader>
             <DialogTitle>Jukebox</DialogTitle>
           </DialogHeader>
-
           <DialogBody>
             <JukePlayer course={course} purchaseType={purchaseType} />
           </DialogBody>
@@ -94,56 +96,89 @@ export function Jukebox({ course, purchaseType }: JukeboxProps) {
 }
 
 const JukePlayer = ({ course, purchaseType }: JukeboxProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const playerRef = useRef<H5AudioPlayer>(null);
+
   const attachmentPlaylist = course.attachments.filter((v: Attachment) => v.attachmentType.name === 'Playlist');
-  const playList: any = attachmentPlaylist.map((item: Attachment, idx: number) => ({
+  const playList: { title: string; url: string }[] = attachmentPlaylist.map((item: Attachment) => ({
     title: item.name,
     url: item.url,
-    tags: [],
   }));
 
-  const colors = {
-    tagsBackground: 'hsl(var(--primary))',
-    tagsText: '#ffffff',
-    tagsBackgroundHoverActive: 'rgb(236 72 153)',
-    tagsTextHoverActive: '#ffffff',
-    searchBackground: 'hsl(35deg 74.32% 70%)',
-    searchText: '#000000',
-    searchPlaceHolder: '#575a77',
-    playerBackground: 'hsl(35deg 74.32% 70%)',
-    titleColor: '#ffffff',
-    timeColor: '#ffffff',
-    progressSlider: 'rgb(236 72 153)',
-    progressUsed: '#ffffff',
-    progressLeft: 'hsl(35deg 74.32% 60%)',
-    bufferLoaded: '#1f212b',
-    volumeSlider: 'rgb(236 72 153)',
-    volumeUsed: '#ffffff',
-    volumeLeft: 'hsl(35deg 74.32% 60%)',
-    playlistBackground: 'rgb(236 72 153)',
-    playlistText: '#ffffff',
-    playlistBackgroundHoverActive: 'hsl(var(--accent))',
-    playlistTextHoverActive: 'hsl(var(--primary))',
+  const handleEnded = () => {
+    const audio = playerRef.current?.audio?.current;
+    if (audio) {
+      audio.currentTime = 0;
+      // stays paused — no auto-advance
+    }
   };
 
+  const handleRestart = () => {
+    const audio = playerRef.current?.audio?.current;
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch(console.error);
+    }
+  };
+
+  const handleTrackSelect = (index: number) => {
+    setCurrentIndex(index);
+  };
+
+  if (purchaseType === 'free') {
+    return (
+      <>
+        Unlock the full potential of your course with a paid account! Get instant access to exclusive audio files.
+        Upgrade today to explore these valuable resources and take your learning journey to the next level!
+        <Link
+          href={'/courses/upgrade'}
+          className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'my-10 w-full')}>
+          Upgrade now!
+        </Link>
+      </>
+    );
+  }
+
+  if (!playList.length) return null;
+
   return (
-    <>
-      {purchaseType === 'free' && (
-        <>
-          Unlock the full potential of your course with a paid account! Get instant access to exclusive audio files.
-          Upgrade today to explore these valuable resources and take your learning journey to the next level!
-          <Link
-            href={'/courses/upgrade'}
-            className={cn(buttonVariants({ variant: 'default', size: 'lg' }), 'my-10 w-full')}>
-            Upgrade now!
-          </Link>
-        </>
-      )}
-      {purchaseType !== 'free' && playList && (
-        <div className={'max-h-[600px]'}>
-          <Player trackList={playList} customColorScheme={colors} />
+    <div className="jukebox-wrapper">
+      <AudioPlayer
+        ref={playerRef}
+        src={playList[currentIndex]?.url}
+        autoPlay={false}
+        autoPlayAfterSrcChange={false}
+        showJumpControls={false}
+        showSkipControls={false}
+        showDownloadProgress={false}
+        onEnded={handleEnded}
+        header={
+          <div className="jukebox-now-playing">
+            <span className="jukebox-track-index">{currentIndex + 1}.</span>
+            <span className="jukebox-track-name">{playList[currentIndex]?.title}</span>
+          </div>
+        }
+        customAdditionalControls={[
+          <button key="restart" className="jukebox-restart-btn" onClick={handleRestart} title="Restart song">
+            <RotateCcw size={18} />
+          </button>,
+        ]}
+      />
+
+      <div className="jukebox-playlist">
+        <div className="jukebox-playlist-inner">
+          {playList.map((track, index) => (
+            <button
+              key={index}
+              className={cn('jukebox-track-item', { 'jukebox-track-active': index === currentIndex })}
+              onClick={() => handleTrackSelect(index)}>
+              <span className="jukebox-track-num">{index + 1}</span>
+              <span className="jukebox-track-title">{track.title}</span>
+            </button>
+          ))}
         </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 
