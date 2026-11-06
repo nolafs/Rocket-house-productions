@@ -31,7 +31,18 @@ export const uploadFileAction = async (formData: FormData) => {
     }
 
     const fileArrayBuffer = await data.file.arrayBuffer();
-    const path = `attachments/${nanoid()}_${data.file.name}`;
+
+    // Replacing an existing attachment's file re-uses its storage path, so the
+    // attachment keeps the same URL instead of getting a new one.
+    let path = `attachments/${nanoid()}_${data.file.name}`;
+    if (data.existingUrl) {
+      try {
+        path = new URL(data.existingUrl).pathname.replace(/^\//, '');
+      } catch {
+        logger.error('[uploadFileAction] Invalid existingUrl, falling back to new path', data.existingUrl);
+      }
+    }
+
     const upload = await uploadFile(path, fileArrayBuffer);
 
     if (upload) {

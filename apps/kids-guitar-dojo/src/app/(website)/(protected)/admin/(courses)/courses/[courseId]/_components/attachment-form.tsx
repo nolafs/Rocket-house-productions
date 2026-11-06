@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import * as z from 'zod';
 import axios from 'axios';
 
-import { File, Loader2, PlusCircle, X } from 'lucide-react';
+import { File, Loader2, Pencil, PlusCircle, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import {
@@ -40,6 +40,7 @@ const formSchema = z.object({
 const AttachmentForm = ({ initialData, courseId, attachmentCategories }: AttachmentFormProps) => {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [editingAttachment, setEditingAttachment] = useState<any | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -51,12 +52,31 @@ const AttachmentForm = ({ initialData, courseId, attachmentCategories }: Attachm
     },
   });
 
-  const toggleEdit = () => setIsEditing(current => !current);
+  const toggleEdit = () => {
+    setIsEditing(current => !current);
+    setEditingAttachment(null);
+    form.reset({ url: '', name: '', attachmentType: '' });
+  };
+
+  const startEditingAttachment = (attachment: any) => {
+    setEditingAttachment(attachment);
+    form.reset({
+      url: attachment.url,
+      name: attachment.name,
+      attachmentType: attachment.attachmentTypeId ?? '',
+    });
+    setIsEditing(true);
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post(`/api/courses/${courseId}/attachments`, values);
-      toast.success('Course updated');
+      if (editingAttachment) {
+        await axios.patch(`/api/courses/${courseId}/attachments/${editingAttachment.id}`, values);
+        toast.success('Attachment updated');
+      } else {
+        await axios.post(`/api/courses/${courseId}/attachments`, values);
+        toast.success('Course updated');
+      }
       toggleEdit();
       router.refresh();
     } catch (error) {
@@ -113,9 +133,16 @@ const AttachmentForm = ({ initialData, courseId, attachmentCategories }: Attachm
                     </div>
                   )}
                   {deletingId !== attachment.id && (
-                    <button onClick={() => onDelete(attachment.id)} className="ml-auto transition hover:opacity-75">
-                      <X className="h-4 w-4" />
-                    </button>
+                    <>
+                      <button
+                        onClick={() => startEditingAttachment(attachment)}
+                        className="mr-3 transition hover:opacity-75">
+                        <Pencil className="h-4 w-4" />
+                      </button>
+                      <button onClick={() => onDelete(attachment.id)} className="transition hover:opacity-75">
+                        <X className="h-4 w-4" />
+                      </button>
+                    </>
                   )}
                 </div>
               ))}
@@ -144,10 +171,25 @@ const AttachmentForm = ({ initialData, courseId, attachmentCategories }: Attachm
                 control={form.control as any}
                 name="url"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className={'sr-only'}>Image</FormLabel>
+                  <FormItem className="mt-3">
+                    <FormLabel className={'text-xs'}>URL</FormLabel>
                     <FormControl>
-                      <FileUpload onChange={file => field.onChange(file)} />
+                      <Input placeholder="https://..." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control as any}
+                name="url"
+                render={({ field }) => (
+                  <FormItem className="mt-3">
+                    <FormLabel className={'text-xs'}>
+                      {editingAttachment ? 'Or upload a new file to replace it' : 'Or upload a file'}
+                    </FormLabel>
+                    <FormControl>
+                      <FileUpload onChange={file => field.onChange(file)} existingUrl={editingAttachment?.url} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -166,7 +208,9 @@ const AttachmentForm = ({ initialData, courseId, attachmentCategories }: Attachm
             </form>
           </Form>
           <div className="text-muted-foreground mt-4 text-xs">
-            Add anything your students might need to complete the course
+            {editingAttachment
+              ? 'Editing the URL updates the link directly. Uploading a new file replaces the existing one in place, so the URL stays the same.'
+              : 'Add anything your students might need to complete the course'}
           </div>
         </div>
       )}
