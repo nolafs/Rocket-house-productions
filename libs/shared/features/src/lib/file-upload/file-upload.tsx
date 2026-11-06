@@ -8,9 +8,12 @@ import { useState } from 'react';
 
 interface FileUploadProps {
   onChange: (file?: any) => void;
+  // When set, the uploaded file replaces the file at this URL's storage path,
+  // so the resulting URL stays the same as before.
+  existingUrl?: string;
 }
 
-export const FileUpload = ({ onChange }: FileUploadProps) => {
+export const FileUpload = ({ onChange, existingUrl }: FileUploadProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [file, setFile] = useState<any>(null);
@@ -28,6 +31,9 @@ export const FileUpload = ({ onChange }: FileUploadProps) => {
     const fileObjects = files.map(file => {
       formData.append('file', file, file.name);
     });
+    if (existingUrl) {
+      formData.append('existingUrl', existingUrl);
+    }
 
     const response = await uploadFileAction(formData);
     if (response?.status === 'success') {

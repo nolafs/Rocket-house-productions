@@ -13,4 +13,7 @@ export const UploadFileSchema = z.object({
       // Restrict file size to 5MB
       message: 'File size must be less than 5MB',
     }),
+  // When set, the upload replaces the file at this existing URL's storage path instead
+  // of minting a new path, so the attachment keeps the same URL.
+  existingUrl: z.string().optional(),
 });
