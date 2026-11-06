@@ -1,7 +1,7 @@
 'use client';
 
 import { usePurchaseStore } from '@rocket-house-productions/store';
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import LogoFull from '@assets/logo_full.png';
 import Image from 'next/image';
@@ -20,7 +20,7 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
   const { user, isLoading, isError, isValidating } = useUser(userId);
   const { productId, courseId, type } = usePurchaseStore();
   const [isProcessing, setIsProcessing] = useState(false);
-  const hasProcessed = useRef(false);
+  const [hasProcessed, setHasProcessed] = useState(false);
   const router = useRouter();
 
   // Determine if we should show the selection UI
@@ -28,16 +28,16 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
     if (isLoading || isValidating || isError || !user) return false;
     if (isProcessing) return false;
     // Show selection if type is explicitly null or if we haven't processed yet
-    return type === null || !hasProcessed.current;
-  }, [user, isLoading, isValidating, isError, type, isProcessing]);
+    return type === null || !hasProcessed;
+  }, [user, isLoading, isValidating, isError, type, isProcessing, hasProcessed]);
 
   // Handle purchase flow in useEffect, but only trigger async operations
   useEffect(() => {
     if (!user || isLoading || isValidating || isError) return;
-    if (hasProcessed.current) return;
+    if (hasProcessed) return;
     if (type === null) return; // Wait for user to select
 
-    hasProcessed.current = true;
+    setHasProcessed(true);
 
     if (type === 'free') {
       const createFreeAccount = async () => {
@@ -52,7 +52,7 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
           }
         } catch (error) {
           logger.error('Free account creation failed:', error);
-          hasProcessed.current = false;
+          setHasProcessed(false);
         } finally {
           setIsProcessing(false);
         }
@@ -76,7 +76,7 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
             }
           } catch (error) {
             logger.error('Payment redirect failed:', error);
-            hasProcessed.current = false;
+            setHasProcessed(false);
           } finally {
             setIsProcessing(false);
           }
@@ -84,7 +84,7 @@ export function PurchaseOption({ children, userId, email }: PurchaseOptionProps)
         payment();
       }
     }
-  }, [user, isLoading, isError, isValidating, productId, courseId, type, userId, email, router]);
+  }, [user, isLoading, isError, isValidating, productId, courseId, type, userId, email, router, hasProcessed]);
 
   // Handle error redirect
   useEffect(() => {
