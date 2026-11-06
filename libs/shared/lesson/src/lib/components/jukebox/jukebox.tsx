@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AudioPlayer from 'react-h5-audio-player';
 import type H5AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
@@ -98,12 +98,26 @@ export function Jukebox({ course, purchaseType }: JukeboxProps) {
 const JukePlayer = ({ course, purchaseType }: JukeboxProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const playerRef = useRef<H5AudioPlayer>(null);
+  // Captured at click time, before the src swap auto-pauses the <audio> element.
+  const wasPlayingRef = useRef(false);
 
   const attachmentPlaylist = course.attachments.filter((v: Attachment) => v.attachmentType.name === 'Playlist');
   const playList: { title: string; url: string }[] = attachmentPlaylist.map((item: Attachment) => ({
     title: item.name,
     url: item.url,
   }));
+
+  useEffect(() => {
+    const audio = playerRef.current?.audio?.current;
+    if (!audio) return;
+    // Calling play() immediately after a src change can race the browser's own
+    // reset, resuming at the previous track's timestamp instead of the start.
+    audio.currentTime = 0;
+    if (wasPlayingRef.current) {
+      audio.play().catch(console.error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex]);
 
   const handleEnded = () => {
     const audio = playerRef.current?.audio?.current;
@@ -122,6 +136,8 @@ const JukePlayer = ({ course, purchaseType }: JukeboxProps) => {
   };
 
   const handleTrackSelect = (index: number) => {
+    const audio = playerRef.current?.audio?.current;
+    wasPlayingRef.current = !!audio && !audio.paused;
     setCurrentIndex(index);
   };
 

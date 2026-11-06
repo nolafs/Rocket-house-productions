@@ -172,28 +172,23 @@ const ModuleAttachmentForm = ({ initialData, courseId, moduleId, attachmentCateg
                 control={form.control as any}
                 name="url"
                 render={({ field }) => (
-                  <FormItem className="mt-3">
-                    <FormLabel className={'text-xs'}>URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control as any}
-                name="url"
-                render={({ field }) => (
-                  <FormItem className="mt-3">
-                    <FormLabel className={'text-xs'}>
-                      {editingAttachment ? 'Or upload a new file to replace it' : 'Or upload a file'}
-                    </FormLabel>
-                    <FormControl>
-                      <FileUpload onChange={file => field.onChange(file)} existingUrl={editingAttachment?.url} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <>
+                    <FormItem className="mt-3">
+                      <FormLabel className={'text-xs'}>URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://..." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                    <FormItem className="mt-3">
+                      <FormLabel className={'text-xs'}>
+                        {editingAttachment ? 'Or upload a new file' : 'Or upload a file'}
+                      </FormLabel>
+                      <FormControl>
+                        <FileUpload onChange={file => field.onChange(file)} />
+                      </FormControl>
+                    </FormItem>
+                  </>
                 )}
               />
               <FormField
@@ -204,13 +199,13 @@ const ModuleAttachmentForm = ({ initialData, courseId, moduleId, attachmentCateg
                 )}
               />
               <Button onClick={form.handleSubmit(onSubmit)} variant="default" className="mt-4">
-                Save
+                {editingAttachment ? 'Update' : 'Save'}
               </Button>
             </form>
           </Form>
           <div className="text-muted-foreground mt-4 text-xs">
             {editingAttachment
-              ? 'Editing the URL updates the link directly. Uploading a new file replaces the existing one in place, so the URL stays the same.'
+              ? 'Editing the URL updates the link directly. Uploading a new file gets its own new URL — click Update to save it to this attachment.'
               : 'Add anything your students might need to complete the course (PDF or MP3 files only)'}
           </div>
         </div>
