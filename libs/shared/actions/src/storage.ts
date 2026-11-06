@@ -10,7 +10,7 @@ export const uploadFile = async (path: string, file: Buffer | any) => {
   const fileType = 'application/octet-stream';
 
   try {
-    return await fetch(uploadFileUrl, {
+    const response = await fetch(uploadFileUrl, {
       method: 'PUT',
       headers: {
         AccessKey: process.env.BUNNYCDN_API_KEY || '',
@@ -18,6 +18,14 @@ export const uploadFile = async (path: string, file: Buffer | any) => {
       },
       body: file,
     });
+
+    if (!response.ok) {
+      const body = await response.text().catch(() => '');
+      logger.error('[uploadFile] BunnyCDN PUT failed', { status: response.status, statusText: response.statusText, body });
+      return false;
+    }
+
+    return response;
   } catch (error) {
     logger.error('[uploadFile] Error uploading file', error);
     return false;

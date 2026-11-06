@@ -8,19 +8,18 @@ import { useState } from 'react';
 
 interface FileUploadProps {
   onChange: (file?: any) => void;
-  // When set, the uploaded file replaces the file at this URL's storage path,
-  // so the resulting URL stays the same as before.
-  existingUrl?: string;
 }
 
-export const FileUpload = ({ onChange, existingUrl }: FileUploadProps) => {
+export const FileUpload = ({ onChange }: FileUploadProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [file, setFile] = useState<any>(null);
+  const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
 
   const onFileUpload = async (files: File[]) => {
     setError(null);
     setFile(null);
+    setUploadedFileName(null);
     if (files.length === 0) {
       logger.warn('No files selected');
     }
@@ -31,14 +30,12 @@ export const FileUpload = ({ onChange, existingUrl }: FileUploadProps) => {
     const fileObjects = files.map(file => {
       formData.append('file', file, file.name);
     });
-    if (existingUrl) {
-      formData.append('existingUrl', existingUrl);
-    }
 
     const response = await uploadFileAction(formData);
     if (response?.status === 'success') {
       setLoading(false);
       setFile(response.file);
+      setUploadedFileName(files[0]?.name ?? null);
       onChange(response.file);
     } else {
       setLoading(false);
@@ -68,7 +65,12 @@ export const FileUpload = ({ onChange, existingUrl }: FileUploadProps) => {
       {!loading && !error && file && (
         <div className="flex w-full items-center rounded-md border-sky-200 bg-sky-100 p-3 text-sky-700">
           <File className="mr-2 h-4 w-4 flex-shrink-0" />
-          <p className="line-clamp-1 text-xs">{file}</p>
+          <div className="min-w-0">
+            <p className="line-clamp-1 text-xs font-medium">
+              {uploadedFileName ? `"${uploadedFileName}" uploaded` : 'File uploaded'}
+            </p>
+            <p className="line-clamp-1 text-xs text-sky-700/70">{file}</p>
+          </div>
         </div>
       )}
       {loading && <div className={'text-sm'}>Uploading...</div>}
