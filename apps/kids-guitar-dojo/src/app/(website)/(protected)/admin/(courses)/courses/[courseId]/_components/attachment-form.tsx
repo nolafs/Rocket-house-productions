@@ -171,28 +171,23 @@ const AttachmentForm = ({ initialData, courseId, attachmentCategories }: Attachm
                 control={form.control as any}
                 name="url"
                 render={({ field }) => (
-                  <FormItem className="mt-3">
-                    <FormLabel className={'text-xs'}>URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control as any}
-                name="url"
-                render={({ field }) => (
-                  <FormItem className="mt-3">
-                    <FormLabel className={'text-xs'}>
-                      {editingAttachment ? 'Or upload a new file to replace it' : 'Or upload a file'}
-                    </FormLabel>
-                    <FormControl>
-                      <FileUpload onChange={file => field.onChange(file)} existingUrl={editingAttachment?.url} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <>
+                    <FormItem className="mt-3">
+                      <FormLabel className={'text-xs'}>URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder="https://..." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                    <FormItem className="mt-3">
+                      <FormLabel className={'text-xs'}>
+                        {editingAttachment ? 'Or upload a new file to replace it' : 'Or upload a file'}
+                      </FormLabel>
+                      <FormControl>
+                        <FileUpload onChange={file => field.onChange(file)} existingUrl={editingAttachment?.url} />
+                      </FormControl>
+                    </FormItem>
+                  </>
                 )}
               />
               <FormField
