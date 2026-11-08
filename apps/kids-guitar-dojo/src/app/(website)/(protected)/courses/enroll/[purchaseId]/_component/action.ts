@@ -1,4 +1,5 @@
 'use server';
+import { revalidatePath } from 'next/cache';
 import { db } from '@rocket-house-productions/integration/server';
 
 export async function assignChildToPurchase(
@@ -32,6 +33,9 @@ export async function assignChildToPurchase(
         data: { childId },
       });
     });
+
+    // purge cached course routes so the new enrollment is picked up
+    revalidatePath('/courses', 'layout');
 
     return {
       success: true,
