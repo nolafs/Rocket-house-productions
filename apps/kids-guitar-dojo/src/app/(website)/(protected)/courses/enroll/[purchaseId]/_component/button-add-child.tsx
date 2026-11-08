@@ -2,8 +2,6 @@
 
 import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import cn from 'classnames';
 
 import NextButton from './button-next';
@@ -20,7 +18,6 @@ interface ButtonAddChildProps {
 }
 
 const ButtonAddChild = ({ baseUrl, purchaseId, students }: ButtonAddChildProps) => {
-  const router = useRouter();
   const [selectedChildId, setSelectedChildId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -52,14 +49,11 @@ const ButtonAddChild = ({ baseUrl, purchaseId, students }: ButtonAddChildProps) 
       setSubmitSuccess(true);
       toast.success(res.message ?? 'Enrollment updated');
 
-      // prefer using redirect returned by the action if provided
-      if (res.redirect) {
-        setRedirectUrl(res.redirect);
-        router.push(res.redirect);
-      } else {
-        // fallback refresh route
-        router.push(`/refresh?next=/courses`);
-      }
+      // Hard navigation (not router.push) so the client router cache is discarded —
+      // otherwise a cached "redirect to enroll" RSC payload for the course can be replayed.
+      const target = res.redirect ?? '/refresh?next=/courses';
+      setRedirectUrl(target);
+      window.location.assign(target);
     } else {
       setSubmitError(res.errorMsg ?? 'Something went wrong');
       toast.error(res.errorMsg ?? 'Error');
@@ -117,9 +111,9 @@ const ButtonAddChild = ({ baseUrl, purchaseId, students }: ButtonAddChildProps) 
                 </p>
                 <p className="mt-2">If you aren’t redirected automatically, click below to go to the course.</p>
               </div>
-              <Link href={redirectUrl} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'w-full')}>
+              <a href={redirectUrl} className={cn(buttonVariants({ variant: 'lesson', size: 'lg' }), 'w-full')}>
                 Go to courses
-              </Link>
+              </a>
             </div>
           )}
         </>
