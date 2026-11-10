@@ -60,6 +60,9 @@
             },
             "elf_sight": {
               "type": "SharedSlice"
+            },
+            "rich_text_slice": {
+              "type": "SharedSlice"
             }
           }
         },
