@@ -7387,6 +7387,7 @@ __metadata:
     "@testing-library/dom": "npm:^10.4.2"
     "@testing-library/react": "npm:16.3.3"
     "@types/babel__core": "npm:^7.20.5"
+    "@types/facebook-pixel": "npm:^0.0.31"
     "@types/file-saver": "npm:^2.0.7"
     "@types/gtag.js": "npm:^0.0.20"
     "@types/jest": "npm:^30.0.0"
@@ -8662,6 +8663,13 @@ __metadata:
   version: 0.0.39
   resolution: "@types/estree@npm:0.0.39"
   checksum: 10c0/f0af6c95ac1988c4827964bd9d3b51d24da442e2188943f6dfcb1e1559103d5d024d564b2e9d3f84c53714a02a0a7435c7441138eb63d9af5de4dfc66cdc0d92
+  languageName: node
+  linkType: hard
+
+"@types/facebook-pixel@npm:^0.0.31":
+  version: 0.0.31
+  resolution: "@types/facebook-pixel@npm:0.0.31"
+  checksum: 10c0/8ac44a874f0168621ab0d4f7e4ca3b115d35c16e537b70abde6e80ad7c2ee93f055a538cb70fec8dccf397c46a8bb26ba7399298ddaa3d8a62febd5a4f9e9652
   languageName: node
   linkType: hard
 
