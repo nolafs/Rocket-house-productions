@@ -6,7 +6,6 @@ import { PrismicPreview } from '@prismicio/next';
 import { Footer } from '@rocket-house-productions/layout/server';
 import { ClerkProvider } from '@clerk/nextjs';
 import { NavLogin } from '@rocket-house-productions/layout';
-import { FacebookPixel } from '@rocket-house-productions/util';
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const client = createClient();
@@ -41,7 +40,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
         <BackToTop />
       </Suspense>
       <PrismicPreview repositoryName={repositoryName} />
-      <FacebookPixel />
     </>
   );
 }

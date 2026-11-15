@@ -3,6 +3,8 @@
 import Script from 'next/script'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
+import { fbAllowedOn } from './facebookPrivacy'
+import { whenReady } from './trackEvent'
 
 const PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID
 
@@ -10,8 +12,13 @@ export function FacebookPixel() {
   const pathname = usePathname()
 
   useEffect(() => {
-    // fires on every client-side route change (the base snippet only covers the first load)
-    window.fbq?.('track', 'PageView')
+    // Runs on first load and every client-side route change.
+    // Private pages are skipped unless enabled — see facebookPrivacy.ts.
+    if (!PIXEL_ID || !fbAllowedOn(pathname, 'PageView')) return
+    whenReady(
+      () => typeof window.fbq === 'function',
+      () => window.fbq('track', 'PageView'),
+    )
   }, [pathname])
 
   if (!PIXEL_ID) return null
