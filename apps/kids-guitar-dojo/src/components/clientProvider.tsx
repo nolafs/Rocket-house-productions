@@ -10,6 +10,16 @@ import { UIProvider } from '@rocket-house-productions/hooks';
 import { ConfettiProvider } from '@rocket-house-productions/providers';
 import NextTopLoader from 'nextjs-toploader';
 
+const FacebookPixel = dynamic(() => import('@rocket-house-productions/util').then(m => m.FacebookPixel), {
+  ssr: false,
+  loading: () => null,
+});
+
+const SignUpTracker = dynamic(() => import('@rocket-house-productions/util').then(m => m.SignUpTracker), {
+  ssr: false,
+  loading: () => null,
+});
+
 const LogRocketComponent = dynamic(() => import('@rocket-house-productions/util').then(m => m.LogRocketComponent), {
   ssr: false,
   loading: () => null,
@@ -30,9 +40,11 @@ export function ClientProviders({ children }: ClientProvidersProps) {
           <NextTopLoader zIndex={999999} color="hsl(var(--accent)" height={5} showSpinner={false} shadow={false} />
           {children}
           <Toaster position="bottom-center" />
+          <FacebookPixel />
           <Suspense fallback={''}>
             <ClerkProvider dynamic>
               <LogRocketComponent />
+              <SignUpTracker />
             </ClerkProvider>
           </Suspense>
         </UIProvider>
