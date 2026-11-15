@@ -52,7 +52,7 @@ export default async function Page(props: { params: Promise<{ purchaseId: string
   const isPaid = account?.purchases.some(p => p.category === 'standard' || p.category === 'premium');
   const isFree = !isPaid;
 
-  logger.info('Cutomser state free', isFree);
+  logger.info('state free', isFree);
 
   return (
     <DialogLayout
