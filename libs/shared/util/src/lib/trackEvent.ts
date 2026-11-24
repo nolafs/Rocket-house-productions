@@ -86,7 +86,21 @@ function clean(params?: TrackEventParams): Record<string, Primitive> {
   return out;
 }
 
-export function trackEvent(name: TrackEventName, params?: TrackEventParams) {
+/**
+ * Shared Facebook event id for CompleteRegistration. The Clerk webhook sends the same id via
+ * the Conversions API, so Facebook deduplicates the browser and server events.
+ */
+export const signUpEventId = (userId: string) => `signup_${userId}`;
+
+export type TrackEventOptions = {
+  /**
+   * Facebook deduplication id. Pass the same id the server sends via the Conversions API
+   * so Facebook counts the browser + server event once.
+   */
+  eventId?: string;
+};
+
+export function trackEvent(name: TrackEventName, params?: TrackEventParams, options?: TrackEventOptions) {
   if (typeof window === 'undefined') return;
   const w = window as AnyWindow;
   const props = clean(params);
@@ -96,7 +110,10 @@ export function trackEvent(name: TrackEventName, params?: TrackEventParams) {
     const isStandard = (FB_STANDARD_EVENTS as readonly string[]).includes(name);
     whenReady(
       () => typeof w.fbq === 'function',
-      () => w.fbq?.(isStandard ? 'track' : 'trackCustom', name, props),
+      () =>
+        options?.eventId
+          ? w.fbq?.(isStandard ? 'track' : 'trackCustom', name, props, { eventID: options.eventId })
+          : w.fbq?.(isStandard ? 'track' : 'trackCustom', name, props),
     );
   }
 

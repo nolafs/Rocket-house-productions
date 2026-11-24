@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
-import { trackEvent } from './trackEvent';
+import { signUpEventId, trackEvent } from './trackEvent';
 
 // A user counts as "just registered" if their Clerk account was created this recently.
 const NEW_USER_WINDOW_MS = 15 * 60 * 1000;
@@ -28,7 +28,7 @@ export function SignUpTracker() {
     }
 
     const method = user.externalAccounts?.[0]?.provider ?? 'email';
-    trackEvent('CompleteRegistration', { method, status: true });
+    trackEvent('CompleteRegistration', { method, status: true }, { eventId: signUpEventId(user.id) });
   }, [isLoaded, isSignedIn, user]);
 
   return null;
