@@ -6,7 +6,8 @@ import { headers } from 'next/headers';
 import { getGlobalPin } from '@rocket-house-productions/actions/server';
 import { decryptPin } from '@rocket-house-productions/actions/server';
 import { triggerMail } from '@rocket-house-productions/actions/server';
-import { logger } from '@rocket-house-productions/util';
+import { logger, signUpEventId } from '@rocket-house-productions/util';
+import { sendFacebookServerEvent } from '@rocket-house-productions/util/server';
 import { syncAccountNow } from '@rocket-house-productions/mailerlite-sync/server';
 
 const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET || ``;
@@ -45,7 +46,7 @@ export async function POST(req: Request) {
 
     switch (eventType) {
       case 'user.created': {
-        const { id, first_name, last_name, email_addresses } = payload.data;
+        const { id, first_name, last_name, email_addresses, external_accounts } = payload.data;
         if (!id) {
           logger.warn('[CLERK WEBHOOK] Invalid user ID');
           return NextResponse.json({ message: 'Invalid user ID' }, { status: 200 });
@@ -113,6 +114,24 @@ export async function POST(req: Request) {
         syncAccountNow(syncAccountId).catch(err =>
           logger.error('[CLERK WEBHOOK] syncAccountNow failed', err),
         );
+
+        // Facebook Conversions API — server-side CompleteRegistration. Shares its event_id with
+        // the browser pixel event (SignUpTracker) so Facebook counts it once. Never throws.
+        await sendFacebookServerEvent({
+          eventName: 'CompleteRegistration',
+          eventId: signUpEventId(id),
+          eventSourceUrl: `${process.env.NEXT_PUBLIC_BASE_URL ?? ''}/sign-up`,
+          userData: {
+            email: email_addresses[0]?.email_address,
+            firstName: first_name,
+            lastName: last_name,
+            externalId: id,
+          },
+          customData: {
+            method: external_accounts?.[0]?.provider ?? 'email',
+            status: true,
+          },
+        });
 
         if (pinCipher && pinIv && pinAuthTag) {
           try {
