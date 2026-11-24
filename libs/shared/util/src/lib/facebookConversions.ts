@@ -112,7 +112,22 @@ export async function sendFacebookServerEvent(event: FbServerEvent): Promise<boo
       return false;
     }
 
-    log.info('Sent', { event: event.eventName, eventId: event.eventId });
+    // Facebook replies { events_received, messages, fbtrace_id }. Logging it proves receipt
+    // without Events Manager access; fbtrace_id can be handed to Meta support.
+    const reply = (await res.json().catch(() => ({}))) as {
+      events_received?: number;
+      messages?: unknown[];
+      fbtrace_id?: string;
+    };
+
+    log.info('Sent', {
+      event: event.eventName,
+      eventId: event.eventId,
+      eventsReceived: reply.events_received,
+      fbtraceId: reply.fbtrace_id,
+      messages: reply.messages?.length ? reply.messages : undefined,
+      testEventCode: process.env.FB_CAPI_TEST_EVENT_CODE || undefined,
+    });
     return true;
   } catch (error) {
     log.error('Conversions API request failed', { event: event.eventName, error });
